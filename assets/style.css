@@ -6,12 +6,13 @@
    Layout: 12 kolon, kenarda aks cetvelleri, sağ altta antet.
    ============================================================ */
 :root {
-  --paper: #e9edf1;        /* çizim kağıdı */
-  --paper-2: #dfe5ea;      /* ikinci yüzey */
+  --paper: #f6f1e6;        /* çizim kağıdı (açık krem) */
+  --paper-2: #ece4d4;      /* ikinci yüzey (krem) */
   --ink: #0f2340;          /* çizim mürekkebi (blueprint lacivert) */
   --ink-2: #4a5d76;        /* ikincil metin */
-  --rule: #b7c3cf;         /* çizgiler */
-  --grid: rgba(15, 35, 64, .055);
+  --rule: #d3c8b3;         /* çizgiler */
+  --grid: rgba(90, 70, 40, .07);
+  color-scheme: light;
   --signal: #e8481c;       /* çakışma turuncusu */
   --ok: #1f8a5b;           /* çözüldü yeşili */
   --on-signal: #ffffff;
@@ -21,16 +22,7 @@
   --gutter: clamp(16px, 4vw, 56px);
   --rail: 28px;            /* aks cetveli genişliği */
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #0b1626; --paper-2: #111f33; --ink: #dfe7ef; --ink-2: #93a6bc; --rule: #22344c;
-    --grid: rgba(150, 190, 235, .06); --signal: #ff6a3d; --ok: #3cc58a; --on-signal: #0b1626; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --paper: #0b1626; --paper-2: #111f33; --ink: #dfe7ef; --ink-2: #93a6bc; --rule: #22344c;
-  --grid: rgba(150, 190, 235, .06); --signal: #ff6a3d; --ok: #3cc58a; --on-signal: #0b1626; color-scheme: dark;
-}
+ /* Koyu tema kapalı: site her zaman açık krem. */
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -205,7 +197,8 @@ html.js .draw:not(.on) { clip-path: inset(0 100% 0 0); }
 .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-bottom: 2px solid var(--signal); }
 
 /* ---------- Alt bilgi ---------- */
-.footer { background: var(--ink); color: var(--paper); margin-top: 0; }
+.footer { --paper: #0f2340; --ink: #ece4d4; background: var(--ink); color: var(--paper); margin-top: 0; border-top: 1px solid #d3c8b3; }
+.footer .btn:hover { color: #fff; }
 .footer .frame { padding-block: clamp(56px, 8vw, 96px) 28px; }
 .footer-cta { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; padding-bottom: clamp(40px, 6vw, 72px); border-bottom: 1px solid color-mix(in srgb, var(--paper) 22%, transparent); }
 .footer-cta h2 { font-size: clamp(40px, 8.4vw, 132px); font-stretch: 125%; font-weight: 800; letter-spacing: -.035em; line-height: .9; }
