@@ -1,0 +1,671 @@
+<!--meta {"title": "Örnek Konut Kulesi | Firma Adı BIM", "desc": "Vaka çalışması: Frankfurt'ta 24 katlı bir konut kulesinde tipik kat şablonları, aile kütüphanesi ve 16 haftada 408 paftalık uygulama projesi üretimi.", "sheet": "A-220", "tr": "Konut kulesi", "en": "Residential tower", "nav": "projeler"}-->
+<style>
+/* ---- vaka sayfası ortak ---- */
+.sheet-head .meta .signal b { color: var(--signal); }
+.back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 4px; justify-self: start; }
+.back:hover, .back:focus-visible { color: var(--signal); border-color: var(--signal); }
+.cs-spec { border-top: 1px solid var(--ink); margin: 0; }
+.cs-spec .v small { display: block; margin-top: 6px; font: 500 11px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.cs-spec .v.sm { font: 500 14px/1.5 var(--mono); letter-spacing: .02em; }
+@media (max-width: 760px) { .cs-spec > div:last-child { grid-column: 1 / -1; } }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: start; }
+.two > * { min-width: 0; }
+.prose { display: grid; gap: 18px; max-width: 62ch; }
+.prose p { color: var(--ink-2); font-size: clamp(17px, 1.4vw, 19px); }
+.prose p:first-child { color: var(--ink); font-size: clamp(19px, 1.7vw, 23px); line-height: 1.45; }
+.constraints { display: grid; border-top: 1px solid var(--ink); }
+.constraints div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.constraints div > span { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.constraints b { font: 800 clamp(22px, 2.4vw, 32px)/1 var(--display); font-stretch: 118%; letter-spacing: -.01em; white-space: nowrap; }
+.constraints b.signal { color: var(--signal); }
+@media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+
+.steps-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); counter-reset: s; }
+.steps-list li { counter-increment: s; display: grid; grid-template-columns: 90px minmax(0, 1fr) minmax(0, 220px); gap: 20px; align-items: baseline; padding-block: clamp(16px, 2vw, 24px); border-bottom: 1px solid var(--rule); }
+.steps-list li::before { content: "A-220." counter(s, decimal-leading-zero); font: 500 12px var(--mono); color: var(--signal); }
+.steps-list h3 { font-size: clamp(20px, 2.2vw, 30px); font-stretch: 112%; letter-spacing: -.015em; }
+.steps-list p { color: var(--ink-2); margin-top: 6px; font-size: 15.5px; max-width: 70ch; }
+.steps-list .out { font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; text-align: right; }
+@media (max-width: 760px) { .steps-list li { grid-template-columns: 1fr; gap: 6px; } .steps-list .out { text-align: left; } }
+
+.results .spec > div { padding: clamp(18px, 2.6vw, 32px); }
+.results .spec .v { font-size: clamp(38px, 5vw, 76px); font-stretch: 125%; font-weight: 800; letter-spacing: -.035em; white-space: nowrap; }
+.results .spec .v .u { font-size: .42em; letter-spacing: 0; margin-left: 4px; }
+.results .spec .v.ok { color: var(--ok); }
+.results .spec p { margin-top: 10px; font-size: 14.5px; color: var(--ink-2); }
+.chart { margin: clamp(32px, 4vw, 56px) 0 0; border: 1px solid var(--ink); background: var(--paper); }
+.chart-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding: 14px 16px; border-bottom: 1px solid var(--rule); }
+.chart-head h3 { font-size: clamp(18px, 1.8vw, 22px); font-stretch: 112%; }
+.chart-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); align-items: center; }
+.chart-key span { display: inline-flex; align-items: center; gap: 8px; }
+.chart-key i { width: 14px; height: 10px; display: inline-block; }
+.chart-body { padding: 12px 16px 6px; overflow: hidden; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart .grid line { stroke: var(--rule); stroke-dasharray: 2 4; }
+.chart .axis line { stroke: var(--ink); }
+.chart .tick { font: 500 11px var(--mono); fill: var(--ink-2); }
+.chart .val { font: 600 12px var(--mono); fill: var(--ink); }
+.chart .note line { stroke: var(--signal); stroke-dasharray: 4 3; }
+.chart .note text { font: 600 11px var(--mono); fill: var(--signal); letter-spacing: .04em; }
+.chart .svg-m { display: none; }
+.chart-foot { padding: 10px 16px; border-top: 1px solid var(--rule); }
+@media (max-width: 640px) { .chart .svg-d { display: none; } .chart .svg-m { display: block; } .chart-body { padding: 10px 8px 4px; } .chart .tick { font-size: 10px; } .chart .val { font-size: 10px; } }
+
+.tools { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.tools li { padding: 18px 16px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 6px; min-width: 0; align-content: start; }
+.tools .n { font: 500 11px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.tools b { font: 800 clamp(20px, 2vw, 26px)/1.05 var(--display); font-stretch: 112%; letter-spacing: -.01em; }
+.tools span.d { font: 500 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+.tools p { font-size: 14px; color: var(--ink-2); }
+
+.next { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--ink); text-decoration: none; margin-top: clamp(56px, 8vw, 104px); }
+.next > * { min-width: 0; }
+.next .pv { position: relative; aspect-ratio: 16 / 10; border-right: 1px solid var(--ink); background: var(--paper-2); }
+.next .pv canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.next .pv .mono { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.next .body { padding: clamp(20px, 3vw, 40px); display: grid; gap: 16px; align-content: center; }
+.next h2 { font-size: clamp(30px, 4.4vw, 64px); font-stretch: 118%; letter-spacing: -.03em; }
+.next p { color: var(--ink-2); }
+.next .go { font: 600 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.next:hover h2, .next:focus-visible h2 { color: var(--signal); }
+.endnav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-block: 28px clamp(56px, 8vw, 96px); }
+@media (max-width: 760px) { .next { grid-template-columns: 1fr; } .next .pv { border-right: 0; border-bottom: 1px solid var(--ink); } }
+.ex { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+
+/* ---- A-220 · Tipik kat ---- */
+.tf { padding-block: clamp(32px, 5vw, 64px); border-bottom: 1px solid var(--rule); }
+.tf-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); border: 1px solid var(--ink); background: color-mix(in srgb, var(--paper) 75%, transparent); }
+.tf-grid > * { min-width: 0; }
+.tower { position: relative; border-right: 1px solid var(--ink); display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+.tower-stage { position: relative; min-height: 560px; cursor: pointer; }
+.tower-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.tower-stage .corner { position: absolute; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 12px 14px; pointer-events: none; }
+.corner.tl { left: 0; top: 0; } .corner.br { right: 0; bottom: 0; text-align: right; } .corner.bl { left: 0; bottom: 0; }
+.picker { border-top: 1px solid var(--ink); padding: 14px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px 14px; align-items: center; background: var(--paper); }
+.picker > * { min-width: 0; }
+.picker label { grid-column: 1 / -1; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.picker input[type=range] { width: 100%; accent-color: var(--signal); }
+.pk { border: 1px solid var(--ink); background: var(--paper); color: var(--ink); width: 40px; height: 40px; display: grid; place-items: center; cursor: pointer; font: 600 15px var(--mono); }
+.pk:hover { background: var(--ink); color: var(--paper); }
+.jumps { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.jumps .chip { padding: 6px 9px; font-size: 11px; }
+.fl-panel { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; }
+.fl-read { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 20px; align-items: end; padding: 18px 20px 16px; border-bottom: 1px solid var(--rule); }
+.fl-read .big { font: 800 clamp(56px, 7vw, 104px)/.85 var(--display); font-stretch: 125%; letter-spacing: -.04em; grid-row: span 2; }
+.fl-read .big .o { color: var(--signal); }
+.fl-read h3 { font-size: clamp(20px, 2.1vw, 28px); font-stretch: 112%; letter-spacing: -.01em; }
+.fl-read .el { font: 500 12px var(--mono); letter-spacing: .06em; color: var(--ink-2); text-transform: uppercase; }
+.fl-dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; border-bottom: 1px solid var(--rule); }
+.fl-dl > div { padding: 10px 20px; border-bottom: 1px dashed var(--rule); min-width: 0; }
+.fl-dl > div:nth-child(odd) { border-right: 1px dashed var(--rule); }
+.fl-dl > div.w { grid-column: 1 / -1; border-right: 0; }
+.fl-dl dt { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.fl-dl dd { margin: 2px 0 0; font-size: 15px; font-weight: 500; }
+.fl-plan { padding: 8px 12px 0; display: grid; place-items: center; }
+.plan-svg { width: 100%; max-width: 520px; height: auto; display: block; }
+.plan-svg .ax { stroke: var(--rule); stroke-dasharray: 8 3 2 3; stroke-width: 1; }
+.plan-svg .bub { fill: var(--paper); stroke: var(--ink-2); }
+.plan-svg .bt { font: 500 11px var(--mono); fill: var(--ink-2); }
+.plan-svg .slab { fill: none; stroke: var(--ink); stroke-width: 3; }
+.plan-svg .corr { fill: none; stroke: var(--ink); stroke-width: 1; }
+.plan-svg .u rect, .plan-svg .rm rect { stroke: var(--ink); stroke-width: 1.4; transition: fill .2s; }
+.plan-svg .u-A rect { fill: color-mix(in srgb, var(--ink) 6%, transparent); }
+.plan-svg .u-B rect { fill: color-mix(in srgb, var(--ink) 13%, transparent); }
+.plan-svg .u-C rect { fill: color-mix(in srgb, var(--ink) 22%, transparent); }
+.plan-svg .u-D rect { fill: url(#hatch-d); }
+.plan-svg .u-E rect { fill: color-mix(in srgb, var(--ink) 30%, transparent); }
+.plan-svg .rm.cm rect { fill: var(--paper-2); stroke-dasharray: 5 3; }
+.plan-svg .rm.ter rect { fill: url(#hatch-t); stroke-dasharray: 2 3; }
+.plan-svg .rm.pl rect { fill: url(#hatch-p); }
+.plan-svg .hl-l { stroke: var(--ink-2); stroke-width: 1; }
+.plan-svg .hl-c { fill: var(--ink-2); }
+.plan-svg .uc { font: 800 24px var(--display); font-stretch: 125%; fill: var(--ink); }
+.plan-svg .ua, .plan-svg .ra { font: 500 10.5px var(--mono); fill: var(--ink); letter-spacing: .02em; }
+.plan-svg .rm .ra { fill: var(--ink); paint-order: stroke; stroke: var(--paper); stroke-width: 4px; }
+.plan-svg .core { fill: var(--paper); stroke: var(--ink); stroke-width: 2.2; }
+.plan-svg .st { fill: none; stroke: var(--ink-2); }
+.plan-svg .tr { stroke: var(--ink-2); stroke-width: .7; }
+.plan-svg .lf { fill: none; stroke: var(--ink-2); } .plan-svg .lf-x { stroke: var(--ink-2); stroke-width: .7; }
+.plan-svg .core-t { font-size: 10px; fill: var(--ink-2); }
+.plan-svg .dimg line { stroke: var(--ink); stroke-width: 1; } .plan-svg .dimg .tk { stroke-width: 1.6; }
+.plan-svg .dimg text { font: 500 10.5px var(--mono); fill: var(--ink); } .plan-svg .dimg .tot { font-weight: 600; }
+.plan-svg .north circle { fill: none; stroke: var(--ink-2); } .plan-svg .north path { fill: var(--ink); } .plan-svg .north text { font: 600 10px var(--mono); fill: var(--ink-2); }
+.plan-svg .u.hl rect { stroke: var(--signal); stroke-width: 3; }
+.plan-svg .u.hl .uc { fill: var(--signal); }
+.plan-svg.dim-others .u:not(.hl) { opacity: .35; }
+.ukey { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px 16px; border-top: 1px solid var(--rule); align-items: center; }
+.ukey .lbl { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-right: 6px; }
+.ukey .chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 9px; font-size: 11px; }
+.ukey .chip i { width: 14px; height: 12px; border: 1px solid var(--ink); display: inline-block; }
+.sw-A { background: color-mix(in srgb, var(--ink) 6%, transparent); } .sw-B { background: color-mix(in srgb, var(--ink) 13%, transparent); }
+.sw-C { background: color-mix(in srgb, var(--ink) 22%, transparent); } .sw-E { background: color-mix(in srgb, var(--ink) 30%, transparent); }
+.sw-D { background: repeating-linear-gradient(45deg, var(--ink-2) 0 1px, transparent 1px 5px); }
+.ukey .chip[aria-pressed="true"] i { border-color: var(--paper); }
+.tf-note { margin-top: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+@media (max-width: 900px) {
+  .tf-grid { grid-template-columns: 1fr; }
+  .tower { border-right: 0; border-bottom: 1px solid var(--ink); }
+  .tower-stage { min-height: 0; aspect-ratio: 1 / 1.05; }
+}
+@media (max-width: 520px) {
+  .fl-dl { grid-template-columns: 1fr; }
+  .fl-dl > div:nth-child(odd) { border-right: 0; }
+  .fl-read { padding: 14px 16px; } .fl-dl > div { padding: 9px 16px; }
+  .fl-plan { padding: 4px 2px 0; }
+}
+
+/* ---- kütüphane ---- */
+.lib { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.lib > * { min-width: 0; }
+.lib .spec .v { font-size: clamp(30px, 3.4vw, 50px); font-stretch: 125%; font-weight: 800; letter-spacing: -.03em; }
+.lib .spec .v .u { font-size: .42em; margin-left: 4px; letter-spacing: 0; }
+.lib .spec p { margin-top: 8px; font-size: 14px; color: var(--ink-2); }
+.utab { width: 100%; border-collapse: collapse; border-top: 1px solid var(--ink); }
+.utab caption { text-align: left; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding-bottom: 10px; }
+.utab th, .utab td { padding: 12px 8px; border-bottom: 1px solid var(--rule); text-align: left; font-weight: 400; vertical-align: middle; }
+.utab thead th { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding-block: 10px; }
+.utab .ut { display: inline-grid; place-items: center; width: 34px; height: 30px; border: 1px solid var(--ink); font: 800 17px var(--display); font-stretch: 125%; }
+.ut-A { background: color-mix(in srgb, var(--ink) 6%, transparent); } .ut-B { background: color-mix(in srgb, var(--ink) 13%, transparent); }
+.ut-C { background: color-mix(in srgb, var(--ink) 22%, transparent); } .ut-E { background: color-mix(in srgb, var(--ink) 30%, transparent); }
+.ut-D { background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--ink-2) 60%, transparent) 0 1px, transparent 1px 6px); }
+.utab .num { font: 500 14px var(--mono); white-space: nowrap; }
+.utab .mono-s { font: 500 12px var(--mono); color: var(--ink-2); white-space: nowrap; }
+.utab .cnt { width: 38%; }
+.utab .cnt { display: flex; align-items: center; gap: 10px; }
+.utab .mb { flex: 1; height: 12px; display: block; min-width: 40px; }
+.utab .mb i { display: block; height: 100%; background: var(--ink); }
+.utab .cnt b { font: 600 14px var(--mono); min-width: 2.5ch; text-align: right; }
+.utab tfoot td { font: 500 12px var(--mono); color: var(--ink-2); border-bottom: 0; }
+@media (max-width: 640px) {
+  .utab thead { display: none; }
+  .utab, .utab tbody, .utab tr, .utab td, .utab th { display: block; }
+  .utab tr { display: grid; grid-template-columns: 44px repeat(3, minmax(0, 1fr)); gap: 4px 10px; padding: 12px 0; border-bottom: 1px solid var(--rule); align-items: center; }
+  .utab th, .utab td { padding: 0; border: 0; }
+  .utab th { grid-row: span 2; }
+  .utab td.cnt { grid-column: 2 / -1; width: auto; }
+  .utab tfoot tr { display: block; }
+}
+@media (max-width: 900px) { .lib { grid-template-columns: 1fr; } }
+
+.strip-wrap { margin-top: clamp(32px, 4vw, 48px); border: 1px solid var(--ink); padding: 16px; background: var(--paper); }
+.strip-wrap h3, .naming h3 { font-size: clamp(18px, 1.8vw, 22px); font-stretch: 112%; margin-bottom: 4px; }
+.strip-wrap > p, .naming > p { color: var(--ink-2); font-size: 15px; margin-bottom: 14px; max-width: 70ch; }
+.strip { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 2px; }
+.fs { height: 46px; border: 1px solid var(--ink); display: flex; align-items: flex-end; justify-content: center; font: 500 9.5px var(--mono); color: var(--ink-2); padding-bottom: 3px; }
+.fs-T1 { background: color-mix(in srgb, var(--ink) 18%, transparent); }
+.fs-T2 { background: color-mix(in srgb, var(--ink) 32%, transparent); color: var(--ink); }
+.fs-PH { background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--ink-2) 60%, transparent) 0 1px, transparent 1px 5px); }
+.fs-G, .fs-AM, .fs-PL { background: var(--paper); border-color: var(--signal); border-style: dashed; color: var(--signal); }
+.strip-cap { display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 2px; margin-top: 6px; }
+.strip-cap span { font: 500 10.5px var(--mono); letter-spacing: .04em; text-transform: uppercase; border-top: 1px solid var(--ink); padding-top: 5px; text-align: center; overflow: hidden; white-space: nowrap; }
+.strip-cap .u1 { color: var(--signal); border-color: var(--signal); }
+.strip-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.strip-legend b { color: var(--ink); }
+@media (max-width: 640px) { .fs span { display: none; } .fs { height: 40px; } .strip-cap span { font-size: 8.5px; letter-spacing: 0; } .strip-cap .sm { visibility: hidden; } }
+
+.naming { margin-top: clamp(32px, 4vw, 48px); }
+.nm-row { display: grid; grid-template-columns: repeat(6, auto) minmax(0, 1fr); border: 1px solid var(--ink); }
+.nm-row > div { padding: 12px 14px; border-right: 1px solid var(--rule); min-width: 0; }
+.nm-row code { display: block; font: 600 clamp(16px, 2vw, 24px) var(--mono); letter-spacing: .02em; color: var(--ink); }
+.nm-row div:nth-child(2) code, .nm-row div:nth-child(6) code { color: var(--signal); }
+.nm-row span { display: block; margin-top: 6px; font: 500 10.5px/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+.nm-row > div:last-child { border-right: 0; }
+@media (max-width: 900px) { .nm-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } .nm-row > div { border-bottom: 1px solid var(--rule); } .nm-row > div:last-child { grid-column: 1 / -1; } }
+@media (max-width: 420px) { .nm-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.chart .b-pre { fill: color-mix(in srgb, var(--ink-2) 55%, transparent); }
+.chart .b-tpl { fill: var(--ink); }
+.chart .bar:hover { fill: var(--signal); }
+.chart-key .k1 { background: color-mix(in srgb, var(--ink-2) 55%, transparent); } .chart-key .k2 { background: var(--ink); }
+.mix { margin-top: 18px; display: grid; grid-template-columns: repeat(5, auto); border: 1px solid var(--ink); }
+.mix > div { padding: 10px 14px; border-right: 1px solid var(--rule); min-width: 0; }
+.mix > div:last-child { border-right: 0; }
+.mix b { display: block; font: 800 clamp(22px, 2.4vw, 32px)/1 var(--display); font-stretch: 118%; }
+.mix span { font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.mix .bar5 { grid-column: 1 / -1; display: flex; height: 10px; padding: 0; border-top: 1px solid var(--rule); border-right: 0; }
+.mix .bar5 i { display: block; height: 100%; }
+@media (max-width: 760px) { .mix { grid-template-columns: repeat(2, minmax(0, 1fr)); } .mix > div { border-bottom: 1px solid var(--rule); } .mix > div:nth-child(5) { grid-column: 1 / -1; } }
+
+/* ---- A-220 infografikler (kn-) ---- */
+.kn-ic { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--ink); display: block; }
+.kn-ic .s-sig { stroke: var(--signal); }
+.kn-ch { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+.kn-ch > * { min-width: 0; }
+.kn-fig { margin: 0; border: 1px solid var(--ink); background: var(--paper); }
+.kn-fig svg { display: block; width: 100%; height: auto; padding: clamp(6px, 1.6vw, 18px); box-sizing: border-box; }
+.kn-pl { fill: var(--paper-2); stroke: var(--ink); stroke-width: 2; }
+.kn-chg { fill: color-mix(in srgb, var(--signal) 28%, transparent); stroke: var(--signal); stroke-width: 2; }
+.kn-th { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.kn-fan path { fill: none; stroke: var(--ink-2); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.kn-arh { fill: var(--ink-2); }
+.kn-fl rect { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.kn-l { font: 500 14.5px var(--mono); fill: var(--ink); }
+.kn-l.b { font-weight: 700; }
+.kn-l.sig { fill: var(--signal); font-weight: 700; }
+.kn-stamps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; border-top: 1px solid var(--rule); padding: 10px 12px; }
+.kn-stamps b { font: 600 11.5px var(--mono); letter-spacing: .04em; border: 1.5px solid var(--ink); padding: 4px 8px; border-radius: 2px; }
+.kn-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.kn-tiles li { padding: 18px 16px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 8px; align-content: start; min-width: 0; }
+.kn-tiles svg { width: 44px; height: 44px; }
+.kn-tiles b { font: 800 clamp(24px, 2.8vw, 38px)/1 var(--display); font-stretch: 118%; letter-spacing: -.02em; white-space: nowrap; }
+.kn-tiles b.signal { color: var(--signal); }
+.kn-tiles li > span { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 860px) { .kn-ch { grid-template-columns: 1fr; } }
+
+.kn-tl { display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 3px; margin-bottom: clamp(32px, 4vw, 52px); }
+.kn-tl-h { font: 600 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid var(--ink); padding-bottom: 6px; margin-bottom: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.kn-tl-h.s { color: var(--signal); border-color: var(--signal); }
+.kn-tl i { display: block; height: 22px; border: 1px solid var(--ink); background: color-mix(in srgb, var(--ink) 30%, transparent); }
+.kn-tl i.s { background: repeating-linear-gradient(45deg, var(--signal) 0 1.5px, transparent 1.5px 6px); border-color: var(--signal); }
+.kn-tl i.t { background: var(--ink); }
+.kn-tl-m { font: 500 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); padding-top: 6px; }
+.kn-flow { --g: clamp(18px, 2.6vw, 40px); list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--g); }
+.kn-flow li { position: relative; display: grid; gap: 10px; align-content: start; min-width: 0; border-top: 2px solid var(--ink); padding-top: 18px; }
+.kn-flow li svg { width: 60px; height: 60px; }
+.kn-flow .kn-n { font: 500 11px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.kn-flow h3 { font-size: clamp(18px, 1.7vw, 23px); font-stretch: 112%; letter-spacing: -.01em; }
+.kn-out { font: 800 clamp(28px, 3vw, 42px)/1 var(--display); font-stretch: 118%; letter-spacing: -.02em; white-space: nowrap; }
+.kn-out small { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-left: 4px; white-space: normal; }
+.kn-flow li:not(:last-child)::after { content: "→"; position: absolute; top: 36px; right: calc(var(--g) / -2 - 6px); font: 600 18px/1 var(--mono); color: var(--signal); }
+@media (max-width: 900px) {
+  .kn-flow { --g: 30px; grid-template-columns: 1fr; }
+  .kn-flow li { grid-template-columns: 52px minmax(0, 1fr); gap: 4px 16px; padding-top: 14px; }
+  .kn-flow li svg { width: 52px; height: 52px; grid-row: span 3; }
+  .kn-flow li:not(:last-child)::after { content: "↓"; top: auto; right: auto; left: 17px; bottom: calc(var(--g) / -2 - 22px); }
+}
+@media (max-width: 640px) { .kn-tl-m { grid-column: 1 / -1 !important; } .kn-tl-h { font-size: 10px; letter-spacing: 0; white-space: normal; align-self: end; } }
+
+.kn-h3 { font-size: clamp(18px, 1.8vw, 22px); font-stretch: 112%; margin-bottom: 14px; }
+.kn-ba { list-style: none; margin: 0; padding: 18px 0 0; display: grid; gap: 20px; border-top: 1px solid var(--ink); }
+.kn-ba li { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr); gap: 5px 16px; align-items: center; }
+.kn-ba .lb { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); grid-row: span 2; }
+.kn-ba .br { display: flex; align-items: center; gap: 8px; min-width: 0; grid-column: 2; }
+.kn-ba .br i { display: block; height: 14px; flex: none; }
+.kn-ba .b0 i { background: color-mix(in srgb, var(--ink-2) 40%, transparent); }
+.kn-ba .b1 i { background: var(--ok); }
+.kn-ba .br b { font: 600 13px var(--mono); }
+.kn-ba .b1 b { color: var(--ok); }
+.kn-key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 16px; }
+.kn-key > span { display: inline-flex; align-items: center; gap: 8px; }
+.kn-key i { width: 14px; height: 10px; display: inline-block; }
+.kn-key .k0 { background: color-mix(in srgb, var(--ink-2) 40%, transparent); } .kn-key .k1 { background: var(--ok); }
+@media (max-width: 520px) { .kn-ba li { grid-template-columns: 1fr; } .kn-ba .lb { grid-row: auto; } .kn-ba .br { grid-column: 1; } }
+.kn-units { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.kn-units li { display: grid; gap: 6px; padding: 12px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; align-content: start; }
+.kn-units .pl { aspect-ratio: 1; display: flex; align-items: flex-end; }
+.kn-units .pl i { display: block; width: calc(var(--f) * 100%); aspect-ratio: 1; border: 1.5px solid var(--ink); }
+.kn-units b { font: 800 26px/1 var(--display); font-stretch: 125%; }
+.kn-units .t { font: 500 11px/1.35 var(--mono); color: var(--ink-2); }
+.kn-units .c { display: block; height: 8px; background: color-mix(in srgb, var(--rule) 60%, transparent); }
+.kn-units .c i { display: block; height: 100%; background: var(--ink); }
+.kn-units .n { font: 600 15px var(--mono); }
+@media (max-width: 640px) { .kn-units { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.kn-tools { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.kn-tools li { padding: 18px 14px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 8px; align-content: start; min-width: 0; }
+.kn-tools svg { width: 34px; height: 34px; }
+.kn-tools b { font: 800 clamp(17px, 1.6vw, 21px)/1.05 var(--display); font-stretch: 108%; letter-spacing: -.01em; }
+.kn-tools li > span { font: 500 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 420px) { .kn-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>
+
+<main id="main">
+  <header class="sheet-head">
+    <a class="back" href="projeler.html" data-sheet="A-200" data-label="Projeler">← A-200 · <span lang="tr">Proje dizini</span><span lang="en">Project index</span></a>
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-220</b></span>
+      <span><span lang="tr">Proje</span><span lang="en">Project</span> <b>P-02</b></span>
+      <span><span lang="tr">Sektör</span><span lang="en">Sector</span> <b><span lang="tr">Konut</span><span lang="en">Residential</span></b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>1:100 · 1:50</b></span>
+      <span>Rev <b>P04</b></span>
+      <span class="signal"><b><span lang="tr">Örnek vaka</span><span lang="en">Sample case</span></b></span>
+    </div>
+    <h1><span lang="tr">Örnek Konut <span class="o">Kulesi</span></span><span lang="en">Sample Residential <span class="o">Tower</span></span></h1>
+    <p class="lede"><span lang="tr">Frankfurt'ta 24 katlı, 210 daireli kule. Beş daire modülü ve üç kat şablonuyla 16 haftada 408 pafta.</span><span lang="en">A 24-storey, 210-unit tower in Frankfurt. Five unit modules and three floor templates gave 408 sheets in 16 weeks.</span></p>
+    <dl class="spec cs-spec">
+      <div><dt><span lang="tr">İşveren</span><span lang="en">Client</span></dt><dd class="v"><span lang="tr">Örnek genel yüklenici</span><span lang="en">Sample general contractor</span></dd></div>
+      <div><dt><span lang="tr">Rolümüz</span><span lang="en">Our role</span></dt><dd class="v"><span lang="tr">Modelleme ekibi</span><span lang="en">Modelling team</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd class="v"><span lang="tr">Frankfurt, Almanya</span><span lang="en">Frankfurt, Germany</span><small>50.11°N 8.68°E</small></dd></div>
+      <div><dt><span lang="tr">Alan</span><span lang="en">Area</span></dt><dd class="v"><span lang="tr">46.200</span><span lang="en">46,200</span> m²<small><span lang="tr">24 kat + 2 bodrum</span><span lang="en">24 storeys + 2 basements</span></small></dd></div>
+      <div><dt><span lang="tr">Detay seviyesi</span><span lang="en">Level of detail</span></dt><dd class="v">LOD 300<small>HOAI LP 5</small></dd></div>
+      <div><dt><span lang="tr">Süre</span><span lang="en">Duration</span></dt><dd class="v"><span lang="tr">11 ay</span><span lang="en">11 months</span><small>2024 – 2025</small></dd></div>
+      <div><dt><span lang="tr">Yazılım</span><span lang="en">Software</span></dt><dd class="v sm">Revit · Dynamo · pyRevit · ACC · IFC 4</dd></div>
+    </dl>
+  </header>
+
+  <section class="tf" aria-labelledby="tf-title">
+    <div class="block-head" style="margin-bottom:clamp(20px,3vw,36px)">
+      <span class="no">00 · <span lang="tr">Tipik kat</span><span lang="en">Typical floor</span></span>
+      <h2 id="tf-title"><span lang="tr">Bir kat seçin, planı okuyun.</span><span lang="en">Pick a floor, read the plan.</span></h2>
+      <p><span lang="tr">24 katın 21'i üç şablondan geldi. Kuleden bir kat seçin.</span><span lang="en">21 of 24 floors came from three templates. Pick a floor on the tower.</span></p>
+    </div>
+    <div class="tf-grid">
+      <div class="tower">
+        <div class="tower-stage" id="tw-stage" data-snap>
+          <canvas id="tw-model" aria-hidden="true"></canvas>
+          <canvas id="tw-over" aria-hidden="true"></canvas>
+          <span class="corner tl">P-02 · ARC + STR · ISO</span>
+          <span class="corner bl"><span lang="tr">Çatı</span><span lang="en">Roof</span> +78,85</span>
+          <span class="corner br">50.11°N 8.68°E</span>
+        </div>
+        <div class="picker">
+          <label for="tw-range"><span lang="tr">Kat seçimi: kaydırın, ok tuşlarını kullanın ya da kuleye tıklayın</span><span lang="en">Floor: drag, use the arrow keys or click the tower</span></label>
+          <button class="pk" type="button" id="tw-down" aria-label="Bir kat aşağı / One floor down">↓</button>
+          <input id="tw-range" type="range" min="0" max="23" step="1" value="7" aria-valuetext="L07 · T1" aria-describedby="fl-type">
+          <button class="pk" type="button" id="tw-up" aria-label="Bir kat yukarı / One floor up">↑</button>
+          <div class="jumps" role="group" aria-label="Kat tipine atla / Jump to floor type"><button class="chip" type="button" data-jump="0" aria-pressed="false"><span lang="tr">Zemin</span><span lang="en">Ground</span></button><button class="chip" type="button" data-jump="1" aria-pressed="false"><span lang="tr">Ortak</span><span lang="en">Amenity</span></button><button class="chip" type="button" data-jump="7" aria-pressed="true"><span lang="tr">T1 tipik</span><span lang="en">T1 typical</span></button><button class="chip" type="button" data-jump="10" aria-pressed="false"><span lang="tr">Teknik</span><span lang="en">Plant</span></button><button class="chip" type="button" data-jump="15" aria-pressed="false"><span lang="tr">T2 tipik</span><span lang="en">T2 typical</span></button><button class="chip" type="button" data-jump="22" aria-pressed="false"><span lang="tr">Çatı dubleks</span><span lang="en">Penthouse</span></button></div>
+        </div>
+      </div>
+      <div class="fl-panel" aria-live="polite" id="fl-panel">
+        <div class="fl-read">
+          <div class="big" id="fl-no"><span class="o">L</span>07</div>
+          <span class="el" id="fl-el"><span lang="tr">Kot</span><span lang="en">Level</span> <span lang="tr">+24,25</span><span lang="en">+24.25</span> m · <span lang="tr">kat yüksekliği 3,15 m</span><span lang="en">storey height 3.15 m</span></span>
+          <h3 id="fl-type"><span lang="tr">Tipik kat T1</span><span lang="en">Typical floor T1</span></h3>
+        </div>
+        <dl class="fl-dl">
+          <div><dt><span lang="tr">Daire</span><span lang="en">Apartments</span></dt><dd id="fl-u">12</dd></div>
+          <div><dt><span lang="tr">Brüt kat alanı</span><span lang="en">Gross floor area</span></dt><dd><span lang="tr">1.521</span><span lang="en">1,521</span> m² · 39 × 39 m</dd></div>
+          <div class="w"><dt><span lang="tr">Karma / program</span><span lang="en">Mix / programme</span></dt><dd id="fl-mix"><span lang="tr">4 × A (1+1) · 4 × B (2+1) · 4 × C (3+1)</span><span lang="en">4 × A (1-bed) · 4 × B (2-bed) · 4 × C (3-bed)</span></dd></div>
+          <div class="w"><dt><span lang="tr">Şablon</span><span lang="en">Template</span></dt><dd id="fl-tpl"><span lang="tr">Şablon T1 · 12 daire grubu · Dynamo ile 8 kata yerleşti</span><span lang="en">Template T1 · 12 unit groups · placed on 8 floors by Dynamo</span></dd></div>
+          <div class="w"><dt><span lang="tr">Bu kattan üretilen pafta</span><span lang="en">Sheets from this floor</span></dt><dd id="fl-sh">6 · <span lang="tr">1:100 plan, 4 × 1:50 bölge planı, tavan planı</span><span lang="en">1:100 plan, 4 × 1:50 zone plans, ceiling plan</span></dd></div>
+        </dl>
+        <figure class="fl-plan" style="margin:0">
+          <svg class="plan-svg" viewBox="0 0 470 500" role="img" aria-labelledby="plan-cap"><defs><pattern id="hatch-d" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" class="hl-l"/></pattern><pattern id="hatch-t" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" class="hl-c"/></pattern><pattern id="hatch-p" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="10" class="hl-l"/><line x1="5" y1="0" x2="5" y2="10" class="hl-l"/></pattern></defs><g class="axes"><line class="ax" x1="50" y1="30.0" x2="50" y2="452.0"/><circle class="bub" cx="50" cy="18.0" r="11"/><text class="bt" x="50" y="22.0" text-anchor="middle">A</text><line class="ax" x1="180" y1="30.0" x2="180" y2="452.0"/><circle class="bub" cx="180" cy="18.0" r="11"/><text class="bt" x="180" y="22.0" text-anchor="middle">B</text><line class="ax" x1="310" y1="30.0" x2="310" y2="452.0"/><circle class="bub" cx="310" cy="18.0" r="11"/><text class="bt" x="310" y="22.0" text-anchor="middle">C</text><line class="ax" x1="440" y1="30.0" x2="440" y2="452.0"/><circle class="bub" cx="440" cy="18.0" r="11"/><text class="bt" x="440" y="22.0" text-anchor="middle">D</text><line class="ax" x1="30.0" y1="50" x2="452.0" y2="50"/><circle class="bub" cx="18.0" cy="50" r="11"/><text class="bt" x="18.0" y="54" text-anchor="middle">1</text><line class="ax" x1="30.0" y1="180" x2="452.0" y2="180"/><circle class="bub" cx="18.0" cy="180" r="11"/><text class="bt" x="18.0" y="184" text-anchor="middle">2</text><line class="ax" x1="30.0" y1="310" x2="452.0" y2="310"/><circle class="bub" cx="18.0" cy="310" r="11"/><text class="bt" x="18.0" y="314" text-anchor="middle">3</text><line class="ax" x1="30.0" y1="440" x2="452.0" y2="440"/><circle class="bub" cx="18.0" cy="440" r="11"/><text class="bt" x="18.0" y="444" text-anchor="middle">4</text></g><rect class="corr" x="162.0" y="162.0" width="166" height="166"/><g class="plan" data-plan="T1"><g class="u u-C" data-u="C"><rect x="50" y="50" width="105" height="112"/><text class="uc" x="102.5" y="104.0" text-anchor="middle">C</text><text class="ua" x="102.5" y="121.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-B" data-u="B"><rect x="155.0" y="50" width="90" height="112"/><text class="uc" x="200.0" y="104.0" text-anchor="middle">B</text><text class="ua" x="200.0" y="121.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-B" data-u="B"><rect x="245.0" y="50" width="90" height="112"/><text class="uc" x="290.0" y="104.0" text-anchor="middle">B</text><text class="ua" x="290.0" y="121.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-C" data-u="C"><rect x="335.0" y="50" width="105" height="112"/><text class="uc" x="387.5" y="104.0" text-anchor="middle">C</text><text class="ua" x="387.5" y="121.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-C" data-u="C"><rect x="50" y="328.0" width="105" height="112"/><text class="uc" x="102.5" y="382.0" text-anchor="middle">C</text><text class="ua" x="102.5" y="399.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-B" data-u="B"><rect x="155.0" y="328.0" width="90" height="112"/><text class="uc" x="200.0" y="382.0" text-anchor="middle">B</text><text class="ua" x="200.0" y="399.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-B" data-u="B"><rect x="245.0" y="328.0" width="90" height="112"/><text class="uc" x="290.0" y="382.0" text-anchor="middle">B</text><text class="ua" x="290.0" y="399.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-C" data-u="C"><rect x="335.0" y="328.0" width="105" height="112"/><text class="uc" x="387.5" y="382.0" text-anchor="middle">C</text><text class="ua" x="387.5" y="399.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-A" data-u="A"><rect x="50" y="162.0" width="112" height="83"/><text class="uc" x="106.0" y="201.5" text-anchor="middle">A</text><text class="ua" x="106.0" y="218.5" text-anchor="middle"><tspan lang="tr">1+1</tspan><tspan lang="en">1-bed</tspan> · 62 m²</text></g><g class="u u-A" data-u="A"><rect x="50" y="245.0" width="112" height="83"/><text class="uc" x="106.0" y="284.5" text-anchor="middle">A</text><text class="ua" x="106.0" y="301.5" text-anchor="middle"><tspan lang="tr">1+1</tspan><tspan lang="en">1-bed</tspan> · 62 m²</text></g><g class="u u-A" data-u="A"><rect x="328.0" y="162.0" width="112" height="83"/><text class="uc" x="384.0" y="201.5" text-anchor="middle">A</text><text class="ua" x="384.0" y="218.5" text-anchor="middle"><tspan lang="tr">1+1</tspan><tspan lang="en">1-bed</tspan> · 62 m²</text></g><g class="u u-A" data-u="A"><rect x="328.0" y="245.0" width="112" height="83"/><text class="uc" x="384.0" y="284.5" text-anchor="middle">A</text><text class="ua" x="384.0" y="301.5" text-anchor="middle"><tspan lang="tr">1+1</tspan><tspan lang="en">1-bed</tspan> · 62 m²</text></g></g><g class="plan" data-plan="T2" display="none"><g class="u u-C" data-u="C"><rect x="50" y="50" width="105" height="112"/><text class="uc" x="102.5" y="104.0" text-anchor="middle">C</text><text class="ua" x="102.5" y="121.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-B" data-u="B"><rect x="155.0" y="50" width="90" height="112"/><text class="uc" x="200.0" y="104.0" text-anchor="middle">B</text><text class="ua" x="200.0" y="121.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-B" data-u="B"><rect x="245.0" y="50" width="90" height="112"/><text class="uc" x="290.0" y="104.0" text-anchor="middle">B</text><text class="ua" x="290.0" y="121.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-C" data-u="C"><rect x="335.0" y="50" width="105" height="112"/><text class="uc" x="387.5" y="104.0" text-anchor="middle">C</text><text class="ua" x="387.5" y="121.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-C" data-u="C"><rect x="50" y="328.0" width="105" height="112"/><text class="uc" x="102.5" y="382.0" text-anchor="middle">C</text><text class="ua" x="102.5" y="399.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-B" data-u="B"><rect x="155.0" y="328.0" width="90" height="112"/><text class="uc" x="200.0" y="382.0" text-anchor="middle">B</text><text class="ua" x="200.0" y="399.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-B" data-u="B"><rect x="245.0" y="328.0" width="90" height="112"/><text class="uc" x="290.0" y="382.0" text-anchor="middle">B</text><text class="ua" x="290.0" y="399.0" text-anchor="middle"><tspan lang="tr">2+1</tspan><tspan lang="en">2-bed</tspan> · 81 m²</text></g><g class="u u-C" data-u="C"><rect x="335.0" y="328.0" width="105" height="112"/><text class="uc" x="387.5" y="382.0" text-anchor="middle">C</text><text class="ua" x="387.5" y="399.0" text-anchor="middle"><tspan lang="tr">3+1</tspan><tspan lang="en">3-bed</tspan> · 98 m²</text></g><g class="u u-D" data-u="D"><rect x="50" y="162.0" width="112" height="166"/><text class="uc" x="106.0" y="243.0" text-anchor="middle">D</text><text class="ua" x="106.0" y="260.0" text-anchor="middle"><tspan lang="tr">4+1</tspan><tspan lang="en">4-bed</tspan> · 148 m²</text></g><g class="u u-D" data-u="D"><rect x="328.0" y="162.0" width="112" height="166"/><text class="uc" x="384.0" y="243.0" text-anchor="middle">D</text><text class="ua" x="384.0" y="260.0" text-anchor="middle"><tspan lang="tr">4+1</tspan><tspan lang="en">4-bed</tspan> · 148 m²</text></g></g><g class="plan" data-plan="PH" display="none"><g class="u u-E" data-u="E"><rect x="50" y="50" width="195" height="112"/><text class="uc" x="147.5" y="104.0" text-anchor="middle">E</text><text class="ua" x="147.5" y="121.0" text-anchor="middle"><tspan lang="tr">5+1 dubleks</tspan><tspan lang="en">5-bed duplex</tspan> · 312 m²</text></g><g class="u u-E" data-u="E"><rect x="245.0" y="50" width="195" height="112"/><text class="uc" x="342.5" y="104.0" text-anchor="middle">E</text><text class="ua" x="342.5" y="121.0" text-anchor="middle"><tspan lang="tr">5+1 dubleks</tspan><tspan lang="en">5-bed duplex</tspan> · 312 m²</text></g><g class="u u-E" data-u="E"><rect x="50" y="328.0" width="195" height="112"/><text class="uc" x="147.5" y="382.0" text-anchor="middle">E</text><text class="ua" x="147.5" y="399.0" text-anchor="middle"><tspan lang="tr">5+1 dubleks</tspan><tspan lang="en">5-bed duplex</tspan> · 312 m²</text></g><g class="u u-E" data-u="E"><rect x="245.0" y="328.0" width="195" height="112"/><text class="uc" x="342.5" y="382.0" text-anchor="middle">E</text><text class="ua" x="342.5" y="399.0" text-anchor="middle"><tspan lang="tr">5+1 dubleks</tspan><tspan lang="en">5-bed duplex</tspan> · 312 m²</text></g><g class="rm ter"><rect x="50" y="162.0" width="112" height="166"/><text class="ra" x="106.0" y="249.0" text-anchor="middle"><tspan lang="tr">Teras</tspan><tspan lang="en">Terrace</tspan></text></g><g class="rm ter"><rect x="328.0" y="162.0" width="112" height="166"/><text class="ra" x="384.0" y="249.0" text-anchor="middle"><tspan lang="tr">Teras</tspan><tspan lang="en">Terrace</tspan></text></g></g><g class="plan" data-plan="G" display="none"><g class="rm cm"><rect x="50" y="50" width="195" height="112"/><text class="ra" x="147.5" y="110.0" text-anchor="middle"><tspan lang="tr">Ticari 1</tspan><tspan lang="en">Retail 1</tspan></text></g><g class="rm cm"><rect x="245.0" y="50" width="195" height="112"/><text class="ra" x="342.5" y="110.0" text-anchor="middle"><tspan lang="tr">Ticari 2</tspan><tspan lang="en">Retail 2</tspan></text></g><g class="rm cm"><rect x="50" y="328.0" width="390" height="112"/><text class="ra" x="245.0" y="388.0" text-anchor="middle"><tspan lang="tr">Giriş lobisi</tspan><tspan lang="en">Entrance lobby</tspan></text></g><g class="rm cm"><rect x="50" y="162.0" width="112" height="166"/><text class="ra" x="106.0" y="249.0" text-anchor="middle"><tspan lang="tr">Bisiklet</tspan><tspan lang="en">Bikes</tspan></text></g><g class="rm cm"><rect x="328.0" y="162.0" width="112" height="166"/><text class="ra" x="384.0" y="249.0" text-anchor="middle"><tspan lang="tr">Atık · teknik</tspan><tspan lang="en">Waste · plant</tspan></text></g></g><g class="plan" data-plan="AM" display="none"><g class="rm cm"><rect x="50" y="50" width="390" height="112"/><text class="ra" x="245.0" y="110.0" text-anchor="middle"><tspan lang="tr">Ortak çalışma alanı</tspan><tspan lang="en">Co-working</tspan></text></g><g class="rm cm"><rect x="50" y="328.0" width="390" height="112"/><text class="ra" x="245.0" y="388.0" text-anchor="middle"><tspan lang="tr">Fitness</tspan><tspan lang="en">Gym</tspan></text></g><g class="rm cm"><rect x="50" y="162.0" width="112" height="166"/><text class="ra" x="106.0" y="249.0" text-anchor="middle"><tspan lang="tr">Depolar</tspan><tspan lang="en">Storage</tspan></text></g><g class="rm cm"><rect x="328.0" y="162.0" width="112" height="166"/><text class="ra" x="384.0" y="249.0" text-anchor="middle"><tspan lang="tr">Çamaşır</tspan><tspan lang="en">Laundry</tspan></text></g></g><g class="plan" data-plan="PL" display="none"><g class="rm pl"><rect x="50" y="50" width="390" height="112"/><text class="ra" x="245.0" y="110.0" text-anchor="middle"><tspan lang="tr">Havalandırma santralleri</tspan><tspan lang="en">Air handling units</tspan></text></g><g class="rm pl"><rect x="50" y="328.0" width="195" height="112"/><text class="ra" x="147.5" y="388.0" text-anchor="middle"><tspan lang="tr">Su deposu</tspan><tspan lang="en">Water tank</tspan></text></g><g class="rm pl"><rect x="245.0" y="328.0" width="195" height="112"/><text class="ra" x="342.5" y="388.0" text-anchor="middle"><tspan lang="tr">Pompalar</tspan><tspan lang="en">Pumps</tspan></text></g><g class="rm pl"><rect x="50" y="162.0" width="112" height="166"/><text class="ra" x="106.0" y="249.0" text-anchor="middle"><tspan lang="tr">Elektrik</tspan><tspan lang="en">Electrical</tspan></text></g><g class="rm pl"><rect x="328.0" y="162.0" width="112" height="166"/><text class="ra" x="384.0" y="249.0" text-anchor="middle"><tspan lang="tr">Isı</tspan><tspan lang="en">Heat</tspan></text></g></g><rect class="core" x="180" y="180" width="130" height="130"/><rect class="st" x="184.0" y="184.0" width="42" height="56"/><line class="tr" x1="184.0" y1="189.1" x2="226.0" y2="189.1"/><line class="tr" x1="184.0" y1="194.2" x2="226.0" y2="194.2"/><line class="tr" x1="184.0" y1="199.3" x2="226.0" y2="199.3"/><line class="tr" x1="184.0" y1="204.4" x2="226.0" y2="204.4"/><line class="tr" x1="184.0" y1="209.5" x2="226.0" y2="209.5"/><line class="tr" x1="184.0" y1="214.6" x2="226.0" y2="214.6"/><line class="tr" x1="184.0" y1="219.7" x2="226.0" y2="219.7"/><line class="tr" x1="184.0" y1="224.8" x2="226.0" y2="224.8"/><line class="tr" x1="184.0" y1="229.9" x2="226.0" y2="229.9"/><line class="tr" x1="184.0" y1="235.0" x2="226.0" y2="235.0"/><line class="tr" x1="205.0" y1="184.0" x2="205.0" y2="240.0"/><rect class="st" x="264.0" y="250.0" width="42" height="56"/><line class="tr" x1="264.0" y1="255.1" x2="306.0" y2="255.1"/><line class="tr" x1="264.0" y1="260.2" x2="306.0" y2="260.2"/><line class="tr" x1="264.0" y1="265.3" x2="306.0" y2="265.3"/><line class="tr" x1="264.0" y1="270.4" x2="306.0" y2="270.4"/><line class="tr" x1="264.0" y1="275.5" x2="306.0" y2="275.5"/><line class="tr" x1="264.0" y1="280.6" x2="306.0" y2="280.6"/><line class="tr" x1="264.0" y1="285.7" x2="306.0" y2="285.7"/><line class="tr" x1="264.0" y1="290.8" x2="306.0" y2="290.8"/><line class="tr" x1="264.0" y1="295.9" x2="306.0" y2="295.9"/><line class="tr" x1="264.0" y1="301.0" x2="306.0" y2="301.0"/><line class="tr" x1="285.0" y1="250.0" x2="285.0" y2="306.0"/><rect class="lf" x="232.0" y="184.0" width="22" height="22"/><path class="lf-x" d="M232.0 184.0l22 22M254.0 184.0l-22 22"/><rect class="lf" x="258.0" y="184.0" width="22" height="22"/><path class="lf-x" d="M258.0 184.0l22 22M280.0 184.0l-22 22"/><rect class="lf" x="184.0" y="278.0" width="22" height="22"/><path class="lf-x" d="M184.0 278.0l22 22M206.0 278.0l-22 22"/><rect class="lf" x="210.0" y="278.0" width="22" height="22"/><path class="lf-x" d="M210.0 278.0l22 22M232.0 278.0l-22 22"/><text class="ra core-t" x="245.0" y="249.0" text-anchor="middle"><tspan lang="tr">Çekirdek</tspan><tspan lang="en">Core</tspan></text><rect class="slab" x="50" y="50" width="390" height="390"/><g class="dimg"><line x1="50" y1="466.0" x2="440" y2="466.0"/><line x1="50" y1="460.0" x2="50" y2="472.0"/><line class="tk" x1="46" y1="470.0" x2="54" y2="462.0"/><line x1="180" y1="460.0" x2="180" y2="472.0"/><line class="tk" x1="176" y1="470.0" x2="184" y2="462.0"/><line x1="310" y1="460.0" x2="310" y2="472.0"/><line class="tk" x1="306" y1="470.0" x2="314" y2="462.0"/><line x1="440" y1="460.0" x2="440" y2="472.0"/><line class="tk" x1="436" y1="470.0" x2="444" y2="462.0"/><text x="115.0" y="461.0" text-anchor="middle">13.000</text><text x="245.0" y="461.0" text-anchor="middle">13.000</text><text x="375.0" y="461.0" text-anchor="middle">13.000</text><text class="tot" x="245.0" y="482.0" text-anchor="middle">39.000</text></g><g class="north" transform="translate(456.0 18.0)"><circle r="10"/><path d="M0 -8 L4 6 L0 3 L-4 6Z"/><text y="-14" text-anchor="middle">N</text></g></svg>
+          <figcaption id="plan-cap" class="sr-only"><span lang="tr">Seçili katın 1:100 ölçekli şematik planı: 39 × 39 m döşeme, A–D ve 1–4 aksları 13 m arayla, ortada iki merdiven ve dört asansörlü çekirdek, çevrede daireler.</span><span lang="en">Schematic 1:100 plan of the selected floor: a 39 × 39 m slab, grids A–D and 1–4 at 13 m, a central core with two stairs and four lifts, apartments around it.</span></figcaption>
+        </figure>
+        <div class="ukey" role="group" aria-label="Daire tipleri / Unit types"><span class="lbl"><span lang="tr">Daire tipi</span><span lang="en">Unit type</span></span><button class="chip" type="button" data-ut="A" aria-pressed="false"><i class="sw-A" aria-hidden="true"></i>A · <span lang="tr">1+1</span><span lang="en">1-bed</span></button><button class="chip" type="button" data-ut="B" aria-pressed="false"><i class="sw-B" aria-hidden="true"></i>B · <span lang="tr">2+1</span><span lang="en">2-bed</span></button><button class="chip" type="button" data-ut="C" aria-pressed="false"><i class="sw-C" aria-hidden="true"></i>C · <span lang="tr">3+1</span><span lang="en">3-bed</span></button><button class="chip" type="button" data-ut="D" aria-pressed="false"><i class="sw-D" aria-hidden="true"></i>D · <span lang="tr">4+1</span><span lang="en">4-bed</span></button><button class="chip" type="button" data-ut="E" aria-pressed="false"><i class="sw-E" aria-hidden="true"></i>E · <span lang="tr">5+1 dubleks</span><span lang="en">5-bed duplex</span></button></div>
+      </div>
+    </div>
+    <p class="tf-note"><span class="ex"><span lang="tr">Örnek veri · alanlar net kullanım alanıdır (WoFlV)</span><span lang="en">Sample data · areas are net living areas (WoFlV)</span></span><span class="ex"><span lang="tr">Plan ölçeği 1:100 · aks aralığı 13,00 m</span><span lang="en">Plan scale 1:100 · grid spacing 13.00 m</span></span></p>
+  </section>
+
+  <section class="block" aria-labelledby="ch-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Zorluk</span><span lang="en">Challenge</span></span>
+      <h2 id="ch-title"><span lang="tr">Satış sürerken değişen daire düzenleri.</span><span lang="en">Unit layouts that kept changing while sales ran.</span></h2>
+      <p><span lang="tr">İzin modelinde tek bir düzen değişikliği 19 kata elle işleniyordu.</span><span lang="en">In the permit model one layout change had to be redone by hand on 19 floors.</span></p>
+    </div>
+    <div class="kn-ch">
+      <figure class="kn-fig">
+        <svg viewBox="0 22 440 280" role="img" aria-labelledby="kn-ch-t">
+          <title id="kn-ch-t">Bir kattaki tek düzen değişikliği, 19 tipik kata tek tek elle işleniyor: yaklaşık 2 iş günü. One layout change on one floor is copied by hand to 19 typical floors: about 2 working days.</title>
+          <defs><marker id="kn-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="kn-arh" d="M0 0L10 5L0 10z"/></marker></defs>
+          <rect class="kn-pl" x="24" y="96" width="110" height="110"/>
+          <rect class="kn-chg" x="79" y="96" width="55" height="55"/>
+          <path class="kn-th" d="M24 151H134M79 96V206"/>
+          <text class="kn-l b" x="79" y="234" text-anchor="middle"><tspan lang="tr">1 değişiklik</tspan><tspan lang="en">1 change</tspan></text>
+          <text class="kn-l sig" x="79" y="258" text-anchor="middle"><tspan lang="tr">≈ 2 iş günü</tspan><tspan lang="en">≈ 2 work days</tspan></text>
+          <g class="kn-fan"><path marker-end="url(#kn-ar)" d="M140 151L262 39"/><path marker-end="url(#kn-ar)" d="M140 151L262 89"/><path marker-end="url(#kn-ar)" d="M140 151L262 151"/><path marker-end="url(#kn-ar)" d="M140 151L262 213"/><path marker-end="url(#kn-ar)" d="M140 151L262 262"/></g>
+          <g class="kn-fl">
+            <rect x="270" y="34" width="140" height="9"/><rect x="270" y="46.4" width="140" height="9"/><rect x="270" y="58.8" width="140" height="9"/><rect x="270" y="71.2" width="140" height="9"/><rect x="270" y="83.6" width="140" height="9"/><rect x="270" y="96" width="140" height="9"/><rect x="270" y="108.4" width="140" height="9"/><rect x="270" y="120.8" width="140" height="9"/><rect x="270" y="133.2" width="140" height="9"/><rect x="270" y="145.6" width="140" height="9"/><rect x="270" y="158" width="140" height="9"/><rect x="270" y="170.4" width="140" height="9"/><rect x="270" y="182.8" width="140" height="9"/><rect x="270" y="195.2" width="140" height="9"/><rect x="270" y="207.6" width="140" height="9"/><rect x="270" y="220" width="140" height="9"/><rect x="270" y="232.4" width="140" height="9"/><rect x="270" y="244.8" width="140" height="9"/><rect x="270" y="257.2" width="140" height="9"/>
+          </g>
+          <text class="kn-l b" x="340" y="290" text-anchor="middle"><tspan lang="tr">19 tipik kat · elle</tspan><tspan lang="en">19 typical floors · by hand</tspan></text>
+        </svg>
+        <figcaption class="kn-stamps"><span class="ex"><span lang="tr">Ek kontroller</span><span lang="en">Extra checks</span></span><b>DIN 277</b><b>WoFlV</b><b>DIN 18101</b><b>HHR</b></figcaption>
+      </figure>
+      <ul class="kn-tiles" aria-label="Kısıtlar (örnek) / Constraints (sample)">
+        <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="6" width="20" height="36"/><path d="M14 14h20M14 22h20M14 30h20M8 42h32"/></svg><b>24 · 210</b><span><span lang="tr">Kat · daire</span><span lang="en">Floors · apartments</span></span></li>
+        <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M38 24a14 14 0 1 1-4-10"/><path d="M36 6v8h-8"/><path class="s-sig" d="M24 17v8l5 3"/></svg><b class="signal">~3</b><span><span lang="tr">Haftalık düzen değişikliği</span><span lang="en">Layout changes / week</span></span></li>
+        <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 40V10h7v30M15 40V10h7v30M25 40l4-30 7 1-4 30zM6 40h36"/></svg><b>600+</b><span><span lang="tr">İzin modelinde aile</span><span lang="en">Families in permit model</span></span></li>
+        <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="12" width="32" height="28"/><path d="M8 20h32M16 8v8M32 8v8"/></svg><b><span lang="tr">16 hafta</span><span lang="en">16 weeks</span></b><span><span lang="tr">Teslim süresi</span><span lang="en">Delivery window</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="ap-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Yaklaşım</span><span lang="en">Approach</span></span>
+      <h2 id="ap-title"><span lang="tr">Önce kütüphane, sonra şablon, en son pafta.</span><span lang="en">Library first, then templates, then sheets.</span></h2>
+      <p><span lang="tr">İlk üç hafta yalnız standartlar. Sonra her değişiklik tek noktadan.</span><span lang="en">Three weeks of standards only. After that, every change from one place.</span></p>
+    </div>
+    <div class="kn-tl" role="img" aria-label="16 haftalık plan: H01–03 standartlar, H04–16 üretim, H05'ten itibaren şablonlu pafta setleri. / 16-week plan: W01–03 standards, W04–16 production, template sheet sets from W05.">
+      <span class="kn-tl-h s" style="grid-column:1/4"><span lang="tr">H01–03 · Standart</span><span lang="en">W01–03 · Standards</span></span>
+      <span class="kn-tl-h" style="grid-column:4/17"><span lang="tr">H04–16 · Üretim</span><span lang="en">W04–16 · Production</span></span>
+      <i class="s"></i><i class="s"></i><i class="s"></i><i></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i><i class="t"></i>
+      <span class="kn-tl-m" style="grid-column:5/17">▲ <span lang="tr">H05 · şablonlu pafta setleri</span><span lang="en">W05 · template sheet sets</span></span>
+    </div>
+    <ol class="kn-flow">
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 40V10h7v30M15 40V10h7v30M25 40l4-30 7 1-4 30zM6 40h36"/></svg><span class="kn-n">01</span><h3><span lang="tr">Aile kütüphanesi</span><span lang="en">Family library</span></h3><b class="kn-out">214 <small><span lang="tr">aile</span><span lang="en">families</span></small></b></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="9" width="34" height="30"/><path d="M24 9v18M7 27h22M29 27v12M13 39v-5a5 5 0 0 1 5-5"/></svg><span class="kn-n">02</span><h3><span lang="tr">Daire modülleri</span><span lang="en">Unit modules</span></h3><b class="kn-out">5 <small><span lang="tr">tip · 210 daire</span><span lang="en">types · 210 units</span></small></b></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 8h24M12 16h24M12 24h24M12 32h24M12 40h24"/><path class="s-sig" d="M6 16v16M3 29l3 3 3-3"/></svg><span class="kn-n">03</span><h3><span lang="tr">Kat şablonları</span><span lang="en">Floor templates</span></h3><b class="kn-out">21/24 <small><span lang="tr">kat</span><span lang="en">floors</span></small></b></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="6" width="26" height="32"/><path d="M10 10v32h26"/><path d="M14 30h26M30 30v8"/></svg><span class="kn-n">04</span><h3><span lang="tr">Pafta otomasyonu</span><span lang="en">Sheet automation</span></h3><b class="kn-out">408 <small><span lang="tr">pafta</span><span lang="en">sheets</span></small></b></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18h30l-6-6M40 30H10l6 6"/></svg><span class="kn-n">05</span><h3><span lang="tr">Alan kontrolü</span><span lang="en">Area checks</span></h3><b class="kn-out">IFC 4 <small><span lang="tr">her hafta</span><span lang="en">weekly</span></small></b></li>
+    </ol>
+  </section>
+
+  <section class="block" aria-labelledby="lb-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Standartlaştırma</span><span lang="en">Standardisation</span></span>
+      <h2 id="lb-title"><span lang="tr">Az aile, çok tekrar.</span><span lang="en">Few families, many repeats.</span></h2>
+    </div>
+    <div class="lib">
+      <div>
+        <h3 class="kn-h3"><span lang="tr">Önce ve sonra</span><span lang="en">Before and after</span></h3>
+        <ul class="kn-ba">
+          <li><span class="lb"><span lang="tr">Aile</span><span lang="en">Families</span></span><span class="br b0"><i style="width:calc((100% - 56px) * 1)"></i><b>600+</b></span><span class="br b1"><i style="width:calc((100% - 56px) * .357)"></i><b>214</b></span></li>
+          <li><span class="lb"><span lang="tr">Yerinde aile</span><span lang="en">In-place families</span></span><span class="br b0"><i style="width:calc((100% - 56px) * 1)"></i><b>47</b></span><span class="br b1"><i style="width:3px"></i><b>0</b></span></li>
+          <li><span class="lb"><span lang="tr">Tek kapı için aile</span><span lang="en">Families per door</span></span><span class="br b0"><i style="width:calc((100% - 56px) * 1)"></i><b>9</b></span><span class="br b1"><i style="width:calc((100% - 56px) * .111)"></i><b>1</b></span></li>
+          <li><span class="lb"><span lang="tr">Elle modellenen kat</span><span lang="en">Floors modelled by hand</span></span><span class="br b0"><i style="width:calc((100% - 56px) * 1)"></i><b>24</b></span><span class="br b1"><i style="width:calc((100% - 56px) * .125)"></i><b>3</b></span></li>
+        </ul>
+        <p class="kn-key ex"><span><i class="k0"></i><span lang="tr">İzin modeli</span><span lang="en">Permit model</span></span><span><i class="k1"></i><span lang="tr">Teslim modeli</span><span lang="en">Delivered model</span></span></p>
+      </div>
+      <div>
+        <h3 class="kn-h3"><span lang="tr">Beş daire modülü · alan ölçekli</span><span lang="en">Five unit modules · area to scale</span></h3>
+        <ul class="kn-units">
+          <li><span class="pl"><i class="ut-A" style="--f:.45"></i></span><b>A</b><span class="t"><span lang="tr">1+1</span><span lang="en">1-bed</span> · 62 m²</span><span class="c"><i style="width:42.1%"></i></span><span class="n">×32</span></li>
+          <li><span class="pl"><i class="ut-B" style="--f:.51"></i></span><b>B</b><span class="t"><span lang="tr">2+1</span><span lang="en">2-bed</span> · 81 m²</span><span class="c"><i style="width:100%"></i></span><span class="n">×76</span></li>
+          <li><span class="pl"><i class="ut-C" style="--f:.56"></i></span><b>C</b><span class="t"><span lang="tr">3+1</span><span lang="en">3-bed</span> · 98 m²</span><span class="c"><i style="width:100%"></i></span><span class="n">×76</span></li>
+          <li><span class="pl"><i class="ut-D" style="--f:.69"></i></span><b>D</b><span class="t"><span lang="tr">4+1</span><span lang="en">4-bed</span> · 148 m²</span><span class="c"><i style="width:28.9%"></i></span><span class="n">×22</span></li>
+          <li><span class="pl"><i class="ut-E" style="--f:1"></i></span><b>E</b><span class="t"><span lang="tr">5+1 dubleks</span><span lang="en">5-bed duplex</span> · 312 m²</span><span class="c"><i style="width:5.3%"></i></span><span class="n">×4</span></li>
+        </ul>
+        <p class="ex" style="margin-top:10px"><span lang="tr">Toplam 210 daire · 20.092 m² WoFlV · örnek</span><span lang="en">Total 210 units · 20,092 m² WoFlV · sample</span></p>
+      </div>
+    </div>
+
+    <div class="strip-wrap">
+      <h3><span lang="tr">Kesitte şablon haritası</span><span lang="en">Template map in section</span></h3>
+      <p><span lang="tr">Her kutu bir kat. Turuncu kesikli üç kat tekil, gerisi şablondan.</span><span lang="en">Each box is a floor. The three dashed orange ones are one-off, the rest came from templates.</span></p>
+      <ol class="strip" aria-label="L00–L23"><li class="fs fs-G" title="L00"><span>00</span></li><li class="fs fs-AM" title="L01"><span>01</span></li><li class="fs fs-T1" title="L02"><span>02</span></li><li class="fs fs-T1" title="L03"><span>03</span></li><li class="fs fs-T1" title="L04"><span>04</span></li><li class="fs fs-T1" title="L05"><span>05</span></li><li class="fs fs-T1" title="L06"><span>06</span></li><li class="fs fs-T1" title="L07"><span>07</span></li><li class="fs fs-T1" title="L08"><span>08</span></li><li class="fs fs-T1" title="L09"><span>09</span></li><li class="fs fs-PL" title="L10"><span>10</span></li><li class="fs fs-T2" title="L11"><span>11</span></li><li class="fs fs-T2" title="L12"><span>12</span></li><li class="fs fs-T2" title="L13"><span>13</span></li><li class="fs fs-T2" title="L14"><span>14</span></li><li class="fs fs-T2" title="L15"><span>15</span></li><li class="fs fs-T2" title="L16"><span>16</span></li><li class="fs fs-T2" title="L17"><span>17</span></li><li class="fs fs-T2" title="L18"><span>18</span></li><li class="fs fs-T2" title="L19"><span>19</span></li><li class="fs fs-T2" title="L20"><span>20</span></li><li class="fs fs-T2" title="L21"><span>21</span></li><li class="fs fs-PH" title="L22"><span>22</span></li><li class="fs fs-PH" title="L23"><span>23</span></li></ol>
+      <div class="strip-cap" aria-hidden="true">
+        <span class="u1 sm" style="grid-column:span 1">G</span><span class="u1 sm" style="grid-column:span 1">AM</span><span style="grid-column:span 8">T1 ×8</span><span class="u1 sm" style="grid-column:span 1">PL</span><span style="grid-column:span 11">T2 ×11</span><span style="grid-column:span 2">PH</span>
+      </div>
+      <div class="strip-legend"><span><b>T1</b> L02–L09 · 12 <span lang="tr">daire/kat</span><span lang="en">units/floor</span></span><span><b>T2</b> L11–L21 · 10 <span lang="tr">daire/kat</span><span lang="en">units/floor</span></span><span><b>PH</b> L22–L23 · 4 <span lang="tr">dubleks</span><span lang="en">duplexes</span></span><span class="signal"><span lang="tr">Tekil</span><span lang="en">One-off</span>: L00 · L01 · L10</span></div>
+    </div>
+
+    <div class="naming">
+      <h3><span lang="tr">Tek isim kuralı</span><span lang="en">One naming rule</span></h3>
+      <p><span lang="tr">Kurala uymayan adı pyRevit yüklemede reddetti.</span><span lang="en">pyRevit rejected non-compliant names at upload.</span></p>
+      <div class="nm-row">
+        <div><code>FA</code><span><span lang="tr">Ofis kütüphanesi</span><span lang="en">Office library</span></span></div>
+        <div><code>DR</code><span><span lang="tr">Kategori · kapı</span><span lang="en">Category · door</span></span></div>
+        <div><code>INT</code><span><span lang="tr">İç mekân</span><span lang="en">Interior</span></span></div>
+        <div><code>FL</code><span><span lang="tr">Tablalı kanat</span><span lang="en">Flush leaf</span></span></div>
+        <div><code>0885x2010</code><span><span lang="tr">DIN 18101 ölçüsü</span><span lang="en">DIN 18101 size</span></span></div>
+        <div><code>T30</code><span><span lang="tr">Yangın sınıfı</span><span lang="en">Fire rating</span></span></div>
+        <div><code>FA-DR-INT-FL-0885x2010-T30</code><span><span lang="tr">Sonuç: örnek aile tipi adı</span><span lang="en">Result: sample family type name</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block results" aria-labelledby="rs-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Sonuçlar</span><span lang="en">Results</span></span>
+      <h2 id="rs-title"><span lang="tr">Değişiklik bir kez yapıldı, 19 kata yayıldı.</span><span lang="en">Each change was made once and reached 19 floors.</span></h2>
+    </div>
+    <div class="spec">
+      <div><div class="k"><span lang="tr">Üretilen pafta</span><span lang="en">Sheets produced</span></div><div class="v" data-count="408">408</div><p><span lang="tr">16 haftada, HOAI LP 5</span><span lang="en">In 16 weeks, HOAI LP 5</span></p></div>
+      <div><div class="k"><span lang="tr">Modellenen daire</span><span lang="en">Apartments modelled</span></div><div class="v" data-count="210">210</div><p><span lang="tr">5 modülden</span><span lang="en">From 5 modules</span></p></div>
+      <div><div class="k"><span lang="tr">Değişikliği yayma süresi</span><span lang="en">Time to roll out a change</span></div><div class="v ok"><span data-count="40">40</span><span class="u"><span lang="tr">dk</span><span lang="en">min</span></span></div><p><span lang="tr">Önce yaklaşık 2 iş günü</span><span lang="en">About 2 working days before</span></p></div>
+      <div><div class="k"><span lang="tr">Alan farkı · satış listesi</span><span lang="en">Area gap · sales list</span></div><div class="v ok"><span data-count="0">0</span><span class="u">m²</span></div><p><span lang="tr">Teslimde WoFlV çizelgesi ile</span><span lang="en">Against the WoFlV schedule at handover</span></p></div>
+    </div>
+
+    <figure class="chart">
+      <div class="chart-head">
+        <h3 id="pc-title"><span lang="tr">Haftalık pafta üretimi</span><span lang="en">Sheets produced per week</span></h3>
+        <div class="chart-key" aria-hidden="true">
+          <span><i class="k1"></i><span lang="tr">Elle (H01–H04)</span><span lang="en">Manual (W01–W04)</span></span>
+          <span><i class="k2"></i><span lang="tr">Şablonla (H05–H16)</span><span lang="en">From templates (W05–W16)</span></span>
+        </div>
+      </div>
+      <div class="chart-body draw">
+        <svg class="svg-d" viewBox="0 0 720 340" role="img" aria-labelledby="pc-title pc-desc"><desc id="pc-desc">Ölçekli sütun grafik: 16 haftada haftalık üretilen pafta sayısı 4, 6, 9, 12, 18, 22, 26, 31, 34, 38, 36, 40, 42, 38, 30, 22; toplam 408. Scaled column chart of sheets produced per week over 16 weeks, total 408.</desc><g class="grid"><line x1="56" y1="242.0" x2="704" y2="242.0"/><line x1="56" y1="194.0" x2="704" y2="194.0"/><line x1="56" y1="146.0" x2="704" y2="146.0"/><line x1="56" y1="98.0" x2="704" y2="98.0"/><line x1="56" y1="50.0" x2="704" y2="50.0"/></g><g class="tick" text-anchor="end"><text x="48" y="294.0">0</text><text x="48" y="246.0">10</text><text x="48" y="198.0">20</text><text x="48" y="150.0">30</text><text x="48" y="102.0">40</text><text x="48" y="54.0">50</text></g><g class="note"><line x1="218.0" y1="28" x2="218.0" y2="290"/><text x="224.0" y="38"><tspan lang="tr">H05 · şablon pafta setleri devrede</tspan><tspan lang="en">W05 · template sheet sets live</tspan></text></g><g><rect class="bar b-pre" x="64.2" y="270.8" width="24" height="19.2"><title>H01 / W01: 4</title></rect><text class="val" x="76.2" y="265.8" text-anchor="middle">4</text><rect class="bar b-pre" x="104.8" y="261.2" width="24" height="28.8"><title>H02 / W02: 6</title></rect><text class="val" x="116.8" y="256.2" text-anchor="middle">6</text><rect class="bar b-pre" x="145.2" y="246.8" width="24" height="43.2"><title>H03 / W03: 9</title></rect><text class="val" x="157.2" y="241.8" text-anchor="middle">9</text><rect class="bar b-pre" x="185.8" y="232.4" width="24" height="57.6"><title>H04 / W04: 12</title></rect><text class="val" x="197.8" y="227.4" text-anchor="middle">12</text><rect class="bar b-tpl" x="226.2" y="203.6" width="24" height="86.4"><title>H05 / W05: 18</title></rect><text class="val" x="238.2" y="198.6" text-anchor="middle">18</text><rect class="bar b-tpl" x="266.8" y="184.4" width="24" height="105.6"><title>H06 / W06: 22</title></rect><text class="val" x="278.8" y="179.4" text-anchor="middle">22</text><rect class="bar b-tpl" x="307.2" y="165.2" width="24" height="124.8"><title>H07 / W07: 26</title></rect><text class="val" x="319.2" y="160.2" text-anchor="middle">26</text><rect class="bar b-tpl" x="347.8" y="141.2" width="24" height="148.8"><title>H08 / W08: 31</title></rect><text class="val" x="359.8" y="136.2" text-anchor="middle">31</text><rect class="bar b-tpl" x="388.2" y="126.8" width="24" height="163.2"><title>H09 / W09: 34</title></rect><text class="val" x="400.2" y="121.8" text-anchor="middle">34</text><rect class="bar b-tpl" x="428.8" y="107.6" width="24" height="182.4"><title>H10 / W10: 38</title></rect><text class="val" x="440.8" y="102.6" text-anchor="middle">38</text><rect class="bar b-tpl" x="469.2" y="117.2" width="24" height="172.8"><title>H11 / W11: 36</title></rect><text class="val" x="481.2" y="112.2" text-anchor="middle">36</text><rect class="bar b-tpl" x="509.8" y="98.0" width="24" height="192.0"><title>H12 / W12: 40</title></rect><text class="val" x="521.8" y="93.0" text-anchor="middle">40</text><rect class="bar b-tpl" x="550.2" y="88.4" width="24" height="201.6"><title>H13 / W13: 42</title></rect><text class="val" x="562.2" y="83.4" text-anchor="middle">42</text><rect class="bar b-tpl" x="590.8" y="107.6" width="24" height="182.4"><title>H14 / W14: 38</title></rect><text class="val" x="602.8" y="102.6" text-anchor="middle">38</text><rect class="bar b-tpl" x="631.2" y="146.0" width="24" height="144.0"><title>H15 / W15: 30</title></rect><text class="val" x="643.2" y="141.0" text-anchor="middle">30</text><rect class="bar b-tpl" x="671.8" y="184.4" width="24" height="105.6"><title>H16 / W16: 22</title></rect><text class="val" x="683.8" y="179.4" text-anchor="middle">22</text></g><g class="tick" text-anchor="middle"><text x="76.2" y="306">01</text><text x="116.8" y="306">02</text><text x="157.2" y="306">03</text><text x="197.8" y="306">04</text><text x="238.2" y="306">05</text><text x="278.8" y="306">06</text><text x="319.2" y="306">07</text><text x="359.8" y="306">08</text><text x="400.2" y="306">09</text><text x="440.8" y="306">10</text><text x="481.2" y="306">11</text><text x="521.8" y="306">12</text><text x="562.2" y="306">13</text><text x="602.8" y="306">14</text><text x="643.2" y="306">15</text><text x="683.8" y="306">16</text><text x="380.0" y="324"><tspan lang="tr">hafta · ölçek: 1 pafta = 4,8 birim</tspan><tspan lang="en">week · scale: 1 sheet = 4.8 units</tspan></text></g><g class="axis"><line x1="56" y1="46" x2="56" y2="290"/><line x1="56" y1="290" x2="704" y2="290"/></g></svg>
+        <svg class="svg-m" viewBox="0 0 360 300" aria-hidden="true"><g class="grid"><line x1="34" y1="209.6" x2="352" y2="209.6"/><line x1="34" y1="167.2" x2="352" y2="167.2"/><line x1="34" y1="124.8" x2="352" y2="124.8"/><line x1="34" y1="82.4" x2="352" y2="82.4"/><line x1="34" y1="40.0" x2="352" y2="40.0"/></g><g class="tick" text-anchor="end"><text x="26" y="256.0">0</text><text x="26" y="213.6">10</text><text x="26" y="171.2">20</text><text x="26" y="128.8">30</text><text x="26" y="86.4">40</text><text x="26" y="44.0">50</text></g><g class="note"><line x1="113.5" y1="18" x2="113.5" y2="252"/><text x="119.5" y="28"><tspan lang="tr">H05 · şablonlar</tspan><tspan lang="en">W05 · templates</tspan></text></g><g><rect class="bar b-pre" x="37.9" y="235.0" width="12" height="17.0"><title>H01 / W01: 4</title></rect><text class="val" x="43.9" y="230.0" text-anchor="middle">4</text><rect class="bar b-pre" x="57.8" y="226.6" width="12" height="25.4"><title>H02 / W02: 6</title></rect><text class="val" x="63.8" y="221.6" text-anchor="middle">6</text><rect class="bar b-pre" x="77.7" y="213.8" width="12" height="38.2"><title>H03 / W03: 9</title></rect><text class="val" x="83.7" y="208.8" text-anchor="middle">9</text><rect class="bar b-pre" x="97.6" y="201.1" width="12" height="50.9"><title>H04 / W04: 12</title></rect><text class="val" x="103.6" y="196.1" text-anchor="middle">12</text><rect class="bar b-tpl" x="117.4" y="175.7" width="12" height="76.3"><title>H05 / W05: 18</title></rect><text class="val" x="123.4" y="170.7" text-anchor="middle">18</text><rect class="bar b-tpl" x="137.3" y="158.7" width="12" height="93.3"><title>H06 / W06: 22</title></rect><text class="val" x="143.3" y="153.7" text-anchor="middle">22</text><rect class="bar b-tpl" x="157.2" y="141.8" width="12" height="110.2"><title>H07 / W07: 26</title></rect><text class="val" x="163.2" y="136.8" text-anchor="middle">26</text><rect class="bar b-tpl" x="177.1" y="120.6" width="12" height="131.4"><title>H08 / W08: 31</title></rect><text class="val" x="183.1" y="115.6" text-anchor="middle">31</text><rect class="bar b-tpl" x="196.9" y="107.8" width="12" height="144.2"><title>H09 / W09: 34</title></rect><text class="val" x="202.9" y="102.8" text-anchor="middle">34</text><rect class="bar b-tpl" x="216.8" y="90.9" width="12" height="161.1"><title>H10 / W10: 38</title></rect><text class="val" x="222.8" y="85.9" text-anchor="middle">38</text><rect class="bar b-tpl" x="236.7" y="99.4" width="12" height="152.6"><title>H11 / W11: 36</title></rect><text class="val" x="242.7" y="94.4" text-anchor="middle">36</text><rect class="bar b-tpl" x="256.6" y="82.4" width="12" height="169.6"><title>H12 / W12: 40</title></rect><text class="val" x="262.6" y="77.4" text-anchor="middle">40</text><rect class="bar b-tpl" x="276.4" y="73.9" width="12" height="178.1"><title>H13 / W13: 42</title></rect><text class="val" x="282.4" y="68.9" text-anchor="middle">42</text><rect class="bar b-tpl" x="296.3" y="90.9" width="12" height="161.1"><title>H14 / W14: 38</title></rect><text class="val" x="302.3" y="85.9" text-anchor="middle">38</text><rect class="bar b-tpl" x="316.2" y="124.8" width="12" height="127.2"><title>H15 / W15: 30</title></rect><text class="val" x="322.2" y="119.8" text-anchor="middle">30</text><rect class="bar b-tpl" x="336.1" y="158.7" width="12" height="93.3"><title>H16 / W16: 22</title></rect><text class="val" x="342.1" y="153.7" text-anchor="middle">22</text></g><g class="tick" text-anchor="middle"><text x="43.9" y="268">01</text><text x="83.7" y="268">03</text><text x="123.4" y="268">05</text><text x="163.2" y="268">07</text><text x="202.9" y="268">09</text><text x="242.7" y="268">11</text><text x="282.4" y="268">13</text><text x="322.2" y="268">15</text><text x="193.0" y="286"><tspan lang="tr">hafta · ölçek: 1 pafta = 4,2 birim</tspan><tspan lang="en">week · scale: 1 sheet = 4.2 units</tspan></text></g><g class="axis"><line x1="34" y1="36" x2="34" y2="252"/><line x1="34" y1="252" x2="352" y2="252"/></g></svg>
+      </div>
+      <figcaption class="chart-foot mono dim"><span lang="tr">Örnek veri · sütunlar ölçeklidir (0–50 pafta) · toplam 408</span><span lang="en">Sample data · columns drawn to scale (0–50 sheets) · total 408</span></figcaption>
+      <table class="sr-only">
+        <caption><span lang="tr">Haftalık pafta üretimi (örnek)</span><span lang="en">Sheets per week (sample)</span></caption>
+        <thead><tr><th scope="col"><span lang="tr">Hafta</span><span lang="en">Week</span></th><th scope="col"><span lang="tr">Pafta</span><span lang="en">Sheets</span></th></tr></thead>
+        <tbody><tr><td>1</td><td>4</td></tr><tr><td>2</td><td>6</td></tr><tr><td>3</td><td>9</td></tr><tr><td>4</td><td>12</td></tr><tr><td>5</td><td>18</td></tr><tr><td>6</td><td>22</td></tr><tr><td>7</td><td>26</td></tr><tr><td>8</td><td>31</td></tr><tr><td>9</td><td>34</td></tr><tr><td>10</td><td>38</td></tr><tr><td>11</td><td>36</td></tr><tr><td>12</td><td>40</td></tr><tr><td>13</td><td>42</td></tr><tr><td>14</td><td>38</td></tr><tr><td>15</td><td>30</td></tr><tr><td>16</td><td>22</td></tr></tbody>
+      </table>
+    </figure>
+    <div class="mix" role="group" aria-label="Pafta dağılımı / Sheet breakdown"><div><b>151</b><span><span lang="tr">Kat planları 1:100</span><span lang="en">Floor plans 1:100</span></span></div><div><b>40</b><span><span lang="tr">Daire tip planları 1:50</span><span lang="en">Unit plans 1:50</span></span></div><div><b>46</b><span><span lang="tr">Kesit ve görünüşler</span><span lang="en">Sections and elevations</span></span></div><div><b>128</b><span><span lang="tr">Detaylar 1:5–1:20</span><span lang="en">Details 1:5–1:20</span></span></div><div><b>43</b><span><span lang="tr">Listeler ve çizelgeler</span><span lang="en">Schedules and lists</span></span></div><div class="bar5" aria-hidden="true"><i style="width:37.01%;background:var(--ink)"></i><i style="width:9.80%;background:color-mix(in srgb, var(--ink) 65%, transparent)"></i><i style="width:11.27%;background:color-mix(in srgb, var(--ink) 40%, transparent)"></i><i style="width:31.37%;background:var(--ink-2)"></i><i style="width:10.54%;background:color-mix(in srgb, var(--ink-2) 40%, transparent)"></i></div></div>
+      </section>
+
+  <section class="block" aria-labelledby="tl-title">
+    <div class="block-head">
+      <span class="no">05 · <span lang="tr">Araçlar</span><span lang="en">Tools</span></span>
+      <h2 id="tl-title"><span lang="tr">Yazılım ve formatlar.</span><span lang="en">Software and formats.</span></h2>
+    </div>
+    <ul class="kn-tools">
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l15 8v20l-15 8-15-8V14z"/><path d="M9 14l15 8 15-8M24 22v20"/></svg><b>Revit</b><span><span lang="tr">ARC + STR model</span><span lang="en">ARC + STR model</span></span></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="12" height="9"/><rect x="5" y="29" width="12" height="9"/><rect x="31" y="19" width="12" height="10"/><path d="M17 14.5c8 0 6 9.5 14 9.5M17 33.5c8 0 6-9.5 14-9.5"/></svg><b>Dynamo</b><span><span lang="tr">Kat · pafta</span><span lang="en">Floors · sheets</span></span></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M17 14L7 24l10 10M31 14l10 10-10 10"/><path class="s-sig" d="M27 10l-6 28"/></svg><b>pyRevit</b><span><span lang="tr">Kütüphane denetimi</span><span lang="en">Library checks</span></span></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M13 34h22a8 8 0 0 0 0-16 11 11 0 0 0-21-3 7 7 0 0 0-1 19z"/></svg><b>ACC</b><span><span lang="tr">Pafta · revizyon</span><span lang="en">Sheets · revisions</span></span></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18h30l-6-6M40 30H10l6 6"/></svg><b>IFC 4</b><span><span lang="tr">Allplan · TGA</span><span lang="en">Allplan · MEP</span></span></li>
+      <li><svg class="kn-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32v20H22l-8 8v-8H8z"/></svg><b>BCF 2.1</b><span><span lang="tr">Yorum takibi</span><span lang="en">Comments</span></span></li>
+    </ul>
+
+    <a class="next" href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi">
+      <div class="pv"><canvas id="next-model" aria-hidden="true"></canvas><span class="mono">P-03 · A-230 · SCAN</span></div>
+      <div class="body">
+        <span class="mono dim"><span lang="tr">Sonraki proje · P-03</span><span lang="en">Next project · P-03</span></span>
+        <h2><span lang="tr">Örnek Lojistik Merkezi</span><span lang="en">Sample Logistics Hub</span></h2>
+        <p><span lang="tr">Dubai · çalışan depo · 1.140 tarama istasyonu.</span><span lang="en">Dubai · live warehouse · 1,140 scan stations.</span></p>
+        <span class="go"><span lang="tr">Vaka çalışmasını aç · A-230</span><span lang="en">Open the case study · A-230</span> →</span>
+      </div>
+    </a>
+    <div class="endnav">
+      <a class="back" href="projeler.html" data-sheet="A-200" data-label="Projeler">← <span lang="tr">Tüm projeler</span><span lang="en">All projects</span></a>
+      <a class="back" href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü">← A-210 · <span lang="tr">Hastane kampüsü</span><span lang="en">Hospital campus</span></a>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Benzer bir projeniz mi var?</span><span lang="en">Have a similar project?</span></a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var FLOORS = [{"l": "L00", "t": "G", "etr": "±0,00", "een": "±0.00"}, {"l": "L01", "t": "AM", "etr": "+4,50", "een": "+4.50"}, {"l": "L02", "t": "T1", "etr": "+8,50", "een": "+8.50"}, {"l": "L03", "t": "T1", "etr": "+11,65", "een": "+11.65"}, {"l": "L04", "t": "T1", "etr": "+14,80", "een": "+14.80"}, {"l": "L05", "t": "T1", "etr": "+17,95", "een": "+17.95"}, {"l": "L06", "t": "T1", "etr": "+21,10", "een": "+21.10"}, {"l": "L07", "t": "T1", "etr": "+24,25", "een": "+24.25"}, {"l": "L08", "t": "T1", "etr": "+27,40", "een": "+27.40"}, {"l": "L09", "t": "T1", "etr": "+30,55", "een": "+30.55"}, {"l": "L10", "t": "PL", "etr": "+33,70", "een": "+33.70"}, {"l": "L11", "t": "T2", "etr": "+37,90", "een": "+37.90"}, {"l": "L12", "t": "T2", "etr": "+41,05", "een": "+41.05"}, {"l": "L13", "t": "T2", "etr": "+44,20", "een": "+44.20"}, {"l": "L14", "t": "T2", "etr": "+47,35", "een": "+47.35"}, {"l": "L15", "t": "T2", "etr": "+50,50", "een": "+50.50"}, {"l": "L16", "t": "T2", "etr": "+53,65", "een": "+53.65"}, {"l": "L17", "t": "T2", "etr": "+56,80", "een": "+56.80"}, {"l": "L18", "t": "T2", "etr": "+59,95", "een": "+59.95"}, {"l": "L19", "t": "T2", "etr": "+63,10", "een": "+63.10"}, {"l": "L20", "t": "T2", "etr": "+66,25", "een": "+66.25"}, {"l": "L21", "t": "T2", "etr": "+69,40", "een": "+69.40"}, {"l": "L22", "t": "PH", "etr": "+72,55", "een": "+72.55"}, {"l": "L23", "t": "PH", "etr": "+75,70", "een": "+75.70"}];
+  var TYPES = {"G": {"tr": "Zemin kat · lobi ve ticari", "en": "Ground floor · lobby and retail", "u": 0, "mtr": "Lobi, 2 ticari birim, bisiklet odası, atık ve teknik oda", "men": "Lobby, 2 retail units, bike room, waste and plant room", "sh": 9, "ttr": "Tekil kat · elle modellendi", "ten": "Unique floor · modelled by hand"}, "AM": {"tr": "Ortak alanlar katı", "en": "Amenity floor", "u": 0, "mtr": "Ortak çalışma alanı, fitness, kiracı depoları, çamaşırhane", "men": "Co-working, gym, tenant storage, laundry", "sh": 7, "ttr": "Tekil kat · elle modellendi", "ten": "Unique floor · modelled by hand"}, "T1": {"tr": "Tipik kat T1", "en": "Typical floor T1", "u": 12, "mtr": "4 × A (1+1) · 4 × B (2+1) · 4 × C (3+1)", "men": "4 × A (1-bed) · 4 × B (2-bed) · 4 × C (3-bed)", "sh": 6, "ttr": "Şablon T1 · 12 daire grubu · Dynamo ile 8 kata yerleşti", "ten": "Template T1 · 12 unit groups · placed on 8 floors by Dynamo"}, "PL": {"tr": "Teknik kat", "en": "Plant floor", "u": 0, "mtr": "Havalandırma santralleri, su deposu ve pompalar, elektrik odası", "men": "Air handling units, water tank and pumps, electrical room", "sh": 5, "ttr": "Tekil kat · TGA modeli bağlı", "ten": "Unique floor · MEP model linked"}, "T2": {"tr": "Tipik kat T2", "en": "Typical floor T2", "u": 10, "mtr": "4 × B (2+1) · 4 × C (3+1) · 2 × D (4+1)", "men": "4 × B (2-bed) · 4 × C (3-bed) · 2 × D (4-bed)", "sh": 6, "ttr": "Şablon T2 · yan bantlar D tipi · 11 kat", "ten": "Template T2 · side bands type D · 11 floors"}, "PH": {"tr": "Çatı katı dubleksleri", "en": "Penthouse duplexes", "u": 4, "mtr": "4 × E (5+1 dubleks), yan bantlar teras", "men": "4 × E (5-bed duplex), side bands are terraces", "sh": 8, "ttr": "Şablon PH · aynalı · 2 kat", "ten": "Template PH · mirrored · 2 floors"}};
+  var SHEETS = { G: ['lobi, ticari ve dış alan planları', 'lobby, retail and external works plans'], AM: ['1:100 plan, 1:50 bölge planları, tavan ve döşeme kaplama planı', '1:100 plan, 1:50 zone plans, ceiling and floor finish plans'], T1: ['1:100 plan, 4 × 1:50 bölge planı, tavan planı', '1:100 plan, 4 × 1:50 zone plans, ceiling plan'], PL: ['1:100 plan, makine yerleşimi ve şaft planları', '1:100 plan, plant layout and shaft plans'], T2: ['1:100 plan, 4 × 1:50 bölge planı, tavan planı', '1:100 plan, 4 × 1:50 zone plans, ceiling plan'], PH: ['1:100 plan, dubleks 1:50 planları, teras detayları', '1:100 plan, duplex 1:50 plans, terrace details'] };
+  var root = document.documentElement;
+  var range = document.getElementById('tw-range');
+  var $ = function (id) { return document.getElementById(id); };
+  var svg = document.querySelector('.plan-svg');
+  var cur = 7;
+  function sp(tr, en) { return '<span lang="tr">' + tr + '</span><span lang="en">' + en + '</span>'; }
+  function select(n, from) {
+    n = Math.max(0, Math.min(23, n)); cur = n;
+    var f = FLOORS[n], t = TYPES[f.t];
+    if (from !== 'range') range.value = n;
+    range.setAttribute('aria-valuetext', f.l + ' · ' + (root.lang === 'en' ? t.en : t.tr));
+    $('fl-no').innerHTML = '<span class="o">L</span>' + f.l.slice(1);
+    $('fl-el').innerHTML = sp('Kot', 'Level') + ' ' + sp(f.etr, f.een) + ' m · ' + (n === 0 ? sp('kat yüksekliği 4,50 m', 'storey height 4.50 m') : n === 1 ? sp('kat yüksekliği 4,00 m', 'storey height 4.00 m') : n === 10 ? sp('kat yüksekliği 4,20 m', 'storey height 4.20 m') : sp('kat yüksekliği 3,15 m', 'storey height 3.15 m'));
+    $('fl-type').innerHTML = sp(t.tr, t.en) + (f.t === 'PH' ? ' ' + (n === 22 ? sp('· alt kat', '· lower level') : sp('· üst kat', '· upper level')) : '');
+    $('fl-u').innerHTML = f.t === 'PH' ? sp('4 dubleks (L22 + L23)', '4 duplexes (L22 + L23)') : t.u ? String(t.u) : sp('Yok · ortak kullanım', 'None · shared use');
+    $('fl-mix').innerHTML = sp(t.mtr, t.men);
+    $('fl-tpl').innerHTML = sp(t.ttr, t.ten);
+    $('fl-sh').innerHTML = t.sh + ' · ' + sp(SHEETS[f.t][0], SHEETS[f.t][1]);
+    svg.querySelectorAll('.plan').forEach(function (g) { if (g.dataset.plan === f.t) g.removeAttribute('display'); else g.setAttribute('display', 'none'); });
+    document.querySelectorAll('[data-jump]').forEach(function (b) { b.setAttribute('aria-pressed', String(FLOORS[+b.dataset.jump].t === f.t)); });
+    applyUnit();
+    drawOver();
+  }
+  /* daire tipi vurgusu */
+  var ut = null;
+  function applyUnit() {
+    svg.classList.toggle('dim-others', !!ut);
+    svg.querySelectorAll('.u').forEach(function (g) { g.classList.toggle('hl', g.dataset.u === ut); });
+  }
+  document.querySelectorAll('[data-ut]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      ut = ut === b.dataset.ut ? null : b.dataset.ut;
+      document.querySelectorAll('[data-ut]').forEach(function (o) { o.setAttribute('aria-pressed', String(o.dataset.ut === ut)); });
+      applyUnit();
+    });
+  });
+  range.addEventListener('input', function () { select(+range.value, 'range'); });
+  $('tw-up').addEventListener('click', function () { select(cur + 1); });
+  $('tw-down').addEventListener('click', function () { select(cur - 1); });
+  document.querySelectorAll('[data-jump]').forEach(function (b) { b.addEventListener('click', function () { select(+b.dataset.jump); }); });
+  document.addEventListener('langchange', function () { select(cur, 'range'); });
+
+  /* kule modeli + vurgu katmanı (model.js izdüşümünün aynısı) */
+  var cv = $('tw-model'), ov = $('tw-over'), stage = $('tw-stage');
+  var NX = 3, NY = 3, F = 24, FH = .3, shown = 1, octx = ov.getContext('2d');
+  function css(n) { return getComputedStyle(root).getPropertyValue(n).trim(); }
+  function projector(W, H) {
+    var cx = NX / 2, cy = NY / 2, C30 = Math.cos(Math.PI / 6), hz = F * FH;
+    function raw(x, y, z) { var dx = x - cx, dy = y - cy; return [(dx - dy) * C30, (dx + dy) * .5 - z]; }
+    var a = 1e9, b = -1e9, c = 1e9, d = -1e9;
+    [[0, 0], [NX, 0], [0, NY], [NX, NY]].forEach(function (p) { [0, hz + .3].forEach(function (z) { var q = raw(p[0], p[1], z); a = Math.min(a, q[0]); b = Math.max(b, q[0]); c = Math.min(c, q[1]); d = Math.max(d, q[1]); }); });
+    var pad = Math.min(W, H) * .1, k = Math.min((W - pad * 2) / (b - a), (H - pad * 2) / (d - c));
+    var ox = (W - (b - a) * k) / 2 - a * k, oy = (H - (d - c) * k) / 2 - c * k;
+    return function (x, y, z) { var q = raw(x, y, z); return [q[0] * k + ox, q[1] * k + oy]; };
+  }
+  function quad(P, pts) { octx.beginPath(); pts.forEach(function (v, i) { var p = P(v[0], v[1], v[2]); i ? octx.lineTo(p[0], p[1]) : octx.moveTo(p[0], p[1]); }); octx.closePath(); }
+  function drawOver() {
+    var r = ov.getBoundingClientRect(), W = r.width, H = r.height; if (!W) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    if (ov.width !== Math.round(W * dpr)) { ov.width = Math.round(W * dpr); ov.height = Math.round(H * dpr); }
+    octx.setTransform(dpr, 0, 0, dpr, 0, 0); octx.clearRect(0, 0, W, H);
+    if (shown < .62) return;
+    var P = projector(W, H), sig = css('--signal'), ink2 = css('--ink-2'), ink = css('--ink');
+    var lw = Math.max(.8, Math.min(W, H) / 520);
+    /* şablon parantezleri (sol) */
+    var groups = [[2, 10, 'T1 ×8'], [11, 22, 'T2 ×11'], [22, 24, 'PH']];
+    octx.font = '500 ' + Math.max(9, 10 * lw) + 'px "JetBrains Mono", monospace'; octx.textBaseline = 'middle'; octx.textAlign = 'right';
+    groups.forEach(function (g) {
+      var a = P(0, NY, g[0] * FH), b = P(0, NY, g[1] * FH), x = Math.min(a[0], b[0]) - 14 * lw;
+      octx.strokeStyle = ink2; octx.lineWidth = lw; octx.beginPath();
+      octx.moveTo(x + 5 * lw, a[1] - 1); octx.lineTo(x, a[1] - 1); octx.lineTo(x, b[1] + 1); octx.lineTo(x + 5 * lw, b[1] + 1); octx.stroke();
+      octx.fillStyle = ink2; octx.fillText(g[2], x - 6 * lw, (a[1] + b[1]) / 2);
+    });
+    /* seçili kat */
+    var z0 = cur * FH, z1 = (cur + 1) * FH;
+    octx.globalAlpha = .28; octx.fillStyle = sig;
+    quad(P, [[0, NY, z0], [NX, NY, z0], [NX, NY, z1], [0, NY, z1]]); octx.fill();
+    quad(P, [[NX, 0, z0], [NX, NY, z0], [NX, NY, z1], [NX, 0, z1]]); octx.fill();
+    octx.globalAlpha = .14; quad(P, [[0, 0, z1], [NX, 0, z1], [NX, NY, z1], [0, NY, z1]]); octx.fill();
+    octx.globalAlpha = 1; octx.strokeStyle = sig; octx.lineWidth = lw * 1.8;
+    quad(P, [[0, 0, z1], [NX, 0, z1], [NX, NY, z1], [0, NY, z1]]); octx.stroke();
+    quad(P, [[0, NY, z0], [NX, NY, z0], [NX, 0, z0]]); octx.stroke();
+    /* etiket */
+    var e = P(NX, 0, (z0 + z1) / 2), tx = e[0] + 18 * lw;
+    octx.lineWidth = lw; octx.beginPath(); octx.moveTo(e[0] + 3, e[1]); octx.lineTo(tx + 64 * lw, e[1]); octx.stroke();
+    octx.fillStyle = sig; octx.textAlign = 'left'; octx.textBaseline = 'bottom';
+    octx.font = '600 ' + Math.max(10, 11 * lw) + 'px "JetBrains Mono", monospace';
+    octx.fillText(FLOORS[cur].l + ' · ' + FLOORS[cur].t, tx, e[1] - 4);
+  }
+  select(7);
+  if ('ResizeObserver' in window) new ResizeObserver(drawOver).observe(ov); else addEventListener('resize', drawOver);
+  new MutationObserver(drawOver).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', drawOver);
+  stage.addEventListener('click', function (e) {
+    var r = ov.getBoundingClientRect(), P = projector(r.width, r.height), y = e.clientY - r.top, best = cur, bd = 1e9;
+    for (var n = 0; n < F; n++) { var p = P(NX, NY, (n + .5) * FH), d = Math.abs(p[1] - y); if (d < bd) { bd = d; best = n; } }
+    select(best); range.focus({ preventScroll: true });
+  });
+  if (!window.BIMModel) return;
+  var m = BIMModel.mount(cv, { bays: [NX, NY], floors: F, fh: FH, seed: 23, stage: 1, labels: true, clash: false, layers: { arc: true, str: true, mep: false } });
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; io.disconnect();
+      shown = 0; drawOver();
+      BIMModel.play(m, 2600, function (s) { var was = shown; shown = s; if ((was < .62) !== (s < .62) || s >= 1) drawOver(); });
+    }, { threshold: .3 });
+    io.observe(cv);
+  }
+  var nx = $('next-model');
+  if (nx) BIMModel.mount(nx, { bays: [7, 4], floors: 2, seed: 5, stage: 1, labels: false, clash: false });
+})();
+</script>

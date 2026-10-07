@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Örnek Hastane Kampüsü | Firma Adı BIM</title>
+<meta name="description" content="Vaka çalışması: yoğun tesisatlı bir hastane kampüsünde BEP'ten teslime BIM yönetimi, haftalık koordinasyon ve tasarımda çözülen çakışmalar.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Örnek Hastane Kampüsü | Firma Adı BIM">
+<meta property="og:description" content="Vaka çalışması: yoğun tesisatlı bir hastane kampüsünde BEP'ten teslime BIM yönetimi, haftalık koordinasyon ve tasarımda çözülen çakışmalar.">
+<meta property="og:url" content="https://www.firmaadi.com/proje-ornek-hastane.html">
+<meta property="og:image" content="https://www.firmaadi.com/assets/logo.png">
+<link rel="canonical" href="https://www.firmaadi.com/proje-ornek-hastane.html">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+<style>
+/* ---- A-210 · Vaka çalışması ---- */
+.sheet-head .meta .signal b { color: var(--signal); }
+.back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 4px; justify-self: start; }
+.back:hover, .back:focus-visible { color: var(--signal); border-color: var(--signal); }
+.cs-spec { border-top: 1px solid var(--ink); }
+.cs-spec .v small { display: block; margin-top: 6px; font: 500 11px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.cs-spec .v.sm { font: 500 14px/1.5 var(--mono); letter-spacing: .02em; }
+.cs-spec { margin: 0; }
+
+/* model */
+.cs-model { padding-block: clamp(32px, 5vw, 64px); border-bottom: 1px solid var(--rule); }
+.cs-stage { position: relative; aspect-ratio: 16 / 8; border: 1px solid var(--ink); background: color-mix(in srgb, var(--paper) 70%, transparent); }
+.cs-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.cs-stage .corner { position: absolute; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 12px 14px; }
+.cs-stage .tl { left: 0; top: 0; } .cs-stage .tr { right: 0; top: 0; text-align: right; } .cs-stage .bl { left: 0; bottom: 0; } .cs-stage .br { right: 0; bottom: 0; }
+.cs-stage .tr b { display: block; font: 800 clamp(24px, 3vw, 40px)/1 var(--display); font-stretch: 125%; color: var(--ink); letter-spacing: -.01em; }
+.cs-hud { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px 20px; align-items: center; border: 1px solid var(--ink); border-top: 0; padding: 14px 16px; background: var(--paper); }
+.cs-hud > * { min-width: 0; }
+.cs-hud label { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: block; margin-bottom: 6px; }
+.cs-hud input[type=range] { width: 100%; accent-color: var(--signal); }
+.play { border: 1px solid var(--ink); background: var(--ink); color: var(--paper); width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; }
+.play:hover { background: var(--signal); border-color: var(--signal); color: var(--on-signal); }
+.play svg { width: 14px; height: 14px; }
+.layers { display: flex; gap: 6px; }
+.layers .chip { padding: 6px 9px; }
+.steps { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.steps button { all: unset; box-sizing: border-box; cursor: pointer; border-top: 2px solid var(--rule); padding-top: 8px; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); transition: border-color .2s, color .2s; overflow-wrap: anywhere; }
+.steps button.on { border-color: var(--signal); color: var(--ink); }
+.steps button:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.steps button[aria-current="step"] { color: var(--signal); }
+.stage-note { grid-column: 1 / -1; font-size: 15px; color: var(--ink-2); border-top: 1px dashed var(--rule); padding-top: 12px; min-height: 3.4em; }
+.stage-note b { font: 600 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); margin-right: 8px; }
+@media (max-width: 760px) {
+  .cs-stage { aspect-ratio: 1 / 1; }
+  .cs-hud { grid-template-columns: auto minmax(0, 1fr); }
+  .layers { grid-column: 1 / -1; }
+  .steps button { font-size: 8.5px; letter-spacing: .02em; }
+}
+/* sonuçlar */
+.results .spec > div { padding: clamp(18px, 2.6vw, 32px); }
+.results .spec .v { font-size: clamp(38px, 5vw, 76px); font-stretch: 125%; font-weight: 800; letter-spacing: -.035em; white-space: nowrap; }
+.results .spec .v .u { font-size: .42em; letter-spacing: 0; margin-left: 4px; }
+.results .spec .v.ok { color: var(--ok); }
+.chart { margin: clamp(32px, 4vw, 56px) 0 0; border: 1px solid var(--ink); background: var(--paper); }
+.chart-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding: 14px 16px; border-bottom: 1px solid var(--rule); }
+.chart-head h3 { font-size: clamp(18px, 1.8vw, 22px); font-stretch: 112%; }
+.chart-key { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); align-items: center; }
+.chart-key span { display: inline-flex; align-items: center; gap: 8px; }
+.chart-key i { width: 14px; height: 10px; display: inline-block; }
+.chart-key .k1 { background: var(--signal); } .chart-key .k2 { background: color-mix(in srgb, var(--ink-2) 55%, transparent); } .chart-key .k3 { background: var(--ok); }
+.chart-body { padding: 12px 16px 6px; overflow: hidden; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart .grid line { stroke: var(--rule); stroke-dasharray: 2 4; }
+.chart .axis line { stroke: var(--ink); }
+.chart .tick { font: 500 11px var(--mono); fill: var(--ink-2); }
+.chart .rl { font: 500 12px var(--mono); fill: var(--ink); letter-spacing: .03em; }
+.chart .rl tspan.s { fill: var(--ink-2); }
+.chart .val { font: 600 13px var(--mono); fill: var(--ink); }
+.chart .b-before { fill: var(--signal); } .chart .b-mid { fill: color-mix(in srgb, var(--ink-2) 55%, transparent); } .chart .b-after { fill: var(--ok); }
+.chart .bar:hover { opacity: .8; }
+.chart .dl line { stroke: var(--ink); } .chart .dl text { font: 600 12px var(--mono); fill: var(--ink); }
+.chart-foot { padding: 10px 16px; border-top: 1px solid var(--rule); }
+.chart .rl-m { display: none; }
+.chart-m { display: none; list-style: none; margin: 0; padding: 0; gap: 10px; }
+.chart-m li { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 10px; align-items: center; font: 500 12px var(--mono); }
+.chart-m .bw { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.chart-m .bw i { display: block; height: 16px; flex: none; }
+.chart-m .bw b { font-weight: 600; }
+.chart-m .d { grid-column: 1 / -1; font-size: 11px; color: var(--ink-2); border-top: 1px solid var(--ink); padding-top: 8px; display: flex; justify-content: space-between; }
+@media (max-width: 640px) { .chart svg { display: none; } .chart-m { display: grid; } .chart-body { padding: 16px; } }
+
+/* sonraki proje */
+.next { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--ink); text-decoration: none; margin-top: clamp(56px, 8vw, 104px); }
+.next > * { min-width: 0; }
+.next .pv { position: relative; aspect-ratio: 16 / 10; border-right: 1px solid var(--ink); background: var(--paper-2); }
+.next .pv canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.next .pv .mono { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.next .body { padding: clamp(20px, 3vw, 40px); display: grid; gap: 16px; align-content: center; }
+.next h2 { font-size: clamp(30px, 4.4vw, 64px); font-stretch: 118%; letter-spacing: -.03em; }
+.next p { color: var(--ink-2); }
+.next .go { font: 600 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.next:hover h2, .next:focus-visible h2 { color: var(--signal); }
+.endnav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-block: 28px clamp(56px, 8vw, 96px); }
+@media (max-width: 760px) { .next { grid-template-columns: 1fr; } .next .pv { border-right: 0; border-bottom: 1px solid var(--ink); } }
+.ex { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+
+/* ---- A-210 infografikler (hs-) ---- */
+.hs-ic { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; color: var(--ink); display: block; }
+.hs-ic .f-sig { fill: var(--signal); stroke: var(--signal); }
+.hs-ic .s-sig { stroke: var(--signal); }
+.hs-ic .s-ok { stroke: var(--ok); }
+.hs-ic .f-p { fill: var(--paper); }
+
+/* 01 kesit + kutucuklar */
+.hs-ch { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+.hs-ch > * { min-width: 0; }
+.hs-sec { margin: 0; border: 1px solid var(--ink); background: var(--paper); padding: clamp(6px, 1.6vw, 18px); }
+.hs-sec svg { display: block; width: 100%; height: auto; }
+.hs-sec figcaption { border-top: 1px solid var(--rule); margin: 8px calc(-1 * clamp(6px, 1.6vw, 18px)) calc(-1 * clamp(6px, 1.6vw, 18px)); padding: 8px 12px; }
+.hs-conc { fill: url(#hs-con); stroke: var(--ink); stroke-width: 1.6; }
+.hs-hl { stroke: var(--ink-2); stroke-width: 1; }
+.hs-thin { fill: none; stroke: var(--ink-2); stroke-width: 1; }
+.hs-ceil { fill: none; stroke: var(--ink); stroke-width: 3; }
+.hs-svc { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.6; }
+.hs-tray { fill: none; stroke: var(--ink); stroke-width: 2.2; }
+.hs-cab { fill: var(--ink-2); }
+.hs-clash { fill: color-mix(in srgb, var(--signal) 14%, transparent); stroke: var(--signal); stroke-width: 2; stroke-dasharray: 5 3; }
+.hs-ld { fill: none; stroke: var(--ink-2); stroke-width: 1; }
+.hs-ld.sig { stroke: var(--signal); }
+.hs-l { font: 500 14.5px var(--mono); fill: var(--ink); }
+.hs-l.sig { fill: var(--signal); font-weight: 700; letter-spacing: .04em; }
+.hs-dimt { font: 800 28px var(--display); font-stretch: 118%; fill: var(--ink); }
+.hs-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.hs-tiles li { padding: 18px 16px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 8px; align-content: start; min-width: 0; }
+.hs-tiles svg { width: 44px; height: 44px; }
+.hs-tiles b { font: 800 clamp(26px, 3vw, 40px)/1 var(--display); font-stretch: 118%; letter-spacing: -.02em; white-space: nowrap; }
+.hs-tiles b.signal { color: var(--signal); }
+.hs-tiles li > span { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 860px) { .hs-ch { grid-template-columns: 1fr; } }
+
+/* 02 akış + döngü */
+.hs-flow { --g: clamp(18px, 2.6vw, 40px); list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--g); }
+.hs-flow li { position: relative; display: grid; gap: 10px; align-content: start; min-width: 0; border-top: 2px solid var(--ink); padding-top: 18px; }
+.hs-flow li svg { width: 64px; height: 64px; }
+.hs-flow .hs-n { font: 500 11px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.hs-flow h3 { font-size: clamp(18px, 1.7vw, 24px); font-stretch: 112%; letter-spacing: -.01em; }
+.hs-flow .hs-out { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); border: 1px solid var(--rule); padding: 4px 8px; justify-self: start; }
+.hs-flow li:not(:last-child)::after { content: "→"; position: absolute; top: 38px; right: calc(var(--g) / -2 - 6px); font: 600 18px/1 var(--mono); color: var(--signal); }
+.hs-loop { margin-top: clamp(36px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); align-items: center; border-top: 1px solid var(--rule); padding-top: clamp(24px, 3vw, 40px); }
+.hs-loop > * { min-width: 0; }
+.hs-loop svg { display: block; width: 100%; height: auto; }
+.hs-loop p { font: 800 clamp(24px, 2.8vw, 38px)/1.12 var(--display); font-stretch: 112%; letter-spacing: -.015em; max-width: 20ch; }
+.hs-loop p small { display: block; margin-top: 12px; font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.hs-ring { fill: none; stroke: var(--ink); stroke-width: 2; }
+.hs-arh { fill: var(--ink); }
+.hs-node { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.hs-node.sig { fill: var(--signal); stroke: var(--signal); }
+.hs-node.ok { fill: var(--ok); stroke: var(--ok); }
+.hs-rl { font: 600 14px var(--mono); fill: var(--ink); letter-spacing: .03em; }
+.hs-big { font: 800 52px var(--display); font-stretch: 125%; fill: var(--ink); letter-spacing: -.03em; }
+.hs-sm { font: 500 12px var(--mono); fill: var(--ink-2); letter-spacing: .08em; }
+@media (max-width: 900px) {
+  .hs-flow { --g: 30px; grid-template-columns: 1fr; }
+  .hs-flow li { grid-template-columns: 52px minmax(0, 1fr); gap: 4px 16px; padding-top: 14px; }
+  .hs-flow li svg { width: 52px; height: 52px; grid-row: span 3; }
+  .hs-flow li:not(:last-child)::after { content: "↓"; top: auto; right: auto; left: 17px; bottom: calc(var(--g) / -2 - 22px); }
+}
+@media (max-width: 640px) { .hs-loop { grid-template-columns: 1fr; } }
+
+/* 03 sonuç: halka + kpi */
+.hs-res { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+.hs-res > * { min-width: 0; }
+.hs-donut { margin: 0; }
+.hs-donut svg { display: block; width: 100%; height: auto; }
+.hs-dn-bg { fill: none; stroke: var(--rule); stroke-width: 20; }
+.hs-dn-ok { fill: none; stroke: var(--ok); stroke-width: 20; }
+.hs-dn-sig { fill: none; stroke: var(--signal); stroke-width: 20; }
+.hs-dn-big { font: 800 36px var(--display); font-stretch: 118%; fill: var(--ok); letter-spacing: -.02em; }
+.hs-dn-s { font: 500 11.5px var(--mono); fill: var(--ink-2); letter-spacing: .04em; }
+.hs-kpi { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.hs-kpi li { padding: clamp(16px, 2.2vw, 28px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 10px; align-content: start; min-width: 0; }
+.hs-kpi svg { width: 40px; height: 40px; }
+.hs-kpi .v { font: 800 clamp(36px, 4.4vw, 66px)/1 var(--display); font-stretch: 125%; letter-spacing: -.035em; white-space: nowrap; }
+.hs-kpi .v .u { font-size: .42em; letter-spacing: 0; margin-left: 4px; }
+.hs-kpi .k { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 860px) { .hs-res { grid-template-columns: 1fr; } .hs-donut { width: min(280px, 100%); justify-self: center; } }
+@media (max-width: 560px) { .hs-kpi { grid-template-columns: 1fr; } .hs-kpi li { grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 4px 16px; } .hs-kpi li svg { grid-row: span 2; } }
+
+/* 04 araçlar */
+.hs-tools { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.hs-tools li { padding: 18px 14px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 8px; align-content: start; min-width: 0; }
+.hs-tools svg { width: 34px; height: 34px; }
+.hs-tools b { font: 800 clamp(17px, 1.6vw, 21px)/1.05 var(--display); font-stretch: 108%; letter-spacing: -.01em; }
+.hs-tools span { font: 500 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 420px) { .hs-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="tr">İçeriğe geç</span><span lang="en">Skip to content</span></a>
+<div class="draft-note"><span lang="tr">Taslak · Firma adı, iletişim bilgileri, projeler ve rakamlar örnektir.</span><span lang="en">Draft · Company name, contact details, projects and figures are placeholders.</span></div>
+<div class="axis-left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+<header class="topbar sheet">
+  <div class="frame">
+    <a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a>
+    <div class="top-right">
+      <span class="mono dim sheet-label" aria-hidden="true">A-210 · <span lang="tr">Proje</span><span lang="en">Project</span></span>
+      <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" aria-pressed="true">TR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i><span lang="tr">Paftalar</span><span lang="en">Sheets</span></button>
+    </div>
+  </div>
+</header>
+<nav class="register" id="register" hidden aria-label="Paftalar">
+  <div class="register-head"><span class="mono"><span lang="tr">Pafta listesi · 5 pafta · 9 alt pafta</span><span lang="en">Sheet register · 5 sheets · 9 sub-sheets</span></span><button class="register-close" type="button" data-close-register><span lang="tr">Kapat</span><span lang="en">Close</span> ✕</button></div>
+  <ol>
+    <li><a href="./" data-sheet="A-000" data-label="Kapak"><span class="no">A-000</span><span class="t"><span lang="tr">Kapak</span><span lang="en">Cover</span></span><span class="d"><span lang="tr">Ana sayfa</span><span lang="en">Home</span></span></a></li><li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler"><span class="no">A-100</span><span class="t"><span lang="tr">Hizmetler</span><span lang="en">Services</span></span><span class="d"><span lang="tr">Strateji · Model · Koordinasyon</span><span lang="en">Strategy · Model · Coordination</span></span></a><ul class="subs"><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="sno">A-101</span><span class="st"><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span><span class="sd"><span lang="tr">EIR, BEP, ISO 19650 yol haritası</span><span lang="en">EIR, BEP, ISO 19650 roadmap</span></span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="sno">A-102</span><span class="st"><span lang="tr">Modelleme</span><span lang="en">Modelling</span></span><span class="sd"><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span class="sno">A-103</span><span class="st"><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="sd"><span lang="tr">Federe model, çakışma, BCF</span><span lang="en">Federated model, clashes, BCF</span></span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span class="sno">A-104</span><span class="st"><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></span><span class="sd"><span lang="tr">ACC kurulumu, isimlendirme, onaylar</span><span lang="en">ACC setup, naming, approvals</span></span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span class="sno">A-105</span><span class="st"><span lang="tr">Otomasyon</span><span lang="en">Automation</span></span><span class="sd"><span lang="tr">Dynamo, Python, Revit API eklentileri</span><span lang="en">Dynamo, Python, Revit API add-ins</span></span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span class="sno">A-106</span><span class="st"><span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></span><span class="sd"><span lang="tr">Revit, Navisworks, ISO 19650 eğitimleri</span><span lang="en">Revit, Navisworks, ISO 19650 courses</span></span></a></li></ul></li><li><a href="projeler.html" data-sheet="A-200" data-label="Projeler" aria-current="page"><span class="no">A-200</span><span class="t"><span lang="tr">Projeler</span><span lang="en">Projects</span></span><span class="d"><span lang="tr">Proje dizini</span><span lang="en">Project index</span></span></a><ul class="subs"><li><a href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü" aria-current="page"><span class="sno">A-210</span><span class="st"><span lang="tr">Hastane kampüsü</span><span lang="en">Hospital campus</span></span><span class="sd"><span lang="tr">Sağlık · Türkiye · BIM yöneticisi</span><span lang="en">Healthcare · Türkiye · BIM manager</span></span></a></li><li><a href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span class="sno">A-220</span><span class="st"><span lang="tr">Konut kulesi</span><span lang="en">Residential tower</span></span><span class="sd"><span lang="tr">Konut · Almanya · Modelleme ekibi</span><span lang="en">Residential · Germany · Modelling team</span></span></a></li><li><a href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span class="sno">A-230</span><span class="st"><span lang="tr">Lojistik merkezi</span><span lang="en">Logistics hub</span></span><span class="sd"><span lang="tr">Endüstriyel · BAE · Scan-to-BIM</span><span lang="en">Industrial · UAE · Scan-to-BIM</span></span></a></li></ul></li><li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda"><span class="no">A-300</span><span class="t"><span lang="tr">Hakkımızda</span><span lang="en">About</span></span><span class="d"><span lang="tr">Ekip · Yaklaşım</span><span lang="en">Team · Approach</span></span></a></li><li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span class="no">A-900</span><span class="t"><span lang="tr">İletişim</span><span lang="en">Contact</span></span><span class="d"><span lang="tr">Teklif · Ofisler</span><span lang="en">Proposal · Offices</span></span></a></li>
+  </ol>
+  <div class="register-foot"><span>info@firmaadi.com</span><span>+90 (212) 000 00 00</span><span>İstanbul · London</span></div>
+</nav>
+<aside class="titleblock" aria-hidden="true">
+  <div><span><span lang="tr">Proje</span><span lang="en">Project</span></span><b>Firma Adı BIM</b></div>
+  <div><span><span lang="tr">Pafta</span><span lang="en">Sheet</span></span><b>A-210</b></div>
+  <div><span><span lang="tr">Ölçek</span><span lang="en">Scale</span></span><b>1:100</b></div>
+  <div class="xy"><span><span lang="tr">Koordinat</span><span lang="en">Coordinate</span></span><b id="tb-xy">X 0.0 · Y 0.0</b></div>
+  <div><span>Rev</span><b>P07</b></div>
+  <div><span><span lang="tr">Durum</span><span lang="en">Status</span></span><b>S2 · <span lang="tr">Bilgi</span><span lang="en">Info</span></b></div>
+</aside>
+<main id="main" class="sheet"><div class="frame">
+  <header class="sheet-head">
+    <a class="back" href="projeler.html" data-sheet="A-200" data-label="Projeler">← A-200 · <span lang="tr">Proje dizini</span><span lang="en">Project index</span></a>
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-210</b></span>
+      <span><span lang="tr">Proje</span><span lang="en">Project</span> <b>P-01</b></span>
+      <span><span lang="tr">Sektör</span><span lang="en">Sector</span> <b><span lang="tr">Sağlık</span><span lang="en">Healthcare</span></b></span>
+      <span>Rev <b>P07</b></span>
+      <span class="signal"><b><span lang="tr">Örnek vaka</span><span lang="en">Sample case</span></b></span>
+    </div>
+    <h1><span lang="tr">Örnek Hastane <span class="o">Kampüsü</span></span><span lang="en">Sample Hospital <span class="o">Campus</span></span></h1>
+    <p class="lede"><span lang="tr">Yedi disiplin, tek federe model. BEP'ten teslime BIM yönetimini biz yürüttük.</span><span lang="en">Seven disciplines, one federated model. We ran BIM management from BEP to handover.</span></p>
+    <dl class="spec cs-spec">
+      <div><dt><span lang="tr">İşveren</span><span lang="en">Client</span></dt><dd class="v"><span lang="tr">Örnek işveren</span><span lang="en">Sample client</span></dd></div>
+      <div><dt><span lang="tr">Rolümüz</span><span lang="en">Our role</span></dt><dd class="v"><span lang="tr">BIM yöneticisi</span><span lang="en">BIM manager</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd class="v">Ankara, Türkiye<small>39.93°N 32.86°E</small></dd></div>
+      <div><dt><span lang="tr">Alan</span><span lang="en">Area</span></dt><dd class="v"><span lang="tr">128.400 m²</span><span lang="en">128,400 m²</span></dd></div>
+      <div><dt><span lang="tr">Detay seviyesi</span><span lang="en">Level of detail</span></dt><dd class="v">LOD 350</dd></div>
+      <div><dt><span lang="tr">Süre</span><span lang="en">Duration</span></dt><dd class="v"><span lang="tr">26 ay</span><span lang="en">26 months</span><small>2023 – 2025</small></dd></div>
+    </dl>
+  </header>
+
+  <section class="cs-model" aria-labelledby="model-title">
+    <h2 id="model-title" class="sr-only"><span lang="tr">Federe model, aşama aşama</span><span lang="en">The federated model, stage by stage</span></h2>
+    <figure style="margin:0">
+      <div class="cs-stage">
+        <canvas id="cs-model" aria-hidden="true"></canvas>
+        <span class="corner tl">P-01 · FED-MODEL · 3D</span>
+        <span class="corner tr"><span lang="tr">Detay seviyesi</span><span lang="en">Level of detail</span><b id="cs-lod">LOD 100</b></span>
+        <span class="corner bl" id="cs-name">SCAN</span>
+        <span class="corner br">39.93°N 32.86°E</span>
+      </div>
+      <div class="cs-hud">
+        <button class="play" type="button" id="cs-play" aria-label="Aşamaları oynat / Play stages"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1l11 6-11 6z" fill="currentColor"/></svg></button>
+        <div>
+          <label for="cs-range"><span lang="tr">Model aşaması: kaydırarak inceleyin</span><span lang="en">Model stage: drag to inspect</span></label>
+          <input id="cs-range" type="range" min="0" max="100" value="100" aria-describedby="cs-note">
+        </div>
+        <div class="layers" role="group" aria-label="Disiplin katmanları / Discipline layers">
+          <button class="chip" type="button" data-layer="arc" aria-pressed="true">ARC</button>
+          <button class="chip" type="button" data-layer="str" aria-pressed="true">STR</button>
+          <button class="chip" type="button" data-layer="mep" aria-pressed="true">MEP</button>
+        </div>
+        <div class="steps" role="group" aria-label="Aşamalar / Stages">
+          <button type="button" data-step="0" data-at="8"><span lang="tr">Tarama</span><span lang="en">Scan</span></button>
+          <button type="button" data-step="1" data-at="28"><span lang="tr">Aks</span><span lang="en">Grid</span></button>
+          <button type="button" data-step="2" data-at="50"><span lang="tr">Taşıyıcı</span><span lang="en">Structure</span></button>
+          <button type="button" data-step="3" data-at="74"><span lang="tr">Tesisat</span><span lang="en">MEP</span></button>
+          <button type="button" data-step="4" data-at="100"><span lang="tr">Cephe</span><span lang="en">Envelope</span></button>
+        </div>
+        <p class="stage-note" id="cs-note" aria-live="polite"></p>
+      </div>
+      <figcaption class="sr-only"><span lang="tr">Hastane kampüsünün izometrik modeli: nokta bulutu, aks, taşıyıcı sistem, tesisat ve cephe aşamaları. Aşamaların metin açıklaması kaydırıcının altında yer alır.</span><span lang="en">Isometric model of the hospital campus: point cloud, grid, structure, services and envelope stages. Each stage is described in text under the slider.</span></figcaption>
+    </figure>
+  </section>
+
+  <section class="block" aria-labelledby="ch-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Zorluk</span><span lang="en">Challenge</span></span>
+      <h2 id="ch-title"><span lang="tr">Dar tavan boşluklarında yoğun tesisat.</span><span lang="en">Dense services in tight ceiling voids.</span></h2>
+      <p><span lang="tr">Dört tesisat hattı aynı kirişin altından geçmek istiyordu.</span><span lang="en">Four service runs all wanted to pass under the same beam.</span></p>
+    </div>
+    <div class="hs-ch">
+      <figure class="hs-sec">
+        <svg viewBox="0 0 440 310" role="img" aria-labelledby="hs-sec-t">
+          <title id="hs-sec-t">Kesit: 900 mm tavan boşluğunda kirişin altında kanal, kablo tavası, sprinkler ve medikal gaz hattı; kanal ile kablo tavası çakışıyor. Section: duct, cable tray, sprinkler and medical gas under a beam in a 900 mm ceiling void; the duct and cable tray clash.</title>
+          <defs><pattern id="hs-con" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" class="hs-hl"/></pattern></defs>
+          <path class="hs-conc" d="M10 14H430V40H230V120H150V40H10Z"/>
+          <path class="hs-thin" d="M412 40V268"/>
+          <path class="hs-ceil" d="M10 268H430"/>
+          <path class="hs-thin" d="M10 276H430" stroke-dasharray="3 4"/>
+          <g class="hs-ld"><path d="M26 40V268M19 40H33M19 268H33M21 45l5-5 5 5M21 263l5 5 5-5"/></g>
+          <text class="hs-dimt" x="36" y="88">900</text><text class="hs-l" x="38" y="106">mm</text>
+          <rect class="hs-svc" x="140" y="126" width="96" height="48"/>
+          <path class="hs-thin" d="M140 126l96 48M236 126l-96 48"/>
+          <path class="hs-tray" d="M118 166V192H206V166"/>
+          <g class="hs-cab"><circle cx="132" cy="185" r="4"/><circle cx="146" cy="185" r="4"/><circle cx="160" cy="185" r="4"/><circle cx="174" cy="185" r="4"/><circle cx="188" cy="185" r="4"/></g>
+          <circle class="hs-svc" cx="224" cy="208" r="9"/><path class="hs-tray" d="M224 217V262M216 262H232"/>
+          <circle class="hs-svc" cx="256" cy="140" r="6.5"/><circle class="hs-svc" cx="256" cy="160" r="6.5"/>
+          <circle class="hs-clash" cx="172" cy="171" r="24"/>
+          <path class="hs-ld sig" d="M98 140L152 158"/><text class="hs-l sig" x="38" y="144"><tspan lang="tr">ÇAKIŞMA</tspan><tspan lang="en">CLASH</tspan></text>
+          <path class="hs-ld" d="M118 192L98 222"/><text class="hs-l" x="38" y="238"><tspan lang="tr">Kablo tavası</tspan><tspan lang="en">Cable tray</tspan></text>
+          <path class="hs-ld" d="M230 74H298"/><text class="hs-l" x="304" y="78"><tspan lang="tr">Kiriş</tspan><tspan lang="en">Beam</tspan></text>
+          <path class="hs-ld" d="M236 130L298 112"/><text class="hs-l" x="304" y="116"><tspan lang="tr">Kanal</tspan><tspan lang="en">Duct</tspan></text>
+          <path class="hs-ld" d="M263 150H298"/><text class="hs-l" x="304" y="154"><tspan lang="tr">Medikal gaz</tspan><tspan lang="en">Medical gas</tspan></text>
+          <path class="hs-ld" d="M233 205L298 194"/><text class="hs-l" x="304" y="198">Sprinkler</text>
+          <path class="hs-ld" d="M300 268L310 284"/><text class="hs-l" x="304" y="300"><tspan lang="tr">Asma tavan</tspan><tspan lang="en">Ceiling</tspan></text>
+        </svg>
+        <figcaption class="ex"><span lang="tr">Şematik kesit · örnek</span><span lang="en">Schematic section · sample</span></figcaption>
+      </figure>
+      <ul class="hs-tiles" aria-label="Kısıtlar (örnek) / Constraints (sample)">
+        <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 8H42M6 40H42M24 12V36M19 17l5-5 5 5M19 31l5 5 5-5"/></svg><b>900 mm</b><span><span lang="tr">Tavan boşluğu</span><span lang="en">Ceiling void</span></span></li>
+        <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8l16 8-16 8-16-8z"/><path d="M8 24l16 8 16-8M8 32l16 8 16-8"/></svg><b>7</b><span><span lang="tr">Disiplin modeli</span><span lang="en">Discipline models</span></span></li>
+        <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="16"/><path d="M8 24H40M24 8c-6 5-6 27 0 32M24 8c6 5 6 27 0 32"/></svg><b>5 · 3</b><span><span lang="tr">Ofis · ülke</span><span lang="en">Offices · countries</span></span></li>
+        <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M6 32L42 16M6 16L42 32"/><circle class="f-sig" cx="24" cy="24" r="6"/></svg><b class="signal"><span lang="tr">1.480</span><span lang="en">1,480</span></b><span><span lang="tr">İlk federasyonda çakışma</span><span lang="en">Clashes at first federation</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="ap-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Yaklaşım</span><span lang="en">Approach</span></span>
+      <h2 id="ap-title"><span lang="tr">Tek bilgi kaynağı, haftalık koordinasyon.</span><span lang="en">One source of truth, weekly coordination.</span></h2>
+      <p><span lang="tr">ISO 19650 BEP ile başladık, tüm ekipleri tek CDE'de topladık.</span><span lang="en">We started with an ISO 19650 BEP and put every team in one CDE.</span></p>
+    </div>
+    <ol class="hs-flow">
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21h18a6 6 0 0 0 0-12 8 8 0 0 0-15-2 5 5 0 0 0-3 14z"/><path d="M24 21v6"/><path d="M10 42h28V30H24l-2-3H10z"/></svg><span class="hs-n">01</span><h3><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></h3><span class="hs-out">CDE · BEP</span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="8" width="32" height="32"/><path d="M16 8V40M24 8V40M32 8V40M8 16H40M8 24H40M8 32H40"/><rect class="f-sig" x="24" y="16" width="8" height="8"/><rect class="f-sig" x="16" y="32" width="8" height="8"/></svg><span class="hs-n">02</span><h3><span lang="tr">Çakışma matrisi</span><span lang="en">Clash matrix</span></h3><span class="hs-out"><span lang="tr">Öncelikli testler</span><span lang="en">Ranked tests</span></span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32v20H22l-8 8v-8H8z"/><path class="s-sig" d="M24 15v8M24 26.5v.5"/></svg><span class="hs-n">03</span><h3><span lang="tr">Haftalık BCF</span><span lang="en">Weekly BCF</span></h3><span class="hs-out">BCF 2.1</span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="11" y="8" width="26" height="34"/><path d="M19 8V5h10v3"/><path class="s-ok" d="M16 19l3 3 5-6M16 31l3 3 5-6"/><path d="M28 20h4M28 32h4"/></svg><span class="hs-n">04</span><h3><span lang="tr">Otomatik kalite kontrol</span><span lang="en">Automated QA</span></h3><span class="hs-out">Dynamo</span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l15 8v20l-15 8-15-8V14z"/><path d="M9 14l15 8 15-8M24 22v20"/><path d="M14 26v6M19 29v6M29 29v6M34 26v6"/></svg><span class="hs-n">05</span><h3><span lang="tr">İşletmeye teslim</span><span lang="en">Handover</span></h3><span class="hs-out">IFC 4 · COBie</span></li>
+    </ol>
+    <div class="hs-loop">
+      <svg viewBox="0 0 360 230" role="img" aria-labelledby="hs-loop-t">
+        <title id="hs-loop-t">Haftalık koordinasyon döngüsü: federasyon, çakışma testi, BCF ile atama, düzeltme; 52 kez tekrarlandı. Weekly coordination loop: federate, test, assign in BCF, fix; repeated 52 times.</title>
+        <defs><marker id="hs-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="hs-arh" d="M0 0L10 5L0 10z"/></marker></defs>
+        <g transform="translate(0 5)">
+          <path class="hs-ring" marker-end="url(#hs-ar)" d="M194.6 41.5A70 70 0 0 1 248.5 95.4"/>
+          <path class="hs-ring" marker-end="url(#hs-ar)" d="M248.5 124.6A70 70 0 0 1 194.6 178.5"/>
+          <path class="hs-ring" marker-end="url(#hs-ar)" d="M165.4 178.5A70 70 0 0 1 111.5 124.6"/>
+          <path class="hs-ring" marker-end="url(#hs-ar)" d="M111.5 95.4A70 70 0 0 1 165.4 41.5"/>
+          <circle class="hs-node" cx="180" cy="40" r="7"/><circle class="hs-node sig" cx="250" cy="110" r="7"/><circle class="hs-node" cx="180" cy="180" r="7"/><circle class="hs-node ok" cx="110" cy="110" r="7"/>
+          <text class="hs-rl" x="180" y="22" text-anchor="middle"><tspan lang="tr">Federasyon</tspan><tspan lang="en">Federate</tspan></text>
+          <text class="hs-rl" x="264" y="115"><tspan lang="tr">Test</tspan><tspan lang="en">Test</tspan></text>
+          <text class="hs-rl" x="180" y="208" text-anchor="middle"><tspan lang="tr">BCF ile ata</tspan><tspan lang="en">Assign in BCF</tspan></text>
+          <text class="hs-rl" x="96" y="115" text-anchor="end"><tspan lang="tr">Düzelt</tspan><tspan lang="en">Fix</tspan></text>
+          <text class="hs-big" x="180" y="122" text-anchor="middle">52</text>
+          <text class="hs-sm" x="180" y="142" text-anchor="middle"><tspan lang="tr">DÖNGÜ</tspan><tspan lang="en">CYCLES</tspan></text>
+        </g>
+      </svg>
+      <p><span lang="tr">Her hafta aynı döngü, her karar sorumlu ve tarihle.</span><span lang="en">The same loop every week, every decision with an owner and a date.</span><small><span lang="tr">Navisworks · BCF · ACC</span><span lang="en">Navisworks · BCF · ACC</span></small></p>
+    </div>
+  </section>
+
+  <section class="block results" aria-labelledby="rs-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Sonuçlar</span><span lang="en">Results</span></span>
+      <h2 id="rs-title"><span lang="tr">Çakışmalar sahaya inmeden kapandı.</span><span lang="en">Clashes closed before they reached site.</span></h2>
+    </div>
+    <div class="hs-res">
+      <figure class="hs-donut">
+        <svg viewBox="0 0 240 240" role="img" aria-labelledby="hs-dn-t">
+          <title id="hs-dn-t">1.480 çakışmanın 1.468'i (yüzde 99,2) tasarımda çözüldü. 1,468 of 1,480 clashes (99.2%) resolved in design.</title>
+          <circle class="hs-dn-bg" cx="120" cy="120" r="92"/>
+          <circle class="hs-dn-ok" cx="120" cy="120" r="92" stroke-dasharray="573.4 578.1" transform="rotate(-90 120 120)"/>
+          <circle class="hs-dn-sig" cx="120" cy="120" r="92" stroke-dasharray="4.7 578.1" stroke-dashoffset="-573.4" transform="rotate(-90 120 120)"/>
+          <text class="hs-dn-big" x="120" y="122" text-anchor="middle"><tspan lang="tr">%99,2</tspan><tspan lang="en">99.2%</tspan></text>
+          <text class="hs-dn-s" x="120" y="146" text-anchor="middle"><tspan lang="tr">1.468 / 1.480</tspan><tspan lang="en">1,468 / 1,480</tspan></text>
+          <text class="hs-dn-s" x="120" y="164" text-anchor="middle"><tspan lang="tr">tasarımda çözüldü</tspan><tspan lang="en">solved in design</tspan></text>
+        </svg>
+      </figure>
+      <ul class="hs-kpi">
+        <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 6h18l8 8v28H12z"/><path d="M30 6v8h8"/><path class="s-ok" d="M25 20v14M19 28l6 6 6-6"/></svg><div class="v"><span lang="tr" class="u">%</span><span data-count="38">38</span><span lang="en" class="u">%</span></div><div class="k"><span lang="tr">Daha az saha revizyonu</span><span lang="en">Fewer site revisions</span></div></li>
+        <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M38 24a14 14 0 1 1-4-10"/><path d="M36 6v8h-8"/></svg><div class="v" data-count="52">52</div><div class="k"><span lang="tr">Koordinasyon döngüsü</span><span lang="en">Coordination cycles</span></div></li>
+        <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="12" width="32" height="28"/><path d="M8 20h32M16 8v8M32 8v8"/><path class="s-ok" d="M17 30l4 4 9-9"/></svg><div class="v"><span data-count="6">6</span><span class="u"><span lang="tr">hafta</span><span lang="en">weeks</span></span></div><div class="k"><span lang="tr">Kazanılan süre</span><span lang="en">Time saved</span></div></li>
+      </ul>
+    </div>
+
+    <figure class="chart">
+      <div class="chart-head">
+        <h3 id="chart-title"><span lang="tr">Açık çakışma sayısı, koordinasyon döngüsüne göre</span><span lang="en">Open clashes by coordination cycle</span></h3>
+        <div class="chart-key" aria-hidden="true">
+          <span><i class="k1"></i><span lang="tr">Önce</span><span lang="en">Before</span></span>
+          <span><i class="k2"></i><span lang="tr">Ara döngü</span><span lang="en">Interim</span></span>
+          <span><i class="k3"></i><span lang="tr">Sonra</span><span lang="en">After</span></span>
+        </div>
+      </div>
+      <div class="chart-body draw">
+        <svg viewBox="0 0 720 350" role="img" aria-labelledby="chart-title chart-desc">
+          <desc id="chart-desc">Ölçekli çubuk grafik: döngü 01'de 1480, döngü 10'da 960, döngü 20'de 610, döngü 30'da 280, döngü 40'ta 95, döngü 52'de 12 açık çakışma. Bar chart drawn to scale: 1480, 960, 610, 280, 95 and 12 open clashes.</desc>
+          <!-- ölçek: 1 px = 3 çakışma; x0 = 170, 1500 -> 670 -->
+          <g class="grid">
+            <line x1="253.3" y1="44" x2="253.3" y2="306"/><line x1="336.7" y1="44" x2="336.7" y2="306"/><line x1="420" y1="44" x2="420" y2="306"/>
+            <line x1="503.3" y1="44" x2="503.3" y2="306"/><line x1="586.7" y1="44" x2="586.7" y2="306"/><line x1="670" y1="44" x2="670" y2="306"/>
+          </g>
+          <g class="axis"><line x1="170" y1="44" x2="170" y2="306"/><line x1="170" y1="306" x2="670" y2="306"/></g>
+          <g class="tick" text-anchor="middle">
+            <text x="170" y="326">0</text><text x="253.3" y="326">250</text><text x="336.7" y="326">500</text><text x="420" y="326">750</text>
+            <text x="503.3" y="326">1000</text><text x="586.7" y="326">1250</text><text x="670" y="326">1500</text>
+            <text x="420" y="346"><tspan lang="tr">açık çakışma · 1 birim = 3 çakışma</tspan><tspan lang="en">open clashes · 1 unit = 3 clashes</tspan></text>
+          </g>
+          <!-- ölçü çizgisi: 12 -> 1480 farkı -->
+          <g class="dl">
+            <line x1="174" y1="22" x2="663.3" y2="22"/><line x1="174" y1="16" x2="174" y2="28"/><line x1="663.3" y1="16" x2="663.3" y2="28"/>
+            <text x="418.7" y="16" text-anchor="middle"><tspan lang="tr">Δ 1.468 · −%99,2</tspan><tspan lang="en">Δ 1,468 · −99.2%</tspan></text>
+          </g>
+          <g class="rl" text-anchor="end">
+            <text x="158" y="68"><tspan class="rl-d"><tspan lang="tr">Döngü 01</tspan><tspan lang="en">Cycle 01</tspan></tspan><tspan class="rl-m">C01</tspan></text>
+            <text x="158" y="111"><tspan class="rl-d"><tspan lang="tr">Döngü 10</tspan><tspan lang="en">Cycle 10</tspan></tspan><tspan class="rl-m">C10</tspan></text>
+            <text x="158" y="154"><tspan class="rl-d"><tspan lang="tr">Döngü 20</tspan><tspan lang="en">Cycle 20</tspan></tspan><tspan class="rl-m">C20</tspan></text>
+            <text x="158" y="197"><tspan class="rl-d"><tspan lang="tr">Döngü 30</tspan><tspan lang="en">Cycle 30</tspan></tspan><tspan class="rl-m">C30</tspan></text>
+            <text x="158" y="240"><tspan class="rl-d"><tspan lang="tr">Döngü 40</tspan><tspan lang="en">Cycle 40</tspan></tspan><tspan class="rl-m">C40</tspan></text>
+            <text x="158" y="283"><tspan class="rl-d"><tspan lang="tr">Döngü 52</tspan><tspan lang="en">Cycle 52</tspan></tspan><tspan class="rl-m">C52</tspan></text>
+          </g>
+          <g>
+            <rect class="bar b-before" x="170" y="52" width="493.3" height="24"><title>01: 1480</title></rect>
+            <rect class="bar b-mid" x="170" y="95" width="320" height="24"><title>10: 960</title></rect>
+            <rect class="bar b-mid" x="170" y="138" width="203.3" height="24"><title>20: 610</title></rect>
+            <rect class="bar b-mid" x="170" y="181" width="93.3" height="24"><title>30: 280</title></rect>
+            <rect class="bar b-mid" x="170" y="224" width="31.7" height="24"><title>40: 95</title></rect>
+            <rect class="bar b-after" x="170" y="267" width="4" height="24"><title>52: 12</title></rect>
+          </g>
+          <g class="val">
+            <text x="671.3" y="69"><tspan lang="tr">1.480</tspan><tspan lang="en">1,480</tspan></text>
+            <text x="498" y="112">960</text><text x="381.3" y="155">610</text><text x="271.3" y="198">280</text>
+            <text x="209.7" y="241">95</text><text x="182" y="284">12</text>
+          </g>
+        </svg>
+        <ul class="chart-m" aria-hidden="true"><li><span><span lang="tr">Döngü</span><span lang="en">Cycle</span> 01</span><span class="bw"><i style="width:calc((100% - 52px) * 0.9867);background:var(--signal)"></i><b><span lang="tr">1.480</span><span lang="en">1,480</span></b></span></li><li><span><span lang="tr">Döngü</span><span lang="en">Cycle</span> 10</span><span class="bw"><i style="width:calc((100% - 52px) * 0.6400);background:color-mix(in srgb, var(--ink-2) 55%, transparent)"></i><b><span lang="tr">960</span><span lang="en">960</span></b></span></li><li><span><span lang="tr">Döngü</span><span lang="en">Cycle</span> 20</span><span class="bw"><i style="width:calc((100% - 52px) * 0.4067);background:color-mix(in srgb, var(--ink-2) 55%, transparent)"></i><b><span lang="tr">610</span><span lang="en">610</span></b></span></li><li><span><span lang="tr">Döngü</span><span lang="en">Cycle</span> 30</span><span class="bw"><i style="width:calc((100% - 52px) * 0.1867);background:color-mix(in srgb, var(--ink-2) 55%, transparent)"></i><b><span lang="tr">280</span><span lang="en">280</span></b></span></li><li><span><span lang="tr">Döngü</span><span lang="en">Cycle</span> 40</span><span class="bw"><i style="width:calc((100% - 52px) * 0.0633);background:color-mix(in srgb, var(--ink-2) 55%, transparent)"></i><b><span lang="tr">95</span><span lang="en">95</span></b></span></li><li><span><span lang="tr">Döngü</span><span lang="en">Cycle</span> 52</span><span class="bw"><i style="width:calc((100% - 52px) * 0.0080);background:var(--ok)"></i><b><span lang="tr">12</span><span lang="en">12</span></b></span></li><li class="d"><span>0</span><span><span lang="tr">ölçek: 0–1.500</span><span lang="en">scale: 0–1,500</span></span><span lang="tr">−%99,2</span><span lang="en">−99.2%</span></li></ul>
+      </div>
+      <figcaption class="chart-foot mono dim"><span lang="tr">Örnek veri · çubuklar ölçeklidir (ölçek 0–1.500 çakışma)</span><span lang="en">Sample data · bars drawn to scale (0–1,500 clashes)</span></figcaption>
+      <table class="sr-only">
+        <caption><span lang="tr">Döngüye göre açık çakışma (örnek)</span><span lang="en">Open clashes by cycle (sample)</span></caption>
+        <thead><tr><th scope="col"><span lang="tr">Döngü</span><span lang="en">Cycle</span></th><th scope="col"><span lang="tr">Açık çakışma</span><span lang="en">Open clashes</span></th></tr></thead>
+        <tbody><tr><td>01</td><td>1480</td></tr><tr><td>10</td><td>960</td></tr><tr><td>20</td><td>610</td></tr><tr><td>30</td><td>280</td></tr><tr><td>40</td><td>95</td></tr><tr><td>52</td><td>12</td></tr></tbody>
+      </table>
+    </figure>
+  </section>
+
+  <section class="block" aria-labelledby="tl-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Araçlar</span><span lang="en">Tools</span></span>
+      <h2 id="tl-title"><span lang="tr">Yazılım ve formatlar.</span><span lang="en">Software and formats.</span></h2>
+    </div>
+    <ul class="hs-tools">
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l15 8v20l-15 8-15-8V14z"/><path d="M9 14l15 8 15-8M24 22v20"/></svg><b>Revit</b><span><span lang="tr">Disiplin modelleri</span><span lang="en">Discipline models</span></span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="14" width="22" height="22"/><rect x="20" y="8" width="22" height="22"/><circle class="f-sig" cx="24" cy="22" r="3"/></svg><b>Navisworks</b><span><span lang="tr">Çakışma testi</span><span lang="en">Clash tests</span></span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M13 34h22a8 8 0 0 0 0-16 11 11 0 0 0-21-3 7 7 0 0 0-1 19z"/></svg><b>ACC</b><span><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data env.</span></span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="12" height="9"/><rect x="5" y="29" width="12" height="9"/><rect x="31" y="19" width="12" height="10"/><path d="M17 14.5c8 0 6 9.5 14 9.5M17 33.5c8 0 6-9.5 14-9.5"/></svg><b>Dynamo</b><span><span lang="tr">QA otomasyonu</span><span lang="en">QA automation</span></span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18h30l-6-6M40 30H10l6 6"/></svg><b>IFC 4</b><span><span lang="tr">Açık değişim</span><span lang="en">Open exchange</span></span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32v20H22l-8 8v-8H8z"/></svg><b>BCF</b><span><span lang="tr">Sorun takibi</span><span lang="en">Issue tracking</span></span></li>
+      <li><svg class="hs-ic" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="10" width="34" height="28"/><path d="M7 19h34M7 28h34M19 10v28"/></svg><b>COBie</b><span><span lang="tr">Tesis verisi</span><span lang="en">Facility data</span></span></li>
+    </ul>
+
+    <a class="next" href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi">
+      <div class="pv"><canvas id="next-model" aria-hidden="true"></canvas><span class="mono">P-02 · A-220 · ISO</span></div>
+      <div class="body">
+        <span class="mono dim"><span lang="tr">Sonraki proje · P-02</span><span lang="en">Next project · P-02</span></span>
+        <h2><span lang="tr">Örnek Konut Kulesi</span><span lang="en">Sample Residential Tower</span></h2>
+        <p><span lang="tr">Frankfurt · 24 kat · 16 haftada 408 pafta.</span><span lang="en">Frankfurt · 24 storeys · 408 sheets in 16 weeks.</span></p>
+        <span class="go"><span lang="tr">Vaka çalışmasını aç · A-220</span><span lang="en">Open the case study · A-220</span> →</span>
+      </div>
+    </a>
+    <div class="endnav">
+      <a class="back" href="projeler.html" data-sheet="A-200" data-label="Projeler">← <span lang="tr">Tüm projeler</span><span lang="en">All projects</span></a>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Benzer bir projeniz mi var?</span><span lang="en">Have a similar project?</span></a>
+    </div>
+  </section>
+</div></main>
+<footer class="footer sheet">
+  <div class="frame">
+    <div class="footer-cta">
+      <h2><span lang="tr">Modeli birlikte<br><em>kuralım.</em></span><span lang="en">Let's build<br>the <em>model.</em></span></h2>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin</span><span lang="en">Request a proposal</span></a>
+    </div>
+    <div class="footer-cols">
+      <div><a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a><p><span lang="tr">Uluslararası BIM danışmanlık ve proje geliştirme. İstanbul merkezli, dünya genelinde projeler.</span><span lang="en">International BIM consulting and project development. Based in Istanbul, working worldwide.</span></p></div>
+      <div><h4><span lang="tr">Paftalar</span><span lang="en">Sheets</span></h4><ul>
+        <li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">A-100 · <span lang="tr">Hizmetler</span><span lang="en">Services</span></a></li>
+        <li><a href="projeler.html" data-sheet="A-200" data-label="Projeler">A-200 · <span lang="tr">Projeler</span><span lang="en">Projects</span></a></li>
+        <li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda">A-300 · <span lang="tr">Hakkımızda</span><span lang="en">About</span></a></li>
+        <li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim">A-900 · <span lang="tr">İletişim</span><span lang="en">Contact</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">Hizmetler</span><span lang="en">Services</span></h4><ul>
+        <li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi">A-101 · <span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme">A-102 · <span lang="tr">Modelleme</span><span lang="en">Modelling</span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon">A-103 · <span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı">A-104 · <span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon">A-105 · <span lang="tr">Otomasyon</span><span lang="en">Automation</span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek">A-106 · <span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">İletişim</span><span lang="en">Contact</span></h4><ul><li>info@firmaadi.com</li><li>+90 (212) 000 00 00</li><li>İstanbul, Türkiye</li></ul></div>
+      <div><h4><span lang="tr">Takip</span><span lang="en">Follow</span></h4><ul><li>LinkedIn</li><li>YouTube</li><li>Instagram</li></ul></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 Firma Adı BIM</span><span>ISO 19650 · IFC · BCF · COBie</span><span><span lang="tr">KVKK · Gizlilik</span><span lang="en">Privacy</span></span></div>
+  </div>
+</footer>
+<script src="assets/model.js"></script>
+<script src="assets/site.js"></script>
+<script>
+
+(function () {
+  var root = document.documentElement;
+  var cv = document.getElementById('cs-model');
+  var range = document.getElementById('cs-range'), lod = document.getElementById('cs-lod'), nm = document.getElementById('cs-name'), note = document.getElementById('cs-note');
+  var steps = document.querySelectorAll('.steps button');
+  var NAMES = ['POINT CLOUD · SCAN', 'GRID · AXES', 'STRUCTURE · STR', 'BUILDING SERVICES · MEP', 'ENVELOPE · ARC'];
+  var NOTES = [
+    ['Tarama', 'Arazi ve komşu yapılar lazerle tarandı.', 'Scan', 'Site and neighbours laser scanned.'],
+    ['Aks', 'Tek koordinat sistemi, tüm disiplinlere.', 'Grid', 'One coordinate system for every discipline.'],
+    ['Taşıyıcı', 'Betonarme çerçeve, döşeme boşlukları erken sabit.', 'Structure', 'Concrete frame, slab openings fixed early.'],
+    ['Tesisat', 'Mekanik, elektrik ve medikal gaz 900 mm boşlukta.', 'Services', 'Mechanical, electrical and medical gas in a 900 mm void.'],
+    ['Cephe', 'Cephe eklendi, model LOD 350 teslim edildi.', 'Envelope', 'Facade added, model handed over at LOD 350.']
+  ];
+  var cur = -1;
+  function idx(s) { return s < .18 ? 0 : s < .36 ? 1 : s < .58 ? 2 : s < .78 ? 3 : 4; }
+  function update(s, fromRange) {
+    var i = idx(s);
+    lod.textContent = 'LOD ' + [100, 200, 300, 350, 350][i];
+    nm.textContent = NAMES[i];
+    steps.forEach(function (b, k) { b.classList.toggle('on', k <= i); if (k === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    if (!fromRange) range.value = Math.round(s * 100);
+    if (i !== cur) { cur = i; renderNote(); }
+  }
+  function renderNote() {
+    var n = NOTES[cur]; if (!n) return;
+    note.innerHTML = '<b>0' + (cur + 1) + ' · <span lang="tr">' + n[0] + '</span><span lang="en">' + n[2] + '</span></b><span lang="tr">' + n[1] + '</span><span lang="en">' + n[3] + '</span>';
+  }
+  update(1);
+  if (!cv || !window.BIMModel) return;
+  var m = BIMModel.mount(cv, { bays: [5, 3], floors: 5, stage: 1, seed: 11 });
+  var playing = false;
+  function play() {
+    if (playing) return; playing = true;
+    BIMModel.play(m, 5600, function (e) { update(e); if (e >= 1) playing = false; });
+  }
+  document.getElementById('cs-play').addEventListener('click', play);
+  range.addEventListener('input', function () { var s = range.value / 100; m.set({ stage: s }); update(s, true); });
+  steps.forEach(function (b) {
+    b.addEventListener('click', function () { var s = b.dataset.at / 100; m.set({ stage: s }); update(s); });
+  });
+  document.querySelectorAll('[data-layer]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', String(on));
+      var L = Object.assign({}, m.get().layers); L[b.dataset.layer] = on; m.set({ layers: L });
+    });
+  });
+  // görünür olunca bir kez oynat
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); m.set({ stage: 0 }); update(0); play(); } }, { threshold: .35 });
+    io.observe(cv);
+  }
+  var red = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!red && matchMedia('(pointer: fine)').matches) {
+    var stage = cv.parentNode, tgt = 0, rc = 0, raf = 0;
+    stage.addEventListener('pointermove', function (e) { var r = stage.getBoundingClientRect(); tgt = ((e.clientX - r.left) / r.width - .5) * .5; if (!raf) raf = requestAnimationFrame(tick); });
+    stage.addEventListener('pointerleave', function () { tgt = 0; if (!raf) raf = requestAnimationFrame(tick); });
+    function tick() { rc += (tgt - rc) * .12; m.set({ rot: rc }); raf = Math.abs(tgt - rc) > .002 ? requestAnimationFrame(tick) : 0; }
+  }
+  var nx = document.getElementById('next-model');
+  if (nx) BIMModel.mount(nx, { bays: [3, 3], floors: 24, fh: .3, seed: 23, stage: 1, labels: false, clash: false, layers: { arc: true, str: true, mep: false } });
+})();
+
+</script>
+</body>
+</html>

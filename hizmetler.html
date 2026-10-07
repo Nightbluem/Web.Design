@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hizmetler | Firma Adı BIM</title>
+<meta name="description" content="Altı BIM hizmeti, altı katman: strateji, modelleme, koordinasyon, ortak veri ortamı, otomasyon ve eğitim. Net kapsam, dosya formatı belli teslimatlar.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hizmetler | Firma Adı BIM">
+<meta property="og:description" content="Altı BIM hizmeti, altı katman: strateji, modelleme, koordinasyon, ortak veri ortamı, otomasyon ve eğitim. Net kapsam, dosya formatı belli teslimatlar.">
+<meta property="og:url" content="https://www.firmaadi.com/hizmetler.html">
+<meta property="og:image" content="https://www.firmaadi.com/assets/logo.png">
+<link rel="canonical" href="https://www.firmaadi.com/hizmetler.html">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+/* ---- Başlık + patlatılmış katman yığını ---- */
+.hz-head h1 { font-size: clamp(50px, 9.4vw, 150px); }
+.hz-head h1 .l { display: block; }
+.hz-head h1 .s { color: var(--signal); }
+.stack { margin: 0; max-width: 460px; width: 100%; justify-self: center; }
+.stack-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.stack-svg .pl { transition: transform .35s cubic-bezier(.2,.7,.2,1); animation: plIn .8s cubic-bezier(.2,.7,.2,1) backwards; animation-delay: calc(var(--i) * 90ms + 150ms); }
+@keyframes plIn { from { transform: translateY(-46px); opacity: 0; } }
+.stack-svg .side { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1; }
+.stack-svg .s2 { fill: color-mix(in srgb, var(--ink) 14%, var(--paper)); }
+.stack-svg .top { fill: var(--paper); stroke: var(--ink); stroke-width: 1.3; transition: stroke .25s, fill .25s; }
+.stack-svg .pg { fill: none; stroke: var(--rule); stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.stack-svg .pd { fill: var(--ink-2); }
+.stack-svg .pw { fill: none; stroke: var(--ink); stroke-width: 2.2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.stack-svg .pw2 { fill: none; stroke: var(--ink-2); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+.stack-svg .ps { fill: none; stroke: var(--signal); stroke-width: 2.6; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.stack-svg .pc { fill: color-mix(in srgb, var(--signal) 16%, transparent); stroke: var(--signal); stroke-width: 1.4; stroke-dasharray: 3 2; vector-effect: non-scaling-stroke; }
+.stack-svg .pf { fill: var(--signal); stroke: var(--signal); vector-effect: non-scaling-stroke; }
+.stack-svg .lead { stroke: var(--ink-2); stroke-width: 1; }
+.stack-svg .lc { font: 600 12px var(--mono); fill: var(--signal); letter-spacing: .06em; }
+.stack-svg .ln { font: 500 12px var(--mono); fill: var(--ink-2); letter-spacing: .04em; text-transform: uppercase; }
+.stack-svg .pl.hl { transform: translateY(-12px); }
+.stack-svg .pl.hl .top { stroke: var(--signal); stroke-width: 2; fill: color-mix(in srgb, var(--signal) 6%, var(--paper)); }
+.stack-svg .pl.hl .ln { fill: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .stack-svg .pl { animation: none; transition: none; } }
+@media (min-width: 1000px) {
+  .hz-head { grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); column-gap: 40px; }
+  .hz-head > * { grid-column: 1; }
+  .hz-head > .stack { grid-column: 2; grid-row: 1 / span 3; align-self: end; }
+}
+@media (max-width: 999px) { .stack { max-width: 380px; } }
+
+/* ---- Katman yöneticisi (hizmet dizini) ---- */
+.layer-mgr { padding-block: 0; border-bottom: 1px solid var(--ink); }
+.layer-mgr .cap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 14px 10px; }
+.layer-mgr ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+.layer-mgr li { min-width: 0; }
+.layer-mgr a { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 4px 10px; align-items: center; padding: 14px 14px 16px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); text-decoration: none; height: 100%; position: relative; transition: background .2s, color .2s; }
+.layer-mgr a:hover, .layer-mgr a:focus-visible, .layer-mgr a.on { background: var(--ink); color: var(--paper); }
+.layer-mgr a:focus-visible { outline-offset: -3px; }
+.layer-mgr .sw { width: 22px; height: 22px; border: 1px solid currentColor; grid-row: span 2; align-self: start; }
+.layer-mgr .c { font: 600 11px var(--mono); letter-spacing: .08em; color: var(--signal); }
+.layer-mgr .n { font: 700 16px/1.15 var(--display); font-stretch: 112%; grid-column: 2; overflow-wrap: anywhere; }
+.layer-mgr .g { grid-column: 1 / -1; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-top: 6px; }
+.layer-mgr a:hover .g, .layer-mgr a:focus-visible .g, .layer-mgr a.on .g { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.sw-1 { background: radial-gradient(currentColor 1px, transparent 1.5px) 0 0 / 5px 5px; }
+.sw-2 { background: repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 5px); }
+.sw-3 { background: linear-gradient(var(--signal), var(--signal)) center / 100% 3px no-repeat, linear-gradient(currentColor, currentColor) center / 3px 100% no-repeat; }
+.sw-4 { background: linear-gradient(90deg, currentColor 0 25%, transparent 25% 37%, currentColor 37% 62%, transparent 62% 75%, var(--signal) 75%) center / 100% 40% no-repeat; }
+.sw-5 { background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 6px); opacity: .9; }
+.sw-6 { background: repeating-linear-gradient(currentColor 0 1px, transparent 1px 5px); }
+@media (max-width: 1100px) { .layer-mgr ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .layer-mgr ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } .layer-mgr a { padding: 12px 10px 14px; } .layer-mgr .n { font-size: 15px; } }
+
+/* ---- Hizmet katmanları: yapışkan model + spesifikasyon paftaları ---- */
+.svc-block { padding-top: clamp(48px, 6vw, 88px); }
+.svc-wrap { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: clamp(32px, 4vw, 64px); align-items: start; }
+.svc-wrap > * { min-width: 0; }
+.panel { position: sticky; top: 84px; height: calc(100vh - 104px); min-height: 460px; max-height: 780px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; border: 1px solid var(--ink); background: color-mix(in srgb, var(--paper) 82%, transparent); }
+.panel-top { display: flex; justify-content: space-between; align-items: end; gap: 16px; padding: 14px 16px; border-bottom: 1px solid var(--rule); }
+.pcode { font: 800 clamp(40px, 4.6vw, 68px)/.9 var(--display); font-stretch: 125%; letter-spacing: -.03em; }
+.pcode.flip { animation: flip .45s cubic-bezier(.2,.7,.2,1); }
+@keyframes flip { from { opacity: 0; transform: translateY(10px); } }
+.pname { text-align: right; max-width: 24ch; color: var(--ink-2); font: 500 11px/1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.pname b { display: block; color: var(--signal); font-weight: 600; }
+.pstage { position: relative; min-height: 0; overflow: hidden; }
+.pstage canvas, .mini canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: opacity .5s; }
+.pstage.faint canvas, .mini.faint canvas { opacity: .26; }
+.pstage .corner { position: absolute; left: 14px; top: 12px; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.ov { position: absolute; opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.pstage[data-k="cde"] .ov-cde, .pstage[data-k="otomasyon"] .ov-auto, .pstage[data-k="egitim"] .ov-edu, .pstage[data-k="strateji"] .ov-str { opacity: 1; visibility: visible; }
+.ov-cde { left: 14px; right: 14px; top: 50%; transform: translateY(-50%); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.ov-cde span { border: 1px solid var(--ink); background: var(--paper); padding: 14px 8px; text-align: center; position: relative; animation: cdeh 4.8s steps(1) infinite; color: var(--ink); }
+.ov-cde span small { display: block; color: var(--ink-2); font-size: 9.5px; margin-top: 4px; }
+.ov-cde span:nth-child(2) { animation-delay: 1.2s; } .ov-cde span:nth-child(3) { animation-delay: 2.4s; } .ov-cde span:nth-child(4) { animation-delay: 3.6s; }
+.ov-cde span + span::before { content: "→"; position: absolute; left: -10px; top: 50%; transform: translate(-50%, -50%); color: var(--ink-2); }
+@keyframes cdeh { 0% { background: var(--signal); color: var(--on-signal); border-color: var(--signal); } 25% { background: var(--paper); color: var(--ink); border-color: var(--ink); } }
+.ov-cde span:nth-child(3) { box-shadow: inset 0 -3px 0 var(--ok); }
+.ov-auto { left: 14px; bottom: 12px; right: 14px; background: var(--ink); color: var(--paper); padding: 10px 12px; text-transform: none; letter-spacing: .02em; font-size: 11.5px; line-height: 1.6; }
+.ov-auto b { color: var(--signal); font-weight: 600; }
+.ov-auto i { font-style: normal; color: var(--ok); }
+.ov-edu, .ov-str { left: 14px; bottom: 12px; display: grid; gap: 6px; background: var(--paper); border: 1px solid var(--rule); padding: 10px 12px; }
+.ov-edu span { display: flex; align-items: center; gap: 8px; }
+.ov-edu span::before { content: ""; width: 18px; height: 3px; background: var(--c); }
+.ov-str { grid-auto-flow: column; gap: 8px; align-items: center; }
+.ov-str b { font-weight: 600; color: var(--ink); } .ov-str em { font-style: normal; color: var(--signal); }
+.pfoot { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 16px; border-top: 1px solid var(--rule); font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.pills { display: flex; gap: 6px; }
+.pills span { border: 1px solid var(--rule); padding: 4px 7px; color: var(--ink-2); text-decoration: line-through; transition: all .25s; }
+.pills span.on { border-color: var(--ink); background: var(--ink); color: var(--paper); text-decoration: none; }
+.rail { display: flex; gap: 4px; align-items: center; }
+.rail span { width: 22px; height: 4px; background: var(--rule); transition: background .25s, width .25s; }
+.rail span.on { background: var(--signal); width: 38px; }
+.rail-lbl { color: var(--ink-2); margin-right: 8px; white-space: nowrap; }
+
+.svc-list { counter-reset: none; }
+.svc { position: relative; display: grid; gap: 24px; padding-block: clamp(36px, 4.4vw, 64px); border-bottom: 1px solid var(--rule); scroll-margin-top: 84px; }
+.svc:first-child { padding-top: 0; }
+.svc::before { content: ""; position: absolute; left: calc(clamp(32px, 4vw, 64px) / -2); top: clamp(36px, 4.4vw, 64px); bottom: clamp(36px, 4.4vw, 64px); width: 2px; background: var(--signal); transform: scaleY(0); transform-origin: top; transition: transform .5s cubic-bezier(.6,0,.2,1); }
+.svc:first-child::before { top: 0; }
+.svc.is-active::before { transform: scaleY(1); }
+.svc-head { display: grid; gap: 10px; }
+.svc-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.svc-code { font: 800 clamp(54px, 6.6vw, 104px)/.85 var(--display); font-stretch: 125%; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1.5px var(--ink); transition: color .35s, -webkit-text-stroke-color .35s; }
+.svc.is-active .svc-code { color: var(--signal); -webkit-text-stroke-color: var(--signal); }
+.svc-layer { color: var(--ink-2); }
+.svc h3 { font-size: clamp(28px, 3.3vw, 46px); font-stretch: 112%; letter-spacing: -.02em; }
+.svc-intro { color: var(--ink-2); max-width: 58ch; font-size: 17.5px; }
+.svc-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px 36px; }
+.svc-cols > * { min-width: 0; }
+.svc h4 { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); padding-bottom: 8px; border-bottom: 1px solid var(--ink); margin-bottom: 4px; }
+.svc-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px 20px; flex-wrap: wrap; }
+.svc-cta { font: 600 12.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.svc-cta:hover, .svc-cta:focus-visible { color: var(--signal); }
+.mini { display: none; }
+@media (max-width: 999px) {
+  .svc-wrap { grid-template-columns: 1fr; }
+  .panel { display: none; }
+  .mini { display: block; position: relative; aspect-ratio: 16 / 10; border: 1px solid var(--ink); background: color-mix(in srgb, var(--paper) 80%, transparent); }
+  .mini .mono { position: absolute; left: 10px; top: 8px; color: var(--ink-2); font-size: 10.5px; }
+  .svc::before { left: -10px; }
+}
+.meter { display: inline-flex; gap: 3px; vertical-align: middle; }
+.meter i { width: 14px; height: 10px; border: 1px solid var(--ink-2); }
+.meter i.f { background: var(--ink); border-color: var(--ink); }
+.meter.hot i.f { background: var(--signal); border-color: var(--signal); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font: 600 11px var(--mono); letter-spacing: .06em; border: 1px solid var(--ink); padding: 5px 7px; text-decoration: none; white-space: nowrap; }
+.tag:hover, .tag:focus-visible { background: var(--ink); color: var(--paper); }
+/* ---- Süreç: örnek takvim (gantt) ---- */
+.gantt { border-top: 1px solid var(--ink); }
+.g-row { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 24px; padding-block: 16px; border-bottom: 1px solid var(--rule); align-items: center; }
+.g-row > * { min-width: 0; }
+.g-lbl h3 { font-size: 20px; font-stretch: 112%; display: flex; gap: 10px; align-items: baseline; }
+.g-lbl h3 .mono { color: var(--signal); }
+.g-lbl p { color: var(--ink-2); font-size: 14.5px; line-height: 1.45; margin-top: 4px; }
+.g-lbl .out { display: inline-block; margin-top: 8px; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); border-left: 2px solid var(--signal); padding-left: 8px; }
+.track { position: relative; height: 34px; background-image: linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: calc(100% / 12) 100%; border-right: 1px solid var(--rule); }
+.bar { position: absolute; top: 7px; bottom: 7px; left: calc(var(--s) * 100% / 12); width: calc(var(--l) * 100% / 12); background: var(--ink); }
+.bar.loop { background: repeating-linear-gradient(90deg, var(--signal) 0 calc(100% / var(--l) - 4px), transparent calc(100% / var(--l) - 4px) calc(100% / var(--l))); }
+.bar.end { background: var(--ok); }
+.bar::after { content: ""; position: absolute; right: -1px; top: -7px; bottom: -7px; width: 1px; background: var(--ink); }
+.g-scale { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 24px; padding-block: 10px; }
+.g-scale .ticks { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); font: 500 10.5px var(--mono); color: var(--ink-2); }
+.g-scale .ticks span { padding-left: 4px; border-left: 1px solid var(--rule); }
+@media (max-width: 760px) {
+  .g-row, .g-scale { grid-template-columns: 1fr; gap: 10px; }
+  .g-scale > :first-child { display: none; }
+  .g-scale .ticks span:nth-child(even) { color: transparent; }
+}
+
+/* ---- Çalışma modelleri ---- */
+.eng { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.eng-card { display: grid; grid-template-rows: auto auto 1fr auto; gap: 16px; padding: clamp(20px, 2.4vw, 32px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.eng-card svg { display: block; width: 100%; height: auto; color: var(--ink); }
+.eng-card .no { font: 600 11px var(--mono); letter-spacing: .08em; color: var(--signal); text-transform: uppercase; }
+.eng-card h3 { font-size: clamp(24px, 2.4vw, 34px); font-stretch: 118%; letter-spacing: -.02em; margin-top: 6px; }
+.eng-card p { color: var(--ink-2); }
+.eng-card dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); border-top: 1px solid currentColor; }
+.eng-card dt, .eng-card dd { padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.eng-card dt { font: 500 10.5px/1.9 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding-right: 14px; }
+.eng-card dd { margin: 0; font-size: 15px; line-height: 1.45; }
+.eng-card.feat { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.eng-card.feat svg { color: var(--paper); }
+.eng-card.feat p, .eng-card.feat dt { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+.eng-card.feat dt, .eng-card.feat dd { border-color: color-mix(in srgb, var(--paper) 22%, transparent); }
+.eng-card .fig-s { stroke: currentColor; fill: none; stroke-width: 1.5; }
+.eng-card .fig-d { stroke: currentColor; fill: none; stroke-width: 1; stroke-dasharray: 4 3; opacity: .7; }
+.eng-card .fig-f { fill: currentColor; }
+.eng-card .fig-x { fill: var(--signal); stroke: var(--signal); }
+.eng-card .fig-xs { stroke: var(--signal); fill: none; stroke-width: 2; }
+.eng-card .fig-t { font: 500 10px var(--mono); fill: currentColor; letter-spacing: .06em; opacity: .75; }
+.eng-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px 24px; flex-wrap: wrap; margin-top: clamp(28px, 3vw, 40px); }
+.eng-foot p { max-width: 52ch; color: var(--ink-2); }
+@media (max-width: 900px) { .eng { grid-template-columns: 1fr; } }
+.svc-more { margin-right: 18px; font-weight: 600; color: var(--signal) !important; }
+
+/* ---- Sadeleştirilmiş hizmet paftası: infografik + künye karoları ---- */
+.svc { gap: 22px; }
+.svc-intro { font-size: 18px; max-width: 46ch; color: var(--ink); }
+.hz-note { margin-top: -12px; }
+.hz-fig { margin: 0; border: 1px solid var(--rule); padding: clamp(14px, 2vw, 22px); background: color-mix(in srgb, var(--paper) 86%, transparent); }
+.hz-fig svg { display: block; width: 100%; height: auto; color: var(--ink); overflow: visible; }
+.hz-fig figcaption { margin-top: 10px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.hz-fig .s { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.hz-fig .s2 { fill: none; stroke: var(--ink-2); stroke-width: 1.2; stroke-linecap: round; }
+.hz-fig .dsh { fill: none; stroke: var(--ink-2); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.hz-fig .pp { fill: var(--paper); stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
+.hz-fig .p2 { fill: var(--paper-2); stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
+.hz-fig .fi { fill: currentColor; }
+.hz-fig .x { fill: none; stroke: var(--signal); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.hz-fig .xf { fill: var(--signal); }
+.hz-fig .xs { fill: color-mix(in srgb, var(--signal) 10%, var(--paper)); stroke: var(--signal); stroke-width: 2; }
+.hz-fig .ok { fill: none; stroke: var(--ok); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.hz-fig .okf { fill: var(--ok); }
+.hz-fig .t { font: 600 18px var(--mono); fill: currentColor; letter-spacing: .03em; }
+.hz-fig .t2 { font: 500 17px var(--mono); fill: var(--ink-2); letter-spacing: .02em; }
+.hz-fig .tx { font: 600 18px var(--mono); fill: var(--signal); }
+.hz-fig .tok { font: 600 18px var(--mono); fill: var(--ok); }
+.hz-fig .tp { font: 600 18px var(--mono); fill: var(--paper); }
+.hz-fig .big { font: 800 44px var(--display); font-stretch: 118%; letter-spacing: -.02em; }
+@media (max-width: 600px) { .hz-fig { padding: 10px 6px; } }
+
+.hz-facts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.hz-facts li { min-width: 0; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 2px 12px; align-items: center; padding: 14px 14px 16px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.hz-facts .ic { width: 30px; height: 30px; grid-row: span 2; color: var(--ink); fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.hz-facts .v { font: 700 clamp(18px, 1.7vw, 22px)/1.1 var(--display); font-stretch: 112%; overflow-wrap: anywhere; }
+.hz-facts .k { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.fmt { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.fmt code { font: 600 11px/1 var(--mono); letter-spacing: .06em; border: 1px solid var(--ink); padding: 5px 6px; white-space: nowrap; }
+@media (max-width: 600px) {
+  .hz-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hz-facts li:last-child { grid-column: 1 / -1; }
+  .hz-facts li { padding: 12px 10px 14px; gap: 2px 10px; grid-template-columns: 26px minmax(0, 1fr); }
+  .hz-facts .ic { width: 26px; height: 26px; }
+}
+
+/* ---- Sektör karoları ---- */
+.hz-sec { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.hz-sec li { min-width: 0; display: grid; gap: 12px; align-content: start; padding: clamp(16px, 2vw, 26px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.hz-sec .top { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+.hz-sec .ico { width: clamp(76px, 7vw, 104px); height: auto; color: var(--ink); }
+.hz-sec .ico .s { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.hz-sec .ico .s2 { fill: none; stroke: var(--ink-2); stroke-width: 1.1; }
+.hz-sec .ico .x { fill: none; stroke: var(--signal); stroke-width: 2.4; stroke-linecap: round; }
+.hz-sec .code { font: 600 12px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.hz-sec h3 { font-size: clamp(19px, 1.9vw, 25px); font-stretch: 112%; letter-spacing: -.01em; }
+.hz-sec .row { display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; flex-wrap: wrap; }
+@media (max-width: 900px) { .hz-sec { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .hz-sec li { padding: 14px 12px; } .hz-sec .meter i { width: 11px; } }
+
+/* ---- Süreç + çalışma modelleri: sade ---- */
+.g-lbl h3 { font-size: clamp(18px, 1.6vw, 22px); }
+.eng-card { grid-template-rows: auto auto 1fr; }
+.eng-card dl { align-self: end; }
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="tr">İçeriğe geç</span><span lang="en">Skip to content</span></a>
+<div class="draft-note"><span lang="tr">Taslak · Firma adı, iletişim bilgileri, projeler ve rakamlar örnektir.</span><span lang="en">Draft · Company name, contact details, projects and figures are placeholders.</span></div>
+<div class="axis-left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+<header class="topbar sheet">
+  <div class="frame">
+    <a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a>
+    <div class="top-right">
+      <span class="mono dim sheet-label" aria-hidden="true">A-100 · <span lang="tr">Hizmetler</span><span lang="en">Services</span></span>
+      <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" aria-pressed="true">TR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i><span lang="tr">Paftalar</span><span lang="en">Sheets</span></button>
+    </div>
+  </div>
+</header>
+<nav class="register" id="register" hidden aria-label="Paftalar">
+  <div class="register-head"><span class="mono"><span lang="tr">Pafta listesi · 5 pafta · 9 alt pafta</span><span lang="en">Sheet register · 5 sheets · 9 sub-sheets</span></span><button class="register-close" type="button" data-close-register><span lang="tr">Kapat</span><span lang="en">Close</span> ✕</button></div>
+  <ol>
+    <li><a href="./" data-sheet="A-000" data-label="Kapak"><span class="no">A-000</span><span class="t"><span lang="tr">Kapak</span><span lang="en">Cover</span></span><span class="d"><span lang="tr">Ana sayfa</span><span lang="en">Home</span></span></a></li><li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler" aria-current="page"><span class="no">A-100</span><span class="t"><span lang="tr">Hizmetler</span><span lang="en">Services</span></span><span class="d"><span lang="tr">Strateji · Model · Koordinasyon</span><span lang="en">Strategy · Model · Coordination</span></span></a><ul class="subs"><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="sno">A-101</span><span class="st"><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span><span class="sd"><span lang="tr">EIR, BEP, ISO 19650 yol haritası</span><span lang="en">EIR, BEP, ISO 19650 roadmap</span></span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="sno">A-102</span><span class="st"><span lang="tr">Modelleme</span><span lang="en">Modelling</span></span><span class="sd"><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span class="sno">A-103</span><span class="st"><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="sd"><span lang="tr">Federe model, çakışma, BCF</span><span lang="en">Federated model, clashes, BCF</span></span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span class="sno">A-104</span><span class="st"><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></span><span class="sd"><span lang="tr">ACC kurulumu, isimlendirme, onaylar</span><span lang="en">ACC setup, naming, approvals</span></span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span class="sno">A-105</span><span class="st"><span lang="tr">Otomasyon</span><span lang="en">Automation</span></span><span class="sd"><span lang="tr">Dynamo, Python, Revit API eklentileri</span><span lang="en">Dynamo, Python, Revit API add-ins</span></span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span class="sno">A-106</span><span class="st"><span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></span><span class="sd"><span lang="tr">Revit, Navisworks, ISO 19650 eğitimleri</span><span lang="en">Revit, Navisworks, ISO 19650 courses</span></span></a></li></ul></li><li><a href="projeler.html" data-sheet="A-200" data-label="Projeler"><span class="no">A-200</span><span class="t"><span lang="tr">Projeler</span><span lang="en">Projects</span></span><span class="d"><span lang="tr">Proje dizini</span><span lang="en">Project index</span></span></a><ul class="subs"><li><a href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü"><span class="sno">A-210</span><span class="st"><span lang="tr">Hastane kampüsü</span><span lang="en">Hospital campus</span></span><span class="sd"><span lang="tr">Sağlık · Türkiye · BIM yöneticisi</span><span lang="en">Healthcare · Türkiye · BIM manager</span></span></a></li><li><a href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span class="sno">A-220</span><span class="st"><span lang="tr">Konut kulesi</span><span lang="en">Residential tower</span></span><span class="sd"><span lang="tr">Konut · Almanya · Modelleme ekibi</span><span lang="en">Residential · Germany · Modelling team</span></span></a></li><li><a href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span class="sno">A-230</span><span class="st"><span lang="tr">Lojistik merkezi</span><span lang="en">Logistics hub</span></span><span class="sd"><span lang="tr">Endüstriyel · BAE · Scan-to-BIM</span><span lang="en">Industrial · UAE · Scan-to-BIM</span></span></a></li></ul></li><li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda"><span class="no">A-300</span><span class="t"><span lang="tr">Hakkımızda</span><span lang="en">About</span></span><span class="d"><span lang="tr">Ekip · Yaklaşım</span><span lang="en">Team · Approach</span></span></a></li><li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span class="no">A-900</span><span class="t"><span lang="tr">İletişim</span><span lang="en">Contact</span></span><span class="d"><span lang="tr">Teklif · Ofisler</span><span lang="en">Proposal · Offices</span></span></a></li>
+  </ol>
+  <div class="register-foot"><span>info@firmaadi.com</span><span>+90 (212) 000 00 00</span><span>İstanbul · London</span></div>
+</nav>
+<aside class="titleblock" aria-hidden="true">
+  <div><span><span lang="tr">Proje</span><span lang="en">Project</span></span><b>Firma Adı BIM</b></div>
+  <div><span><span lang="tr">Pafta</span><span lang="en">Sheet</span></span><b>A-100</b></div>
+  <div><span><span lang="tr">Ölçek</span><span lang="en">Scale</span></span><b>1:100</b></div>
+  <div class="xy"><span><span lang="tr">Koordinat</span><span lang="en">Coordinate</span></span><b id="tb-xy">X 0.0 · Y 0.0</b></div>
+  <div><span>Rev</span><b>P07</b></div>
+  <div><span><span lang="tr">Durum</span><span lang="en">Status</span></span><b>S2 · <span lang="tr">Bilgi</span><span lang="en">Info</span></b></div>
+</aside>
+<main id="main" class="sheet"><div class="frame">
+  <header class="sheet-head hz-head">
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-100</b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>1:100</b></span>
+      <span>Rev <b>P07</b></span>
+      <span><b>6</b> <span lang="tr">katman</span><span lang="en">layers</span></span>
+      <span>ISO 19650</span>
+    </div>
+    <h1>
+      <span lang="tr"><span class="l">Katman</span><span class="l o">katman<span class="s">.</span></span></span>
+      <span lang="en"><span class="l">Layer</span><span class="l o">by layer<span class="s">.</span></span></span>
+    </h1>
+    <p class="lede"><span lang="tr">Altı hizmet, bir modelin altı katmanı. Birini seçin ya da üst üste koyun.</span><span lang="en">Six services, six layers of one model. Pick one or stack several.</span></p>
+    <figure class="stack" id="stack">
+      <svg class="stack-svg" viewBox="0 0 500 580" aria-hidden="true" focusable="false"><g transform="translate(0 478)"><g class="pl" data-plate="strateji" style="--i:5"><path class="side" d="M60 0L210 75V84L60 9Z"/><path class="side s2" d="M210 75L360 0V9L210 84Z"/><path class="top" d="M210 -75L360 0L210 75L60 0Z"/><g transform="matrix(1.5 0.75 -1.5 0.75 210 -75)"><path class="pg" d="M25 8V92M8 25H92"/><path class="pg" d="M50 8V92M8 50H92"/><path class="pg" d="M75 8V92M8 75H92"/><circle class="pd" cx="27.8" cy="16.7" r="1.1"/><circle class="pd" cx="41.3" cy="21.0" r="1.1"/><circle class="pd" cx="13.6" cy="41.7" r="1.1"/><circle class="pd" cx="85.1" cy="75.2" r="1.1"/><circle class="pd" cx="72.3" cy="26.6" r="1.1"/><circle class="pd" cx="53.1" cy="31.2" r="1.1"/><circle class="pd" cx="22.5" cy="16.9" r="1.1"/><circle class="pd" cx="26.0" cy="85.9" r="1.1"/><circle class="pd" cx="77.6" cy="75.8" r="1.1"/><circle class="pd" cx="75.2" cy="24.2" r="1.1"/><circle class="pd" cx="34.0" cy="60.7" r="1.1"/><circle class="pd" cx="69.5" cy="79.8" r="1.1"/><circle class="pd" cx="81.9" cy="15.3" r="1.1"/><circle class="pd" cx="58.9" cy="64.4" r="1.1"/><circle class="pd" cx="50.5" cy="22.9" r="1.1"/><circle class="pd" cx="47.8" cy="15.5" r="1.1"/><circle class="pd" cx="86.5" cy="80.7" r="1.1"/><circle class="pd" cx="54.0" cy="33.2" r="1.1"/><circle class="pd" cx="84.3" cy="56.1" r="1.1"/><circle class="pd" cx="82.1" cy="79.2" r="1.1"/><circle class="pd" cx="50.7" cy="42.8" r="1.1"/><circle class="pd" cx="58.3" cy="44.2" r="1.1"/><circle class="pd" cx="21.6" cy="33.6" r="1.1"/><circle class="pd" cx="76.3" cy="11.6" r="1.1"/><circle class="pd" cx="11.9" cy="60.6" r="1.1"/><circle class="pd" cx="31.6" cy="52.9" r="1.1"/><circle class="pd" cx="47.6" cy="36.8" r="1.1"/><circle class="pd" cx="91.8" cy="24.4" r="1.1"/><circle class="pd" cx="42.7" cy="25.0" r="1.1"/><circle class="pd" cx="61.1" cy="31.2" r="1.1"/><circle class="pd" cx="37.9" cy="70.7" r="1.1"/><circle class="pd" cx="34.9" cy="54.9" r="1.1"/><circle class="pd" cx="84.0" cy="16.5" r="1.1"/><circle class="pd" cx="13.2" cy="27.2" r="1.1"/><circle class="pd" cx="72.3" cy="59.7" r="1.1"/><circle class="pd" cx="27.9" cy="35.8" r="1.1"/><circle class="pd" cx="22.9" cy="46.6" r="1.1"/><circle class="pd" cx="11.6" cy="66.6" r="1.1"/><circle class="pd" cx="83.3" cy="88.2" r="1.1"/><circle class="pd" cx="69.7" cy="88.6" r="1.1"/><circle class="pd" cx="9.5" cy="32.3" r="1.1"/><circle class="pd" cx="89.1" cy="73.1" r="1.1"/><circle class="pd" cx="42.5" cy="87.2" r="1.1"/><circle class="pd" cx="60.1" cy="76.7" r="1.1"/><circle class="pd" cx="32.6" cy="24.1" r="1.1"/><circle class="pd" cx="45.3" cy="19.5" r="1.1"/></g><path class="lead" d="M364 0H386"/><text class="lc" x="392" y="-3">A-101</text><g lang="tr"><text class="ln" x="392" y="13">Strateji</text></g><g lang="en"><text class="ln" x="392" y="13">Strategy</text></g></g></g><g transform="translate(0 410)"><g class="pl" data-plate="modelleme" style="--i:4"><path class="side" d="M60 0L210 75V84L60 9Z"/><path class="side s2" d="M210 75L360 0V9L210 84Z"/><path class="top" d="M210 -75L360 0L210 75L60 0Z"/><g transform="matrix(1.5 0.75 -1.5 0.75 210 -75)"><path class="pw" d="M12 12H88V88H12ZM12 46H60M60 12V88M60 66H88M30 46V88"/></g><path class="lead" d="M364 0H386"/><text class="lc" x="392" y="-3">A-102</text><g lang="tr"><text class="ln" x="392" y="13">Modelleme</text></g><g lang="en"><text class="ln" x="392" y="13">Modelling</text></g></g></g><g transform="translate(0 342)"><g class="pl" data-plate="koordinasyon" style="--i:3"><path class="side" d="M60 0L210 75V84L60 9Z"/><path class="side s2" d="M210 75L360 0V9L210 84Z"/><path class="top" d="M210 -75L360 0L210 75L60 0Z"/><g transform="matrix(1.5 0.75 -1.5 0.75 210 -75)"><path class="pw" d="M52 6V94"/><path class="ps" d="M6 40H94"/><circle class="pc" cx="52" cy="40" r="11"/></g><path class="lead" d="M364 0H386"/><text class="lc" x="392" y="-3">A-103</text><g lang="tr"><text class="ln" x="392" y="13">Koordinasyon</text></g><g lang="en"><text class="ln" x="392" y="13">Coordination</text></g></g></g><g transform="translate(0 274)"><g class="pl" data-plate="cde" style="--i:2"><path class="side" d="M60 0L210 75V84L60 9Z"/><path class="side s2" d="M210 75L360 0V9L210 84Z"/><path class="top" d="M210 -75L360 0L210 75L60 0Z"/><g transform="matrix(1.5 0.75 -1.5 0.75 210 -75)"><rect class="pw2" x="8" y="40" width="15" height="18"/><rect class="pw2" x="31" y="40" width="15" height="18"/><rect class="pf" x="54" y="40" width="15" height="18"/><rect class="pw2" x="77" y="40" width="15" height="18"/><path class="pg" d="M23 49H31M46 49H54M69 49H77"/></g><path class="lead" d="M364 0H386"/><text class="lc" x="392" y="-3">A-104</text><g lang="tr"><text class="ln" x="392" y="13">CDE</text></g><g lang="en"><text class="ln" x="392" y="13">CDE</text></g></g></g><g transform="translate(0 206)"><g class="pl" data-plate="otomasyon" style="--i:1"><path class="side" d="M60 0L210 75V84L60 9Z"/><path class="side s2" d="M210 75L360 0V9L210 84Z"/><path class="top" d="M210 -75L360 0L210 75L60 0Z"/><g transform="matrix(1.5 0.75 -1.5 0.75 210 -75)"><path class="pw" d="M32 24 14 50 32 76M68 24 86 50 68 76"/><path class="ps" d="M58 20 42 80"/></g><path class="lead" d="M364 0H386"/><text class="lc" x="392" y="-3">A-105</text><g lang="tr"><text class="ln" x="392" y="13">Otomasyon</text></g><g lang="en"><text class="ln" x="392" y="13">Automation</text></g></g></g><g transform="translate(0 138)"><g class="pl" data-plate="egitim" style="--i:0"><path class="side" d="M60 0L210 75V84L60 9Z"/><path class="side s2" d="M210 75L360 0V9L210 84Z"/><path class="top" d="M210 -75L360 0L210 75L60 0Z"/><g transform="matrix(1.5 0.75 -1.5 0.75 210 -75)"><path class="pw2" d="M12 18H82"/><path class="pw2" d="M12 30H64"/><path class="pw2" d="M12 42H88"/><path class="ps" d="M12 54H50"/><path class="pw2" d="M12 66H76"/><path class="pw2" d="M12 78H40"/></g><path class="lead" d="M364 0H386"/><text class="lc" x="392" y="-3">A-106</text><g lang="tr"><text class="ln" x="392" y="13">Eğitim</text></g><g lang="en"><text class="ln" x="392" y="13">Training</text></g></g></g></svg>
+      <figcaption class="sr-only"><span lang="tr">Altı hizmeti üst üste duran altı katman olarak gösteren patlatılmış izometrik çizim: en altta strateji, en üstte eğitim.</span><span lang="en">Exploded isometric drawing showing the six services as six stacked layers, strategy at the bottom and training on top.</span></figcaption>
+    </figure>
+  </header>
+
+  <nav class="layer-mgr" aria-labelledby="lm-title">
+    <div class="cap mono dim"><span id="lm-title"><span lang="tr">Katman yöneticisi · 6 hizmet</span><span lang="en">Layer manager · 6 services</span></span><span aria-hidden="true">VIS / GRAPHICS</span></div>
+    <ul>
+      <li><a href="#strateji" data-plate="strateji"><span class="sw sw-1" aria-hidden="true"></span><span class="c">A-101</span><span class="n"><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span><span class="g">EIR · BEP · ISO 19650</span></a></li>
+      <li><a href="#modelleme" data-plate="modelleme"><span class="sw sw-2" aria-hidden="true"></span><span class="c">A-102</span><span class="n"><span lang="tr">Modelleme</span><span lang="en">Modelling</span></span><span class="g">ARC · STR · MEP · Scan</span></a></li>
+      <li><a href="#koordinasyon" data-plate="koordinasyon"><span class="sw sw-3" aria-hidden="true"></span><span class="c">A-103</span><span class="n"><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="g">Clash · BCF</span></a></li>
+      <li><a href="#cde" data-plate="cde"><span class="sw sw-4" aria-hidden="true"></span><span class="c">A-104</span><span class="n"><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data env.</span></span><span class="g">ACC · Naming</span></a></li>
+      <li><a href="#otomasyon" data-plate="otomasyon"><span class="sw sw-5" aria-hidden="true"></span><span class="c">A-105</span><span class="n"><span lang="tr">Otomasyon</span><span lang="en">Automation</span></span><span class="g">Dynamo · C#</span></a></li>
+      <li><a href="#egitim" data-plate="egitim"><span class="sw sw-6" aria-hidden="true"></span><span class="c">A-106</span><span class="n"><span lang="tr">Eğitim ve destek</span><span lang="en">Training &amp; support</span></span><span class="g">Revit · Navisworks</span></a></li>
+    </ul>
+  </nav>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="hz-clock" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12"/><path d="M15 8v7l5 3"/></symbol>
+    <symbol id="hz-team" viewBox="0 0 30 30"><circle cx="10" cy="10" r="4"/><circle cx="21" cy="11" r="3.4"/><path d="M3 25c0-5 3-8 7-8s7 3 7 8M17 25c0-4 1.6-7 4-7s5 2.5 5 7"/></symbol>
+    <symbol id="hz-file" viewBox="0 0 30 30"><path d="M7 3h11l6 6v18H7Z"/><path d="M18 3v6h6M11 15h9M11 19h9M11 23h5"/></symbol>
+  </svg>
+
+  <section class="block svc-block" aria-labelledby="svc-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Hizmet katmanları</span><span lang="en">Service layers</span></span>
+      <h2 id="svc-title"><span lang="tr">Her hizmet, modelin bir katmanı.</span><span lang="en">Every service is a layer of the model.</span></h2>
+      <p class="mono dim"><span lang="tr">Kaydırın: model her katmanı çizer. Tüm değerler örnektir.</span><span lang="en">Scroll: the model draws each layer. All values are examples.</span></p>
+    </div>
+
+    <div class="svc-wrap">
+      <aside class="panel" aria-hidden="true">
+        <div class="panel-top">
+          <span class="pcode" id="p-code">A-101</span>
+          <span class="pname"><b id="p-view">VIEW 01</b><span id="p-name">SCAN · GRID · LOD 100</span></span>
+        </div>
+        <div class="pstage" id="p-stage" data-k="strateji">
+          <canvas id="svc-model"></canvas>
+          <span class="corner">FED-MODEL · 3D</span>
+          <div class="ov ov-str"><b>EIR</b><em>→</em><b>BEP</b><em>→</em><b>MIDP</b><em>→</em><b>TIDP</b></div>
+          <div class="ov ov-cde"><span>WIP<small>S0</small></span><span>SHARED<small>S1–S4</small></span><span>PUBLISHED<small>A1</small></span><span>ARCHIVE<small>AB</small></span></div>
+          <div class="ov ov-auto" id="p-console"><b>&gt;</b> rebuild --bays 4x3 --floors 6<br><i>✓</i> 1 284 elements · 1.5 s</div>
+          <div class="ov ov-edu"><span style="--c: var(--ink)">ARC · STR</span><span style="--c: var(--signal)">MEP</span><span style="--c: var(--ok)">RESOLVED</span></div>
+        </div>
+        <div class="pfoot">
+          <div class="pills"><span id="pl-arc" class="on">ARC</span><span id="pl-str" class="on">STR</span><span id="pl-mep" class="on">MEP</span></div>
+          <div class="rail"><span class="rail-lbl">A-101…106</span><span class="on"></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+      </aside>
+
+      <div class="svc-list">
+        <!-- A-101 -->
+        <article class="svc is-active" id="strateji" aria-labelledby="t-strateji">
+          <div class="svc-head">
+            <div class="svc-top"><span class="svc-code" aria-hidden="true">A-101</span><span class="svc-layer mono"><span lang="tr">Katman 01 · Plan</span><span lang="en">Layer 01 · Plan</span></span></div>
+            <h3 id="t-strateji"><span class="sr-only">A-101 </span><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></h3>
+          </div>
+          <div class="mini" data-k="strateji" aria-hidden="true"><canvas></canvas><span class="mono">A-101 · SCAN · GRID</span></div>
+          <p class="svc-intro"><span lang="tr">İlk çizgiden önce herkes ne teslim edeceğini bilir.</span><span lang="en">Before the first line, everyone knows what they deliver.</span></p>
+          <figure class="hz-fig">
+            <svg class="draw" viewBox="0 0 520 210" role="img" aria-labelledby="f101">
+              <title id="f101">EIR, BEP, MIDP ve TIDP belgelerinin ISO 19650 sırasıyla birbirini beslediğini gösteren akış</title>
+              <path class="dsh" d="M14 22H506M14 16V28M506 16V28"/><rect x="200" y="8" width="120" height="26" fill="var(--paper)"/><text class="t2" x="260" y="27" text-anchor="middle">ISO 19650</text>
+              <g transform="translate(18 52)"><path class="pp" d="M0 0h56l16 16v76H0Z"/><path class="s2" d="M56 0v16h16M12 34h44M12 46h48M12 58h36M12 70h44"/></g>
+              <g transform="translate(150 52)"><path class="xs" d="M0 0h56l16 16v76H0Z"/><path class="x" d="M56 0v16h16"/><path class="s2" d="M12 34h44M12 46h48M12 58h36"/><path class="ok" d="M14 74l7 7 14-14"/></g>
+              <g transform="translate(282 52)"><path class="pp" d="M0 0h56l16 16v76H0Z"/><path class="s2" d="M56 0v16h16"/><path class="s" d="M12 36h20M12 50h34M12 64h48M12 78h26"/></g>
+              <g transform="translate(414 52)"><path class="pp" d="M0 0h56l16 16v76H0Z"/><path class="s2" d="M56 0v16h16"/><circle class="s" cx="24" cy="44" r="7"/><circle class="s" cx="48" cy="44" r="7"/><path class="s" d="M14 74c0-10 5-16 10-16s10 6 10 16M38 74c0-10 5-16 10-16s10 6 10 16"/></g>
+              <path class="s" d="M98 98h40M130 92l8 6-8 6M230 98h40M262 92l8 6-8 6M362 98h40M394 92l8 6-8 6"/>
+              <text class="t" x="54" y="172" text-anchor="middle">EIR</text><text class="tx" x="186" y="172" text-anchor="middle">BEP</text><text class="t" x="318" y="172" text-anchor="middle">MIDP</text><text class="t" x="450" y="172" text-anchor="middle">TIDP</text>
+              <g lang="tr"><text class="t2" x="54" y="196" text-anchor="middle">İhtiyaç</text><text class="t2" x="186" y="196" text-anchor="middle">Plan</text><text class="t2" x="318" y="196" text-anchor="middle">Takvim</text><text class="t2" x="450" y="196" text-anchor="middle">Ekipler</text></g>
+              <g lang="en"><text class="t2" x="54" y="196" text-anchor="middle">Needs</text><text class="t2" x="186" y="196" text-anchor="middle">Plan</text><text class="t2" x="318" y="196" text-anchor="middle">Schedule</text><text class="t2" x="450" y="196" text-anchor="middle">Teams</text></g>
+            </svg>
+          </figure>
+          <ul class="hz-facts">
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-clock"/></svg><span class="v"><span lang="tr">3–6 hafta</span><span lang="en">3–6 weeks</span></span><span class="k"><span lang="tr">Süre</span><span lang="en">Duration</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-team"/></svg><span class="v"><span lang="tr">2 kişi</span><span lang="en">2 people</span></span><span class="k"><span lang="tr">Ekip</span><span lang="en">Team</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-file"/></svg><span class="v fmt"><code>PDF</code><code>DOCX</code><code>XLSX</code></span><span class="k"><span lang="tr">Teslim</span><span lang="en">Delivered as</span></span></li>
+          </ul>
+          <div class="svc-foot"><a class="svc-cta svc-more" href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span lang="tr">Ayrıntılı pafta A-101 →</span><span lang="en">Full sheet A-101 →</span></a><a class="svc-cta" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin →</span><span lang="en">Request a proposal →</span></a></div>
+        </article>
+
+        <!-- A-102 -->
+        <article class="svc" id="modelleme" aria-labelledby="t-modelleme">
+          <div class="svc-head">
+            <div class="svc-top"><span class="svc-code" aria-hidden="true">A-102</span><span class="svc-layer mono"><span lang="tr">Katman 02 · ARC + STR + MEP</span><span lang="en">Layer 02 · ARC + STR + MEP</span></span></div>
+            <h3 id="t-modelleme"><span class="sr-only">A-102 </span><span lang="tr">BIM modelleme</span><span lang="en">BIM modelling</span></h3>
+          </div>
+          <div class="mini" data-k="modelleme" aria-hidden="true"><canvas></canvas><span class="mono">A-102 · ARC + STR</span></div>
+          <p class="svc-intro"><span lang="tr">Tek model; paftalar ve metraj ondan çıkar.</span><span lang="en">One model; sheets and quantities come out of it.</span></p>
+          <figure class="hz-fig">
+            <svg class="draw" viewBox="0 0 520 210" role="img" aria-labelledby="f102">
+              <title id="f102">Mimari, yapısal ve MEP modelleri tek bir modelde birleşir; paftalar ve metraj bu modelden üretilir</title>
+              <g><rect class="pp" x="8" y="34" width="92" height="34"/><text class="t" x="54" y="57" text-anchor="middle">ARC</text>
+                 <rect class="pp" x="8" y="88" width="92" height="34"/><text class="t" x="54" y="111" text-anchor="middle">STR</text>
+                 <rect class="pp" x="8" y="142" width="92" height="34"/><text class="t" x="54" y="165" text-anchor="middle">MEP</text></g>
+              <path class="s2" d="M100 51C140 51 150 100 186 104M100 105H186M100 159C140 159 150 110 186 106"/><path class="s" d="M178 99l8 6-8 6"/>
+              <path class="p2" d="M200 132V82l60 30v50Z"/><path class="pp" d="M260 112l60-30v50l-60 30Z"/><path class="pp" d="M200 82l60-30 60 30-60 30Z"/>
+              <path class="s2" d="M200 99l60 30 60-30M200 116l60 30 60-30M230 67l60 30M290 67l-60 30"/>
+              <text class="tx" x="260" y="196" text-anchor="middle">LOD 300–400</text>
+              <path class="s2" d="M322 92C346 92 348 55 368 55M322 120C346 120 348 151 368 151"/><path class="s" d="M360 49l8 6-8 6M360 145l8 6-8 6"/>
+              <g transform="translate(374 26)"><rect class="pp" width="66" height="58"/><path class="s2" d="M48 0v58M48 40h18M48 48h18M8 10h32v30H8Z"/></g>
+              <g transform="translate(374 122)"><rect class="pp" width="66" height="58"/><path class="s2" d="M0 14h66M0 29h66M0 44h66M26 0v58"/></g>
+              <g lang="tr"><text class="t" x="450" y="62">Pafta</text><text class="t" x="450" y="158">Metraj</text></g>
+              <g lang="en"><text class="t" x="450" y="62">Sheets</text><text class="t" x="450" y="158">Qty</text></g>
+            </svg>
+          </figure>
+          <ul class="hz-facts">
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-clock"/></svg><span class="v"><span lang="tr">6–20 hafta</span><span lang="en">6–20 weeks</span></span><span class="k"><span lang="tr">Süre</span><span lang="en">Duration</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-team"/></svg><span class="v"><span lang="tr">3–8 kişi</span><span lang="en">3–8 people</span></span><span class="k"><span lang="tr">Ekip</span><span lang="en">Team</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-file"/></svg><span class="v fmt"><code>RVT</code><code>IFC 4</code><code>DWG</code><code>XLSX</code></span><span class="k"><span lang="tr">Teslim</span><span lang="en">Delivered as</span></span></li>
+          </ul>
+          <div class="svc-foot"><a class="svc-cta svc-more" href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span lang="tr">Ayrıntılı pafta A-102 →</span><span lang="en">Full sheet A-102 →</span></a><a class="svc-cta" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin →</span><span lang="en">Request a proposal →</span></a></div>
+        </article>
+
+        <!-- A-103 -->
+        <article class="svc" id="koordinasyon" aria-labelledby="t-koordinasyon">
+          <div class="svc-head">
+            <div class="svc-top"><span class="svc-code" aria-hidden="true">A-103</span><span class="svc-layer mono"><span lang="tr">Katman 03 · STR × MEP</span><span lang="en">Layer 03 · STR × MEP</span></span></div>
+            <h3 id="t-koordinasyon"><span class="sr-only">A-103 </span><span lang="tr">Model koordinasyonu</span><span lang="en">Model coordination</span></h3>
+          </div>
+          <div class="mini" data-k="koordinasyon" aria-hidden="true"><canvas></canvas><span class="mono">A-103 · STR × MEP</span></div>
+          <p class="svc-intro"><span lang="tr">Çakışmalar sahada değil, ekranda çözülür.</span><span lang="en">Clashes get solved on screen, not on site.</span></p>
+          <figure class="hz-fig">
+            <svg class="draw" viewBox="0 0 520 220" role="img" aria-labelledby="f103">
+              <title id="f103">Örnek: açık çakışma sayısı altı haftalık döngüde 412'den 12'ye iner, yüzde 97 azalma</title>
+              <path class="s2" d="M20 180H510"/>
+              <rect class="xs" x="34" y="40" width="52" height="140"/><text class="tx" x="60" y="30" text-anchor="middle">412</text>
+              <rect class="p2" x="114" y="83" width="52" height="97"/><text class="t" x="140" y="73" text-anchor="middle">286</text>
+              <rect class="p2" x="194" y="122" width="52" height="58"/><text class="t" x="220" y="112" text-anchor="middle">171</text>
+              <rect class="p2" x="274" y="148" width="52" height="32"/><text class="t" x="300" y="138" text-anchor="middle">94</text>
+              <rect class="p2" x="354" y="166" width="52" height="14"/><text class="t" x="380" y="156" text-anchor="middle">41</text>
+              <rect class="okf" x="434" y="176" width="52" height="4"/><text class="tok" x="460" y="166" text-anchor="middle">12</text>
+              <g lang="tr"><text class="t2" x="60" y="204" text-anchor="middle">H1</text><text class="t2" x="140" y="204" text-anchor="middle">H2</text><text class="t2" x="220" y="204" text-anchor="middle">H3</text><text class="t2" x="300" y="204" text-anchor="middle">H4</text><text class="t2" x="380" y="204" text-anchor="middle">H5</text><text class="t2" x="460" y="204" text-anchor="middle">H6</text></g>
+              <g lang="en"><text class="t2" x="60" y="204" text-anchor="middle">W1</text><text class="t2" x="140" y="204" text-anchor="middle">W2</text><text class="t2" x="220" y="204" text-anchor="middle">W3</text><text class="t2" x="300" y="204" text-anchor="middle">W4</text><text class="t2" x="380" y="204" text-anchor="middle">W5</text><text class="t2" x="460" y="204" text-anchor="middle">W6</text></g>
+              <text class="big" x="506" y="62" text-anchor="end" fill="var(--ok)">−97%</text>
+              <g lang="tr"><text class="t2" x="506" y="88" text-anchor="end">açık çakışma</text></g><g lang="en"><text class="t2" x="506" y="88" text-anchor="end">open clashes</text></g>
+            </svg>
+            <figcaption><span lang="tr">Örnek proje · haftalık BCF döngüsü</span><span lang="en">Example project · weekly BCF cycle</span></figcaption>
+          </figure>
+          <ul class="hz-facts">
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-clock"/></svg><span class="v"><span lang="tr">Haftalık</span><span lang="en">Weekly</span></span><span class="k"><span lang="tr">Döngü</span><span lang="en">Cycle</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-team"/></svg><span class="v"><span lang="tr">1–2 kişi</span><span lang="en">1–2 people</span></span><span class="k"><span lang="tr">Koordinatör</span><span lang="en">Coordinators</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-file"/></svg><span class="v fmt"><code>NWD</code><code>BCF</code><code>PDF</code></span><span class="k"><span lang="tr">Teslim</span><span lang="en">Delivered as</span></span></li>
+          </ul>
+          <div class="svc-foot"><a class="svc-cta svc-more" href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span lang="tr">Ayrıntılı pafta A-103 →</span><span lang="en">Full sheet A-103 →</span></a><a class="svc-cta" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin →</span><span lang="en">Request a proposal →</span></a></div>
+        </article>
+
+        <!-- A-104 -->
+        <article class="svc" id="cde" aria-labelledby="t-cde">
+          <div class="svc-head">
+            <div class="svc-top"><span class="svc-code" aria-hidden="true">A-104</span><span class="svc-layer mono"><span lang="tr">Katman 04 · Durum kodları</span><span lang="en">Layer 04 · Status codes</span></span></div>
+            <h3 id="t-cde"><span class="sr-only">A-104 </span><span lang="tr">Ortak veri ortamı (CDE)</span><span lang="en">Common data environment (CDE)</span></h3>
+          </div>
+          <div class="mini faint" data-k="cde" aria-hidden="true"><canvas></canvas><span class="mono">A-104 · WIP → SHARED → PUBLISHED</span></div>
+          <p class="svc-intro"><span lang="tr">Tek doğru kaynak: her dosyanın durumu ve onayı görünür.</span><span lang="en">One source of truth: every file's status and approval in view.</span></p>
+          <figure class="hz-fig">
+            <svg class="draw" viewBox="0 0 520 200" role="img" aria-labelledby="f104">
+              <title id="f104">Dosyalar çalışma (S0), paylaşılan (S1–S4), onaydan sonra yayımlanan (A1) ve arşiv (AB) klasörlerinden geçer</title>
+              <g transform="translate(8 56)"><path class="pp" d="M0 12V86H100V12H44l-8-12H0Z"/><text class="t" x="50" y="58" text-anchor="middle">S0</text></g>
+              <g transform="translate(140 56)"><path class="pp" d="M0 12V86H100V12H44l-8-12H0Z"/><text class="t" x="50" y="58" text-anchor="middle">S1–S4</text></g>
+              <g transform="translate(272 56)"><path class="xs" d="M0 12V86H100V12H44l-8-12H0Z"/><text class="tx" x="50" y="58" text-anchor="middle">A1</text></g>
+              <g transform="translate(404 56)"><path class="p2" d="M0 12V86H100V12H44l-8-12H0Z"/><text class="t" x="50" y="58" text-anchor="middle">AB</text></g>
+              <path class="s" d="M112 104h22M128 98l6 6-6 6M376 104h22M392 98l6 6-6 6"/>
+              <path class="s" d="M244 104h22M260 98l6 6-6 6"/>
+              <circle cx="256" cy="34" r="15" fill="var(--paper)" stroke="var(--ok)" stroke-width="2"/><path class="ok" d="M249 34l5 5 9-9"/><path class="dsh" d="M256 49v48"/>
+              <g lang="tr"><text class="tok" x="276" y="24">Onay</text>
+                <text class="t2" x="58" y="174" text-anchor="middle">Çalışma</text><text class="t2" x="190" y="174" text-anchor="middle">Paylaşılan</text><text class="t2" x="322" y="174" text-anchor="middle">Yayımlanan</text><text class="t2" x="454" y="174" text-anchor="middle">Arşiv</text></g>
+              <g lang="en"><text class="tok" x="276" y="24">Approval</text>
+                <text class="t2" x="58" y="174" text-anchor="middle">WIP</text><text class="t2" x="190" y="174" text-anchor="middle">Shared</text><text class="t2" x="322" y="174" text-anchor="middle">Published</text><text class="t2" x="454" y="174" text-anchor="middle">Archive</text></g>
+            </svg>
+          </figure>
+          <ul class="hz-facts">
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-clock"/></svg><span class="v"><span lang="tr">2–4 hafta</span><span lang="en">2–4 weeks</span></span><span class="k"><span lang="tr">Kurulum</span><span lang="en">Setup</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-team"/></svg><span class="v"><span lang="tr">1 kişi</span><span lang="en">1 person</span></span><span class="k"><span lang="tr">Bilgi yöneticisi</span><span lang="en">Info manager</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-file"/></svg><span class="v fmt"><code>ACC</code><code>XLSX</code><code>PDF</code></span><span class="k"><span lang="tr">Teslim</span><span lang="en">Delivered as</span></span></li>
+          </ul>
+          <div class="svc-foot"><a class="svc-cta svc-more" href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span lang="tr">Ayrıntılı pafta A-104 →</span><span lang="en">Full sheet A-104 →</span></a><a class="svc-cta" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin →</span><span lang="en">Request a proposal →</span></a></div>
+        </article>
+
+        <!-- A-105 -->
+        <article class="svc" id="otomasyon" aria-labelledby="t-otomasyon">
+          <div class="svc-head">
+            <div class="svc-top"><span class="svc-code" aria-hidden="true">A-105</span><span class="svc-layer mono"><span lang="tr">Katman 05 · Script</span><span lang="en">Layer 05 · Script</span></span></div>
+            <h3 id="t-otomasyon"><span class="sr-only">A-105 </span><span lang="tr">Otomasyon</span><span lang="en">Automation</span></h3>
+          </div>
+          <div class="mini" data-k="otomasyon" aria-hidden="true"><canvas></canvas><span class="mono">A-105 · SCRIPT RUN</span></div>
+          <p class="svc-intro"><span lang="tr">Saatlik tekrar işleri dakikalara iner. Kaynak kodu sizin.</span><span lang="en">Hours of repetitive work drop to minutes. You own the source.</span></p>
+          <figure class="hz-fig">
+            <svg class="draw" viewBox="0 0 520 200" role="img" aria-labelledby="f105">
+              <title id="f105">Örnek: 400 paftanın üretimi elle 6 saat, script ile 15 dakika sürer; 24 kat hızlı</title>
+              <g transform="translate(8 26)"><circle class="s" cx="14" cy="10" r="8"/><path class="s" d="M0 40c0-12 6-19 14-19s14 7 14 19"/></g>
+              <g lang="tr"><text class="t" x="48" y="52">Elle</text></g><g lang="en"><text class="t" x="48" y="52">Manual</text></g>
+              <rect class="fi" x="132" y="28" width="374" height="36"/><text class="tp" x="494" y="52" text-anchor="end">6 sa</text>
+              <g transform="translate(8 104)"><circle class="x" cx="14" cy="16" r="7"/><path class="x" d="M14 2v5M14 25v5M0 16h5M23 16h5M4 6l4 4M20 22l4 4M4 26l4-4M20 10l4-4"/></g>
+              <text class="tx" x="48" y="130">Script</text>
+              <rect class="xf" x="132" y="106" width="16" height="36"/><text class="tx" x="158" y="130">15 dk</text>
+              <text class="big" x="506" y="144" text-anchor="end" fill="var(--signal)">24×</text>
+              <path class="s2" d="M132 152V160H506V152"/>
+              <g lang="tr"><text class="t2" x="319" y="190" text-anchor="middle">Örnek: 400 pafta üretimi</text></g><g lang="en"><text class="t2" x="319" y="190" text-anchor="middle">Example: creating 400 sheets</text></g>
+            </svg>
+          </figure>
+          <ul class="hz-facts">
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-clock"/></svg><span class="v"><span lang="tr">1–6 hafta</span><span lang="en">1–6 weeks</span></span><span class="k"><span lang="tr">Araç başına</span><span lang="en">Per tool</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-team"/></svg><span class="v"><span lang="tr">1–2 kişi</span><span lang="en">1–2 people</span></span><span class="k"><span lang="tr">Geliştirici</span><span lang="en">Developers</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-file"/></svg><span class="v fmt"><code>DYN</code><code>PY</code><code>C#</code></span><span class="k"><span lang="tr">Teslim</span><span lang="en">Delivered as</span></span></li>
+          </ul>
+          <div class="svc-foot"><a class="svc-cta svc-more" href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span lang="tr">Ayrıntılı pafta A-105 →</span><span lang="en">Full sheet A-105 →</span></a><a class="svc-cta" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin →</span><span lang="en">Request a proposal →</span></a></div>
+        </article>
+
+        <!-- A-106 -->
+        <article class="svc" id="egitim" aria-labelledby="t-egitim">
+          <div class="svc-head">
+            <div class="svc-top"><span class="svc-code" aria-hidden="true">A-106</span><span class="svc-layer mono"><span lang="tr">Katman 06 · Etiketler</span><span lang="en">Layer 06 · Labels</span></span></div>
+            <h3 id="t-egitim"><span class="sr-only">A-106 </span><span lang="tr">Eğitim ve destek</span><span lang="en">Training &amp; support</span></h3>
+          </div>
+          <div class="mini" data-k="egitim" aria-hidden="true"><canvas></canvas><span class="mono">A-106 · LABELS ON</span></div>
+          <p class="svc-intro"><span lang="tr">Kendi proje dosyalarınızla, adım adım.</span><span lang="en">On your own project files, step by step.</span></p>
+          <figure class="hz-fig">
+            <svg class="draw" viewBox="0 0 520 200" role="img" aria-labelledby="f106">
+              <title id="f106">Dört basamaklı eğitim yolu: Revit, ISO 19650, Navisworks ve Dynamo; sonunda katılım belgesi</title>
+              <path class="pp" d="M8 190V160H128V128H248V96H368V64H488V190Z"/>
+              <path class="s2" d="M128 160V190M248 128V190M368 96V190"/>
+              <text class="t" x="18" y="182">Revit</text><text class="t" x="138" y="150">ISO 19650</text><text class="t" x="252" y="118" style="letter-spacing:0">Navisworks</text><text class="tx" x="378" y="86">Dynamo</text>
+              <g transform="translate(40 108)"><circle class="s" cx="12" cy="8" r="7"/><path class="s" d="M0 46c0-14 5-24 12-24s12 10 12 24"/></g>
+              <g transform="translate(70 112)"><circle class="s2" cx="10" cy="7" r="6"/><path class="s2" d="M0 42c0-12 4-21 10-21s10 9 10 21"/></g>
+              <path class="dsh" d="M64 100C110 40 300 10 440 30"/>
+              <g transform="translate(446 6)"><rect x="0" y="0" width="50" height="40" fill="var(--paper)" stroke="var(--ok)" stroke-width="2"/><path class="ok" d="M14 20l7 7 14-14"/></g>
+            </svg>
+          </figure>
+          <ul class="hz-facts">
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-clock"/></svg><span class="v"><span lang="tr">2–5 gün</span><span lang="en">2–5 days</span></span><span class="k"><span lang="tr">Modül</span><span lang="en">Module</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-team"/></svg><span class="v"><span lang="tr">6–12 kişi</span><span lang="en">6–12 people</span></span><span class="k"><span lang="tr">Grup</span><span lang="en">Group</span></span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#hz-file"/></svg><span class="v fmt"><code>TR</code><code>EN</code><code>MP4</code></span><span class="k"><span lang="tr">Dil · kayıt</span><span lang="en">Language · recording</span></span></li>
+          </ul>
+          <div class="svc-foot"><a class="svc-cta svc-more" href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span lang="tr">Ayrıntılı pafta A-106 →</span><span lang="en">Full sheet A-106 →</span></a><a class="svc-cta" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin →</span><span lang="en">Request a proposal →</span></a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="sec-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Sektörler</span><span lang="en">Sectors</span></span>
+      <h2 id="sec-title"><span lang="tr">Tesisat yoğunlaştıkça BIM'in değeri artar.</span><span lang="en">The denser the services, the more BIM pays off.</span></h2>
+      <p class="mono dim"><span lang="tr">Çubuk: örnek MEP yoğunluğu · 5 = en yoğun</span><span lang="en">Bar: example MEP density · 5 = densest</span></p>
+    </div>
+    <ul class="hz-sec">
+      <li>
+        <div class="top"><svg class="ico" viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M6 68H90M16 68V26H80V68M40 68V52H56V68"/><path class="s2" d="M24 36h8M24 46h8M64 36h8M64 46h8"/><path class="x" d="M48 6v16M40 14h16"/></svg><span class="code">S-01</span></div>
+        <h3><span lang="tr">Sağlık</span><span lang="en">Healthcare</span></h3>
+        <div class="row"><span class="meter hot" aria-hidden="true"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span><span class="sr-only">MEP 5 / 5</span><span class="tags"><a class="tag" href="#koordinasyon">A-103</a><a class="tag" href="#modelleme">A-102</a><a class="tag" href="#cde">A-104</a></span></div>
+      </li>
+      <li>
+        <div class="top"><svg class="ico" viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M6 68H90M32 68V4H64V68"/><path class="s2" d="M32 14H64M32 24H64M32 34H64M32 44H64M32 54H64M48 4V68"/></svg><span class="code">S-02</span></div>
+        <h3><span lang="tr">Konut ve karma</span><span lang="en">Residential &amp; mixed</span></h3>
+        <div class="row"><span class="meter" aria-hidden="true"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><span class="sr-only">MEP 3 / 5</span><span class="tags"><a class="tag" href="#modelleme">A-102</a><a class="tag" href="#otomasyon">A-105</a></span></div>
+      </li>
+      <li>
+        <div class="top"><svg class="ico" viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M6 68H90M14 68V22H50V68M50 68V36H84V68"/><path class="s2" d="M14 30H50M14 38H50M14 46H50M14 54H50M14 62H50M50 44H84M50 52H84M50 60H84"/></svg><span class="code">S-03</span></div>
+        <h3><span lang="tr">Ticari ve ofis</span><span lang="en">Commercial &amp; office</span></h3>
+        <div class="row"><span class="meter" aria-hidden="true"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span><span class="sr-only">MEP 4 / 5</span><span class="tags"><a class="tag" href="#koordinasyon">A-103</a><a class="tag" href="#modelleme">A-102</a></span></div>
+      </li>
+      <li>
+        <div class="top"><svg class="ico" viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M6 68H90M10 68V34L28 22V34L46 22V34L64 22V34L82 22V68"/><path class="s2" d="M38 68V50H58V68M10 44H82"/></svg><span class="code">S-04</span></div>
+        <h3><span lang="tr">Endüstri ve lojistik</span><span lang="en">Industrial &amp; logistics</span></h3>
+        <div class="row"><span class="meter" aria-hidden="true"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span><span class="sr-only">MEP 3 / 5</span><span class="tags"><a class="tag" href="#modelleme">A-102</a><a class="tag" href="#koordinasyon">A-103</a></span></div>
+      </li>
+      <li>
+        <div class="top"><svg class="ico" viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M4 68H92M14 68V40C14 20 30 10 48 10S82 20 82 40V68"/><path class="s2" d="M28 68V44C28 32 37 26 48 26S68 32 68 44V68M38 68l4-24M58 68l-4-24M40 60H56M41 52H55"/></svg><span class="code">S-05</span></div>
+        <h3><span lang="tr">Altyapı ve ulaşım</span><span lang="en">Infrastructure</span></h3>
+        <div class="row"><span class="meter" aria-hidden="true"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span><span class="sr-only">MEP 4 / 5</span><span class="tags"><a class="tag" href="#strateji">A-101</a><a class="tag" href="#cde">A-104</a></span></div>
+      </li>
+      <li>
+        <div class="top"><svg class="ico" viewBox="0 0 96 72" aria-hidden="true"><path class="s" d="M6 68H90M14 68V36L48 16L82 36V68M48 16V4H62V10H48"/><path class="s2" d="M42 68V50H54V68M22 44H34V54H22ZM62 44H74V54H62Z"/></svg><span class="code">S-06</span></div>
+        <h3><span lang="tr">Eğitim ve kamu</span><span lang="en">Education &amp; public</span></h3>
+        <div class="row"><span class="meter" aria-hidden="true"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span><span class="sr-only">MEP 2 / 5</span><span class="tags"><a class="tag" href="#strateji">A-101</a><a class="tag" href="#egitim">A-106</a></span></div>
+      </li>
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="proc-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Süreç</span><span lang="en">Process</span></span>
+      <h2 id="proc-title"><span lang="tr">On iki haftalık örnek takvim.</span><span lang="en">A sample twelve-week programme.</span></h2>
+      <p class="mono dim"><span lang="tr">Adımlar üst üste biner · her biri bir çıktıyla kapanır</span><span lang="en">Steps overlap · each closes with an output</span></p>
+    </div>
+    <div class="gantt" role="list">
+      <div class="g-scale" aria-hidden="true"><span class="mono dim"><span lang="tr">Adım</span><span lang="en">Step</span></span><div class="ticks"><span>H1</span><span>H2</span><span>H3</span><span>H4</span><span>H5</span><span>H6</span><span>H7</span><span>H8</span><span>H9</span><span>H10</span><span>H11</span><span>H12</span></div></div>
+      <div class="g-row" role="listitem">
+        <div class="g-lbl"><h3><span class="mono">01</span><span lang="tr">Analiz</span><span lang="en">Assessment</span></h3><span class="out">→ <span lang="tr">Durum raporu</span><span lang="en">Assessment report</span> · <span lang="tr">H1–2</span><span lang="en">W1–2</span></span></div>
+        <div class="track" aria-hidden="true"><span class="bar draw" style="--s:0; --l:2"></span></div>
+      </div>
+      <div class="g-row" role="listitem">
+        <div class="g-lbl"><h3><span class="mono">02</span><span lang="tr">Planlama</span><span lang="en">Planning</span></h3><span class="out">→ BEP · MIDP · <span lang="tr">H2–4</span><span lang="en">W2–4</span></span></div>
+        <div class="track" aria-hidden="true"><span class="bar draw" style="--s:1; --l:3"></span></div>
+      </div>
+      <div class="g-row" role="listitem">
+        <div class="g-lbl"><h3><span class="mono">03</span><span lang="tr">Modelleme</span><span lang="en">Modelling</span></h3><span class="out">→ RVT · IFC · <span lang="tr">H4–10</span><span lang="en">W4–10</span></span></div>
+        <div class="track" aria-hidden="true"><span class="bar draw" style="--s:3; --l:7"></span></div>
+      </div>
+      <div class="g-row" role="listitem">
+        <div class="g-lbl"><h3><span class="mono">04</span><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></h3><span class="out">→ BCF · <span lang="tr">her hafta, H5–11</span><span lang="en">weekly, W5–11</span></span></div>
+        <div class="track" aria-hidden="true"><span class="bar loop draw" style="--s:4; --l:7"></span></div>
+      </div>
+      <div class="g-row" role="listitem">
+        <div class="g-lbl"><h3><span class="mono">05</span><span lang="tr">Teslim</span><span lang="en">Handover</span></h3><span class="out">→ IFC · COBie · <span lang="tr">H11–12</span><span lang="en">W11–12</span></span></div>
+        <div class="track" aria-hidden="true"><span class="bar end draw" style="--s:10; --l:2"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="eng-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Çalışma modelleri</span><span lang="en">Engagement models</span></span>
+      <h2 id="eng-title"><span lang="tr">İhtiyacınıza göre çalışalım.</span><span lang="en">Work with us the way you need.</span></h2>
+    </div>
+    <div class="eng">
+      <article class="eng-card">
+        <svg viewBox="0 0 300 110" aria-hidden="true">
+          <path class="fig-s" d="M20 30V80M280 30V80"/>
+          <rect class="fig-f" x="20" y="44" width="260" height="22" opacity=".14"/>
+          <rect class="fig-s" x="20" y="44" width="260" height="22"/>
+          <path class="fig-s" d="M20 96H280M20 91V101M280 91V101"/>
+          <circle class="fig-x" cx="20" cy="55" r="4"/><circle class="fig-x" cx="280" cy="55" r="4"/>
+          <text class="fig-t" x="150" y="24" text-anchor="middle">SCOPE · FIXED</text>
+          <text class="fig-t" x="20" y="22">START</text><text class="fig-t" x="280" y="22" text-anchor="end">HANDOVER</text>
+        </svg>
+        <div><span class="no">M-01</span><h3><span lang="tr">Proje bazlı</span><span lang="en">Per project</span></h3></div>
+        <dl>
+          <dt><span lang="tr">Kimler için</span><span lang="en">For</span></dt><dd><span lang="tr">Tasarım ofisleri, işverenler</span><span lang="en">Design offices, clients</span></dd>
+          <dt><span lang="tr">Bedel</span><span lang="en">Fee</span></dt><dd><span lang="tr">Sabit</span><span lang="en">Fixed</span></dd>
+        </dl>
+      </article>
+      <article class="eng-card feat">
+        <svg viewBox="0 0 300 110" aria-hidden="true">
+          <path class="fig-s" d="M10 70H290"/>
+          <g class="fig-s"><path d="M22 62V78M45 62V78M68 62V78M91 62V78M114 62V78M137 62V78M160 62V78M183 62V78M206 62V78M229 62V78M252 62V78M275 62V78"/></g>
+          <circle class="fig-xs" cx="150" cy="28" r="12"/><path class="fig-xs" d="M150 40V58"/>
+          <path class="fig-d" d="M138 34 30 62M162 34 270 62"/>
+          <text class="fig-t" x="10" y="98">M1</text><text class="fig-t" x="290" y="98" text-anchor="end">M12</text>
+          <text class="fig-t" x="172" y="24">BIM MANAGER</text>
+        </svg>
+        <div><span class="no">M-02</span><h3><span lang="tr">Dış kaynak BIM yöneticisi</span><span lang="en">Outsourced BIM manager</span></h3></div>
+        <dl>
+          <dt><span lang="tr">Kimler için</span><span lang="en">For</span></dt><dd><span lang="tr">Yükleniciler</span><span lang="en">Contractors</span></dd>
+          <dt><span lang="tr">Bedel</span><span lang="en">Fee</span></dt><dd><span lang="tr">Aylık</span><span lang="en">Monthly</span></dd>
+        </dl>
+      </article>
+      <article class="eng-card">
+        <svg viewBox="0 0 300 110" aria-hidden="true">
+          <rect class="fig-d" x="12" y="18" width="276" height="62" rx="2"/>
+          <g class="fig-s"><circle cx="46" cy="49" r="11"/><circle cx="84" cy="49" r="11"/><circle cx="122" cy="49" r="11"/><circle cx="160" cy="49" r="11"/></g>
+          <g><circle class="fig-xs" cx="206" cy="49" r="11"/><circle class="fig-xs" cx="244" cy="49" r="11"/></g>
+          <text class="fig-t" x="12" y="100">YOUR TEAM</text><text class="fig-t" x="288" y="100" text-anchor="end">+ OUR MODELLERS</text>
+        </svg>
+        <div><span class="no">M-03</span><h3><span lang="tr">Ekip takviyesi</span><span lang="en">Team extension</span></h3></div>
+        <dl>
+          <dt><span lang="tr">Kimler için</span><span lang="en">For</span></dt><dd><span lang="tr">Mimarlık ve mühendislik ofisleri</span><span lang="en">Architecture and engineering offices</span></dd>
+          <dt><span lang="tr">Bedel</span><span lang="en">Fee</span></dt><dd><span lang="tr">Kişi / ay</span><span lang="en">Per person / month</span></dd>
+        </dl>
+      </article>
+    </div>
+    <div class="eng-foot">
+      <p><span lang="tr">Nereden başlayacağınızı birlikte seçelim.</span><span lang="en">Let's pick your starting layer together.</span></p>
+      <div class="btns">
+        <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin</span><span lang="en">Request a proposal</span></a>
+        <a class="btn line" href="projeler.html" data-sheet="A-200" data-label="Projeler"><span lang="tr">Projeleri inceleyin</span><span lang="en">See projects</span></a>
+      </div>
+    </div>
+  </section>
+</div></main>
+<footer class="footer sheet">
+  <div class="frame">
+    <div class="footer-cta">
+      <h2><span lang="tr">Modeli birlikte<br><em>kuralım.</em></span><span lang="en">Let's build<br>the <em>model.</em></span></h2>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin</span><span lang="en">Request a proposal</span></a>
+    </div>
+    <div class="footer-cols">
+      <div><a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a><p><span lang="tr">Uluslararası BIM danışmanlık ve proje geliştirme. İstanbul merkezli, dünya genelinde projeler.</span><span lang="en">International BIM consulting and project development. Based in Istanbul, working worldwide.</span></p></div>
+      <div><h4><span lang="tr">Paftalar</span><span lang="en">Sheets</span></h4><ul>
+        <li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">A-100 · <span lang="tr">Hizmetler</span><span lang="en">Services</span></a></li>
+        <li><a href="projeler.html" data-sheet="A-200" data-label="Projeler">A-200 · <span lang="tr">Projeler</span><span lang="en">Projects</span></a></li>
+        <li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda">A-300 · <span lang="tr">Hakkımızda</span><span lang="en">About</span></a></li>
+        <li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim">A-900 · <span lang="tr">İletişim</span><span lang="en">Contact</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">Hizmetler</span><span lang="en">Services</span></h4><ul>
+        <li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi">A-101 · <span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme">A-102 · <span lang="tr">Modelleme</span><span lang="en">Modelling</span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon">A-103 · <span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı">A-104 · <span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon">A-105 · <span lang="tr">Otomasyon</span><span lang="en">Automation</span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek">A-106 · <span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">İletişim</span><span lang="en">Contact</span></h4><ul><li>info@firmaadi.com</li><li>+90 (212) 000 00 00</li><li>İstanbul, Türkiye</li></ul></div>
+      <div><h4><span lang="tr">Takip</span><span lang="en">Follow</span></h4><ul><li>LinkedIn</li><li>YouTube</li><li>Instagram</li></ul></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 Firma Adı BIM</span><span>ISO 19650 · IFC · BCF · COBie</span><span><span lang="tr">KVKK · Gizlilik</span><span lang="en">Privacy</span></span></div>
+  </div>
+</footer>
+<script src="assets/model.js"></script>
+<script src="assets/site.js"></script>
+<script>
+
+(function () {
+  if (!window.BIMModel) return;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ORDER = ['strateji', 'modelleme', 'koordinasyon', 'cde', 'otomasyon', 'egitim'];
+  var S = {
+    strateji:     { code: 'A-101', view: 'VIEW 01', name: 'SCAN · GRID · LOD 100', stage: .3, L: [1, 1, 1], rot: -.38, labels: true, clash: false },
+    modelleme:    { code: 'A-102', view: 'VIEW 02', name: 'ARC + STR · LOD 350', stage: 1, L: [1, 1, 0], rot: .1, labels: false, clash: false },
+    koordinasyon: { code: 'A-103', view: 'VIEW 03', name: 'STR × MEP · CLASH #0142', stage: .82, L: [0, 1, 1], rot: .42, labels: true, clash: true },
+    cde:          { code: 'A-104', view: 'VIEW 04', name: 'CDE · STATUS S0 → A1', stage: 1, L: [1, 1, 1], rot: 0, labels: false, clash: false, faint: true },
+    otomasyon:    { code: 'A-105', view: 'VIEW 05', name: 'SCRIPT RUN · REBUILD', stage: 1, L: [1, 1, 1], rot: -.18, labels: false, clash: false, loop: true },
+    egitim:       { code: 'A-106', view: 'VIEW 06', name: 'ANNOTATED · LABELS ON', stage: 1, L: [1, 1, 1], rot: .24, labels: true, clash: true }
+  };
+  var VARIANTS = [[[4, 3], 6], [[5, 2], 8], [[3, 3], 11], [[6, 3], 4], [[2, 2], 14]];
+  function layers(a) { return { arc: !!a[0], str: !!a[1], mep: !!a[2] }; }
+  function ease(p) { return p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+
+  /* ---- Ana (yapışkan) model ---- */
+  var m = null, raf = 0, timer = 0, token = 0, cur = null;
+  var stageEl = document.getElementById('p-stage'), codeEl = document.getElementById('p-code');
+  var viewEl = document.getElementById('p-view'), nameEl = document.getElementById('p-name'), con = document.getElementById('p-console');
+  var pills = { arc: document.getElementById('pl-arc'), str: document.getElementById('pl-str'), mep: document.getElementById('pl-mep') };
+  var rail = document.querySelectorAll('.rail span:not(.rail-lbl)');
+
+  function stop() { cancelAnimationFrame(raf); raf = 0; clearTimeout(timer); token++; }
+  function tween(to, ms, done) {
+    var o = m.get(), from = { stage: o.stage, rot: o.rot };
+    if (reduce || ms <= 0) { m.set(to); done && done(); return; }
+    var t0 = performance.now();
+    (function step(now) {
+      var p = Math.min(1, (now - t0) / ms), e = ease(p);
+      m.set({ stage: from.stage + (to.stage - from.stage) * e, rot: from.rot + (to.rot - from.rot) * e });
+      if (p < 1) raf = requestAnimationFrame(step); else { raf = 0; done && done(); }
+    })(t0);
+  }
+  function apply(k) {
+    if (!m) return;
+    stop();
+    var s = S[k], tk = token, o = m.get();
+    var base = { layers: layers(s.L), labels: s.labels, clash: s.clash };
+    if (!s.loop && (o.bays[0] !== 4 || o.bays[1] !== 3 || o.floors !== 6)) { base.bays = [4, 3]; base.floors = 6; }
+    m.set(base);
+    stageEl.dataset.k = k; stageEl.classList.toggle('faint', !!s.faint);
+    codeEl.textContent = s.code; viewEl.textContent = s.view; nameEl.textContent = s.name;
+    if (!reduce) { codeEl.classList.remove('flip'); void codeEl.offsetWidth; codeEl.classList.add('flip'); }
+    ['arc', 'str', 'mep'].forEach(function (n, i) { pills[n].classList.toggle('on', !!s.L[i]); });
+    rail.forEach(function (r, i) { r.classList.toggle('on', ORDER[i] === k); });
+    if (s.loop && !reduce) {
+      var i = 0;
+      (function run() {
+        if (tk !== token) return;
+        var v = VARIANTS[i++ % VARIANTS.length], t0 = performance.now();
+        m.set({ bays: v[0], floors: v[1], stage: 0, rot: s.rot });
+        con.innerHTML = '<b>&gt;</b> rebuild --bays ' + v[0][0] + 'x' + v[0][1] + ' --floors ' + v[1] + '<br><span style="opacity:.7">… generating</span>';
+        tween({ stage: 1, rot: s.rot }, 1500, function () {
+          if (tk !== token) return;
+          var n = (v[0][0] + 1) * (v[0][1] + 1) * v[1] * 9 + v[1] * 40;
+          con.innerHTML = '<b>&gt;</b> rebuild --bays ' + v[0][0] + 'x' + v[0][1] + ' --floors ' + v[1] + '<br><i>✓</i> ' + n.toLocaleString('en-US').replace(/,/g, ' ') + ' elements · ' + ((performance.now() - t0) / 1000).toFixed(1) + ' s';
+          timer = setTimeout(run, 1300);
+        });
+      })();
+    } else {
+      tween({ stage: s.stage, rot: s.rot }, 800);
+    }
+  }
+
+  /* ---- Etkin hizmet ---- */
+  var arts = Array.prototype.slice.call(document.querySelectorAll('.svc'));
+  var plates = document.querySelectorAll('.stack-svg .pl');
+  var lmLinks = document.querySelectorAll('.layer-mgr a');
+  function hl(k) { plates.forEach(function (p) { p.classList.toggle('hl', p.dataset.plate === k); }); }
+  function activate(k) {
+    if (!S[k] || k === cur) return;
+    cur = k;
+    arts.forEach(function (a) { a.classList.toggle('is-active', a.id === k); });
+    apply(k);
+  }
+  arts.forEach(function (a) {
+    a.addEventListener('focusin', function () { activate(a.id); });
+    a.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') activate(a.id); });
+  });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) activate(e.target.id); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    arts.forEach(function (a) { io.observe(a); });
+  }
+
+  /* Başlıktaki katman yığını ↔ katman yöneticisi */
+  lmLinks.forEach(function (a) {
+    var k = a.dataset.plate;
+    a.addEventListener('pointerenter', function () { hl(k); });
+    a.addEventListener('focus', function () { hl(k); });
+    a.addEventListener('pointerleave', function () { hl(null); });
+    a.addEventListener('blur', function () { hl(null); });
+  });
+  plates.forEach(function (p) {
+    p.addEventListener('pointerenter', function () { hl(p.dataset.plate); });
+    p.addEventListener('pointerleave', function () { hl(null); });
+  });
+
+  /* ---- Masaüstü: yapışkan model · Telefon: her paftada küçük statik model ---- */
+  var mq = matchMedia('(min-width: 1000px)'), minisDone = false;
+  function setup() {
+    if (mq.matches && !m) {
+      m = BIMModel.mount(document.getElementById('svc-model'), { bays: [4, 3], floors: 6, stage: 0, seed: 7, rot: -.38, labels: true, clash: false });
+      var k = cur || 'strateji'; cur = null;
+      var h = (location.hash || '').slice(1); if (S[h]) k = h;
+      activate(k);
+    }
+    if (!mq.matches && !minisDone) {
+      minisDone = true;
+      document.querySelectorAll('.mini').forEach(function (box) {
+        var s = S[box.dataset.k];
+        BIMModel.mount(box.querySelector('canvas'), { bays: s.loop ? [5, 2] : [4, 3], floors: s.loop ? 8 : 6, stage: s.stage, seed: 7, rot: s.rot, layers: layers(s.L), labels: s.labels, clash: s.clash });
+      });
+    }
+  }
+  setup();
+  if (mq.addEventListener) mq.addEventListener('change', setup);
+  if (!m) { var h0 = (location.hash || '').slice(1); if (S[h0]) { cur = h0; arts.forEach(function (a) { a.classList.toggle('is-active', a.id === h0); }); } }
+})();
+
+</script>
+</body>
+</html>

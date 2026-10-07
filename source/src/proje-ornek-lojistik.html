@@ -1,0 +1,515 @@
+<!--meta {"title": "Örnek Lojistik Merkezi | Firma Adı BIM", "desc": "Vaka çalışması: Dubai'de çalışan bir lojistik merkezinde 1.140 istasyonluk lazer tarama, LOD 400 mevcut durum modeli, milimetre düzeyinde sapma analizi ve yeni raf sistemiyle koordinasyon.", "sheet": "A-230", "tr": "Lojistik merkezi", "en": "Logistics hub", "nav": "projeler"}-->
+<style>
+/* ---- A-230 · Vaka çalışması: Scan-to-BIM ---- */
+.sheet-head .meta .signal b { color: var(--signal); }
+.back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 4px; justify-self: start; }
+.back:hover, .back:focus-visible { color: var(--signal); border-color: var(--signal); }
+.cs-spec { border-top: 1px solid var(--ink); margin: 0; }
+.cs-spec .v small { display: block; margin-top: 6px; font: 500 11px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+
+/* tarama / model karşılaştırma */
+.sw { padding-block: clamp(32px, 5vw, 64px); border-bottom: 1px solid var(--rule); }
+.sw-stage { --x: 50%; position: relative; aspect-ratio: 16 / 8; border: 1px solid var(--ink); background: color-mix(in srgb, var(--paper) 70%, transparent); overflow: hidden; touch-action: pan-y; cursor: ew-resize; }
+.sw-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.sw-stage .scan { clip-path: inset(0 calc(100% - var(--x)) 0 0); }
+.sw-stage .model { clip-path: inset(0 0 0 var(--x)); }
+.sw-stage .scan-tint { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--x)) 0 0); background-image: radial-gradient(color-mix(in srgb, var(--ink-2) 22%, transparent) .8px, transparent 1px); background-size: 7px 7px; pointer-events: none; }
+.seam { position: absolute; top: 0; bottom: 0; left: var(--x); width: 0; border-left: 1.5px solid var(--signal); pointer-events: none; }
+.seam::before { content: ""; position: absolute; top: 50%; left: -15px; width: 28px; height: 28px; margin-top: -14px; border: 1.5px solid var(--signal); background: var(--paper); transform: rotate(45deg); }
+.seam > span { position: absolute; top: 12px; left: 8px; font: 600 10.5px var(--mono); letter-spacing: .08em; color: var(--signal); white-space: nowrap; }
+.seam > span.l { left: auto; right: 8px; }
+.sw-stage .corner { position: absolute; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 12px 14px; pointer-events: none; }
+.sw-stage .bl { left: 0; bottom: 0; } .sw-stage .br { right: 0; bottom: 0; text-align: right; }
+.sw-stage .bl b, .sw-stage .br b { display: block; font: 800 clamp(18px, 2.4vw, 32px)/1 var(--display); font-stretch: 125%; color: var(--ink); letter-spacing: -.01em; margin-top: 4px; }
+.sw-stage .br b { color: var(--signal); }
+.sw-hud { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px 20px; align-items: end; border: 1px solid var(--ink); border-top: 0; padding: 14px 16px; background: var(--paper); }
+.sw-hud > * { min-width: 0; }
+.sw-hud label { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: block; margin-bottom: 6px; }
+.sw-hud input[type=range] { width: 100%; accent-color: var(--signal); }
+.ends { display: flex; justify-content: space-between; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-top: 4px; }
+.presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.presets .chip { padding: 7px 10px; }
+.sw-note { grid-column: 1 / -1; font-size: 15px; color: var(--ink-2); border-top: 1px dashed var(--rule); padding-top: 12px; }
+.sw-note b { font: 600 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); margin-right: 8px; }
+@media (max-width: 760px) {
+  .sw-stage { aspect-ratio: 1 / 1; }
+  .sw-hud { grid-template-columns: 1fr; }
+  .seam > span { font-size: 9px; }
+}
+
+/* çizim dili: sahneler */
+.lj-scene { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+.sw .lj-scene { margin-top: clamp(40px, 5vw, 72px); }
+.lj-scene > * { min-width: 0; }
+.lj-fig { margin: 0; }
+.lj-fig svg, .lj-story svg { display: block; width: 100%; height: auto; overflow: visible; }
+.lj-cap { margin-top: 10px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.lj-ln { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lj-thin, .lj-thin path { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.lj-faint, .lj-faint path { fill: none; stroke: var(--ink-2); stroke-width: 1.1; stroke-dasharray: 3 5; }
+.lj-dash { fill: none; stroke: var(--ink-2); stroke-width: 2; stroke-dasharray: 9 6; }
+.lj-rack { fill: none; stroke: var(--ink-2); stroke-width: 2; opacity: .55; }
+.lj-sig { fill: none; stroke: var(--signal); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.lj-okl { fill: none; stroke: var(--ok); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.lj-okf { fill: var(--ok); }
+.lj-fill { fill: var(--ink); }
+.lj-papf { fill: var(--paper); }
+.lj-pal { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.lj-dots { fill: url(#lj-dotp); }
+.lj-dot { fill: var(--ink-2); }
+.lj-tgt circle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.lj-t { font: 600 20px var(--mono); fill: var(--ink); }
+.lj-t.d { fill: var(--ink-2); }
+.lj-t.s { fill: var(--signal); font-weight: 700; }
+.lj-t.big { font-size: 26px; }
+.lj-bub circle { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.lj-bub text { font: 700 18px var(--mono); fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+.lj-bub.s circle { stroke: var(--signal); } .lj-bub.s text { fill: var(--signal); }
+
+/* ikonlar */
+.ic { display: block; width: 44px; height: 44px; fill: none; stroke: var(--ink); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ic .s { stroke: var(--signal); } .ic .k { stroke: var(--ok); } .ic .f { fill: var(--ink); stroke: none; }
+
+/* sayı karoları */
+.lj-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.lj-tiles li { min-width: 0; padding: 16px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 8px; align-content: start; }
+.lj-tiles .n { font: 800 clamp(26px, 3vw, 42px)/1 var(--display); font-stretch: 122%; letter-spacing: -.02em; white-space: nowrap; }
+.lj-tiles .n.ok { color: var(--ok); }
+.lj-tiles .n.s { color: var(--signal); }
+.lj-tiles .u { font-size: .45em; margin-left: 4px; letter-spacing: 0; }
+.lj-tiles .l { font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); display: flex; gap: 8px; align-items: center; }
+.lj-tiles .b { display: inline-grid; place-items: center; width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; font: 700 11px var(--mono); color: var(--ink); flex: none; }
+.lj-tiles .b.s { border-color: var(--signal); color: var(--signal); }
+.lj-tiles li.w { grid-column: 1 / -1; }
+.lj-tiles.one { grid-template-columns: 1fr; }
+.lj-tiles.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.lj-tiles .ict { grid-template-columns: 52px minmax(0, 1fr); align-items: center; column-gap: 14px; }
+.lj-tiles .ict .ic { grid-row: 1 / span 2; }
+@media (max-width: 860px) { .lj-scene { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .lj-tiles.c3 { grid-template-columns: 1fr; } }
+
+/* süreç akışı */
+.lj-flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); }
+.lj-flow li { position: relative; min-width: 0; padding: 24px 14px 22px; display: grid; gap: 8px; align-content: start; border-right: 1px solid var(--rule); }
+.lj-flow li:last-child { border-right: 0; }
+.lj-flow li:not(:last-child)::after { content: ""; position: absolute; right: -7px; top: 44px; width: 11px; height: 11px; border-top: 1.5px solid var(--signal); border-right: 1.5px solid var(--signal); background: var(--paper); transform: rotate(45deg); z-index: 1; }
+.lj-flow .ic { width: 56px; height: 56px; }
+.lj-flow .no { font: 500 11px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.lj-flow h3 { font-size: clamp(17px, 1.5vw, 21px); font-stretch: 112%; letter-spacing: -.01em; line-height: 1.1; }
+.lj-flow .tool { font: 500 11.5px var(--mono); color: var(--ink-2); }
+.lj-flow .out { font: 600 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; border: 1px solid var(--rule); padding: 4px 6px; justify-self: start; }
+@media (max-width: 1100px) {
+  .lj-flow { grid-template-columns: 1fr; }
+  .lj-flow li { grid-template-columns: 56px minmax(0, 1fr) auto; column-gap: 16px; row-gap: 2px; align-items: center; border-right: 0; border-bottom: 1px solid var(--rule); padding: 16px 0; }
+  .lj-flow li:last-child { border-bottom: 0; }
+  .lj-flow .ic { grid-row: 1 / span 3; }
+  .lj-flow .no, .lj-flow h3, .lj-flow .tool { grid-column: 2; }
+  .lj-flow .out { grid-column: 3; grid-row: 1 / span 3; align-self: center; }
+  .lj-flow li:not(:last-child)::after { right: auto; left: 22px; top: auto; bottom: -7px; transform: rotate(135deg); }
+}
+@media (max-width: 480px) {
+  .lj-flow li { grid-template-columns: 48px minmax(0, 1fr); }
+  .lj-flow .ic { width: 48px; height: 48px; grid-row: 1 / span 4; }
+  .lj-flow .out { grid-column: 2; grid-row: auto; justify-self: start; margin-top: 4px; }
+  .lj-flow li:not(:last-child)::after { left: 18px; }
+}
+
+/* sapma: renk bantları */
+.b1 { fill: var(--ok); background: var(--ok); }
+.b2 { fill: color-mix(in srgb, var(--ok) 45%, var(--ink-2)); background: color-mix(in srgb, var(--ok) 45%, var(--ink-2)); }
+.b3 { fill: color-mix(in srgb, var(--signal) 30%, var(--ink-2)); background: color-mix(in srgb, var(--signal) 30%, var(--ink-2)); }
+.b4 { fill: color-mix(in srgb, var(--signal) 68%, var(--ink-2)); background: color-mix(in srgb, var(--signal) 68%, var(--ink-2)); }
+.b5 { fill: var(--signal); background: var(--signal); }
+.dev [data-band] { transition: opacity .25s; }
+.dev[data-hl] [data-band] { opacity: .14; }
+.dev[data-hl="1"] [data-band="1"], .dev[data-hl="2"] [data-band="2"], .dev[data-hl="3"] [data-band="3"], .dev[data-hl="4"] [data-band="4"], .dev[data-hl="5"] [data-band="5"] { opacity: 1; }
+.dev-key { list-style: none; margin: 0 0 clamp(24px, 3vw, 40px); padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.dev-key li { min-width: 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.dev-key button { all: unset; box-sizing: border-box; display: grid; gap: 6px; width: 100%; height: 100%; padding: 14px 14px 16px; cursor: pointer; }
+.dev-key button:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+.dev-key button[aria-pressed="true"] { background: var(--paper-2); box-shadow: inset 0 3px 0 var(--ink); }
+.dev-key i { display: block; height: 14px; }
+.dev-key .r { font: 600 12px var(--mono); letter-spacing: .04em; color: var(--ink); }
+.dev-key .p { font: 800 clamp(22px, 2.4vw, 34px)/1 var(--display); font-stretch: 118%; letter-spacing: -.02em; }
+.dev-key .m { font: 500 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 860px) { .dev-key { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dev-key li:last-child { grid-column: 1 / -1; } }
+.dev-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+.dev-grid > * { min-width: 0; }
+@media (max-width: 1020px) { .dev-grid { grid-template-columns: 1fr; } }
+.chart { margin: 0; border: 1px solid var(--ink); background: var(--paper); }
+.chart-head { padding: 14px 16px; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; }
+.chart-head h3 { font-size: clamp(18px, 1.8vw, 22px); font-stretch: 112%; }
+.chart-head p { font: 500 11.5px var(--mono); letter-spacing: .04em; color: var(--ink-2); }
+.chart-body { padding: 12px 16px 6px; overflow: hidden; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart .grid line { stroke: var(--rule); stroke-dasharray: 2 4; }
+.chart .axis line { stroke: var(--ink); }
+.chart .tick { font: 500 11px var(--mono); fill: var(--ink-2); }
+.chart .val { font: 600 11.5px var(--mono); fill: var(--ink); }
+.chart .tol line { stroke: var(--signal); stroke-dasharray: 5 4; }
+.chart .dl line { stroke: var(--ink); } .chart .dl text { font: 600 12px var(--mono); fill: var(--ink); }
+.chart .bar:hover { opacity: .8; }
+.chart-foot { padding: 10px 16px; border-top: 1px solid var(--rule); }
+.chart-m { display: none; list-style: none; margin: 0; padding: 0; gap: 8px; }
+.chart-m li { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 4px 10px; align-items: center; font: 500 12px var(--mono); }
+.chart-m .bw { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.chart-m .bw i { display: block; height: 14px; flex: none; }
+.chart-m .bw b { font-weight: 600; }
+.chart-m .d { grid-column: 1 / -1; font-size: 11px; color: var(--ink-2); border-top: 1px solid var(--ink); padding-top: 8px; display: flex; justify-content: space-between; }
+@media (max-width: 640px) { .hist svg { display: none; } .hist .chart-m { display: grid; } .hist .chart-body { padding: 16px; } }
+.plan .cells rect { stroke: var(--paper); stroke-width: .6; }
+.plan .pgrid line { stroke: var(--ink); stroke-width: .8; stroke-dasharray: 6 3 1 3; opacity: .55; }
+.plan .bub circle { fill: var(--paper); stroke: var(--ink); }
+.plan .bub text { font: 600 12px var(--mono); fill: var(--ink); text-anchor: middle; }
+.plan .docks rect { fill: var(--ink); }
+.plan .docks text, .plan .zone text, .plan .lead text { font: 600 13px var(--mono); fill: var(--ink); }
+.plan .zone rect { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 8 5; }
+.plan .zone text { paint-order: stroke; stroke: var(--paper); stroke-width: 4px; }
+.plan .lead circle { fill: none; stroke: var(--ink); stroke-width: 2; }
+.plan .lead line { stroke: var(--ink); stroke-width: 1.2; }
+.plan .lead text { paint-order: stroke; stroke: var(--paper); stroke-width: 4px; }
+
+/* bulgu → risk → çözüm */
+.lj-story { list-style: none; margin: clamp(36px, 5vw, 64px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
+.lj-story li { min-width: 0; border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 12px; align-content: start; }
+.lj-story h3 { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.lj-story h3.s { color: var(--signal); } .lj-story h3.k { color: var(--ok); }
+.lj-story p { font-size: 15px; color: var(--ink-2); }
+@media (max-width: 760px) { .lj-story { grid-template-columns: 1fr; } .lj-story svg { max-width: 420px; } }
+
+/* sonuçlar */
+.lj-res { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.lj-res > * { min-width: 0; }
+.lj-donut { margin: 0; display: grid; justify-items: center; gap: 12px; text-align: center; }
+.lj-donut svg { width: min(100%, 300px, 62vw); height: auto; display: block; }
+.lj-donut .bg { fill: none; stroke: var(--rule); stroke-width: 22; }
+.lj-donut .fg { fill: none; stroke: var(--ok); stroke-width: 22; transform: rotate(-90deg); transform-origin: 100px 100px; }
+.lj-donut .big { font: 800 34px var(--display); font-stretch: 118%; fill: var(--ok); }
+.lj-donut .sm { font: 600 13px var(--mono); fill: var(--ink-2); }
+.lj-donut figcaption { font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); max-width: 30ch; }
+@media (max-width: 860px) { .lj-res { grid-template-columns: 1fr; } }
+
+/* sonraki proje */
+.next { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--ink); text-decoration: none; margin-top: clamp(56px, 8vw, 104px); }
+.next > * { min-width: 0; }
+.next .pv { position: relative; aspect-ratio: 16 / 10; border-right: 1px solid var(--ink); background: var(--paper-2); }
+.next .pv canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.next .pv .mono { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.next .body { padding: clamp(20px, 3vw, 40px); display: grid; gap: 16px; align-content: center; }
+.next h2 { font-size: clamp(30px, 4.4vw, 64px); font-stretch: 118%; letter-spacing: -.03em; }
+.next p { color: var(--ink-2); }
+.next .go { font: 600 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.next:hover h2, .next:focus-visible h2 { color: var(--signal); }
+.endnav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-block: 28px clamp(56px, 8vw, 96px); }
+@media (max-width: 760px) { .next { grid-template-columns: 1fr; } .next .pv { border-right: 0; border-bottom: 1px solid var(--ink); } }
+</style>
+
+<main id="main">
+  <header class="sheet-head">
+    <a class="back" href="projeler.html" data-sheet="A-200" data-label="Projeler">← A-200 · <span lang="tr">Proje dizini</span><span lang="en">Project index</span></a>
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-230</b></span>
+      <span><span lang="tr">Proje</span><span lang="en">Project</span> <b>P-03</b></span>
+      <span><span lang="tr">Sektör</span><span lang="en">Sector</span> <b><span lang="tr">Endüstriyel</span><span lang="en">Industrial</span></b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>1:200</b></span>
+      <span>Rev <b>P05</b></span>
+      <span class="signal"><b><span lang="tr">Örnek vaka</span><span lang="en">Sample case</span></b></span>
+    </div>
+    <h1><span lang="tr">Örnek Lojistik <span class="o">Merkezi</span></span><span lang="en">Sample Logistics <span class="o">Hub</span></span></h1>
+    <p class="lede"><span lang="tr">Hiç durmayan bir depoyu taradık ve milimetre doğruluğunda model ürettik. Yeni raf sistemi, imalattan önce bu model üzerinde koordine edildi.</span><span lang="en">We scanned a warehouse that never stops and built a millimetre-accurate model. The new racking was coordinated on it before fabrication.</span></p>
+    <dl class="spec cs-spec">
+      <div><dt><span lang="tr">İşveren</span><span lang="en">Client</span></dt><dd class="v"><span lang="tr">Örnek işveren</span><span lang="en">Sample client</span></dd></div>
+      <div><dt><span lang="tr">Rolümüz</span><span lang="en">Our role</span></dt><dd class="v"><span lang="tr">Danışman</span><span lang="en">Consultant</span><small>Scan-to-BIM</small></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd class="v"><span lang="tr">Dubai, BAE</span><span lang="en">Dubai, UAE</span></dd></div>
+      <div><dt><span lang="tr">Alan</span><span lang="en">Area</span></dt><dd class="v"><span lang="tr">92.000 m²</span><span lang="en">92,000 m²</span></dd></div>
+      <div><dt><span lang="tr">Detay seviyesi</span><span lang="en">Level of detail</span></dt><dd class="v">LOD 400<small>±15 mm</small></dd></div>
+      <div><dt><span lang="tr">Süre</span><span lang="en">Duration</span></dt><dd class="v"><span lang="tr">7 ay</span><span lang="en">7 months</span><small>2024</small></dd></div>
+    </dl>
+  </header>
+
+  <section class="sw" aria-labelledby="sw-title">
+    <h2 id="sw-title" class="sr-only"><span lang="tr">Nokta bulutu ve model karşılaştırması</span><span lang="en">Point cloud versus model</span></h2>
+    <figure style="margin:0">
+      <div class="sw-stage" id="sw-stage">
+        <div class="scan-tint" aria-hidden="true"></div>
+        <canvas class="scan" id="cv-scan" aria-hidden="true"></canvas>
+        <canvas class="model" id="cv-model" aria-hidden="true"></canvas>
+        <div class="seam" aria-hidden="true"><span class="l"><span lang="tr">◂ TARAMA</span><span lang="en">◂ SCAN</span></span><span>MODEL ▸</span></div>
+        <span class="corner bl"><span lang="tr">Nokta bulutu · E57</span><span lang="en">Point cloud · E57</span><b><span lang="tr">1.140 ist.</span><span lang="en">1,140 st.</span></b></span>
+        <span class="corner br"><span lang="tr">Revit modeli · RVT</span><span lang="en">Revit model · RVT</span><b>LOD 400</b></span>
+      </div>
+      <div class="sw-hud">
+        <div>
+          <label for="sw-range"><span lang="tr">Kaydırın: solda tarama, sağda model</span><span lang="en">Slide: scan left, model right</span></label>
+          <input id="sw-range" type="range" min="0" max="100" value="50" aria-describedby="sw-note">
+          <div class="ends" aria-hidden="true"><span><span lang="tr">Tümü model</span><span lang="en">All model</span></span><span><span lang="tr">Tümü tarama</span><span lang="en">All scan</span></span></div>
+        </div>
+        <div class="presets" role="group" aria-label="Hazır görünümler / Preset views">
+          <button class="chip" type="button" data-to="100" aria-pressed="false"><span lang="tr">Tarama</span><span lang="en">Scan</span></button>
+          <button class="chip" type="button" data-to="50" aria-pressed="true"><span lang="tr">Yarı yarıya</span><span lang="en">Split</span></button>
+          <button class="chip" type="button" data-to="0" aria-pressed="false">Model</button>
+        </div>
+        <p class="sw-note" id="sw-note" aria-live="polite"><b><span lang="tr">Yarı yarıya</span><span lang="en">Split</span></b><span lang="tr">Bulut ve model aynı koordinat sisteminde (DLTM) üst üste oturur.</span><span lang="en">Cloud and model overlay in one coordinate system (DLTM).</span></p>
+      </div>
+      <figcaption class="sr-only"><span lang="tr">Kaydırıcı, aynı binanın lazer tarama nokta bulutu ile ondan üretilen BIM modeli arasında geçiş yapar.</span><span lang="en">The slider wipes between the laser scan point cloud of the building and the BIM model built from it.</span></figcaption>
+    </figure>
+
+    <div class="lj-scene">
+      <figure class="lj-fig draw">
+        <svg viewBox="0 0 640 320" role="img" aria-labelledby="lj-sc-t">
+<title id="lj-sc-t"><span lang="tr">Gece sahada: depo koridorunda tripod üzerinde lazer tarayıcı, kolonlarda kontrol hedefleri, solda nokta bulutuna dönüşen raflar.</span><span lang="en">Night on site: a laser scanner on a tripod in a warehouse aisle, control targets on the columns, racks on the left turning into a point cloud.</span></title>
+<defs><pattern id="lj-dotp" width="6" height="6" patternUnits="userSpaceOnUse"><circle class="lj-dot" cx="3" cy="3" r="1.15"/></pattern></defs>
+<path class="lj-ln" d="M30 90L320 50L610 90ZM14 290H626"/>
+<g class="lj-thin"><path d="M88 90V82.0"/><path d="M146 90V74.0"/><path d="M204 90V66.0"/><path d="M262 90V58.0"/><path d="M320 90V50.0"/><path d="M378 90V58.0"/><path d="M436 90V66.0"/><path d="M494 90V74.0"/><path d="M552 90V82.0"/><path d="M30 90L88 82.0"/><path d="M88 90L146 74.0"/><path d="M146 90L204 66.0"/><path d="M204 90L262 58.0"/><path d="M262 90L320 50.0"/><path d="M378 90L320 50.0"/><path d="M436 90L378 58.0"/><path d="M494 90L436 66.0"/><path d="M552 90L494 74.0"/><path d="M610 90L552 82.0"/></g>
+<rect class="lj-ln" x="36" y="90" width="10" height="200"/><rect class="lj-ln" x="594" y="90" width="10" height="200"/>
+<path class="lj-ln" d="M80 290V140M160 290V140M240 290V140M80 140h160M80 190h160M80 240h160"/><rect class="lj-dots" x="88" y="162" width="64" height="26"/><rect class="lj-dots" x="168" y="162" width="64" height="26"/><rect class="lj-dots" x="88" y="212" width="64" height="26"/><rect class="lj-dots" x="168" y="212" width="64" height="26"/><rect class="lj-dots" x="88" y="262" width="64" height="26"/><rect class="lj-dots" x="168" y="262" width="64" height="26"/><path class="lj-ln" d="M400 290V140M480 290V140M560 290V140M400 140h160M400 190h160M400 240h160"/><rect class="lj-pal" x="408" y="162" width="64" height="26"/><rect class="lj-pal" x="488" y="162" width="64" height="26"/><rect class="lj-pal" x="408" y="212" width="64" height="26"/><rect class="lj-pal" x="488" y="212" width="64" height="26"/><rect class="lj-pal" x="408" y="262" width="64" height="26"/><rect class="lj-pal" x="488" y="262" width="64" height="26"/>
+<g class="lj-faint"><path d="M320 224L240 140"/><path d="M320 224L84 140"/><path d="M320 224L52 170"/><path d="M320 224L400 140"/><path d="M320 224L556 140"/><path d="M320 224L590 170"/><path d="M320 224L190 90"/><path d="M320 224L450 90"/></g>
+<circle class="lj-faint" cx="320" cy="224" r="48"/>
+<g class="lj-tgt"><circle cx="41" cy="170" r="11"/><path class="lj-fill" d="M41 170v-11a11 11 0 0 1 11 11z M41 170v11a11 11 0 0 1-11-11z"/><circle cx="599" cy="170" r="11"/><path class="lj-fill" d="M599 170v-11a11 11 0 0 1 11 11z M599 170v11a11 11 0 0 1-11-11z"/></g>
+<path class="lj-ln" d="M320 246L294 290M320 246l26 44M320 246v44"/>
+<rect class="lj-papf lj-ln" x="309" y="210" width="22" height="36" rx="3"/><circle class="lj-sig" cx="320" cy="224" r="5"/>
+<path class="lj-ln" d="M515 14a18 18 0 1 0 18 26a14 14 0 1 1-18-26z"/>
+<path class="lj-thin" d="M108 116L49 162M375 206L334 218"/>
+<g class="lj-bub s"><circle cx="388" cy="196" r="17"/><text x="388" y="196">1</text></g>
+<g class="lj-bub"><circle cx="120" cy="112" r="17"/><text x="120" y="112">2</text></g>
+<g class="lj-bub"><circle cx="570" cy="30" r="17"/><text x="570" y="30">3</text></g>
+<g class="lj-bub"><circle cx="210" cy="112" r="17"/><text x="210" y="112">4</text></g>
+</svg>
+        <figcaption class="lj-cap"><span lang="tr">Sahada bir gece · örnek değerler</span><span lang="en">One night on site · sample values</span></figcaption>
+      </figure>
+      <ul class="lj-tiles" aria-label="Saha ölçümü / Survey record">
+        <li><span class="n" data-count="1140">1.140</span><span class="l"><span class="b s">1</span><span lang="tr">Tarama istasyonu</span><span lang="en">Scan stations</span></span></li>
+        <li><span class="n"><span data-count="64">64</span></span><span class="l"><span class="b">2</span><span lang="tr">Kontrol hedefi</span><span lang="en">Control targets</span></span></li>
+        <li><span class="n"><span data-count="18">18</span><span class="u"><span lang="tr">gece</span><span lang="en">nights</span></span></span><span class="l"><span class="b">3</span>22:00–06:00</span></li>
+        <li><span class="n"><span data-count="4.6">4,6</span><span class="u"><span lang="tr">milyar</span><span lang="en">bn</span></span></span><span class="l"><span class="b">4</span><span lang="tr">Ham nokta</span><span lang="en">Raw points</span></span></li>
+        <li class="w"><span class="n"><span data-count="2.6">2,6</span><span class="u">mm</span></span><span class="l"><span lang="tr">Ortalama kayıt hatası</span><span lang="en">Mean registration error</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="ch-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Zorluk</span><span lang="en">Challenge</span></span>
+      <h2 id="ch-title"><span lang="tr">Çizimler binayı anlatmıyordu.</span><span lang="en">The drawings did not describe the building.</span></h2>
+      <p><span lang="tr">2009 yapımı depoya yeni AS/RS raf sistemi gelecekti. Çizimler on beş yıldır güncellenmemişti.</span><span lang="en">A 2009 warehouse was getting a new AS/RS racking system. Its drawings had not been updated in fifteen years.</span></p>
+    </div>
+    <div class="lj-scene">
+      <figure class="lj-fig draw">
+        <svg viewBox="0 0 640 330" role="img" aria-labelledby="lj-gp-t">
+<title id="lj-gp-t"><span lang="tr">Kesit: 2009 çizimi kesikli, taranan gerçek bina düz çizgi. Orta kolon çizimden 140 mm kaçık, rampa önündeki döşeme 31 mm oturmuş.</span><span lang="en">Section: the 2009 drawing dashed, the scanned real building solid. The middle column is 140 mm off the drawing and the slab at the docks has settled 31 mm.</span></title>
+<path class="lj-dash" d="M30 30h50"/><text class="lj-t d" x="92" y="37"><tspan lang="tr">Çizim (2009)</tspan><tspan lang="en">As drawn (2009)</tspan></text>
+<path class="lj-ln" d="M300 30h50"/><text class="lj-t" x="362" y="37"><tspan lang="tr">Gerçek (tarama)</tspan><tspan lang="en">As built (scan)</tspan></text>
+<path class="lj-rack" d="M110 280V150M190 280V150M270 280V150M110 150h160M110 193h160M110 236h160"/>
+<text class="lj-t d" x="110" y="138"><tspan lang="tr">Yeni AS/RS</tspan><tspan lang="en">New AS/RS</tspan></text>
+<path class="lj-dash" d="M20 280H620M60 280V90M320 280V90M580 280V90M40 90H600"/>
+<path class="lj-ln" d="M20 280H400C470 280 500 302 560 304H620M60 280V90M342 280L348 92M580 303L583 96M40 90L348 92L600 98"/>
+<path class="lj-sig" d="M320 186h25M320 178v16M345 178v16"/>
+<circle class="lj-sig" cx="332" cy="186" r="26"/>
+<text class="lj-t s big" x="366" y="194">140 mm</text>
+<path class="lj-thin" d="M540 280v22M532 280h16"/>
+<text class="lj-t d" x="470" y="326">31 mm</text>
+</svg>
+        <figcaption class="lj-cap"><span lang="tr">Kesit · çizim ile gerçek · ölçeksiz</span><span lang="en">Section · drawing vs reality · not to scale</span></figcaption>
+      </figure>
+      <ul class="lj-tiles one" aria-label="Kısıtlar (örnek) / Constraints (sample)">
+        <li class="ict"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17"/><path d="M24 12v12l8 5"/></svg><span class="n">0 <span class="u"><span lang="tr">saat</span><span lang="en">hours</span></span></span><span class="l"><span lang="tr">Operasyon kesintisi</span><span lang="en">Operational downtime</span></span></li>
+        <li class="ict"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M10 5h28M10 43h28M24 7v34M18 13l6-6 6 6M18 35l6 6 6-6"/></svg><span class="n"><span lang="tr">12,8</span><span lang="en">12.8</span> <span class="u">m</span></span><span class="l"><span lang="tr">Çatı altı net yükseklik</span><span lang="en">Clear height</span></span></li>
+        <li class="ict"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M9 7v34M39 7v34M9 24h30M14 19l-5 5 5 5M34 19l5 5-5 5"/></svg><span class="n">±15 <span class="u">mm</span></span><span class="l"><span lang="tr">İmalat toleransı</span><span lang="en">Fabrication tolerance</span></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="ap-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Yaklaşım</span><span lang="en">Approach</span></span>
+      <h2 id="ap-title"><span lang="tr">Ölç, modelle, kanıtla.</span><span lang="en">Measure, model, prove.</span></h2>
+      <p><span lang="tr">BEP'te her öğe grubu için LOD ve ölçüm doğruluğu (LOA) ayrı tanımlandı.</span><span lang="en">The BEP set LOD and level of accuracy (LOA) separately for each element group.</span></p>
+    </div>
+    <ol class="lj-flow"><li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="16"/><path class="f" d="M24 24V8a16 16 0 0 1 16 16z"/><path class="f" d="M24 24v16A16 16 0 0 1 8 24z"/></svg><span class="no">01</span><h3><span lang="tr">Kontrol ağı</span><span lang="en">Control network</span></h3><span class="tool">Total station</span><span class="out"><span lang="tr">64 hedef</span><span lang="en">64 targets</span></span></li><li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="18" y="5" width="12" height="17" rx="2"/><circle class="s" cx="24" cy="11" r="3"/><path d="M24 22 14 44M24 22l10 22M24 22v22"/><path class="s" d="M33 9a10 10 0 0 1 0 8M37 6a15 15 0 0 1 0 14" /></svg><span class="no">02</span><h3><span lang="tr">Gece taraması</span><span lang="en">Night scanning</span></h3><span class="tool">Leica RTC360</span><span class="out"><span lang="tr">1.140 ist.</span><span lang="en">1,140 st.</span></span></li><li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="5" y="9" width="22" height="22" stroke-dasharray="3 3"/><rect x="17" y="17" width="24" height="24"/><path class="s" d="M12 4l6 4-6 4"/></svg><span class="no">03</span><h3><span lang="tr">Kayıt</span><span lang="en">Registration</span></h3><span class="tool">Cyclone · ReCap</span><span class="out"><span lang="tr">E57 · RCP</span><span lang="en">E57 · RCP</span></span></li><li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 5l16 9v19l-16 9-16-9V14z"/><path d="M8 14l16 9 16-9M24 23v19"/></svg><span class="no">04</span><h3><span lang="tr">Modelleme</span><span lang="en">Modelling</span></h3><span class="tool">Revit</span><span class="out"><span lang="tr">LOD 400</span><span lang="en">LOD 400</span></span></li><li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M6 42h36"/><rect x="9" y="34" width="5" height="8"/><rect x="16" y="22" width="5" height="20"/><rect x="23" y="10" width="5" height="32"/><rect x="30" y="24" width="5" height="18"/><path class="s" d="M12 6v36M38 6v36" stroke-dasharray="3 3"/></svg><span class="no">05</span><h3><span lang="tr">Sapma analizi</span><span lang="en">Deviation check</span></h3><span class="tool">CloudCompare</span><span class="out"><span lang="tr">C2M</span><span lang="en">C2M</span></span></li><li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="5" y="17" width="28" height="14"/><rect x="21" y="6" width="10" height="36"/><circle class="s" cx="26" cy="24" r="6"/></svg><span class="no">06</span><h3><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></h3><span class="tool">Navisworks</span><span class="out"><span lang="tr">212 çakışma</span><span lang="en">212 clashes</span></span></li><li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M5 13h14l4 4h20v24H5z"/><path class="k" d="M15 29l6 6 11-12"/></svg><span class="no">07</span><h3><span lang="tr">Teslim</span><span lang="en">Handover</span></h3><span class="tool">CDE</span><span class="out"><span lang="tr">IFC 4 · BCF</span><span lang="en">IFC 4 · BCF</span></span></li></ol>
+  </section>
+
+  <section class="block" aria-labelledby="dv-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Sapma analizi</span><span lang="en">Deviation analysis</span></span>
+      <h2 id="dv-title"><span lang="tr">Her milimetre bir renk.</span><span lang="en">Every millimetre has a colour.</span></h2>
+      <p><span lang="tr">Bir bant seçin; haritada ve grafikte öne çıksın.</span><span lang="en">Pick a band to highlight it on the map and chart.</span></p>
+    </div>
+    <div class="dev" id="dev">
+      <ul class="dev-key" aria-label="Tolerans bantları / Tolerance bands">
+        <li><button type="button" data-band="1" aria-pressed="false"><i class="b1"></i><span class="r">0–5 mm</span><span class="p"><span lang="tr">%53,4</span><span lang="en">53.4%</span></span><span class="m"><span lang="tr">İmalata hazır</span><span lang="en">Fit as is</span></span></button></li>
+        <li><button type="button" data-band="2" aria-pressed="false"><i class="b2"></i><span class="r">5–10 mm</span><span class="p"><span lang="tr">%28,8</span><span lang="en">28.8%</span></span><span class="m"><span lang="tr">Ayar payıyla</span><span lang="en">Adjustable</span></span></button></li>
+        <li><button type="button" data-band="3" aria-pressed="false"><i class="b3"></i><span class="r">10–15 mm</span><span class="p"><span lang="tr">%11,2</span><span lang="en">11.2%</span></span><span class="m"><span lang="tr">Sınırda</span><span lang="en">At the limit</span></span></button></li>
+        <li><button type="button" data-band="4" aria-pressed="false"><i class="b4"></i><span class="r">15–25 mm</span><span class="p"><span lang="tr">%5,8</span><span lang="en">5.8%</span></span><span class="m"><span lang="tr">Düzeltildi</span><span lang="en">Corrected</span></span></button></li>
+        <li><button type="button" data-band="5" aria-pressed="false"><i class="b5"></i><span class="r">&gt; 25 mm</span><span class="p"><span lang="tr">%0,8</span><span lang="en">0.8%</span></span><span class="m"><span lang="tr">Yapı kusuru</span><span lang="en">Real defect</span></span></button></li>
+      </ul>
+
+      <div class="dev-grid">
+        <figure class="chart plan">
+          <div class="chart-head">
+            <h3 id="plan-title"><span lang="tr">Zemin sapma haritası</span><span lang="en">Floor deviation map</span></h3>
+            <p><span lang="tr">2,75 m hücre · 11 m aks</span><span lang="en">2.75 m cells · 11 m grid</span></p>
+          </div>
+          <div class="chart-body draw">
+            <svg viewBox="0 0 720 450" role="img" aria-labelledby="plan-title plan-desc">
+              <desc id="plan-desc">Depo planı üzerinde renk haritası: zeminin büyük bölümü 0–10 mm bandında, yükleme rampalarının önünde 31,1 mm'ye varan oturma ve batı bölgesinde 10–15 mm'lik hafif çukurluk. Heat map on the warehouse plan: most of the slab is within 0–10 mm, with settlement up to 31.1 mm in front of the loading docks and a slight 10–15 mm dip in the west.</desc>
+              <g class="cells"><rect class="b2" data-band="2" x="64" y="52" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="52" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="52" width="22" height="22"/><rect class="b2" data-band="2" x="130" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="152" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="174" y="52" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="52" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="240" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="284" y="52" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="394" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="416" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="526" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="52" width="22" height="22"/><rect class="b2" data-band="2" x="570" y="52" width="22" height="22"/><rect class="b3" data-band="3" x="592" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="658" y="52" width="22" height="22"/><rect class="b1" data-band="1" x="64" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="74" width="22" height="22"/><rect class="b3" data-band="3" x="130" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="152" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="174" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="74" width="22" height="22"/><rect class="b3" data-band="3" x="218" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="240" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="262" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="526" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="548" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="592" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="74" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="74" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="130" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="152" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="174" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="96" width="22" height="22"/><rect class="b3" data-band="3" x="240" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="262" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="350" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="394" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="526" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="570" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="592" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="96" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="96" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="118" width="22" height="22"/><rect class="b3" data-band="3" x="108" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="130" y="118" width="22" height="22"/><rect class="b3" data-band="3" x="152" y="118" width="22" height="22"/><rect class="b3" data-band="3" x="174" y="118" width="22" height="22"/><rect class="b3" data-band="3" x="196" y="118" width="22" height="22"/><rect class="b3" data-band="3" x="218" y="118" width="22" height="22"/><rect class="b3" data-band="3" x="240" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="262" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="328" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="350" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="394" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="438" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="460" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="526" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="592" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="118" width="22" height="22"/><rect class="b1" data-band="1" x="658" y="118" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="140" width="22" height="22"/><rect class="b3" data-band="3" x="130" y="140" width="22" height="22"/><rect class="b3" data-band="3" x="152" y="140" width="22" height="22"/><rect class="b3" data-band="3" x="174" y="140" width="22" height="22"/><rect class="b3" data-band="3" x="196" y="140" width="22" height="22"/><rect class="b3" data-band="3" x="218" y="140" width="22" height="22"/><rect class="b4" data-band="4" x="240" y="140" width="22" height="22"/><rect class="b3" data-band="3" x="262" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="372" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="394" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="526" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="592" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="614" y="140" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="140" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="86" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="108" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="130" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="152" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="174" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="196" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="218" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="240" y="162" width="22" height="22"/><rect class="b3" data-band="3" x="262" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="328" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="350" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="372" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="460" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="526" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="162" width="22" height="22"/><rect class="b2" data-band="2" x="592" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="658" y="162" width="22" height="22"/><rect class="b1" data-band="1" x="64" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="184" width="22" height="22"/><rect class="b3" data-band="3" x="130" y="184" width="22" height="22"/><rect class="b3" data-band="3" x="152" y="184" width="22" height="22"/><rect class="b3" data-band="3" x="174" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="184" width="22" height="22"/><rect class="b3" data-band="3" x="240" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="262" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="328" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="460" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="526" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="592" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="184" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="184" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="86" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="130" y="206" width="22" height="22"/><rect class="b3" data-band="3" x="152" y="206" width="22" height="22"/><rect class="b3" data-band="3" x="174" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="206" width="22" height="22"/><rect class="b3" data-band="3" x="218" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="240" y="206" width="22" height="22"/><rect class="b3" data-band="3" x="262" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="372" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="394" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="416" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="438" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="526" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="592" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="206" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="206" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="228" width="22" height="22"/><rect class="b3" data-band="3" x="130" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="152" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="174" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="240" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="262" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="284" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="394" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="438" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="228" width="22" height="22"/><rect class="b2" data-band="2" x="504" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="526" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="592" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="658" y="228" width="22" height="22"/><rect class="b1" data-band="1" x="64" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="86" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="108" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="130" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="152" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="174" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="240" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="284" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="328" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="482" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="526" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="548" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="592" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="250" width="22" height="22"/><rect class="b1" data-band="1" x="658" y="250" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="272" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="108" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="130" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="152" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="174" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="196" y="272" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="272" width="22" height="22"/><rect class="b2" data-band="2" x="240" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="284" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="272" width="22" height="22"/><rect class="b2" data-band="2" x="328" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="272" width="22" height="22"/><rect class="b3" data-band="3" x="394" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="416" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="272" width="22" height="22"/><rect class="b2" data-band="2" x="460" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="504" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="526" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="548" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="570" y="272" width="22" height="22"/><rect class="b2" data-band="2" x="592" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="614" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="636" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="658" y="272" width="22" height="22"/><rect class="b1" data-band="1" x="64" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="86" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="108" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="130" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="152" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="174" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="196" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="218" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="240" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="284" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="294" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="416" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="438" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="460" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="482" y="294" width="22" height="22"/><rect class="b2" data-band="2" x="504" y="294" width="22" height="22"/><rect class="b2" data-band="2" x="526" y="294" width="22" height="22"/><rect class="b2" data-band="2" x="548" y="294" width="22" height="22"/><rect class="b2" data-band="2" x="570" y="294" width="22" height="22"/><rect class="b3" data-band="3" x="592" y="294" width="22" height="22"/><rect class="b2" data-band="2" x="614" y="294" width="22" height="22"/><rect class="b2" data-band="2" x="636" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="658" y="294" width="22" height="22"/><rect class="b1" data-band="1" x="64" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="86" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="108" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="130" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="152" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="174" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="196" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="240" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="316" width="22" height="22"/><rect class="b1" data-band="1" x="416" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="438" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="460" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="482" y="316" width="22" height="22"/><rect class="b3" data-band="3" x="504" y="316" width="22" height="22"/><rect class="b3" data-band="3" x="526" y="316" width="22" height="22"/><rect class="b3" data-band="3" x="548" y="316" width="22" height="22"/><rect class="b4" data-band="4" x="570" y="316" width="22" height="22"/><rect class="b3" data-band="3" x="592" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="614" y="316" width="22" height="22"/><rect class="b3" data-band="3" x="636" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="316" width="22" height="22"/><rect class="b2" data-band="2" x="64" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="86" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="108" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="130" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="152" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="174" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="196" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="218" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="240" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="284" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="416" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="438" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="460" y="338" width="22" height="22"/><rect class="b3" data-band="3" x="482" y="338" width="22" height="22"/><rect class="b4" data-band="4" x="504" y="338" width="22" height="22"/><rect class="b4" data-band="4" x="526" y="338" width="22" height="22"/><rect class="b4" data-band="4" x="548" y="338" width="22" height="22"/><rect class="b4" data-band="4" x="570" y="338" width="22" height="22"/><rect class="b4" data-band="4" x="592" y="338" width="22" height="22"/><rect class="b4" data-band="4" x="614" y="338" width="22" height="22"/><rect class="b3" data-band="3" x="636" y="338" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="338" width="22" height="22"/><rect class="b1" data-band="1" x="64" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="86" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="108" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="130" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="152" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="174" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="196" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="218" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="240" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="284" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="306" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="328" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="372" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="416" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="438" y="360" width="22" height="22"/><rect class="b3" data-band="3" x="460" y="360" width="22" height="22"/><rect class="b3" data-band="3" x="482" y="360" width="22" height="22"/><rect class="b4" data-band="4" x="504" y="360" width="22" height="22"/><rect class="b4" data-band="4" x="526" y="360" width="22" height="22"/><rect class="b5" data-band="5" x="548" y="360" width="22" height="22"/><rect class="b5" data-band="5" x="570" y="360" width="22" height="22"/><rect class="b4" data-band="4" x="592" y="360" width="22" height="22"/><rect class="b4" data-band="4" x="614" y="360" width="22" height="22"/><rect class="b3" data-band="3" x="636" y="360" width="22" height="22"/><rect class="b2" data-band="2" x="658" y="360" width="22" height="22"/><rect class="b1" data-band="1" x="64" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="86" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="108" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="130" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="152" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="174" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="196" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="218" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="240" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="262" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="284" y="382" width="22" height="22"/><rect class="b2" data-band="2" x="306" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="328" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="350" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="372" y="382" width="22" height="22"/><rect class="b2" data-band="2" x="394" y="382" width="22" height="22"/><rect class="b1" data-band="1" x="416" y="382" width="22" height="22"/><rect class="b2" data-band="2" x="438" y="382" width="22" height="22"/><rect class="b3" data-band="3" x="460" y="382" width="22" height="22"/><rect class="b4" data-band="4" x="482" y="382" width="22" height="22"/><rect class="b4" data-band="4" x="504" y="382" width="22" height="22"/><rect class="b5" data-band="5" x="526" y="382" width="22" height="22"/><rect class="b5" data-band="5" x="548" y="382" width="22" height="22"/><rect class="b5" data-band="5" x="570" y="382" width="22" height="22"/><rect class="b5" data-band="5" x="592" y="382" width="22" height="22"/><rect class="b4" data-band="4" x="614" y="382" width="22" height="22"/><rect class="b3" data-band="3" x="636" y="382" width="22" height="22"/><rect class="b3" data-band="3" x="658" y="382" width="22" height="22"/></g>
+<g class="pgrid"><line x1="64" y1="38" x2="64" y2="404"/><line x1="152" y1="38" x2="152" y2="404"/><line x1="240" y1="38" x2="240" y2="404"/><line x1="328" y1="38" x2="328" y2="404"/><line x1="416" y1="38" x2="416" y2="404"/><line x1="504" y1="38" x2="504" y2="404"/><line x1="592" y1="38" x2="592" y2="404"/><line x1="680" y1="38" x2="680" y2="404"/><line x1="50" y1="52" x2="680" y2="52"/><line x1="50" y1="140" x2="680" y2="140"/><line x1="50" y1="228" x2="680" y2="228"/><line x1="50" y1="316" x2="680" y2="316"/><line x1="50" y1="404" x2="680" y2="404"/></g>
+<g class="bub"><circle cx="64" cy="24" r="11"/><text x="64" y="28">A</text><circle cx="152" cy="24" r="11"/><text x="152" y="28">B</text><circle cx="240" cy="24" r="11"/><text x="240" y="28">C</text><circle cx="328" cy="24" r="11"/><text x="328" y="28">D</text><circle cx="416" cy="24" r="11"/><text x="416" y="28">E</text><circle cx="504" cy="24" r="11"/><text x="504" y="28">F</text><circle cx="592" cy="24" r="11"/><text x="592" y="28">G</text><circle cx="680" cy="24" r="11"/><text x="680" y="28">H</text><circle cx="36" cy="52" r="11"/><text x="36" y="56">1</text><circle cx="36" cy="140" r="11"/><text x="36" y="144">2</text><circle cx="36" cy="228" r="11"/><text x="36" y="232">3</text><circle cx="36" cy="316" r="11"/><text x="36" y="320">4</text><circle cx="36" cy="404" r="11"/><text x="36" y="408">5</text></g>
+<g class="docks"><rect x="416" y="404" width="26" height="10"/><rect x="452" y="404" width="26" height="10"/><rect x="488" y="404" width="26" height="10"/><rect x="524" y="404" width="26" height="10"/><rect x="560" y="404" width="26" height="10"/><rect x="596" y="404" width="26" height="10"/><rect x="632" y="404" width="26" height="10"/><text x="416" y="430"><tspan lang="tr">Yükleme rampaları D01–D07</tspan><tspan lang="en">Loading docks D01–D07</tspan></text></g>
+<g class="zone"><rect x="156" y="56" width="256" height="168"/><text x="164" y="76"><tspan lang="tr">Yeni AS/RS raf alanı</tspan><tspan lang="en">New AS/RS racking zone</tspan></text></g>
+<g class="lead"><circle cx="603" cy="393" r="7"/><line x1="603" y1="393" x2="563" y2="302"/><line x1="563" y1="302" x2="413" y2="302"/><text x="413" y="295"><tspan lang="tr">Rampa önü oturma · 31,1 mm</tspan><tspan lang="en">Settlement at docks · 31.1 mm</tspan></text></g>
+            </svg>
+          </div>
+          <figcaption class="chart-foot mono dim"><span lang="tr">Örnek veri</span><span lang="en">Sample data</span></figcaption>
+        </figure>
+
+        <figure class="chart hist">
+          <div class="chart-head">
+            <h3 id="hist-title"><span lang="tr">Sapma dağılımı</span><span lang="en">Deviation distribution</span></h3>
+            <p><span lang="tr">Eksi: gerçek yüzey modelin gerisinde</span><span lang="en">Negative: surface behind the model</span></p>
+          </div>
+          <div class="chart-body draw">
+            <svg viewBox="0 0 720 360" role="img" aria-labelledby="hist-title hist-desc">
+              <desc id="hist-desc">Ölçekli histogram, 5 mm aralıklarla −30 ile +30 mm arası. Noktaların %53,4'ü ±5 mm, %93,4'ü ±15 mm tolerans içinde. Histogram drawn to scale in 5 mm bins from −30 to +30 mm; 53.4% of points within ±5 mm and 93.4% within the ±15 mm tolerance.</desc>
+              <g class="grid"><line x1="80" y1="265" x2="680" y2="265"/><line x1="80" y1="220" x2="680" y2="220"/><line x1="80" y1="175" x2="680" y2="175"/><line x1="80" y1="130" x2="680" y2="130"/><line x1="80" y1="85" x2="680" y2="85"/><line x1="80" y1="40" x2="680" y2="40"/></g>
+<g class="axis"><line x1="80" y1="40" x2="80" y2="310"/><line x1="80" y1="310" x2="680" y2="310"/><line x1="380" y1="304" x2="380" y2="316"/></g>
+<g class="tick" text-anchor="end"><text x="72" y="314">0%</text><text x="72" y="269">5%</text><text x="72" y="224">10%</text><text x="72" y="179">15%</text><text x="72" y="134">20%</text><text x="72" y="89">25%</text><text x="72" y="44">30%</text></g>
+<g class="tick" text-anchor="middle"><text x="80" y="330">−30</text><text x="180" y="330">−20</text><text x="280" y="330">−10</text><text x="380" y="330">0</text><text x="480" y="330">+10</text><text x="580" y="330">+20</text><text x="680" y="330">+30</text><text x="380" y="352"><tspan lang="tr">sapma, mm (tarama − model) · 1 mm = 10 birim · %1 = 9 birim</tspan><tspan lang="en">deviation, mm (scan − model) · 1 mm = 10 units · 1% = 9 units</tspan></text></g>
+<g><rect class="bar b5" data-band="5" x="83" y="306.4" width="44" height="3.6"><title>-30…-25 mm: 0.4%</title></rect><rect class="bar b4" data-band="4" x="133" y="301.9" width="44" height="8.1"><title>-25…-20 mm: 0.9%</title></rect><rect class="bar b4" data-band="4" x="183" y="291.1" width="44" height="18.9"><title>-20…-15 mm: 2.1%</title></rect><rect class="bar b3" data-band="3" x="233" y="257.8" width="44" height="52.2"><title>-15…-10 mm: 5.8%</title></rect><rect class="bar b2" data-band="2" x="283" y="178.6" width="44" height="131.4"><title>-10…-5 mm: 14.6%</title></rect><rect class="bar b1" data-band="1" x="333" y="73.3" width="44" height="236.7"><title>-5…0 mm: 26.3%</title></rect><rect class="bar b1" data-band="1" x="383" y="66.1" width="44" height="243.9"><title>0…5 mm: 27.1%</title></rect><rect class="bar b2" data-band="2" x="433" y="182.2" width="44" height="127.8"><title>5…10 mm: 14.2%</title></rect><rect class="bar b3" data-band="3" x="483" y="261.4" width="44" height="48.6"><title>10…15 mm: 5.4%</title></rect><rect class="bar b4" data-band="4" x="533" y="292.0" width="44" height="18.0"><title>15…20 mm: 2.0%</title></rect><rect class="bar b4" data-band="4" x="583" y="302.8" width="44" height="7.2"><title>20…25 mm: 0.8%</title></rect><rect class="bar b5" data-band="5" x="633" y="306.4" width="44" height="3.6"><title>25…30 mm: 0.4%</title></rect></g><g class="val" text-anchor="middle"><text x="105" y="300.4" data-band="5"><tspan lang="tr">0,4</tspan><tspan lang="en">0.4</tspan></text><text x="155" y="295.9" data-band="4"><tspan lang="tr">0,9</tspan><tspan lang="en">0.9</tspan></text><text x="205" y="285.1" data-band="4"><tspan lang="tr">2,1</tspan><tspan lang="en">2.1</tspan></text><text x="255" y="251.8" data-band="3"><tspan lang="tr">5,8</tspan><tspan lang="en">5.8</tspan></text><text x="305" y="172.6" data-band="2"><tspan lang="tr">14,6</tspan><tspan lang="en">14.6</tspan></text><text x="355" y="67.3" data-band="1"><tspan lang="tr">26,3</tspan><tspan lang="en">26.3</tspan></text><text x="405" y="60.099999999999994" data-band="1"><tspan lang="tr">27,1</tspan><tspan lang="en">27.1</tspan></text><text x="455" y="176.2" data-band="2"><tspan lang="tr">14,2</tspan><tspan lang="en">14.2</tspan></text><text x="505" y="255.39999999999998" data-band="3"><tspan lang="tr">5,4</tspan><tspan lang="en">5.4</tspan></text><text x="555" y="286.0" data-band="4"><tspan lang="tr">2,0</tspan><tspan lang="en">2.0</tspan></text><text x="605" y="296.8" data-band="4"><tspan lang="tr">0,8</tspan><tspan lang="en">0.8</tspan></text><text x="655" y="300.4" data-band="5"><tspan lang="tr">0,4</tspan><tspan lang="en">0.4</tspan></text></g>
+<g class="tol"><line x1="230" y1="34" x2="230" y2="310"/><line x1="530" y1="34" x2="530" y2="310"/></g>
+<g class="dl"><line x1="230" y1="24" x2="530" y2="24"/><line x1="230" y1="18" x2="230" y2="30"/><line x1="530" y1="18" x2="530" y2="30"/><text x="380" y="16" text-anchor="middle"><tspan lang="tr">±15 mm tolerans içinde %93,4</tspan><tspan lang="en">93.4% within ±15 mm tolerance</tspan></text></g>
+            </svg>
+            <ul class="chart-m" aria-hidden="true"><li data-band="5"><span>−30…−25</span><span class="bw"><i class="b5" style="width:calc((100% - 52px) * 0.0133)"></i><b><span lang="tr">%0,4</span><span lang="en">0.4%</span></b></span></li><li data-band="4"><span>−25…−20</span><span class="bw"><i class="b4" style="width:calc((100% - 52px) * 0.0300)"></i><b><span lang="tr">%0,9</span><span lang="en">0.9%</span></b></span></li><li data-band="4"><span>−20…−15</span><span class="bw"><i class="b4" style="width:calc((100% - 52px) * 0.0700)"></i><b><span lang="tr">%2,1</span><span lang="en">2.1%</span></b></span></li><li data-band="3"><span>−15…−10</span><span class="bw"><i class="b3" style="width:calc((100% - 52px) * 0.1933)"></i><b><span lang="tr">%5,8</span><span lang="en">5.8%</span></b></span></li><li data-band="2"><span>−10…−5</span><span class="bw"><i class="b2" style="width:calc((100% - 52px) * 0.4867)"></i><b><span lang="tr">%14,6</span><span lang="en">14.6%</span></b></span></li><li data-band="1"><span>−5…0</span><span class="bw"><i class="b1" style="width:calc((100% - 52px) * 0.8767)"></i><b><span lang="tr">%26,3</span><span lang="en">26.3%</span></b></span></li><li data-band="1"><span>+0…+5</span><span class="bw"><i class="b1" style="width:calc((100% - 52px) * 0.9033)"></i><b><span lang="tr">%27,1</span><span lang="en">27.1%</span></b></span></li><li data-band="2"><span>+5…+10</span><span class="bw"><i class="b2" style="width:calc((100% - 52px) * 0.4733)"></i><b><span lang="tr">%14,2</span><span lang="en">14.2%</span></b></span></li><li data-band="3"><span>+10…+15</span><span class="bw"><i class="b3" style="width:calc((100% - 52px) * 0.1800)"></i><b><span lang="tr">%5,4</span><span lang="en">5.4%</span></b></span></li><li data-band="4"><span>+15…+20</span><span class="bw"><i class="b4" style="width:calc((100% - 52px) * 0.0667)"></i><b><span lang="tr">%2,0</span><span lang="en">2.0%</span></b></span></li><li data-band="4"><span>+20…+25</span><span class="bw"><i class="b4" style="width:calc((100% - 52px) * 0.0267)"></i><b><span lang="tr">%0,8</span><span lang="en">0.8%</span></b></span></li><li data-band="5"><span>+25…+30</span><span class="bw"><i class="b5" style="width:calc((100% - 52px) * 0.0133)"></i><b><span lang="tr">%0,4</span><span lang="en">0.4%</span></b></span></li><li class="d"><span>0</span><span><span lang="tr">ölçek: %0–30 · mm</span><span lang="en">scale: 0–30% · mm</span></span><span>30%</span></li></ul>
+          </div>
+          <figcaption class="chart-foot mono dim"><span lang="tr">Örnek veri · kesikli: ±15 mm tolerans</span><span lang="en">Sample data · dashed: ±15 mm tolerance</span></figcaption>
+          <table class="sr-only">
+            <caption><span lang="tr">Sapma aralığına göre nokta payı (örnek)</span><span lang="en">Share of points by deviation range (sample)</span></caption>
+            <thead><tr><th scope="col"><span lang="tr">Aralık, mm</span><span lang="en">Range, mm</span></th><th scope="col"><span lang="tr">Pay, %</span><span lang="en">Share, %</span></th></tr></thead>
+            <tbody><tr><td>-30 … -25</td><td>0.4</td></tr><tr><td>-25 … -20</td><td>0.9</td></tr><tr><td>-20 … -15</td><td>2.1</td></tr><tr><td>-15 … -10</td><td>5.8</td></tr><tr><td>-10 … -5</td><td>14.6</td></tr><tr><td>-5 … 0</td><td>26.3</td></tr><tr><td>0 … 5</td><td>27.1</td></tr><tr><td>5 … 10</td><td>14.2</td></tr><tr><td>10 … 15</td><td>5.4</td></tr><tr><td>15 … 20</td><td>2.0</td></tr><tr><td>20 … 25</td><td>0.8</td></tr><tr><td>25 … 30</td><td>0.4</td></tr></tbody>
+          </table>
+        </figure>
+      </div>
+    </div>
+
+    <ol class="lj-story">
+      <li><svg viewBox="0 0 300 160" role="img" aria-labelledby="lj-p1"><title id="lj-p1"><span lang="tr">Rampa önünde döşeme 31 mm oturmuş.</span><span lang="en">Slab at the docks settled 31 mm.</span></title>
+<path class="lj-dash" d="M10 90H290"/><path class="lj-ln" d="M10 90H120C180 90 200 120 290 122"/>
+<rect class="lj-ln" x="196" y="48" width="52" height="34"/><rect class="lj-ln" x="248" y="60" width="26" height="24"/><circle class="lj-ln lj-papf" cx="212" cy="92" r="7"/><circle class="lj-ln lj-papf" cx="262" cy="98" r="7"/>
+<path class="lj-sig" d="M150 90v8M142 90h16M142 98h16"/><path class="lj-sig" d="M285 90v30M277 90h16M277 120h16"/>
+<text class="lj-t s" x="40" y="146">−31 mm</text></svg><h3 class="s"><span lang="tr">01 · Bulgu</span><span lang="en">01 · Finding</span></h3><p><span lang="tr">Rampa önündeki döşeme 31 mm oturmuş.</span><span lang="en">The slab at the docks had settled 31 mm.</span></p></li>
+      <li><svg viewBox="0 0 300 160" role="img" aria-labelledby="lj-p2"><title id="lj-p2"><span lang="tr">Eğik zeminde AS/RS rafı ve vinç rayı toleranstan çıkar.</span><span lang="en">On the sloped floor the AS/RS rack and crane rail go out of tolerance.</span></title>
+<path class="lj-ln" d="M10 130H120C180 130 200 152 290 154"/>
+<g transform="rotate(5 190 134)"><path class="lj-ln" d="M150 134V20M230 134V20M150 20h80M150 58h80M150 96h80"/><path class="lj-sig" d="M140 134h100"/></g>
+<path class="lj-thin" d="M150 134V20" stroke-dasharray="4 4"/>
+<path class="lj-sig" d="M60 30l24 42H36z"/><text class="lj-t s" x="60" y="66" text-anchor="middle">!</text></svg><h3><span lang="tr">02 · Risk</span><span lang="en">02 · Risk</span></h3><p><span lang="tr">AS/RS vinci dar toleranslı rayda çalışır.</span><span lang="en">AS/RS cranes run on tight-tolerance rails.</span></p></li>
+      <li><svg viewBox="0 0 300 160" role="img" aria-labelledby="lj-p3"><title id="lj-p3"><span lang="tr">Raf bir aks sola kaydırıldı, kalan farklar ayak plakasındaki şimlerle alındı.</span><span lang="en">Racking moved one bay left; the remaining gaps were taken up by shims under the baseplates.</span></title>
+<path class="lj-ln" d="M10 130H120C180 130 200 152 290 154"/>
+<path class="lj-ln" d="M30 126V20M110 126V20M30 20h80M30 58h80M30 96h80"/>
+<rect class="lj-okf" x="22" y="126" width="16" height="4"/><rect class="lj-okf" x="102" y="126" width="16" height="4"/>
+<path class="lj-rack" d="M170 128V20M250 132V20M170 20h80" stroke-dasharray="5 5"/>
+<path class="lj-thin" d="M200 74h-70M140 66l-10 8 10 8"/><text class="lj-t d" x="150" y="54"><tspan lang="tr">1 aks</tspan><tspan lang="en">1 bay</tspan></text>
+<circle class="lj-okl" cx="268" cy="44" r="15"/><path class="lj-okl" d="M261 44l5 5 9-10"/></svg><h3 class="k"><span lang="tr">03 · Çözüm</span><span lang="en">03 · Fix</span></h3><p><span lang="tr">Raf bir aks kaydı, şim listesi üreticiye gitti.</span><span lang="en">Racking moved one bay; a shim schedule went to the supplier.</span></p></li>
+    </ol>
+  </section>
+
+  <section class="block" aria-labelledby="rs-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Sonuçlar</span><span lang="en">Results</span></span>
+      <h2 id="rs-title"><span lang="tr">İlk montajda oturdu.</span><span lang="en">It fitted first time.</span></h2>
+    </div>
+    <div class="lj-res">
+      <figure class="lj-donut">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="bg" cx="100" cy="100" r="80"/><circle class="fg" cx="100" cy="100" r="80" stroke-dasharray="469.5 502.7"/>
+<text class="big" x="100" y="104" text-anchor="middle"><tspan lang="tr">%93,4</tspan><tspan lang="en">93.4%</tspan></text><text class="sm" x="100" y="130" text-anchor="middle">±15 mm</text></svg>
+        <figcaption><span lang="tr">Noktaların %93,4'ü ±15 mm tolerans içinde</span><span lang="en">93.4% of points within ±15 mm tolerance</span></figcaption>
+      </figure>
+      <ul class="lj-tiles c3" aria-label="Sonuçlar (örnek) / Results (sample)">
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><rect x="5" y="17" width="28" height="14"/><rect x="21" y="6" width="10" height="36"/><circle class="k" cx="38" cy="38" r="8"/><path class="k" d="M34 38l3 3 5-6"/></svg><span class="n ok" data-count="212">212</span><span class="l"><span lang="tr">Montaj öncesi kapanan çakışma</span><span lang="en">Clashes closed pre-fabrication</span></span></li>
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M24 5l16 9v19l-16 9-16-9V14z"/><path d="M8 14l16 9 16-9M24 23v19"/></svg><span class="n" data-count="96000">96.000</span><span class="l"><span lang="tr">LOD 400 model öğesi</span><span lang="en">LOD 400 model elements</span></span></li>
+        <li><svg class="ic" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17"/><path d="M24 12v12l8 5"/></svg><span class="n"><span data-count="0">0</span><span class="u"><span lang="tr">saat</span><span lang="en">hours</span></span></span><span class="l"><span lang="tr">Depo hiç durmadı</span><span lang="en">Warehouse never stopped</span></span></li>
+      </ul>
+    </div>
+    <p class="mono dim" style="margin-top:16px"><span lang="tr">Rakamlar örnektir.</span><span lang="en">Figures are placeholders.</span></p>
+
+    <a class="next" href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü">
+      <div class="pv"><canvas id="next-model" aria-hidden="true"></canvas><span class="mono">P-01 · A-210 · FED</span></div>
+      <div class="body">
+        <span class="mono dim"><span lang="tr">Sonraki proje · P-01</span><span lang="en">Next project · P-01</span></span>
+        <h2><span lang="tr">Örnek Hastane Kampüsü</span><span lang="en">Sample Hospital Campus</span></h2>
+        <p><span lang="tr">Ankara · 7 disiplin, tek federe model, 1.468 çakışma tasarımda kapandı.</span><span lang="en">Ankara · 7 disciplines, one federated model, 1,468 clashes closed in design.</span></p>
+        <span class="go"><span lang="tr">Vaka çalışmasını aç · A-210</span><span lang="en">Open the case study · A-210</span> →</span>
+      </div>
+    </a>
+    <div class="endnav">
+      <a class="back" href="projeler.html" data-sheet="A-200" data-label="Projeler">← <span lang="tr">Tüm projeler</span><span lang="en">All projects</span></a>
+      <a class="back" href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi">← A-220 · <span lang="tr">Konut kulesi</span><span lang="en">Residential tower</span></a>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Binanızı taratmak mı istiyorsunuz?</span><span lang="en">Need your building scanned?</span></a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var stage = document.getElementById('sw-stage'), range = document.getElementById('sw-range'), note = document.getElementById('sw-note');
+  var presets = document.querySelectorAll('.presets [data-to]');
+  var NOTES = [
+    ['Model', 'Yalnız LOD 400 model: çelik, döşeme, sprinkler, kablo tavası.', 'Model', 'LOD 400 model only: steel, slabs, sprinklers, cable trays.'],
+    ['Yarı yarıya', 'Bulut ve model aynı koordinat sisteminde (DLTM) üst üste oturur.', 'Split', 'Cloud and model overlay in one coordinate system (DLTM).'],
+    ['Tarama', '1.140 istasyon, 2,1 milyar nokta, 2,6 mm kayıt hatası.', 'Scan', '1,140 stations, 2.1 bn points, 2.6 mm registration error.']
+  ];
+  var cur = -1;
+  function set(v) {
+    v = Math.max(0, Math.min(100, v));
+    stage.style.setProperty('--x', v + '%');
+    range.value = Math.round(v);
+    var i = v < 15 ? 0 : v > 85 ? 2 : 1;
+    presets.forEach(function (b) { b.setAttribute('aria-pressed', String(Math.abs(+b.dataset.to - v) < 1)); });
+    if (i !== cur) { cur = i; var n = NOTES[i]; note.innerHTML = '<b><span lang="tr">' + n[0] + '</span><span lang="en">' + n[2] + '</span></b><span lang="tr">' + n[1] + '</span><span lang="en">' + n[3] + '</span>'; }
+  }
+  range.addEventListener('input', function () { set(+range.value); });
+  presets.forEach(function (b) { b.addEventListener('click', function () { set(+b.dataset.to); }); });
+  var drag = false;
+  function fromPointer(e) { var r = stage.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); }
+  stage.addEventListener('pointerdown', function (e) { drag = true; try { stage.setPointerCapture(e.pointerId); } catch (x) {} fromPointer(e); });
+  stage.addEventListener('pointermove', function (e) { if (drag) fromPointer(e); });
+  ['pointerup', 'pointercancel'].forEach(function (t) { stage.addEventListener(t, function () { drag = false; }); });
+
+  // sapma bantları
+  var dev = document.getElementById('dev');
+  var keys = dev.querySelectorAll('.dev-key button');
+  keys.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      keys.forEach(function (k) { k.setAttribute('aria-pressed', 'false'); });
+      if (on) { b.setAttribute('aria-pressed', 'true'); dev.setAttribute('data-hl', b.dataset.band); } else dev.removeAttribute('data-hl');
+    });
+  });
+
+  if (!window.BIMModel) return;
+  var base = { bays: [7, 4], floors: 2, seed: 5, clash: false };
+  var ms = BIMModel.mount(document.getElementById('cv-scan'), Object.assign({}, base, { stage: .2, floors: 6, fh: 1.7 / 6, labels: false }));
+  var mm = BIMModel.mount(document.getElementById('cv-model'), Object.assign({}, base, { stage: 1 }));
+  var red = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!red && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; io.disconnect();
+      var t0 = performance.now();
+      (function step(now) {
+        if (drag) return;
+        var p = Math.min(1, (now - t0) / 2200), e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        set(p < .5 ? 50 + 45 * Math.sin(e * Math.PI) : 50 - 45 * Math.sin((e - .5) * 2 * Math.PI) * (1 - p));
+        if (p < 1) requestAnimationFrame(step); else set(50);
+      })(t0);
+    }, { threshold: .4 });
+    io.observe(stage);
+  }
+  if (!red && matchMedia('(pointer: fine)').matches) {
+    var tgt = 0, rc = 0, raf = 0;
+    stage.addEventListener('pointermove', function (e) { if (drag) return; var r = stage.getBoundingClientRect(); tgt = ((e.clientX - r.left) / r.width - .5) * .4; if (!raf) raf = requestAnimationFrame(tick); });
+    stage.addEventListener('pointerleave', function () { tgt = 0; if (!raf) raf = requestAnimationFrame(tick); });
+    function tick() { rc += (tgt - rc) * .12; ms.set({ rot: rc }); mm.set({ rot: rc }); raf = Math.abs(tgt - rc) > .002 ? requestAnimationFrame(tick) : 0; }
+  }
+  var nx = document.getElementById('next-model');
+  if (nx) BIMModel.mount(nx, { bays: [5, 3], floors: 5, seed: 11, stage: 1, labels: false, clash: false });
+})();
+</script>

@@ -1,0 +1,1365 @@
+<!--meta {"title": "Model koordinasyonu | Firma Adı BIM", "desc": "Federe model, disiplin çakışma matrisi, toleranslar, BCF sorun yönetimi ve haftalık koordinasyon döngüsü. Etkileşimli çakışma matrisini inceleyin.", "sheet": "A-103", "tr": "Koordinasyon", "en": "Coordination", "nav": "hizmetler"}-->
+<style>
+/* ---- Hizmet alt paftası: ortak iskelet (A-101 ile aynı) ---- */
+.back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 4px; justify-self: start; }
+.back:hover, .back:focus-visible { color: var(--signal); border-color: var(--signal); }
+.sv-spec { margin: 0; }
+.sv-spec dd { font-size: clamp(17px, 1.7vw, 22px); }
+.sv-spec dd small { display: block; margin-top: 6px; font: 500 11px/1.4 var(--mono); letter-spacing: .04em; color: var(--ink-2); }
+.ex { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+
+/* 05 · süreç (hafta ölçekli) */
+.tl { border-top: 1px solid var(--ink); }
+.tl-scale, .tl-row { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; }
+.tl-scale { padding-block: 10px; }
+.tl-ticks { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); font: 500 10.5px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.tl-ticks span { border-left: 1px solid var(--rule); padding-left: 5px; }
+.tl-row { padding-block: 16px; border-bottom: 1px solid var(--rule); align-items: center; }
+.tl-row > * { min-width: 0; }
+.tl-row h3 { font-size: 19px; font-stretch: 110%; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.tl-row h3 .mono { color: var(--signal); }
+.tl-row p { display:none; color: var(--ink-2); font-size: 14.5px; line-height: 1.45; margin-top: 4px; }
+.tl-row .out { display: inline-block; margin-top: 8px; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; border-left: 2px solid var(--signal); padding-left: 8px; }
+.tl-track { position: relative; height: 34px; background-image: linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: calc(100% / var(--n)) 100%; border-right: 1px solid var(--rule); }
+.tl-bar { position: absolute; top: 8px; bottom: 8px; left: calc(var(--s) * 100% / var(--n)); width: calc(var(--l) * 100% / var(--n)); background: var(--ink); }
+.tl-bar.hot { background: var(--signal); }
+.tl-bar.end { background: var(--ok); }
+.tl-bar::before, .tl-bar::after { content: ""; position: absolute; top: -8px; bottom: -8px; width: 1px; background: var(--ink); }
+.tl-bar::before { left: 0; } .tl-bar::after { right: -1px; }
+.tl-wk { display: none; }
+@media (max-width: 760px) {
+  .tl-scale { display: none; }
+  .tl-row { grid-template-columns: 1fr; gap: 10px; }
+  .tl-wk { display: inline; }
+  .tl-track { height: 22px; }
+  .tl-bar { top: 6px; bottom: 6px; }
+}
+
+/* 06 · örnek senaryo */
+.case { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+.case > * { min-width: 0; }
+.case-prose { display: grid; gap: 16px; }
+.case-prose .tag-ex { justify-self: start; font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--on-signal); background: var(--signal); padding: 5px 8px; }
+.case-prose h3 { font-size: clamp(24px, 2.6vw, 36px); font-stretch: 112%; letter-spacing: -.02em; }
+.case-prose p { color: var(--ink-2); }
+.case-prose dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); border-top: 1px solid var(--ink); }
+.case-prose dt, .case-prose dd { padding: 9px 0; border-bottom: 1px solid var(--rule); }
+.case-prose dt { font: 500 10.5px/1.9 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding-right: 16px; }
+.case-prose dd { margin: 0; font-size: 15px; line-height: 1.45; }
+.ba { border: 1px solid var(--ink); background: var(--paper); }
+.ba-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding: 12px 16px; border-bottom: 1px solid var(--rule); font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.ba-key { display: flex; gap: 16px; }
+.ba-key span { display: inline-flex; align-items: center; gap: 6px; }
+.ba-key i { width: 14px; height: 8px; display: inline-block; }
+.ba-key .b { background: var(--signal); } .ba-key .a { background: var(--ok); }
+.ba ul { list-style: none; margin: 0; padding: 0; }
+.ba li { padding: 16px; border-bottom: 1px solid var(--rule); display: grid; gap: 8px; }
+.ba li:last-child { border-bottom: 0; }
+.ba .lbl { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.ba .lbl b { font: 700 16px/1.25 var(--display); font-stretch: 108%; }
+.ba .lbl .d { font: 600 12px var(--mono); color: var(--ok); white-space: nowrap; }
+.ba .row { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px; align-items: center; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.ba .bar { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ba .bar i { display: block; height: 12px; width: var(--w); flex: none; max-width: calc(100% - 72px); }
+.ba .bar.b i { background: var(--signal); } .ba .bar.a i { background: var(--ok); }
+.ba .bar span { font: 600 12.5px var(--mono); color: var(--ink); letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.ba-foot { padding: 10px 16px; border-top: 1px solid var(--rule); }
+@media (max-width: 900px) { .case { grid-template-columns: 1fr; } }
+
+/* 07 · çıktılar / KPI */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.kpis > div { padding: clamp(18px, 2.4vw, 30px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 10px; align-content: start; min-width: 0; }
+.kpis .v { font: 800 clamp(40px, 5vw, 76px)/.95 var(--display); font-stretch: 125%; letter-spacing: -.035em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.kpis .v .u { font-size: .42em; letter-spacing: 0; margin-left: 4px; }
+.kpis .v.ok { color: var(--ok); }
+.kpis .k { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-top: 1px solid var(--ink); padding-top: 10px; }
+.kpis p { color: var(--ink-2); font-size: 15px; line-height: 1.5; }
+@media (max-width: 1000px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .kpis { grid-template-columns: 1fr; } .kd-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .kd-kpis .v { font-size: 38px; } }
+
+/* 08 · SSS */
+.faq { border-top: 1px solid var(--ink); counter-reset: fq; }
+.faq details { counter-increment: fq; border-bottom: 1px solid var(--rule); }
+.faq summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 52px minmax(0, 1fr) 28px; gap: 14px; align-items: baseline; padding: 20px 0; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: "Q" counter(fq, decimal-leading-zero); font: 600 12px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.faq summary::after { content: "+"; font: 500 22px/1 var(--mono); color: var(--ink-2); justify-self: end; transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); color: var(--signal); }
+.faq summary .q { font: 700 clamp(18px, 1.9vw, 25px)/1.25 var(--display); font-stretch: 106%; letter-spacing: -.01em; }
+.faq summary:hover .q { color: var(--signal); }
+.faq .a { padding: 0 42px 24px 66px; display: grid; gap: 12px; max-width: 86ch; color: var(--ink-2); }
+@media (max-width: 640px) { .faq summary { grid-template-columns: 40px minmax(0, 1fr) 22px; gap: 10px; } .faq .a { padding: 0 0 22px 50px; } }
+@media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
+
+/* 09 · alt gezinme */
+.sv-related { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--ink); text-decoration: none; }
+.sv-related > * { min-width: 0; }
+.sv-related .pv { border-right: 1px solid var(--ink); background: var(--paper-2); display: grid; place-items: center; padding: 20px; position: relative; min-height: 220px; }
+.sv-related .pv svg { width: 100%; max-width: 420px; height: auto; color: var(--ink); }
+.sv-related .pv .mono { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.sv-related .body { padding: clamp(20px, 3vw, 40px); display: grid; gap: 14px; align-content: center; }
+.sv-related h3 { font-size: clamp(28px, 3.6vw, 52px); font-stretch: 118%; letter-spacing: -.03em; }
+.sv-related p { color: var(--ink-2); }
+.sv-related .go { font: 600 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.sv-related:hover h3, .sv-related:focus-visible h3 { color: var(--signal); }
+.sv-pn { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: clamp(28px, 4vw, 48px); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.sv-pn a { display: grid; gap: 6px; padding: 22px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); text-decoration: none; min-width: 0; transition: background .2s, color .2s; }
+.sv-pn a:hover, .sv-pn a:focus-visible { background: var(--ink); color: var(--paper); }
+.sv-pn a:focus-visible { outline-offset: -3px; }
+.sv-pn .n { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.sv-pn b { font: 800 clamp(22px, 2.6vw, 36px)/1.05 var(--display); font-stretch: 118%; letter-spacing: -.02em; }
+.sv-pn small { font-size: 14px; color: var(--ink-2); }
+.sv-pn a:hover small, .sv-pn a:focus-visible small { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.sv-pn .nx { text-align: right; }
+.sv-end { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-block: 28px clamp(56px, 8vw, 96px); }
+@media (max-width: 760px) { .sv-related { grid-template-columns: 1fr; } .sv-related .pv { border-right: 0; border-bottom: 1px solid var(--ink); min-height: 0; } }
+@media (max-width: 520px) { .sv-pn { grid-template-columns: 1fr; } .sv-pn .nx { text-align: left; } }
+.sv-note { font-size: 14px; color: var(--ink-2); margin-top: 14px; max-width: 80ch; }
+
+/* ---- A-103 · başlık ---- */
+.kd-head h1 { font-size: clamp(44px, 10vw, 160px); }
+.kd-head h1 .s { color: var(--signal); }
+
+/* ---- A-103 · çakışma matrisi ---- */
+.cm { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(24px, 3.4vw, 52px); align-items: start; }
+.cm > * { min-width: 0; }
+.cm-fig { margin: 0; border: 1px solid var(--ink); background: var(--paper); }
+.cm-bar { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px 18px; padding: 12px 16px; border-bottom: 1px solid var(--rule); font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.cm-bar b { color: var(--ink); font-weight: 600; }
+.cm-in { padding: clamp(10px, 1.8vw, 22px); }
+.mx { width: 100%; border-collapse: separate; border-spacing: 4px; table-layout: fixed; }
+.mx th { font: 600 11px var(--mono); letter-spacing: .06em; color: var(--ink-2); transition: color .15s; }
+.mx abbr { text-decoration: none; }
+.mx thead th { text-align: center; padding-bottom: 4px; }
+.mx thead td { width: 52px; height: auto; }
+.mx tbody th { text-align: right; padding-right: 6px; }
+.mx th.hl { color: var(--signal); }
+.mx td { padding: 0; height: clamp(50px, 5.2vw, 74px); }
+.mx td.nil { background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--rule) 70%, transparent) 6px 7px); }
+.cx { display: grid; place-content: center; justify-items: center; gap: 4px; width: 100%; height: 100%; text-decoration: none; color: var(--ink);
+  background: color-mix(in srgb, var(--signal) var(--h), var(--paper)); border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent); transition: transform .15s, box-shadow .15s; position: relative; }
+.cx.hot { color: var(--on-signal); }
+.cx b { font: 800 clamp(16px, 1.7vw, 24px)/1 var(--display); font-stretch: 115%; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.cx small { font: 500 9.5px/1 var(--mono); letter-spacing: .04em; opacity: .85; white-space: nowrap; }
+.cx:hover { transform: translateY(-2px); box-shadow: 0 3px 0 var(--ink); }
+.cx:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.cx[aria-current="true"] { box-shadow: inset 0 0 0 3px var(--ink); }
+.cx[aria-current="true"]::after { content: ""; position: absolute; right: -1px; top: -1px; border: 6px solid var(--ink); border-left-color: transparent; border-bottom-color: transparent; }
+.cm-key { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; padding: 0 16px 14px; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.cm-grad { width: 140px; height: 10px; border: 1px solid var(--ink); background: linear-gradient(90deg, color-mix(in srgb, var(--signal) 6%, var(--paper)), var(--signal)); }
+.cm-help { padding: 10px 16px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--ink-2); }
+.cm-help kbd { font: 600 11px var(--mono); border: 1px solid var(--ink-2); padding: 1px 4px; }
+.cm-tot { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
+.cm-tot div { padding: 10px 12px; border-right: 1px solid var(--rule); display: grid; gap: 6px; min-width: 0; }
+.cm-tot div:last-child { border-right: 0; }
+.cm-tot span { font: 600 10.5px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.cm-tot b { font: 700 17px/1 var(--display); font-stretch: 110%; font-variant-numeric: tabular-nums; }
+.cm-tot i { display: block; height: 4px; background: var(--signal); width: var(--w); }
+
+.cm-side { position: sticky; top: 84px; }
+.cp { border: 1px solid var(--ink); background: var(--paper); padding: 16px; display: grid; gap: 12px; margin-bottom: 16px; }
+html.js .cp[hidden] { display: none; }
+.cp:focus { outline: none; }
+.cp:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+.cp-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--ink-2); font-size: 11px; }
+.pri { font: 700 11px var(--mono); letter-spacing: .08em; padding: 4px 8px; border: 1px solid var(--ink); }
+.pri.p1 { background: var(--signal); color: var(--on-signal); border-color: var(--signal); }
+.pri.p2 { background: var(--ink); color: var(--paper); }
+.cp h3 { font-size: clamp(24px, 2.4vw, 34px); font-stretch: 114%; letter-spacing: -.02em; line-height: 1.05; }
+.cp-n { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--ink); padding-bottom: 12px; }
+.cp-n b { font: 800 clamp(48px, 5vw, 72px)/.9 var(--display); font-stretch: 125%; letter-spacing: -.04em; color: var(--signal); font-variant-numeric: tabular-nums; }
+.cp-n span { font: 500 11px/1.5 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); max-width: 22ch; }
+.cp-dl { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 1px solid var(--rule); border-top: 1px solid var(--rule); }
+.cp-dl > div { padding: 8px 10px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.cp-dl .w, .bcf dl .w { grid-column: 1 / -1; }
+.cp-dl dt, .bcf dt { font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 3px; }
+.cp-dl dd, .bcf dd { margin: 0; font-size: 14.5px; line-height: 1.4; }
+.cp h4 { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.cp-ty { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.cp-ty li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px; font-size: 15px; line-height: 1.4; }
+.cp-ty li::before { content: ""; width: 9px; height: 9px; margin-top: 6px; border: 1.5px solid var(--signal); transform: rotate(45deg); }
+.bcf { border: 1px dashed var(--ink-2); background: var(--paper-2); }
+.bcf-h { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 8px 12px; border-bottom: 1px dashed var(--ink-2); font: 600 10.5px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.bcf-t { padding: 10px 12px 4px; font: 700 16.5px/1.3 var(--display); font-stretch: 106%; }
+.bcf dl { margin: 0; padding: 4px 12px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; }
+.bcf dl > div { min-width: 0; }
+.bcf dd { font: 500 12.5px/1.35 var(--mono); }
+.bcf .st { color: var(--signal); font-weight: 700; }
+.cp-ex { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+@media (max-width: 999px) { .cm { grid-template-columns: 1fr; } .cm-side { position: static; } }
+@media (max-width: 560px) {
+  .mx { border-spacing: 2px; }
+  .mx thead td { width: 38px; height: auto; }
+  .mx th { font-size: 9.5px; letter-spacing: 0; }
+  .mx td { height: 46px; }
+  .cx small { display: none; }
+  .cx b { font-size: 15px; }
+  .cm-tot { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cm-tot div:nth-child(3) { border-right: 0; }
+  .cm-tot div:nth-child(-n+3) { border-bottom: 1px solid var(--rule); }
+  .bcf dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---- A-103 · trend grafiği ---- */
+.sub { margin: clamp(48px, 6vw, 88px) 0 0; }
+.sub-head { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 10px 24px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+.sub-head h3 { font-size: clamp(24px, 3vw, 40px); font-stretch: 114%; letter-spacing: -.02em; }
+.sub-head p { color: var(--ink-2); max-width: 58ch; font-size: 15.5px; }
+.tr-fig { margin: 0; border: 1px solid var(--ink); border-top: 0; background: var(--paper); }
+.tr-read { display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: baseline; padding: 12px 16px; border-bottom: 1px solid var(--rule); font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); min-height: 44px; }
+.tr-read b { font: 700 18px var(--display); font-stretch: 110%; color: var(--ink); letter-spacing: 0; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.tr-read .c { color: var(--signal); font-weight: 600; }
+.tr-key { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 10px 16px; border-top: 1px solid var(--rule); font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.tr-key span { display: inline-flex; align-items: center; gap: 6px; }
+.tr-key i { display: inline-block; width: 14px; height: 10px; }
+.tr-key .n { border: 1.5px solid var(--ink); }
+.tr-key .r { background: var(--ok); }
+.tr-key .o { height: 0; border-top: 2.5px solid var(--signal); width: 18px; }
+#tr-svg { display: block; padding: 8px 4px 0; }
+#tr-svg svg { display: block; width: 100%; height: auto; overflow: visible; }
+.tg { stroke: var(--rule); }
+.tg.z { stroke: var(--ink); }
+.tl-l { font: 500 10.5px var(--mono); fill: var(--ink-2); }
+.tb-n { fill: transparent; stroke: var(--ink); stroke-width: 1.3; }
+.tb-r { fill: var(--ok); }
+.to { fill: none; stroke: var(--signal); stroke-width: 2.5; stroke-linejoin: round; }
+.to-p { fill: var(--paper); stroke: var(--signal); stroke-width: 2; }
+.to-v { font: 600 10.5px var(--mono); fill: var(--signal); }
+.tn { font: 500 10px var(--mono); fill: var(--ink); letter-spacing: .03em; }
+.tn-l { stroke: var(--ink); stroke-dasharray: 3 3; }
+.th { fill: transparent; cursor: crosshair; outline: none; }
+.th:hover, .th:focus { fill: color-mix(in srgb, var(--ink) 7%, transparent); }
+.th:focus-visible { stroke: var(--signal); stroke-width: 1.5; }
+.tr-data { border-top: 1px solid var(--rule); }
+.tr-data summary { cursor: pointer; padding: 10px 16px; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.tr-data table { width: calc(100% - 32px); margin: 0 16px 14px; border-collapse: collapse; font: 500 12.5px var(--mono); }
+.tr-data th, .tr-data td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--rule); }
+.tr-data th:first-child { text-align: left; }
+html:not(.js) #tr-svg, html:not(.js) .tr-read { display: none; }
+
+/* ---- A-103 · çakışma türleri ---- */
+.ty { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-left: 1px solid var(--rule); }
+.ty li { padding: 16px 16px 18px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 8px; align-content: start; min-width: 0; }
+.ty svg { width: 100%; height: auto; max-width: 260px; background: var(--paper-2); border: 1px solid var(--rule); }
+.ty .tno { font: 600 11px var(--mono); letter-spacing: .08em; color: var(--signal); text-transform: uppercase; }
+.ty h4 { font: 700 clamp(19px, 1.7vw, 23px)/1.15 var(--display); font-stretch: 110%; letter-spacing: -.01em; }
+.ty p { font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+.ty p b { color: var(--ink); font-weight: 600; }
+.ty .rule { font: 500 11px/1.5 var(--mono); letter-spacing: .04em; text-transform: uppercase; border-top: 1px dashed var(--rule); padding-top: 8px; color: var(--ink); }
+.t-el { fill: color-mix(in srgb, var(--ink) 10%, transparent); stroke: var(--ink); stroke-width: 1.4; }
+.t-el2, .t-el2c { fill: color-mix(in srgb, var(--ink) 4%, var(--paper)); stroke: var(--ink); stroke-width: 1.4; }
+.t-dup { fill: none; stroke: var(--signal); stroke-width: 1.6; stroke-dasharray: 5 3; }
+.t-hit { fill: color-mix(in srgb, var(--signal) 45%, transparent); stroke: var(--signal); stroke-width: 1.6; }
+.t-hitl { stroke: var(--signal); stroke-width: 3; }
+.t-env { fill: color-mix(in srgb, var(--signal) 10%, transparent); stroke: var(--signal); stroke-dasharray: 4 3; }
+.t-dim { fill: none; stroke: var(--ink-2); }
+.t-ax { stroke: var(--ink-2); }
+.t-tx { font: 600 11px var(--mono); fill: var(--ink-2); }
+@media (max-width: 1000px) { .ty { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .ty { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .cx { transition: none; } .cx:hover { transform: none; } }
+
+
+/* ---- A-103 · infografik ortak çizim dili (kd-) ---- */
+.kd-ink, .kd-ink path, .kd-ink rect, .kd-ink circle { stroke: var(--ink); stroke-width: 1.5; }
+.kd-ink .kd-fill, .kd-fill { fill: color-mix(in srgb, var(--ink) 12%, var(--paper)); }
+.kd-ink .kd-paper, .kd-paper { fill: var(--paper); }
+.kd-inkf { fill: var(--ink); }
+.kd-dim { stroke: var(--ink-2); stroke-width: 1.2; }
+.kd-hit { fill: color-mix(in srgb, var(--signal) 50%, transparent); stroke: var(--signal); stroke-width: 2; }
+.kd-hitp { fill: var(--signal); }
+.kd-hitb { fill: color-mix(in srgb, var(--signal) 70%, transparent); }
+.kd-okb { fill: var(--ok); }
+.kd-sig { stroke: var(--signal); stroke-width: 2; fill: none; }
+.kd-sigf { fill: var(--signal); }
+.kd-sigl { stroke: var(--signal); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.kd-wedge { fill: color-mix(in srgb, var(--signal) 55%, transparent); stroke: var(--signal); stroke-width: 1.5; }
+.kd-okl { stroke: var(--ok); stroke-width: 3; fill: none; stroke-dasharray: 9 6; stroke-linejoin: round; }
+.kd-okc { fill: var(--ok); }
+.kd-okk { stroke: var(--paper); stroke-width: 3.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.kd-okr { stroke: var(--ok); fill: none; }
+.kd-bub { fill: var(--signal); }
+.kd-t { font: 500 12px var(--mono); letter-spacing: .04em; fill: var(--ink); stroke: none; }
+.kd-t.kd-on, .kd-on { fill: var(--on-signal); font-weight: 700; }
+.kd-sigt { fill: var(--signal); font-weight: 700; }
+.kd-okt { fill: var(--ok); font-weight: 700; }
+.kd-dim2, .kd-dim2 text { fill: var(--ink-2); }
+.kd-sm { font-size: 11px; }
+.kd-big { font: 800 34px var(--display); font-stretch: 118%; letter-spacing: -.02em; fill: var(--ink); }
+.kd-big.kd-okt { fill: var(--ok); }
+.kd-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* hero */
+.kd-hero { border: 1px solid var(--ink); background: var(--paper-2); padding: clamp(12px, 2vw, 24px); max-width: 860px; color: var(--ink); }
+.kd-hero svg { display: block; width: 100%; height: auto; }
+.kd-hero .kd-t { font-size: 15px; }
+@media (max-width: 600px) { .kd-hero .kd-t { font-size: 19px; } }
+
+/* 01 · belirtiler */
+.kd-sym { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.kd-sym li { display: grid; gap: 14px; align-content: start; padding: 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.kd-sym svg { width: 100%; height: auto; background: var(--paper-2); border: 1px solid var(--rule); }
+.kd-sym q { font: 700 clamp(18px, 1.6vw, 22px)/1.25 var(--display); font-stretch: 106%; quotes: "“" "”"; }
+.kd-fix { font: 600 11px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ok); border-left: 2px solid var(--ok); padding-left: 8px; }
+.kd-fix::before { content: "→ "; }
+@media (max-width: 1000px) { .kd-sym { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .kd-sym { grid-template-columns: 1fr; } }
+
+/* 02 · kural → test → karar */
+.kd-fed { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 64px); counter-reset: none; }
+.kd-fed > li { position: relative; display: grid; gap: 14px; align-content: start; min-width: 0; }
+.kd-fed svg { width: 100%; height: auto; border: 1px solid var(--ink); background: var(--paper); }
+.kd-fed > li:not(:last-child)::after { content: "→"; position: absolute; right: calc(-1 * clamp(28px, 4vw, 64px)); width: clamp(28px, 4vw, 64px); top: 38%; text-align: center; font: 600 26px var(--mono); color: var(--signal); }
+.kd-fed h3 { font-size: clamp(24px, 2.6vw, 36px); font-stretch: 118%; letter-spacing: -.02em; display: flex; gap: 12px; align-items: baseline; border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
+.kd-fed h3 .mono { font-size: 12px; color: var(--signal); letter-spacing: .08em; }
+.kd-fed ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.kd-fed ul li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px; font-size: 15px; line-height: 1.4; }
+.kd-fed ul li::before { content: ""; width: 8px; height: 8px; margin-top: 6px; border: 1.5px solid var(--ink); transform: rotate(45deg); }
+@media (max-width: 900px) {
+  .kd-fed { grid-template-columns: 1fr; gap: 48px; max-width: 520px; }
+  .kd-fed > li:not(:last-child)::after { content: "↓"; right: auto; left: 0; width: 100%; top: auto; bottom: -42px; }
+}
+
+/* 04 · teslimat şeridi */
+.kd-dl { display: grid; grid-template-columns: 3fr 5fr 2fr; border-top: 2px solid var(--ink); }
+.kd-ph { min-width: 0; padding: 0 clamp(12px, 1.6vw, 20px) 0 0; position: relative; }
+.kd-ph + .kd-ph { padding-left: clamp(12px, 1.6vw, 20px); border-left: 1px dashed var(--rule); }
+.kd-ph::before { content: ""; position: absolute; top: -7px; left: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+.kd-ph + .kd-ph::before { left: -7px; }
+.kd-ph.hot::before { border-color: var(--signal); background: var(--signal); }
+.kd-ph.end::before { border-color: var(--ok); background: var(--ok); }
+.kd-ph h3 { font-size: clamp(18px, 1.7vw, 22px); font-stretch: 110%; padding: 20px 0 14px; display: grid; gap: 4px; }
+.kd-ph h3 small { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.kd-ph ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.kd-ph li { border: 1px solid var(--ink); background: var(--paper); padding: 12px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.kd-ph li svg { width: 40px; height: 40px; fill: none; stroke: var(--ink); stroke-width: 1.6; }
+.kd-ph.hot li svg { stroke: var(--signal); }
+.kd-ph.end li svg { stroke: var(--ok); }
+.kd-ph .c { font: 600 11px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.kd-ph b { font: 700 16px/1.2 var(--display); font-stretch: 106%; }
+.fmt { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.fmt code { font: 600 10.5px/1 var(--mono); letter-spacing: .06em; border: 1px solid var(--ink); padding: 4px 5px; white-space: nowrap; }
+@media (max-width: 900px) {
+  .kd-dl { grid-template-columns: 1fr; border-top: 0; border-left: 2px solid var(--ink); }
+  .kd-ph, .kd-ph + .kd-ph { padding: 0 0 18px 20px; border-left: 0; }
+  .kd-ph::before, .kd-ph + .kd-ph::before { left: -7px; top: 22px; }
+  .kd-ph h3 { padding-top: 16px; }
+}
+@media (max-width: 420px) { .kd-ph ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* 05 · döngü halkası */
+.kd-loop { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+.kd-loop > svg { width: 100%; height: auto; color: var(--ink); }
+.kd-loop > * { min-width: 0; }
+.kd-arr path { stroke-width: 1.6; }
+.kd-node circle:first-child { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; }
+.kd-node path, .kd-node circle + circle, .kd-node circle ~ circle { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.kd-node.hot circle:first-child { fill: var(--signal); stroke: var(--signal); }
+.kd-node.hot path, .kd-node.hot circle ~ circle { stroke: var(--on-signal); }
+.kd-node.ok circle:first-child { fill: var(--ok); stroke: var(--ok); }
+.kd-node.ok path { stroke: var(--paper); stroke-width: 3; }
+.kd-loop .kd-big { font-size: 46px; }
+.tl-row h3 { font-size: 17px; }
+@media (max-width: 1000px) { .kd-loop { grid-template-columns: 1fr; } .kd-loop > svg { max-width: 380px; justify-self: center; } }
+
+/* 06 · huni */
+.kd-fun { display: grid; gap: 14px; justify-items: start; }
+.kd-fun .tag-ex { font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--on-signal); background: var(--signal); padding: 5px 8px; }
+.kd-fun svg { width: 100%; max-width: 440px; height: auto; }
+.kd-fun figcaption { font-size: 15px; color: var(--ink-2); max-width: 44ch; }
+.kd-fn1 { fill: color-mix(in srgb, var(--signal) 22%, var(--paper)); stroke: var(--signal); stroke-width: 1.5; }
+.kd-fn2 { fill: color-mix(in srgb, var(--ink) 10%, var(--paper)); stroke: var(--ink); stroke-width: 1.5; }
+.kd-fn3 { fill: color-mix(in srgb, var(--ok) 20%, var(--paper)); stroke: var(--ok); stroke-width: 1.5; }
+
+/* 07 · KPI mini grafikleri */
+.kd-kpis svg { width: 100%; max-width: 150px; height: auto; }
+</style>
+
+<main id="main">
+  <header class="sheet-head kd-head">
+    <a class="back" href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">← A-100 · <span lang="tr">Tüm hizmetler</span><span lang="en">All services</span></a>
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-103</b></span>
+      <span><span lang="tr">Üst pafta</span><span lang="en">Parent</span> <b>A-100</b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>1:50</b></span>
+      <span>Rev <b>P05</b></span>
+      <span><span lang="tr">Katman</span><span lang="en">Layer</span> <b>03 / 06</b></span>
+      <span class="signal"><b>STR × MEP · BCF</b></span>
+    </div>
+    <h1><span lang="tr">Koordi<span class="o">nasyon</span><span class="s">.</span></span><span lang="en">Coordi<span class="o">nation</span><span class="s">.</span></span></h1>
+    <p class="lede"><span lang="tr">Altı disiplini tek bir federe modelde birleştirir, her hafta aynı kurallarla test ederiz. Çakışma şantiyeye değil, tasarım masasına gelir.</span><span lang="en">We merge six disciplines into one federated model and test it every week with the same rules. Clashes land on the design desk, not on site.</span></p>
+    <figure class="kd-hero" style="margin:0">
+      <svg viewBox="0 0 600 228" fill="none" role="img" aria-labelledby="kd-hero-t">
+        <title id="kd-hero-t">Örnek: kanal kirişin içinden geçiyor, P1 olarak işaretleniyor ve kirişin altından dolaşarak çözülüyor / Example: a duct runs through a beam, is flagged P1 and is resolved by routing under the beam</title>
+        <defs><pattern id="kd-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V8" stroke="currentColor" stroke-width="1" opacity=".35"/></pattern></defs>
+        <g class="kd-ink">
+          <rect x="10" y="18" width="580" height="22" fill="url(#kd-hatch)"/>
+          <path d="M10 18H590M10 40H590"/>
+          <rect class="kd-fill" x="250" y="40" width="80" height="84"/>
+          <rect class="kd-paper" x="40" y="76" width="520" height="40"/>
+          <path d="M60 76V116M540 76V116" opacity=".5"/>
+          <path d="M10 196H590" stroke-dasharray="8 6" opacity=".6"/>
+        </g>
+        <rect class="kd-hit" x="250" y="76" width="80" height="40"/>
+        <path class="kd-okl" d="M40 96H196L222 152H358L384 96H560"/>
+        <circle class="kd-sig" cx="290" cy="96" r="38" stroke-dasharray="5 4"/>
+        <path class="kd-sigl" d="M322 116L382 166"/>
+        <rect class="kd-bub" x="382" y="150" width="200" height="34"/>
+        <text class="kd-t kd-on" x="482" y="173" text-anchor="middle">STR × HVAC · P1</text>
+        <g lang="tr"><text class="kd-t kd-okt" x="96" y="176">çözüldü · −50 mm</text><text class="kd-t kd-dim" x="14" y="214">asma tavan</text><text class="kd-t kd-dim" x="256" y="62">kiriş</text></g>
+        <g lang="en"><text class="kd-t kd-okt" x="96" y="176">resolved · −50 mm</text><text class="kd-t kd-dim" x="14" y="214">ceiling</text><text class="kd-t kd-dim" x="256" y="62">beam</text></g>
+      </svg>
+    </figure>
+    <dl class="spec sv-spec">
+      <div><dt><span lang="tr">Döngü</span><span lang="en">Cycle</span></dt><dd><span lang="tr">Haftalık</span><span lang="en">Weekly</span></dd></div>
+      <div><dt><span lang="tr">Ekip</span><span lang="en">Team</span></dt><dd><span lang="tr">1–3 kişi</span><span lang="en">1–3 people</span></dd></div>
+      <div><dt><span lang="tr">Standart</span><span lang="en">Standard</span></dt><dd>ISO 19650-2<small>BCF · IFC 4</small></dd></div>
+      <div><dt><span lang="tr">Araçlar</span><span lang="en">Tools</span></dt><dd>Navisworks · ACC<small>Solibri · Revit</small></dd></div>
+    </dl>
+  </header>
+
+  <section class="block" aria-labelledby="w-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Ne zaman</span><span lang="en">When</span></span>
+      <h2 id="w-title"><span lang="tr">Bu tablo tanıdık mı?</span><span lang="en">Sound familiar?</span></h2>
+    </div>
+    <ul class="kd-sym">
+      <li>
+        <svg viewBox="0 0 200 120" fill="none" aria-hidden="true"><g class="kd-ink"><path d="M10 22H190"/><rect class="kd-fill" x="84" y="22" width="34" height="64"/><rect class="kd-paper" x="14" y="50" width="172" height="24"/></g><rect class="kd-hit" x="84" y="50" width="34" height="24"/><path class="kd-sigl" d="M96 100l6-8 6 8 6-8 6 8 6-8M128 88l10-10M134 96l14-4M126 82l2-14"/></svg>
+        <q><span lang="tr">Kanal kirişe çarpıyor, sahada kesiliyor.</span><span lang="en">Duct hits beam, cut on site.</span></q>
+        <span class="kd-fix"><span lang="tr">Haftalık test + delik listesi</span><span lang="en">Weekly test + opening list</span></span>
+      </li>
+      <li>
+        <svg viewBox="0 0 200 120" fill="none" aria-hidden="true"><g class="kd-ink"><circle cx="62" cy="60" r="40"/><path d="M62 26V30M62 90V94M28 60H32M92 60H96M62 60V34M62 60L76 68"/></g><path class="kd-wedge" d="M62 60V20A40 40 0 0 1 96.6 40Z"/><g class="kd-ink"><circle cx="138" cy="52" r="9"/><circle cx="170" cy="52" r="9"/><path d="M122 92c0-14 8-22 16-22s16 8 16 22M154 92c0-14 8-22 16-22s16 8 16 22"/></g><text class="kd-t kd-sigt" x="150" y="28" text-anchor="middle">? ?</text></svg>
+        <q><span lang="tr">Toplantı iki saat, karar yok.</span><span lang="en">Two-hour meetings, no decisions.</span></q>
+        <span class="kd-fix"><span lang="tr">BCF gündemi, kayıtlı karar</span><span lang="en">BCF agenda, logged decisions</span></span>
+      </li>
+      <li>
+        <svg viewBox="0 0 200 120" fill="none" aria-hidden="true"><g class="kd-ink"><rect class="kd-paper" x="72" y="20" width="76" height="92" opacity=".6"/><rect class="kd-paper" x="64" y="14" width="76" height="92" opacity=".8"/><rect class="kd-paper" x="56" y="8" width="76" height="92"/><path d="M64 22H124M64 30H118M64 38H124M64 46H110M64 54H124M64 62H116M64 70H124M64 78H104M64 86H120" opacity=".55"/></g><path class="kd-sigl" d="M60 30h0M60 46h0M60 62h0M60 78h0" stroke-width="5" stroke-linecap="round"/><text class="kd-t kd-sigt" x="158" y="64">×4000</text></svg>
+        <q><span lang="tr">Rapor 4.000 satır; hangisi gerçek?</span><span lang="en">A 4,000-row report; which rows are real?</span></q>
+        <span class="kd-fix"><span lang="tr">Gruplama: birkaç yüz sorun</span><span lang="en">Grouping: a few hundred issues</span></span>
+      </li>
+      <li>
+        <svg viewBox="0 0 200 120" fill="none" aria-hidden="true"><g class="kd-ink"><path d="M40 14V96M90 14V96M140 14V96M24 34H156M24 78H156"/><circle cx="40" cy="104" r="7"/><circle cx="90" cy="104" r="7"/><circle cx="140" cy="104" r="7"/></g><path class="kd-sigl" d="M58 24V106M108 24V106M158 24V106M42 44H176M42 88H176" stroke-dasharray="5 4"/><path class="kd-dim" d="M40 10H58M40 6V14M58 6V14"/><text class="kd-t kd-sigt" x="64" y="14">1,2 m</text></svg>
+        <q><span lang="tr">Modeller üst üste oturmuyor.</span><span lang="en">Models do not line up.</span></q>
+        <span class="kd-fix"><span lang="tr">Ortak koordinat kontrolü</span><span lang="en">Shared coordinate check</span></span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="sc-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Kapsam</span><span lang="en">Scope</span></span>
+      <h2 id="sc-title"><span lang="tr">Testten önce kural, testten sonra karar.</span><span lang="en">Rules before the test, decisions after it.</span></h2>
+    </div>
+    <ol class="kd-fed">
+      <li>
+        <svg viewBox="0 0 300 260" fill="none" role="img" aria-labelledby="kd-f1"><title id="kd-f1">Altı disiplin modeli ortak bir orijine hizalanmış, ayrık görünüm / Six discipline models aligned to one shared origin, exploded view</title>
+          <path class="kd-dim" d="M130 14V238" stroke-dasharray="4 4"/>
+          <g class="kd-ink">
+            <path class="kd-paper" d="M50 210L130 188L210 210L130 232Z"/><path d="M50 210v6l80 22 80-22v-6"/>
+            <path class="kd-paper" d="M50 176L130 154L210 176L130 198Z"/><path d="M50 176v6l80 22 80-22v-6"/>
+            <path class="kd-paper" d="M50 142L130 120L210 142L130 164Z"/><path d="M50 142v6l80 22 80-22v-6"/>
+            <path class="kd-paper" d="M50 108L130 86L210 108L130 130Z"/><path d="M50 108v6l80 22 80-22v-6"/>
+            <path class="kd-paper" d="M50 74L130 52L210 74L130 96Z"/><path d="M50 74v6l80 22 80-22v-6"/>
+            <path class="kd-fill" d="M50 40L130 18L210 40L130 62Z"/><path d="M50 40v6l80 22 80-22v-6"/>
+          </g>
+          <g class="kd-dim"><path d="M214 40H232M214 74H232M214 108H232M214 142H232M214 176H232M214 210H232"/></g>
+          <g class="kd-t"><text x="238" y="44">ARC</text><text x="238" y="78">STR</text><text x="238" y="112">HVAC</text><text x="238" y="146">PLU</text><text x="238" y="180">ELEC</text><text x="238" y="214">FIRE</text></g>
+          <circle class="kd-sig" cx="130" cy="246" r="7"/><path class="kd-sigl" d="M118 246H142M130 234V258"/>
+          <text class="kd-t kd-sigt" x="146" y="254">± 0.00</text>
+        </svg>
+        <h3><span class="mono">01</span> <span lang="tr">Kural</span><span lang="en">Rules</span></h3>
+        <ul><li><span lang="tr">Federasyon stratejisi</span><span lang="en">Federation strategy</span></li><li><span lang="tr">Koordinat kontrolü</span><span lang="en">Coordinate check</span></li><li><span lang="tr">Test matrisi ve toleranslar</span><span lang="en">Test matrix and tolerances</span></li><li><span lang="tr">Servis bölgeleri</span><span lang="en">Service zones</span></li></ul>
+      </li>
+      <li>
+        <svg viewBox="0 0 300 260" fill="none" role="img" aria-labelledby="kd-f2"><title id="kd-f2">Federe model haftalık test ediliyor; bir P1 çakışma işaretlendi / The federated model is tested weekly; one P1 clash is flagged</title>
+          <g class="kd-ink">
+            <path class="kd-fill" d="M50 76L140 50L230 76L140 102Z"/>
+            <path class="kd-paper" d="M50 76L140 102V226L50 200Z"/>
+            <path class="kd-paper" d="M140 102L230 76V200L140 226Z"/>
+            <path d="M50 107L140 133L230 107M50 138L140 164L230 138M50 169L140 195L230 169" opacity=".55"/>
+            <path d="M95 89V213M185 89V213" opacity=".3"/>
+          </g>
+          <path class="kd-hitp" d="M168 150l22-6v12l-22 6Z"/>
+          <circle class="kd-sig" cx="180" cy="152" r="22" stroke-dasharray="4 3"/>
+          <path class="kd-sigl" d="M196 136L236 50"/>
+          <rect class="kd-bub" x="206" y="22" width="80" height="30"/>
+          <text class="kd-t kd-on" x="246" y="42" text-anchor="middle">P1</text>
+          <text class="kd-t kd-dim2" x="50" y="248">C07 · 21 test</text>
+        </svg>
+        <h3><span class="mono">02</span> <span lang="tr">Test</span><span lang="en">Test</span></h3>
+        <ul><li><span lang="tr">Haftalık çakışma testi</span><span lang="en">Weekly clash test</span></li><li><span lang="tr">Solibri kural kontrolü</span><span lang="en">Solibri rule check</span></li><li><span lang="tr">Kök nedene göre gruplama, P1–P3</span><span lang="en">Grouping by root cause, P1–P3</span></li></ul>
+      </li>
+      <li>
+        <svg viewBox="0 0 300 260" fill="none" role="img" aria-labelledby="kd-f3"><title id="kd-f3">Her sorun sahibi ve son tarihi olan bir BCF kaydına dönüşüyor ve çözülüyor / Each issue becomes a BCF topic with owner and due date, then gets resolved</title>
+          <g class="kd-ink">
+            <rect class="kd-paper" x="40" y="30" width="210" height="176"/>
+            <path d="M40 58H250"/>
+            <rect class="kd-fill" x="56" y="74" width="80" height="64"/>
+            <path d="M96 88l18 8v18l-18 8-18-8V96Z M78 96l18 8 18-8M96 104v18" opacity=".7"/>
+            <path d="M152 132H228M56 160H232M56 180H200" opacity=".45"/>
+          </g>
+          <circle class="kd-sigf" cx="116" cy="110" r="5"/>
+          <text class="kd-t" x="52" y="49">BCF</text>
+          <rect class="kd-bub" x="196" y="36" width="44" height="18"/><text class="kd-t kd-on kd-sm" x="218" y="49" text-anchor="middle">P1</text>
+          <g lang="tr"><text class="kd-t kd-dim2" x="152" y="92">HVAC</text><text class="kd-t kd-dim2" x="152" y="114">+3 gün</text></g>
+          <g lang="en"><text class="kd-t kd-dim2" x="152" y="92">HVAC</text><text class="kd-t kd-dim2" x="152" y="114">+3 days</text></g>
+          <circle class="kd-okc" cx="244" cy="210" r="26"/><path class="kd-okk" d="M232 210l8 8 16-17"/>
+        </svg>
+        <h3><span class="mono">03</span> <span lang="tr">Karar</span><span lang="en">Decision</span></h3>
+        <ul><li><span lang="tr">BCF: sahip + son tarih</span><span lang="en">BCF: owner + due date</span></li><li><span lang="tr">Delik ve manşon listesi</span><span lang="en">Openings and sleeves list</span></li><li><span lang="tr">Toplantı, rapor, KPI</span><span lang="en">Meeting, report, KPIs</span></li></ul>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block" aria-labelledby="mx-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Çakışma matrisi</span><span lang="en">Clash matrix</span></span>
+      <h2 id="mx-title"><span lang="tr">Bu hafta kim kime çarpıyor?</span><span lang="en">Who is hitting whom this week?</span></h2>
+      <p><span lang="tr">Her hücre bir disiplin çifti, tolerans ve önceliktir. Bir hücre seçin.</span><span lang="en">Each cell is a discipline pair, a tolerance and a priority. Pick a cell.</span></p>
+    </div>
+    <div class="cm">
+      <figure class="cm-fig" aria-labelledby="cm-cap">
+        <div class="cm-bar"><span id="cm-cap"><span lang="tr">Örnek döngü C07 · ofis binası</span><span lang="en">Sample cycle C07 · office building</span></span><span><span lang="tr">Toplam</span><span lang="en">Total</span> <b>720</b> · <span lang="tr">21 test</span><span lang="en">21 tests</span></span></div>
+        <div class="cm-in"><table class="mx"><caption class="sr-only"><span lang="tr">Örnek çakışma matrisi: disiplin çiftlerine göre bir koordinasyon döngüsündeki çakışma sayısı, öncelik ve tolerans (mm)</span><span lang="en">Sample clash matrix: clashes per discipline pair in one coordination cycle, with priority and tolerance (mm)</span></caption><thead><tr><td></td><th scope="col" data-c="0"><abbr title="Mimari / Architecture">ARC</abbr></th><th scope="col" data-c="1"><abbr title="Yapı / Structure">STR</abbr></th><th scope="col" data-c="2"><abbr title="Mekanik (HVAC) / Mechanical (HVAC)">HVAC</abbr></th><th scope="col" data-c="3"><abbr title="Sıhhi tesisat / Plumbing">PLU</abbr></th><th scope="col" data-c="4"><abbr title="Elektrik / Electrical">ELEC</abbr></th><th scope="col" data-c="5"><abbr title="Yangın / Fire protection">FIRE</abbr></th></tr></thead><tbody><tr><th scope="row" data-r="0"><abbr title="Mimari / Architecture">ARC</abbr></th><td><a class="cx" href="#p-ARC-ARC" data-k="ARC-ARC" data-r="0" data-c="0" style="--h:31%" aria-label="ARC × ARC: 14 · P3"><b>14</b><small>P3 · 0</small></a></td><td><a class="cx" href="#p-ARC-STR" data-k="ARC-STR" data-r="0" data-c="1" style="--h:49%" aria-label="ARC × STR: 38 · P2"><b>38</b><small>P2 · 20</small></a></td><td><a class="cx hot" href="#p-ARC-HVAC" data-k="ARC-HVAC" data-r="0" data-c="2" style="--h:54%" aria-label="ARC × HVAC: 46 · P2"><b>46</b><small>P2 · 10/50</small></a></td><td><a class="cx" href="#p-ARC-PLU" data-k="ARC-PLU" data-r="0" data-c="3" style="--h:38%" aria-label="ARC × PLU: 22 · P3"><b>22</b><small>P3 · 10/25</small></a></td><td><a class="cx" href="#p-ARC-ELEC" data-k="ARC-ELEC" data-r="0" data-c="4" style="--h:35%" aria-label="ARC × ELEC: 18 · P2"><b>18</b><small>P2 · 10/1000</small></a></td><td><a class="cx" href="#p-ARC-FIRE" data-k="ARC-FIRE" data-r="0" data-c="5" style="--h:29%" aria-label="ARC × FIRE: 12 · P2"><b>12</b><small>P2 · 0/300</small></a></td></tr><tr><th scope="row" data-r="1"><abbr title="Yapı / Structure">STR</abbr></th><td class="nil" aria-hidden="true"></td><td><a class="cx" href="#p-STR-STR" data-k="STR-STR" data-r="1" data-c="1" style="--h:22%" aria-label="STR × STR: 6 · P3"><b>6</b><small>P3 · 5</small></a></td><td><a class="cx hot" href="#p-STR-HVAC" data-k="STR-HVAC" data-r="1" data-c="2" style="--h:90%" aria-label="STR × HVAC: 128 · P1"><b>128</b><small>P1 · 10/50</small></a></td><td><a class="cx hot" href="#p-STR-PLU" data-k="STR-PLU" data-r="1" data-c="3" style="--h:63%" aria-label="STR × PLU: 64 · P1"><b>64</b><small>P1 · 10/25</small></a></td><td><a class="cx" href="#p-STR-ELEC" data-k="STR-ELEC" data-r="1" data-c="4" style="--h:45%" aria-label="STR × ELEC: 31 · P2"><b>31</b><small>P2 · 15/50</small></a></td><td><a class="cx" href="#p-STR-FIRE" data-k="STR-FIRE" data-r="1" data-c="5" style="--h:52%" aria-label="STR × FIRE: 42 · P1"><b>42</b><small>P1 · 10/25</small></a></td></tr><tr><th scope="row" data-r="2"><abbr title="Mekanik (HVAC) / Mechanical (HVAC)">HVAC</abbr></th><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td><a class="cx" href="#p-HVAC-HVAC" data-k="HVAC-HVAC" data-r="2" data-c="2" style="--h:35%" aria-label="HVAC × HVAC: 19 · P3"><b>19</b><small>P3 · 10/25</small></a></td><td><a class="cx hot" href="#p-HVAC-PLU" data-k="HVAC-PLU" data-r="2" data-c="3" style="--h:60%" aria-label="HVAC × PLU: 57 · P2"><b>57</b><small>P2 · 10/25</small></a></td><td><a class="cx hot" href="#p-HVAC-ELEC" data-k="HVAC-ELEC" data-r="2" data-c="4" style="--h:56%" aria-label="HVAC × ELEC: 49 · P2"><b>49</b><small>P2 · 10/300</small></a></td><td><a class="cx hot" href="#p-HVAC-FIRE" data-k="HVAC-FIRE" data-r="2" data-c="5" style="--h:68%" aria-label="HVAC × FIRE: 73 · P1"><b>73</b><small>P1 · 10/50</small></a></td></tr><tr><th scope="row" data-r="3"><abbr title="Sıhhi tesisat / Plumbing">PLU</abbr></th><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td><a class="cx" href="#p-PLU-PLU" data-k="PLU-PLU" data-r="3" data-c="3" style="--h:26%" aria-label="PLU × PLU: 9 · P3"><b>9</b><small>P3 · 5</small></a></td><td><a class="cx" href="#p-PLU-ELEC" data-k="PLU-ELEC" data-r="3" data-c="4" style="--h:37%" aria-label="PLU × ELEC: 21 · P1"><b>21</b><small>P1 · 10/300</small></a></td><td><a class="cx" href="#p-PLU-FIRE" data-k="PLU-FIRE" data-r="3" data-c="5" style="--h:46%" aria-label="PLU × FIRE: 33 · P2"><b>33</b><small>P2 · 10/25</small></a></td></tr><tr><th scope="row" data-r="4"><abbr title="Elektrik / Electrical">ELEC</abbr></th><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td><a class="cx" href="#p-ELEC-ELEC" data-k="ELEC-ELEC" data-r="4" data-c="4" style="--h:23%" aria-label="ELEC × ELEC: 7 · P3"><b>7</b><small>P3 · 10/150</small></a></td><td><a class="cx" href="#p-ELEC-FIRE" data-k="ELEC-FIRE" data-r="4" data-c="5" style="--h:41%" aria-label="ELEC × FIRE: 26 · P2"><b>26</b><small>P2 · 10/50</small></a></td></tr><tr><th scope="row" data-r="5"><abbr title="Yangın / Fire protection">FIRE</abbr></th><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td class="nil" aria-hidden="true"></td><td><a class="cx" href="#p-FIRE-FIRE" data-k="FIRE-FIRE" data-r="5" data-c="5" style="--h:20%" aria-label="FIRE × FIRE: 5 · P3"><b>5</b><small>P3 · 5</small></a></td></tr></tbody></table></div>
+        <div class="cm-key" aria-hidden="true"><span><span lang="tr">Az</span><span lang="en">Few</span></span><span class="cm-grad"></span><span><span lang="tr">Çok</span><span lang="en">Many</span></span><span>· <span lang="tr">hücre: adet / öncelik · tolerans/açıklık mm</span><span lang="en">cell: count / priority · tolerance/clearance mm</span></span></div>
+        <div class="cm-tot" role="group" aria-label="Disipline göre toplam / Total by discipline"><div><span>ARC</span><b>150</b><i style="--w:40%"></i></div><div><span>STR</span><b>309</b><i style="--w:83%"></i></div><div><span>HVAC</span><b>372</b><i style="--w:100%"></i></div><div><span>PLU</span><b>206</b><i style="--w:55%"></i></div><div><span>ELEC</span><b>152</b><i style="--w:41%"></i></div><div><span>FIRE</span><b>191</b><i style="--w:51%"></i></div></div>
+        <p class="cm-help"><span lang="tr"><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> ile gezinin. En yoğun çift: STR × HVAC, hepsi P1.</span><span lang="en">Move with <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd>. Busiest pair: STR × HVAC, all P1.</span></p>
+      </figure>
+      <div class="cm-side" id="cm-side" aria-live="polite">
+<article class="cp" id="p-ARC-ARC" data-k="ARC-ARC" tabindex="-1" aria-labelledby="pt-ARC-ARC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 01 · ARC × ARC</span><span class="pri p3">P3</span></div>
+  <h3 id="pt-ARC-ARC"><span lang="tr">Mimari içi</span><span lang="en">Within architecture</span></h3>
+  <div class="cp-n"><b>14</b><span><span lang="tr">çakışma bu döngüde · toplamın %1,9'i</span><span lang="en">clashes this cycle · 1.9% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Çift / tekrar kontrolü</span><span lang="en">Duplicate check</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>0 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd><span class="dim">–</span></dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Düşük · model temizliği, sonraki döngü</span><span lang="en">Minor · model hygiene, next cycle</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Mimari ekip</span><span lang="en">Architecture team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>3deb7750-c27a-3981…</span></div>
+    <p class="bcf-t"><span lang="tr">Koridor C: aynı konumda iki duvar</span><span lang="en">Corridor C: two walls in the same place</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P3</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>ARC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L02 · B-3/C-3</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 14 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-ARC-STR" data-k="ARC-STR" tabindex="-1" aria-labelledby="pt-ARC-STR">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 02 · ARC × STR</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-ARC-STR"><span lang="tr">Mimari × Yapı</span><span lang="en">Architecture × Structure</span></h3>
+  <div class="cp-n"><b>38</b><span><span lang="tr">çakışma bu döngüde · toplamın %5,3'i</span><span lang="en">clashes this cycle · 5.3% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert çakışma testi</span><span lang="en">Hard clash test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>20 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd><span class="dim">–</span></dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Mimar ve statik birlikte</span><span lang="en">Architect and structural together</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>5bc1f9fa-34d1-8678…</span></div>
+    <p class="bcf-t"><span lang="tr">Cephe paneli kenar kirişine 35 mm giriyor</span><span lang="en">Façade panel cuts 35 mm into the edge beam</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>ARC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L05 · A-1/A-4</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-ARC-HVAC" data-k="ARC-HVAC" tabindex="-1" aria-labelledby="pt-ARC-HVAC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 03 · ARC × HVAC</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-ARC-HVAC"><span lang="tr">Mimari × Mekanik (HVAC)</span><span lang="en">Architecture × Mechanical (HVAC)</span></h3>
+  <div class="cp-n"><b>46</b><span><span lang="tr">çakışma bu döngüde · toplamın %6,4'i</span><span lang="en">clashes this cycle · 6.4% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>50 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Mekanik, mimar onayıyla</span><span lang="en">Mechanical, with architect sign-off</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>74cf43db-372b-40e9…</span></div>
+    <p class="bcf-t"><span lang="tr">Ana kanal asma tavanın 60 mm altına iniyor</span><span lang="en">Main duct drops 60 mm below the suspended ceiling</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>HVAC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L03 · D-2/D-5</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-ARC-PLU" data-k="ARC-PLU" tabindex="-1" aria-labelledby="pt-ARC-PLU">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 04 · ARC × PLU</span><span class="pri p3">P3</span></div>
+  <h3 id="pt-ARC-PLU"><span lang="tr">Mimari × Sıhhi tesisat</span><span lang="en">Architecture × Plumbing</span></h3>
+  <div class="cp-n"><b>22</b><span><span lang="tr">çakışma bu döngüde · toplamın %3,1'i</span><span lang="en">clashes this cycle · 3.1% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>25 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Düşük · model temizliği, sonraki döngü</span><span lang="en">Minor · model hygiene, next cycle</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Tesisat ekibi</span><span lang="en">Plumbing team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>2b1ccb53-736d-80e3…</span></div>
+    <p class="bcf-t"><span lang="tr">Yağmur suyu borusu kapı kasasından geçiyor</span><span lang="en">Rainwater pipe runs through a door frame</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P3</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>PLU <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L01 · F-6</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 14 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-ARC-ELEC" data-k="ARC-ELEC" tabindex="-1" aria-labelledby="pt-ARC-ELEC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 05 · ARC × ELEC</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-ARC-ELEC"><span lang="tr">Mimari × Elektrik</span><span lang="en">Architecture × Electrical</span></h3>
+  <div class="cp-n"><b>18</b><span><span lang="tr">çakışma bu döngüde · toplamın %2,5'i</span><span lang="en">clashes this cycle · 2.5% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>1000 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Elektrik, mimar onayıyla</span><span lang="en">Electrical, with architect sign-off</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>1e84cdeb-39c6-7686…</span></div>
+    <p class="bcf-t"><span lang="tr">Kat panosunun önündeki 1 m çalışma alanına kapı açılıyor</span><span lang="en">A door swings into the 1 m working space in front of the floor panel</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>ELEC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L04 · E-2</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-ARC-FIRE" data-k="ARC-FIRE" tabindex="-1" aria-labelledby="pt-ARC-FIRE">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 06 · ARC × FIRE</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-ARC-FIRE"><span lang="tr">Mimari × Yangın</span><span lang="en">Architecture × Fire protection</span></h3>
+  <div class="cp-n"><b>12</b><span><span lang="tr">çakışma bu döngüde · toplamın %1,7'i</span><span lang="en">clashes this cycle · 1.7% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>0 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>300 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Yangın ekibi</span><span lang="en">Fire protection team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>ad2d01df-f458-e7a7…</span></div>
+    <p class="bcf-t"><span lang="tr">Sprinkler başlığı lineer armatürle aynı aksta</span><span lang="en">Sprinkler head sits on the line of a linear luminaire</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>FIRE <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L06 · C-4</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-STR-STR" data-k="STR-STR" tabindex="-1" aria-labelledby="pt-STR-STR">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 07 · STR × STR</span><span class="pri p3">P3</span></div>
+  <h3 id="pt-STR-STR"><span lang="tr">Yapı içi</span><span lang="en">Within structure</span></h3>
+  <div class="cp-n"><b>6</b><span><span lang="tr">çakışma bu döngüde · toplamın %0,8'i</span><span lang="en">clashes this cycle · 0.8% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Çift / tekrar kontrolü</span><span lang="en">Duplicate check</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>5 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd><span class="dim">–</span></dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Düşük · model temizliği, sonraki döngü</span><span lang="en">Minor · model hygiene, next cycle</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Statik ekip</span><span lang="en">Structural team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>0e0788a8-258b-2506…</span></div>
+    <p class="bcf-t"><span lang="tr">C-7 aksındaki kolon iki kez modellenmiş</span><span lang="en">Column on grid C-7 is modelled twice</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P3</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>STR <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L00 · C-7</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 14 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-STR-HVAC" data-k="STR-HVAC" tabindex="-1" aria-labelledby="pt-STR-HVAC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 08 · STR × HVAC</span><span class="pri p1">P1</span></div>
+  <h3 id="pt-STR-HVAC"><span lang="tr">Yapı × Mekanik (HVAC)</span><span lang="en">Structure × Mechanical (HVAC)</span></h3>
+  <div class="cp-n"><b>128</b><span><span lang="tr">çakışma bu döngüde · toplamın %17,8'i</span><span lang="en">clashes this cycle · 17.8% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>50 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Kritik · tasarımı etkiler, 3 gün içinde</span><span lang="en">Critical · affects design, within 3 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Mekanik; delik kararı statik onayıyla</span><span lang="en">Mechanical; openings need structural approval</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>95ead0cb-d66a-3588…</span></div>
+    <p class="bcf-t"><span lang="tr">800×400 besleme kanalı B-12 kirişinden deliksiz geçiyor</span><span lang="en">800×400 supply duct passes through beam B-12 with no opening</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P1</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>HVAC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L03 · C-4/D-4</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 3 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-STR-PLU" data-k="STR-PLU" tabindex="-1" aria-labelledby="pt-STR-PLU">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 09 · STR × PLU</span><span class="pri p1">P1</span></div>
+  <h3 id="pt-STR-PLU"><span lang="tr">Yapı × Sıhhi tesisat</span><span lang="en">Structure × Plumbing</span></h3>
+  <div class="cp-n"><b>64</b><span><span lang="tr">çakışma bu döngüde · toplamın %8,9'i</span><span lang="en">clashes this cycle · 8.9% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>25 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Kritik · tasarımı etkiler, 3 gün içinde</span><span lang="en">Critical · affects design, within 3 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Tesisat ve statik birlikte</span><span lang="en">Plumbing and structural together</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>f2f58805-8fe2-532e…</span></div>
+    <p class="bcf-t"><span lang="tr">%2 eğimli pis su hattı kiriş altına sığmıyor</span><span lang="en">2% sloped drainage line does not fit under the beam</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P1</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>PLU <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L02 · E-3/E-5</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 3 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-STR-ELEC" data-k="STR-ELEC" tabindex="-1" aria-labelledby="pt-STR-ELEC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 10 · STR × ELEC</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-STR-ELEC"><span lang="tr">Yapı × Elektrik</span><span lang="en">Structure × Electrical</span></h3>
+  <div class="cp-n"><b>31</b><span><span lang="tr">çakışma bu döngüde · toplamın %4,3'i</span><span lang="en">clashes this cycle · 4.3% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>15 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>50 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Elektrik ekibi</span><span lang="en">Electrical team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>77dcd454-ac21-0278…</span></div>
+    <p class="bcf-t"><span lang="tr">Ana kablo tavası çekirdek perdesinden açıklıksız geçiyor</span><span lang="en">Main cable tray crosses the core wall with no opening</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>ELEC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L01 · Çekirdek 2</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-STR-FIRE" data-k="STR-FIRE" tabindex="-1" aria-labelledby="pt-STR-FIRE">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 11 · STR × FIRE</span><span class="pri p1">P1</span></div>
+  <h3 id="pt-STR-FIRE"><span lang="tr">Yapı × Yangın</span><span lang="en">Structure × Fire protection</span></h3>
+  <div class="cp-n"><b>42</b><span><span lang="tr">çakışma bu döngüde · toplamın %5,8'i</span><span lang="en">clashes this cycle · 5.8% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>25 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Kritik · tasarımı etkiler, 3 gün içinde</span><span lang="en">Critical · affects design, within 3 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Yangın; geçişler statik onayıyla</span><span lang="en">Fire; penetrations need structural approval</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>25021ad2-5339-6897…</span></div>
+    <p class="bcf-t"><span lang="tr">DN100 sprinkler ana hattı yangın perdesini manşonsuz kesiyor</span><span lang="en">DN100 sprinkler main crosses a fire-rated wall with no sleeve</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P1</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>FIRE <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>B1 · Pompa odası</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 3 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-HVAC-HVAC" data-k="HVAC-HVAC" tabindex="-1" aria-labelledby="pt-HVAC-HVAC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 12 · HVAC × HVAC</span><span class="pri p3">P3</span></div>
+  <h3 id="pt-HVAC-HVAC"><span lang="tr">Mekanik (HVAC) içi</span><span lang="en">Within mechanical (HVAC)</span></h3>
+  <div class="cp-n"><b>19</b><span><span lang="tr">çakışma bu döngüde · toplamın %2,6'i</span><span lang="en">clashes this cycle · 2.6% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Çift / tekrar kontrolü</span><span lang="en">Duplicate check</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>25 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Düşük · model temizliği, sonraki döngü</span><span lang="en">Minor · model hygiene, next cycle</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Mekanik ekip</span><span lang="en">Mechanical team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>0626a9b0-eccb-add8…</span></div>
+    <p class="bcf-t"><span lang="tr">Egzoz ve taze hava kanalları aynı kotta kesişiyor</span><span lang="en">Exhaust and fresh-air ducts cross at the same level</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P3</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>HVAC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L07 · B-2</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 14 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-HVAC-PLU" data-k="HVAC-PLU" tabindex="-1" aria-labelledby="pt-HVAC-PLU">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 13 · HVAC × PLU</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-HVAC-PLU"><span lang="tr">Mekanik (HVAC) × Sıhhi tesisat</span><span lang="en">Mechanical (HVAC) × Plumbing</span></h3>
+  <div class="cp-n"><b>57</b><span><span lang="tr">çakışma bu döngüde · toplamın %7,9'i</span><span lang="en">clashes this cycle · 7.9% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>25 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Mekanik; eğimli hat korunur</span><span lang="en">Mechanical; the sloped line has priority</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>11cced95-05f7-bc8a…</span></div>
+    <p class="bcf-t"><span lang="tr">Pis su hattı ana kanalı kesiyor; eğimli hat kalır, kanal yükselir</span><span lang="en">Drain line cuts the main duct; the sloped line stays, the duct moves up</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>HVAC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L04 · D-6</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-HVAC-ELEC" data-k="HVAC-ELEC" tabindex="-1" aria-labelledby="pt-HVAC-ELEC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 14 · HVAC × ELEC</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-HVAC-ELEC"><span lang="tr">Mekanik (HVAC) × Elektrik</span><span lang="en">Mechanical (HVAC) × Electrical</span></h3>
+  <div class="cp-n"><b>49</b><span><span lang="tr">çakışma bu döngüde · toplamın %6,8'i</span><span lang="en">clashes this cycle · 6.8% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>300 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Elektrik ve mekanik birlikte</span><span lang="en">Electrical and mechanical together</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>60d5765c-be7d-6bb6…</span></div>
+    <p class="bcf-t"><span lang="tr">Kablo tavası ile kanal arasında 300 mm erişim boşluğu yok</span><span lang="en">No 300 mm access gap between cable tray and duct</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>ELEC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L05 · C-3/C-6</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-HVAC-FIRE" data-k="HVAC-FIRE" tabindex="-1" aria-labelledby="pt-HVAC-FIRE">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 15 · HVAC × FIRE</span><span class="pri p1">P1</span></div>
+  <h3 id="pt-HVAC-FIRE"><span lang="tr">Mekanik (HVAC) × Yangın</span><span lang="en">Mechanical (HVAC) × Fire protection</span></h3>
+  <div class="cp-n"><b>73</b><span><span lang="tr">çakışma bu döngüde · toplamın %10,1'i</span><span lang="en">clashes this cycle · 10.1% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>50 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Kritik · tasarımı etkiler, 3 gün içinde</span><span lang="en">Critical · affects design, within 3 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Yangın ekibi</span><span lang="en">Fire protection team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>04b534e0-ea69-18e0…</span></div>
+    <p class="bcf-t"><span lang="tr">1400 mm genişliğindeki kanalın altında sprinkler kapsaması yok</span><span lang="en">No sprinkler coverage under a 1400 mm wide duct</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P1</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>FIRE <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L03 · B-5</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 3 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-PLU-PLU" data-k="PLU-PLU" tabindex="-1" aria-labelledby="pt-PLU-PLU">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 16 · PLU × PLU</span><span class="pri p3">P3</span></div>
+  <h3 id="pt-PLU-PLU"><span lang="tr">Sıhhi tesisat içi</span><span lang="en">Within plumbing</span></h3>
+  <div class="cp-n"><b>9</b><span><span lang="tr">çakışma bu döngüde · toplamın %1,2'i</span><span lang="en">clashes this cycle · 1.2% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Çift / tekrar kontrolü</span><span lang="en">Duplicate check</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>5 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd><span class="dim">–</span></dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Düşük · model temizliği, sonraki döngü</span><span lang="en">Minor · model hygiene, next cycle</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Tesisat ekibi</span><span lang="en">Plumbing team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>b8976b49-d33f-b312…</span></div>
+    <p class="bcf-t"><span lang="tr">Sıcak ve soğuk su hatları aynı kotta kesişiyor</span><span lang="en">Hot and cold water lines cross at the same level</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P3</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>PLU <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L02 · A-3</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 14 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-PLU-ELEC" data-k="PLU-ELEC" tabindex="-1" aria-labelledby="pt-PLU-ELEC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 17 · PLU × ELEC</span><span class="pri p1">P1</span></div>
+  <h3 id="pt-PLU-ELEC"><span lang="tr">Sıhhi tesisat × Elektrik</span><span lang="en">Plumbing × Electrical</span></h3>
+  <div class="cp-n"><b>21</b><span><span lang="tr">çakışma bu döngüde · toplamın %2,9'i</span><span lang="en">clashes this cycle · 2.9% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>300 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Kritik · tasarımı etkiler, 3 gün içinde</span><span lang="en">Critical · affects design, within 3 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Tesisat; hat elektrik odası dışına alınır</span><span lang="en">Plumbing; the line is rerouted outside the room</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>adf90dce-728a-4772…</span></div>
+    <p class="bcf-t"><span lang="tr">Temiz su hattı alçak gerilim panosunun üstünden geçiyor</span><span lang="en">Domestic water line runs above the LV switchboard</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P1</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>PLU <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>B1 · AG odası</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 3 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-PLU-FIRE" data-k="PLU-FIRE" tabindex="-1" aria-labelledby="pt-PLU-FIRE">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 18 · PLU × FIRE</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-PLU-FIRE"><span lang="tr">Sıhhi tesisat × Yangın</span><span lang="en">Plumbing × Fire protection</span></h3>
+  <div class="cp-n"><b>33</b><span><span lang="tr">çakışma bu döngüde · toplamın %4,6'i</span><span lang="en">clashes this cycle · 4.6% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>25 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Yangın ve tesisat birlikte</span><span lang="en">Fire and plumbing together</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>81c49679-8fbf-d8fb…</span></div>
+    <p class="bcf-t"><span lang="tr">Sprinkler branşmanı pis su kolonunu kesiyor</span><span lang="en">Sprinkler branch cuts the soil stack</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>FIRE <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L06 · F-2</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-ELEC-ELEC" data-k="ELEC-ELEC" tabindex="-1" aria-labelledby="pt-ELEC-ELEC">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 19 · ELEC × ELEC</span><span class="pri p3">P3</span></div>
+  <h3 id="pt-ELEC-ELEC"><span lang="tr">Elektrik içi</span><span lang="en">Within electrical</span></h3>
+  <div class="cp-n"><b>7</b><span><span lang="tr">çakışma bu döngüde · toplamın %1,0'i</span><span lang="en">clashes this cycle · 1.0% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Çift / tekrar kontrolü</span><span lang="en">Duplicate check</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>150 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Düşük · model temizliği, sonraki döngü</span><span lang="en">Minor · model hygiene, next cycle</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Elektrik ekibi</span><span lang="en">Electrical team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>cd2ed2c5-baed-60f0…</span></div>
+    <p class="bcf-t"><span lang="tr">Zayıf akım tavası kuvvetli akım tavasından 150 mm ayrılmıyor</span><span lang="en">Data tray lacks 150 mm separation from the power tray</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P3</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>ELEC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L03 · Şaft 1</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 14 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-ELEC-FIRE" data-k="ELEC-FIRE" tabindex="-1" aria-labelledby="pt-ELEC-FIRE">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 20 · ELEC × FIRE</span><span class="pri p2">P2</span></div>
+  <h3 id="pt-ELEC-FIRE"><span lang="tr">Elektrik × Yangın</span><span lang="en">Electrical × Fire protection</span></h3>
+  <div class="cp-n"><b>26</b><span><span lang="tr">çakışma bu döngüde · toplamın %3,6'i</span><span lang="en">clashes this cycle · 3.6% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Sert + açıklık testi</span><span lang="en">Hard + clearance test</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>10 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd>50 mm</dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Önemli · bu döngüde çözülür, 7 gün</span><span lang="en">Major · resolved this cycle, 7 days</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Elektrik ekibi</span><span lang="en">Electrical team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>43fa64de-3231-2e0a…</span></div>
+    <p class="bcf-t"><span lang="tr">Duman dedektörü armatüre 300 mm'den yakın</span><span lang="en">Smoke detector closer than 300 mm to a luminaire</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P2</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>ELEC <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L04 · D-2</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 7 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+<article class="cp" id="p-FIRE-FIRE" data-k="FIRE-FIRE" tabindex="-1" aria-labelledby="pt-FIRE-FIRE">
+  <div class="cp-top"><span class="mono"><span lang="tr">Test</span><span lang="en">Test</span> 21 · FIRE × FIRE</span><span class="pri p3">P3</span></div>
+  <h3 id="pt-FIRE-FIRE"><span lang="tr">Yangın içi</span><span lang="en">Within fire protection</span></h3>
+  <div class="cp-n"><b>5</b><span><span lang="tr">çakışma bu döngüde · toplamın %0,7'i</span><span lang="en">clashes this cycle · 0.7% of total</span></span></div>
+  <dl class="cp-dl">
+    <div><dt><span lang="tr">Test türü</span><span lang="en">Test type</span></dt><dd><span lang="tr">Çift / tekrar kontrolü</span><span lang="en">Duplicate check</span></dd></div>
+    <div><dt><span lang="tr">Sert tolerans</span><span lang="en">Hard tolerance</span></dt><dd>5 mm</dd></div>
+    <div><dt><span lang="tr">Açıklık payı</span><span lang="en">Clearance</span></dt><dd><span class="dim">–</span></dd></div>
+    <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd><span lang="tr">Düşük · model temizliği, sonraki döngü</span><span lang="en">Minor · model hygiene, next cycle</span></dd></div>
+    <div class="w"><dt><span lang="tr">Kim çözer</span><span lang="en">Who resolves</span></dt><dd><span lang="tr">Yangın ekibi</span><span lang="en">Fire protection team</span></dd></div>
+  </dl>
+  <div class="bcf" role="group" aria-label="BCF">
+    <div class="bcf-h"><span>BCF 2.1 · Topic</span><span>7224ea84-0e55-750e…</span></div>
+    <p class="bcf-t"><span lang="tr">Aynı konumda iki sprinkler başlığı</span><span lang="en">Two sprinkler heads in the same place</span></p>
+    <dl>
+      <div><dt><span lang="tr">Tür</span><span lang="en">Type</span></dt><dd>Clash</dd></div>
+      <div><dt><span lang="tr">Durum</span><span lang="en">Status</span></dt><dd><span class="st"><span lang="tr">Açık</span><span lang="en">Open</span></span></dd></div>
+      <div><dt><span lang="tr">Öncelik</span><span lang="en">Priority</span></dt><dd>P3</dd></div>
+      <div><dt><span lang="tr">Atanan</span><span lang="en">Assigned to</span></dt><dd>FIRE <span lang="tr">koordinatörü</span><span lang="en">coordinator</span></dd></div>
+      <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd>L06 · C-5</dd></div>
+      <div><dt><span lang="tr">Son tarih</span><span lang="en">Due</span></dt><dd>C07 + 14 <span lang="tr">gün</span><span lang="en">days</span></dd></div>
+    </dl>
+  </div>
+  <p class="cp-ex mono dim"><span lang="tr">Örnek veri · C07 döngüsü</span><span lang="en">Sample data · cycle C07</span></p>
+</article>
+      </div>
+    </div>
+
+    <div class="sub" id="trend">
+      <div class="sub-head"><h3><span lang="tr">On döngüde açık çakışma eğrisi</span><span lang="en">Open clashes over ten cycles</span></h3><p><span lang="tr">720 → 48 açık çakışma. C05: yeni MEP revizyonu.</span><span lang="en">720 → 48 open clashes. C05: a new MEP revision.</span></p></div>
+      <figure class="tr-fig" aria-labelledby="tr-cap" style="margin:0">
+        <div class="tr-read" id="tr-read" aria-live="polite"></div>
+        <div id="tr-svg"></div>
+        <div class="tr-key" aria-hidden="true"><span><i class="n"></i><span lang="tr">Yeni</span><span lang="en">New</span></span><span><i class="r"></i><span lang="tr">Çözülen</span><span lang="en">Resolved</span></span><span><i class="o"></i><span lang="tr">Açık (döngü sonu)</span><span lang="en">Open (end of cycle)</span></span></div>
+        <details class="tr-data"><summary id="tr-cap"><span lang="tr">Örnek veri tablosu · 10 haftalık döngü</span><span lang="en">Sample data table · 10 weekly cycles</span></summary>
+          <table><thead><tr><th scope="col"><span lang="tr">Döngü</span><span lang="en">Cycle</span></th><th scope="col"><span lang="tr">Yeni</span><span lang="en">New</span></th><th scope="col"><span lang="tr">Çözülen</span><span lang="en">Resolved</span></th><th scope="col"><span lang="tr">Açık</span><span lang="en">Open</span></th></tr></thead><tbody><tr><th scope="row">C01</th><td>720</td><td>0</td><td>720</td></tr><tr><th scope="row">C02</th><td>75</td><td>140</td><td>655</td></tr><tr><th scope="row">C03</th><td>95</td><td>160</td><td>590</td></tr><tr><th scope="row">C04</th><td>85</td><td>205</td><td>470</td></tr><tr><th scope="row">C05</th><td>162</td><td>120</td><td>512</td></tr><tr><th scope="row">C06</th><td>78</td><td>190</td><td>400</td></tr><tr><th scope="row">C07</th><td>60</td><td>160</td><td>300</td></tr><tr><th scope="row">C08</th><td>45</td><td>140</td><td>205</td></tr><tr><th scope="row">C09</th><td>25</td><td>110</td><td>120</td></tr><tr><th scope="row">C10</th><td>13</td><td>85</td><td>48</td></tr></tbody></table>
+        </details>
+      </figure>
+    </div>
+
+    <div class="sub">
+      <div class="sub-head"><h3><span lang="tr">Dört çakışma türü</span><span lang="en">Four kinds of clash</span></h3></div>
+      <ul class="ty"><li><svg viewBox="0 0 240 132" aria-hidden="true"><rect class="t-el" x="40" y="40" width="160" height="34"/><rect class="t-el2" x="104" y="20" width="34" height="80"/><rect class="t-hit" x="104" y="40" width="34" height="34"/><path class="t-dim" d="M104 112H138M104 108V116M138 108V116"/><text class="t-tx" x="121" y="128" text-anchor="middle">34</text></svg><span class="tno"><span lang="tr">Tür</span><span lang="en">Type</span> 01</span><h4><span lang="tr">Sert çakışma</span><span lang="en">Hard clash</span></h4><p><span lang="tr">İki fiziksel eleman aynı hacmi kaplıyor.</span><span lang="en">Two physical elements occupy the same volume.</span></p><span class="rule"><span lang="tr">Tolerans 5–20 mm · Navisworks, ACC</span><span lang="en">Tolerance 5–20 mm · Navisworks, ACC</span></span></li><li><svg viewBox="0 0 240 132" aria-hidden="true"><rect class="t-el" x="40" y="26" width="160" height="30"/><rect class="t-env" x="88" y="56" width="64" height="44" rx="22"/><circle class="t-el2c" cx="120" cy="80" r="12"/><path class="t-hitl" d="M88 56H152"/><path class="t-dim" d="M170 56V68M166 56H174M166 68H174"/><text class="t-tx" x="180" y="66">50</text></svg><span class="tno"><span lang="tr">Tür</span><span lang="en">Type</span> 02</span><h4><span lang="tr">Açıklık (yumuşak) çakışması</span><span lang="en">Clearance (soft) clash</span></h4><p><span lang="tr">Elemanlar değmiyor ama gereken boşluk yok.</span><span lang="en">The elements do not touch but the required space is missing.</span></p><span class="rule"><span lang="tr">Açıklık 25–1000 mm · kural başına</span><span lang="en">Clearance 25–1000 mm · per rule</span></span></li><li><svg viewBox="0 0 240 132" aria-hidden="true"><rect class="t-el" x="92" y="22" width="48" height="84"/><rect class="t-dup" x="100" y="28" width="48" height="84"/><text class="t-tx" x="160" y="40">×2</text><path class="t-dim" d="M60 64H84" /><text class="t-tx" x="44" y="68">ID</text></svg><span class="tno"><span lang="tr">Tür</span><span lang="en">Type</span> 03</span><h4><span lang="tr">Tekrar (çift eleman)</span><span lang="en">Duplicates</span></h4><p><span lang="tr">Aynı eleman aynı yerde iki kez modellenmiş.</span><span lang="en">The same element is modelled twice in the same place.</span></p><span class="rule"><span lang="tr">Tolerans 0–5 mm · Solibri, Revit uyarıları</span><span lang="en">Tolerance 0–5 mm · Solibri, Revit warnings</span></span></li><li><svg viewBox="0 0 240 132" aria-hidden="true"><path class="t-ax" d="M30 104H214"/><rect class="t-el" x="40" y="34" width="96" height="16"/><rect class="t-el2" x="110" y="62" width="80" height="16"/><rect class="t-hit" x="110" y="34" width="26" height="44"/><text class="t-tx" x="40" y="28">W12–14</text><text class="t-tx" x="110" y="94">W13–15</text></svg><span class="tno"><span lang="tr">Tür</span><span lang="en">Type</span> 04</span><h4><span lang="tr">İş akışı (4D) çakışması</span><span lang="en">Workflow (4D) clash</span></h4><p><span lang="tr">Geometri doğru ama sıra ya da zaman yanlış.</span><span lang="en">Geometry is right but the sequence or timing is wrong.</span></p><span class="rule"><span lang="tr">Navisworks TimeLiner · program bağlantılı</span><span lang="en">Navisworks TimeLiner · linked to programme</span></span></li></ul>
+    </div>
+  </section>
+
+  <svg class="kd-sprite" aria-hidden="true" focusable="false">
+    <symbol id="kd-i-grid" viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28"/><path d="M15.3 6V34M24.6 6V34M6 15.3H34M6 24.6H34"/></symbol>
+    <symbol id="kd-i-cross" viewBox="0 0 40 40"><circle cx="20" cy="20" r="10"/><path d="M20 4V36M4 20H36"/></symbol>
+    <symbol id="kd-i-sect" viewBox="0 0 40 40"><rect x="5" y="9" width="30" height="22"/><rect x="9" y="13" width="12" height="7"/><circle cx="28" cy="17" r="3.5"/><path d="M9 26H31"/></symbol>
+    <symbol id="kd-i-cube" viewBox="0 0 40 40"><path d="M20 5L33 12.5V27.5L20 35L7 27.5V12.5Z M7 12.5L20 20L33 12.5M20 20V35"/></symbol>
+    <symbol id="kd-i-bars" viewBox="0 0 40 40"><path d="M6 33H34"/><rect x="9" y="20" width="5" height="13"/><rect x="17.5" y="10" width="5" height="23"/><rect x="26" y="16" width="5" height="17"/></symbol>
+    <symbol id="kd-i-pin" viewBox="0 0 40 40"><path d="M7 8H33V27H19L12 33V27H7Z"/><circle cx="20" cy="17.5" r="3.5"/></symbol>
+    <symbol id="kd-i-log" viewBox="0 0 40 40"><rect x="9" y="5" width="22" height="30"/><path d="M13 13l2 2 4-4M13 21l2 2 4-4M13 29l2 2 4-4M22 13H27M22 21H27M22 29H27"/></symbol>
+    <symbol id="kd-i-hole" viewBox="0 0 40 40"><rect x="4" y="12" width="32" height="16"/><circle cx="20" cy="20" r="5"/><path d="M20 4V12M20 28V36" stroke-dasharray="2 2"/></symbol>
+    <symbol id="kd-i-gauge" viewBox="0 0 40 40"><path d="M7 29A13 13 0 1 1 33 29"/><path d="M20 27L28 16"/><circle cx="20" cy="27" r="2"/></symbol>
+    <symbol id="kd-i-stamp" viewBox="0 0 40 40"><circle cx="20" cy="20" r="14"/><path d="M13.5 20.5l4.5 4.5 9-10"/></symbol>
+  </svg>
+
+  <section class="block" aria-labelledby="dl-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Teslimatlar</span><span lang="en">Deliverables</span></span>
+      <h2 id="dl-title"><span lang="tr">Elinize ne geçer?</span><span lang="en">What you receive</span></h2>
+    </div>
+    <div class="kd-dl">
+      <div class="kd-ph">
+        <h3><span lang="tr">Başlangıç</span><span lang="en">Start</span><small><span lang="tr">Hafta 1–4</span><span lang="en">Weeks 1–4</span></small></h3>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#kd-i-grid"/></svg><span class="c">D-01</span><b><span lang="tr">Test matrisi</span><span lang="en">Test matrix</span></b><span class="fmt"><code>PDF</code><code>XLSX</code></span></li>
+          <li><svg aria-hidden="true"><use href="#kd-i-cross"/></svg><span class="c">D-02</span><b><span lang="tr">Koordinat raporu</span><span lang="en">Coordinate report</span></b><span class="fmt"><code>PDF</code></span></li>
+          <li><svg aria-hidden="true"><use href="#kd-i-sect"/></svg><span class="c">D-07</span><b><span lang="tr">Servis bölgesi kesitleri</span><span lang="en">Service zone sections</span></b><span class="fmt"><code>PDF</code><code>DWG</code></span></li>
+        </ul>
+      </div>
+      <div class="kd-ph hot">
+        <h3><span lang="tr">Her hafta</span><span lang="en">Every week</span><small><span lang="tr">Döngü C01–C10</span><span lang="en">Cycles C01–C10</span></small></h3>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#kd-i-cube"/></svg><span class="c">D-03</span><b><span lang="tr">Federe model</span><span lang="en">Federated model</span></b><span class="fmt"><code>NWD</code><code>ACC</code></span></li>
+          <li><svg aria-hidden="true"><use href="#kd-i-bars"/></svg><span class="c">D-04</span><b><span lang="tr">Çakışma raporu</span><span lang="en">Clash report</span></b><span class="fmt"><code>XLSX</code><code>HTML</code></span></li>
+          <li><svg aria-hidden="true"><use href="#kd-i-pin"/></svg><span class="c">D-05</span><b><span lang="tr">BCF sorun paketi</span><span lang="en">BCF issue package</span></b><span class="fmt"><code>BCFZIP</code></span></li>
+          <li><svg aria-hidden="true"><use href="#kd-i-log"/></svg><span class="c">D-06</span><b><span lang="tr">Karar kaydı</span><span lang="en">Decision log</span></b><span class="fmt"><code>PDF</code></span></li>
+          <li><svg aria-hidden="true"><use href="#kd-i-hole"/></svg><span class="c">D-08</span><b><span lang="tr">Delik ve manşon listesi</span><span lang="en">Openings and sleeves</span></b><span class="fmt"><code>XLSX</code><code>IFC</code></span></li>
+        </ul>
+      </div>
+      <div class="kd-ph end">
+        <h3><span lang="tr">Kilometre taşı</span><span lang="en">Milestone</span><small><span lang="tr">Aylık · aşama sonu</span><span lang="en">Monthly · end of stage</span></small></h3>
+        <ul>
+          <li><svg aria-hidden="true"><use href="#kd-i-gauge"/></svg><span class="c">D-09</span><b><span lang="tr">KPI paneli</span><span lang="en">KPI dashboard</span></b><span class="fmt"><code>Power BI</code></span></li>
+          <li><svg aria-hidden="true"><use href="#kd-i-stamp"/></svg><span class="c">D-10</span><b><span lang="tr">Kapanış raporu</span><span lang="en">Close-out report</span></b><span class="fmt"><code>PDF</code><code>IFC 4</code></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="tl-title">
+    <div class="block-head">
+      <span class="no">05 · <span lang="tr">Süreç</span><span lang="en">Process</span></span>
+      <h2 id="tl-title"><span lang="tr">Bir hafta, beş adım.</span><span lang="en">One week, five steps.</span></h2>
+    </div>
+    <div class="kd-loop">
+      <svg viewBox="0 0 340 340" fill="none" role="img" aria-labelledby="kd-lp-t"><title id="kd-lp-t">Haftalık döngü: pazartesi yükle, salı test, çarşamba toplantı, perşembe düzelt, cuma BCF kontrolü / Weekly loop: Monday upload, Tuesday test, Wednesday meeting, Thursday fix, Friday BCF check</title>
+        <defs><marker id="kd-ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="currentColor"/></marker></defs>
+        <circle class="kd-dim" cx="170" cy="170" r="104" stroke-dasharray="2 5"/>
+        <g class="kd-ink kd-arr">
+          <path d="M200 71A104 104 0 0 1 253 107" marker-end="url(#kd-ar)"/>
+          <path d="M274 168A104 104 0 0 1 255 230" marker-end="url(#kd-ar)"/>
+          <path d="M204 268A104 104 0 0 1 140 269" marker-end="url(#kd-ar)"/>
+          <path d="M87 233A104 104 0 0 1 66 172" marker-end="url(#kd-ar)"/>
+          <path d="M85 110A104 104 0 0 1 136 72" marker-end="url(#kd-ar)"/>
+        </g>
+        <g class="kd-node"><circle cx="170" cy="66" r="24"/><path d="M170 76V56M162 63l8-8 8 8"/></g>
+        <g class="kd-node hot"><circle cx="269" cy="138" r="24"/><circle cx="265" cy="134" r="8"/><path d="M271 140l8 8"/></g>
+        <g class="kd-node"><circle cx="231" cy="254" r="24"/><circle cx="223" cy="250" r="4"/><circle cx="239" cy="250" r="4"/><path d="M215 264c0-6 4-9 8-9s8 3 8 9M231 264c0-6 4-9 8-9s8 3 8 9"/></g>
+        <g class="kd-node"><circle cx="109" cy="254" r="24"/><path d="M100 263l14-14M110 245l6-2 2 6-6 2z"/></g>
+        <g class="kd-node ok"><circle cx="71" cy="138" r="24"/><path d="M61 138l7 7 13-14"/></g>
+        <g class="kd-t">
+          <g lang="tr"><text x="170" y="28" text-anchor="middle">PZT · Yükle</text><text x="300" y="104" text-anchor="middle">SAL · Test</text><text x="274" y="302" text-anchor="middle">ÇAR · Toplantı</text><text x="80" y="302" text-anchor="middle">PER · Düzelt</text><text x="52" y="104" text-anchor="middle">CUM · BCF</text></g>
+          <g lang="en"><text x="170" y="28" text-anchor="middle">MON · Upload</text><text x="300" y="104" text-anchor="middle">TUE · Test</text><text x="274" y="302" text-anchor="middle">WED · Meeting</text><text x="80" y="302" text-anchor="middle">THU · Fix</text><text x="52" y="104" text-anchor="middle">FRI · BCF</text></g>
+        </g>
+        <text class="kd-big" x="170" y="178" text-anchor="middle">×12</text>
+        <g class="kd-t kd-dim2"><g lang="tr"><text x="170" y="200" text-anchor="middle">hafta</text></g><g lang="en"><text x="170" y="200" text-anchor="middle">weeks</text></g></g>
+      </svg>
+      <div class="tl" style="--n:12">
+        <div class="tl-scale" aria-hidden="true"><span class="mono dim"><span lang="tr">Örnek takvim · hafta</span><span lang="en">Sample schedule · week</span></span><div class="tl-ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div></div>
+        <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>1</span><span lang="tr">Mobilizasyon</span><span lang="en">Mobilisation</span></h3><span class="out">→ D-01 · D-02</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:0;--l:1"></span></div></div>
+        <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>1–2</span><span lang="tr">Referans test</span><span lang="en">Baseline test</span></h3><span class="out">→ D-03 · D-04</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar hot" style="--s:0;--l:2"></span></div></div>
+        <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>2–4</span><span lang="tr">Servis bölgeleri</span><span lang="en">Service zones</span></h3><span class="out">→ D-07</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:1;--l:3"></span></div></div>
+        <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>3–11</span><span lang="tr">Haftalık döngü</span><span lang="en">Weekly cycle</span></h3><span class="out">→ D-04 · D-05 · D-06</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar hot" style="--s:2;--l:9"></span></div></div>
+        <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>5–11</span><span lang="tr">Delik ve manşon</span><span lang="en">Openings and sleeves</span></h3><span class="out">→ D-08</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:4;--l:7"></span></div></div>
+        <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>4 · 8 · 12</span><span lang="tr">KPI raporu</span><span lang="en">KPI report</span></h3><span class="out">→ D-09</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:3;--l:1"></span><span class="tl-bar" style="--s:7;--l:1"></span><span class="tl-bar end" style="--s:11;--l:1"></span></div></div>
+        <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>12</span><span lang="tr">Kapanış · temiz model</span><span lang="en">Close-out · clean model</span></h3><span class="out">→ D-10</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar end" style="--s:11;--l:1"></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="cs-title">
+    <div class="block-head">
+      <span class="no">06 · <span lang="tr">Örnek senaryo</span><span lang="en">Sample scenario</span></span>
+      <h2 id="cs-title"><span lang="tr">Dokuz katlı bir ofis, altı disiplin, tek bir masa.</span><span lang="en">A nine-storey office, six disciplines, one table.</span></h2>
+    </div>
+    <div class="case">
+      <figure class="kd-fun" style="margin:0">
+        <span class="tag-ex"><span lang="tr">Örnek · kurgusal senaryo</span><span lang="en">Example · fictional scenario</span></span>
+        <svg viewBox="0 0 360 300" fill="none" role="img" aria-labelledby="kd-fn-t"><title id="kd-fn-t">Örnek huni: 1.840 ham çakışma, 312 gruplanmış sorun, 12 hafta sonra 48 açık sorun ve sıfır P1 / Sample funnel: 1,840 raw clashes, 312 grouped issues, 48 open issues and zero P1 after 12 weeks</title>
+          <path class="kd-fn1" d="M10 10H350L300 90H60Z"/>
+          <path class="kd-fn2" d="M64 100H296L250 180H110Z"/>
+          <path class="kd-fn3" d="M100 190H260L236 270H124Z"/>
+          <g lang="tr"><text class="kd-big" x="180" y="54" text-anchor="middle">1.840</text></g><g lang="en"><text class="kd-big" x="180" y="54" text-anchor="middle">1,840</text></g>
+          <text class="kd-big" x="180" y="144" text-anchor="middle">312</text>
+          <text class="kd-big kd-okt" x="180" y="234" text-anchor="middle">48</text>
+          <g class="kd-t kd-dim2">
+            <g lang="tr"><text x="180" y="78" text-anchor="middle">ham çakışma · H1</text><text x="180" y="168" text-anchor="middle">gruplanmış sorun</text><text x="180" y="258" text-anchor="middle">açık · 0 P1</text><text x="180" y="292" text-anchor="middle">12 hafta sonra</text></g>
+            <g lang="en"><text x="180" y="78" text-anchor="middle">raw clashes · W1</text><text x="180" y="168" text-anchor="middle">grouped issues</text><text x="180" y="258" text-anchor="middle">open · 0 P1</text><text x="180" y="292" text-anchor="middle">after 12 weeks</text></g>
+          </g>
+        </svg>
+        <figcaption><span lang="tr">Archicad, Tekla ve Revit; ilk federasyonda MEP modeli 1,2 m kayıktı.</span><span lang="en">Archicad, Tekla and Revit; at first federation the MEP model was 1.2 m off.</span></figcaption>
+      </figure>
+      <figure class="ba" aria-labelledby="ba-t" style="margin:0">
+        <div class="ba-head"><span id="ba-t"><span lang="tr">Önce / sonra · ölçekli</span><span lang="en">Before / after · to scale</span></span><span class="ba-key" aria-hidden="true"><span><i class="b"></i><span lang="tr">Önce</span><span lang="en">Before</span></span><span><i class="a"></i><span lang="tr">Sonra</span><span lang="en">After</span></span></span></div>
+        <ul><li><div class="lbl"><b><span lang="tr">Rapordaki satır</span><span lang="en">Rows in the report</span></b><span class="d"><span lang="tr">−%83</span><span lang="en">−83%</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100%"></i><span><span lang="tr">1.840</span><span lang="en">1,840</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:17%"></i><span>312</span></span></div></li><li><div class="lbl"><b><span lang="tr">Toplantı süresi</span><span lang="en">Meeting length</span></b><span class="d"><span lang="tr">−%61</span><span lang="en">−61%</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100%"></i><span><span lang="tr">140 dk</span><span lang="en">140 min</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:39%"></i><span><span lang="tr">55 dk</span><span lang="en">55 min</span></span></span></div></li><li><div class="lbl"><b><span lang="tr">Çözüm süresi</span><span lang="en">Time to resolve</span></b><span class="d"><span lang="tr">−13 gün</span><span lang="en">−13 days</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100%"></i><span><span lang="tr">19 gün</span><span lang="en">19 days</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:32%"></i><span><span lang="tr">6 gün</span><span lang="en">6 days</span></span></span></div></li><li><div class="lbl"><b><span lang="tr">Sahada çakışma RFI'ı</span><span lang="en">Clash RFIs on site</span></b><span class="d">−37</span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100%"></i><span>46</span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:20%"></i><span>9</span></span></div></li></ul>
+        <figcaption class="ba-foot mono dim"><span lang="tr">Örnek değerler · her satır kendi ölçeğinde</span><span lang="en">Sample values · each row to its own scale</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="kp-title">
+    <div class="block-head">
+      <span class="no">07 · <span lang="tr">Çıktılar</span><span lang="en">Outcomes</span></span>
+      <h2 id="kp-title"><span lang="tr">Her döngüde dört gösterge.</span><span lang="en">Four indicators every cycle.</span></h2>
+      <p><span lang="tr">Örnek hedef değerler.</span><span lang="en">Sample target values.</span></p>
+    </div>
+    <div class="kpis kd-kpis">
+      <div>
+        <svg viewBox="0 0 120 64" fill="none" aria-hidden="true"><circle class="kd-dim" cx="32" cy="32" r="24" stroke-width="8" opacity=".5"/><circle class="kd-okr" cx="32" cy="32" r="24" stroke-width="8" pathLength="100" stroke-dasharray="92 100" transform="rotate(-90 32 32)"/><path class="kd-ink" d="M70 32H112M104 26l8 6-8 6"/></svg>
+        <span class="v ok"><span lang="tr"><span class="u">%</span><span data-count="92">92</span></span><span lang="en"><span data-count="92">92</span><span class="u">%</span></span></span><span class="k"><span lang="tr">Yapımdan önce çözülen</span><span lang="en">Resolved before construction</span></span>
+      </div>
+      <div>
+        <svg viewBox="0 0 120 64" fill="none" aria-hidden="true"><g class="kd-ink"><rect x="2" y="20" width="14" height="24"/><rect x="18" y="20" width="14" height="24"/><rect x="34" y="20" width="14" height="24"/><rect x="50" y="20" width="14" height="24"/><rect x="66" y="20" width="14" height="24"/><rect x="82" y="20" width="14" height="24"/><rect x="98" y="20" width="14" height="24" stroke-dasharray="3 3"/></g><path class="kd-inkf" d="M2 20h94v24H2z" opacity=".18"/><path class="kd-sigl" d="M50 12V52"/></svg>
+        <span class="v"><span data-count="6">6</span><span class="u"><span lang="tr">gün</span><span lang="en">days</span></span></span><span class="k"><span lang="tr">Ortalama çözüm · P1: 3</span><span lang="en">Average to resolve · P1: 3</span></span>
+      </div>
+      <div>
+        <svg viewBox="0 0 120 64" fill="none" aria-hidden="true"><path class="kd-ink" d="M10 58V6M10 8H54L46 20L54 32H10"/><circle class="kd-okc" cx="92" cy="32" r="20"/><path class="kd-okk" d="M83 32l6 6 12-13"/></svg>
+        <span class="v"><span data-count="0">0</span></span><span class="k"><span lang="tr">Kilometre taşında açık P1</span><span lang="en">Open P1 at milestone</span></span>
+      </div>
+      <div>
+        <svg viewBox="0 0 120 64" fill="none" aria-hidden="true"><rect class="kd-hitb" x="2" y="12" width="110" height="14"/><rect class="kd-okb" x="2" y="38" width="22" height="14"/><path class="kd-dim" d="M24 45H112" stroke-dasharray="3 4"/></svg>
+        <span class="v"><span lang="tr"><span class="u">−%</span><span data-count="80">80</span></span><span lang="en"><span class="u">−</span><span data-count="80">80</span><span class="u">%</span></span></span><span class="k"><span lang="tr">Rapordaki gürültü</span><span lang="en">Noise in the report</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="fq-title">
+    <div class="block-head">
+      <span class="no">08 · <span lang="tr">Sık sorulanlar</span><span lang="en">FAQ</span></span>
+      <h2 id="fq-title"><span lang="tr">Dört kısa yanıt.</span><span lang="en">Four short answers.</span></h2>
+    </div>
+    <div class="faq"><details><summary><span class="q"><span lang="tr">Navisworks mi, ACC mi, Solibri mi?</span><span lang="en">Navisworks, ACC or Solibri?</span></span></summary><div class="a"><p><span lang="tr">Üçü de, farklı işler için: ağır federasyon, bulutta otomatik test, kural tabanlı kontrol. Sorunlar her durumda BCF olarak taşınabilir kalır.</span><span lang="en">All three, for different jobs: heavy federation, automatic cloud testing, rule-based checking. Issues stay portable as BCF either way.</span></p></div></details><details><summary><span class="q"><span lang="tr">Tolerans neden sıfır değil?</span><span lang="en">Why is the tolerance not zero?</span></span></summary><div class="a"><p><span lang="tr">Sıfırda yalnızca değen yüzeyler bile çakışma sayılır ve rapor gürültüyle dolar. 5–20 mm, sahanın zaten tolere ettiği sapmayı ayıklar.</span><span lang="en">At zero, faces that merely touch count as clashes and the report fills with noise. 5 to 20 mm filters what site work tolerates anyway.</span></p></div></details><details><summary><span class="q"><span lang="tr">Her çakışma çözülmeli mi?</span><span lang="en">Must every clash be resolved?</span></span></summary><div class="a"><p><span lang="tr">Hayır. Bazıları gerekçesi ve onaylayanıyla "onaylandı" olarak kayda geçer; önemli olan kararın izlenebilir olması.</span><span lang="en">No. Some are logged as "approved" with a reason and an approver; what matters is that the decision is traceable.</span></p></div></details><details><summary><span class="q"><span lang="tr">BCF neden Excel listesinden iyi?</span><span lang="en">Why is BCF better than an Excel list?</span></span></summary><div class="a"><p><span lang="tr">BCF kamera konumu, kesit kutusu ve eleman GUID'leriyle gelir; modelci doğrudan sorunlu noktaya iner.</span><span lang="en">BCF carries the camera position, section box and element GUIDs; the modeller lands right on the spot.</span></p></div></details></div>
+  </section>
+
+  <section class="block" aria-labelledby="nx-title" style="border-bottom:0;padding-bottom:0">
+    <div class="block-head">
+      <span class="no">09 · <span lang="tr">Devam</span><span lang="en">Continue</span></span>
+      <h2 id="nx-title"><span lang="tr">Sahada nasıl göründü?</span><span lang="en">What it looked like on a project</span></h2>
+    </div>
+    <a class="sv-related" href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü">
+      <div class="pv"><svg viewBox="0 0 320 200" fill="none" aria-hidden="true">
+  <g stroke="currentColor" stroke-width="1.4">
+    <path d="M40 70H280M40 100H280" />
+    <path d="M40 70V100M280 70V100" stroke-dasharray="3 4" opacity=".6"/>
+    <path d="M150 30V170M190 30V170" opacity=".7"/>
+    <path d="M60 130H260M60 150H260" opacity=".45"/>
+  </g>
+  <rect x="150" y="70" width="40" height="30" fill="var(--signal)" opacity=".35"/>
+  <rect x="150" y="70" width="40" height="30" stroke="var(--signal)" stroke-width="2" fill="none"/>
+  <circle cx="170" cy="85" r="26" stroke="var(--signal)" stroke-dasharray="4 3" fill="none"/>
+  <g font-family="JetBrains Mono, monospace" font-size="10" fill="currentColor" letter-spacing=".08em"><text x="44" y="64">HVAC 800×400</text><text x="196" y="40">STR B-12</text><text x="200" y="125">BCF · P1</text></g>
+</svg><span class="mono">A-210 · 412 → 0 P1</span></div>
+      <div class="body">
+        <span class="mono dim"><span lang="tr">İlgili proje · örnek vaka</span><span lang="en">Related project · sample case</span></span>
+        <h3><span lang="tr">Örnek Hastane Kampüsü</span><span lang="en">Sample Hospital Campus</span></h3>
+        <p><span lang="tr">Yedi disiplin, haftalık test: P1 sorunlar yapım paftalarından önce kapandı.</span><span lang="en">Seven disciplines, weekly tests: P1 issues closed before construction drawings.</span></p>
+        <span class="go"><span lang="tr">Vaka çalışmasını aç</span><span lang="en">Open the case study</span> →</span>
+      </div>
+    </a>
+    <nav class="sv-pn" aria-label="Hizmet paftaları / Service sheets">
+      <a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="n">← <span lang="tr">Önceki</span><span lang="en">Previous</span> · A-102</span><b><span lang="tr">Modelleme</span><span lang="en">Modelling</span></b><small><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></small></a>
+      <a class="nx" href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span class="n"><span lang="tr">Sonraki</span><span lang="en">Next</span> · A-104 →</span><b><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></b><small><span lang="tr">ACC kurulumu, isimlendirme, onaylar</span><span lang="en">ACC setup, naming, approvals</span></small></a>
+    </nav>
+    <div class="sv-end">
+      <a class="back" href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">← A-100 · <span lang="tr">Tüm hizmetler</span><span lang="en">All services</span></a>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Koordinasyon teklifi isteyin</span><span lang="en">Request a coordination proposal</span></a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function T(tr, en) { return '<span lang="tr">' + tr + '</span><span lang="en">' + en + '</span>'; }
+
+  /* ---- çakışma matrisi ---- */
+  var cells = [].slice.call(document.querySelectorAll('.mx .cx'));
+  var panels = [].slice.call(document.querySelectorAll('#cm-side .cp'));
+  var side = document.getElementById('cm-side');
+  if (cells.length && panels.length) {
+    var heads = [].slice.call(document.querySelectorAll('.mx th[data-r], .mx th[data-c]'));
+    var pos = {};
+    cells.forEach(function (c) { pos[c.dataset.r + ',' + c.dataset.c] = c; });
+    function select(cell, focusPanel) {
+      var k = cell.dataset.k;
+      cells.forEach(function (c) { var on = c === cell; c.setAttribute('aria-current', on ? 'true' : 'false'); c.tabIndex = on ? 0 : -1; });
+      panels.forEach(function (p) { p.hidden = p.dataset.k !== k; });
+      heads.forEach(function (h) { h.classList.toggle('hl', h.dataset.r === cell.dataset.r || h.dataset.c === cell.dataset.c); });
+      if (focusPanel) {
+        var p = document.getElementById('p-' + k);
+        if (p) { p.focus({ preventScroll: true }); if (window.innerWidth < 1000) p.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+      }
+    }
+    side.removeAttribute('aria-live');
+    select(pos['1,2'], false);
+    side.setAttribute('aria-live', 'polite');
+    cells.forEach(function (c) {
+      c.addEventListener('click', function (e) { e.preventDefault(); select(c, window.innerWidth < 1000); });
+      c.addEventListener('focus', function () { if (c.getAttribute('aria-current') !== 'true') select(c, false); });
+      c.addEventListener('keydown', function (e) {
+        var r = +c.dataset.r, col = +c.dataset.c, dr = 0, dc = 0;
+        if (e.key === 'ArrowRight') dc = 1; else if (e.key === 'ArrowLeft') dc = -1;
+        else if (e.key === 'ArrowDown') dr = 1; else if (e.key === 'ArrowUp') dr = -1;
+        else if (e.key === 'Home') { e.preventDefault(); pos[r + ',' + r].focus(); return; }
+        else if (e.key === 'End') { e.preventDefault(); pos[r + ',5'].focus(); return; }
+        else return;
+        e.preventDefault();
+        var nr = r + dr, nc = col + dc;
+        if (nr < 0 || nr > 5 || nc < 0 || nc > 5) return;
+        if (nc < nr) { if (dc) return; nr = nc; }
+        var n = pos[nr + ',' + nc];
+        if (n) n.focus();
+      });
+    });
+  }
+
+  /* ---- trend grafiği (ölçekli) ---- */
+  var OPEN = [720, 655, 590, 470, 512, 400, 300, 205, 120, 48], RES = [0, 140, 160, 205, 120, 190, 160, 140, 110, 85], NEW = [720, 75, 95, 85, 162, 78, 60, 45, 25, 13];
+  var host = document.getElementById('tr-svg'), read = document.getElementById('tr-read');
+  if (!host) return;
+  var cur = 9;
+  function fmt(n) { return n.toLocaleString(root.lang === 'en' ? 'en-GB' : 'tr-TR'); }
+  function readout(i) {
+    cur = i;
+    read.innerHTML = '<span class="c">C' + String(i + 1).padStart(2, '0') + '</span>' +
+      '<span>' + T('Yeni', 'New') + '<b>' + fmt(NEW[i]) + '</b></span>' +
+      '<span>' + T('Çözülen', 'Resolved') + '<b>' + fmt(RES[i]) + '</b></span>' +
+      '<span>' + T('Açık', 'Open') + '<b>' + fmt(OPEN[i]) + '</b></span>' +
+      (i ? '<span>' + T('Değişim', 'Change') + '<b>' + (OPEN[i] - OPEN[i - 1] > 0 ? '+' : '−') + fmt(Math.abs(OPEN[i] - OPEN[i - 1])) + '</b></span>' : '<span>' + T('Referans test', 'Baseline test') + '</span>');
+  }
+  function draw() {
+    var W = Math.max(300, host.clientWidth - 8), small = W < 560;
+    var H = small ? 280 : 340, ml = 40, mr = 10, mt = 26, mb = 30;
+    var iw = W - ml - mr, ih = H - mt - mb, max = 800, n = OPEN.length, bw = iw / n;
+    function y(v) { return mt + ih - v / max * ih; }
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' + (root.lang === 'en' ? 'Open clashes fall from 720 to 48 over ten cycles' : 'Açık çakışma on döngüde 720\'den 48\'e iniyor') + '">';
+    for (var g = 0; g <= max; g += 200) s += '<line class="tg' + (g ? '' : ' z') + '" x1="' + ml + '" x2="' + (W - mr) + '" y1="' + y(g) + '" y2="' + y(g) + '"/><text class="tl-l" x="' + (ml - 6) + '" y="' + (y(g) + 4) + '" text-anchor="end">' + g + '</text>';
+    var w = Math.min(18, bw * .26), pts = [];
+    for (var i = 0; i < n; i++) {
+      var cx = ml + bw * i + bw / 2;
+      s += '<rect class="tb-n" x="' + (cx - w - 1) + '" y="' + y(NEW[i]) + '" width="' + w + '" height="' + (y(0) - y(NEW[i])) + '"/>';
+      if (RES[i]) s += '<rect class="tb-r" x="' + (cx + 1) + '" y="' + y(RES[i]) + '" width="' + w + '" height="' + (y(0) - y(RES[i])) + '"/>';
+      s += '<text class="tl-l" x="' + cx + '" y="' + (H - 10) + '" text-anchor="middle">' + (small ? i + 1 : 'C' + String(i + 1).padStart(2, '0')) + '</text>';
+      pts.push(cx.toFixed(1) + ',' + y(OPEN[i]).toFixed(1));
+    }
+    var ax = ml + bw * 4.5;
+    s += '<line class="tn-l" x1="' + ax + '" x2="' + ax + '" y1="' + (mt - 14) + '" y2="' + (y(OPEN[4]) - 8) + '"/>';
+    s += '<g lang="tr"><text class="tn" x="' + (ax + 6) + '" y="' + (mt - 6) + '">MEP rev. P04</text></g><g lang="en"><text class="tn" x="' + (ax + 6) + '" y="' + (mt - 6) + '">MEP rev. P04</text></g>';
+    s += '<polyline class="to" points="' + pts.join(' ') + '"/>';
+    for (i = 0; i < n; i++) {
+      var p = pts[i].split(',');
+      s += '<circle class="to-p" cx="' + p[0] + '" cy="' + p[1] + '" r="4"/>';
+      if (!small || i % 3 === 0 || i === n - 1) s += '<text class="to-v" x="' + p[0] + '" y="' + (p[1] - 9) + '" text-anchor="middle">' + OPEN[i] + '</text>';
+    }
+    for (i = 0; i < n; i++) s += '<rect class="th" data-i="' + i + '" tabindex="0" x="' + (ml + bw * i) + '" y="' + mt + '" width="' + bw + '" height="' + ih + '" aria-label="C' + (i + 1) + ': ' + NEW[i] + ' / ' + RES[i] + ' / ' + OPEN[i] + '"/>';
+    host.innerHTML = s + '</svg>';
+  }
+  draw(); readout(cur);
+  host.addEventListener('mouseover', function (e) { var t = e.target.closest('.th'); if (t) readout(+t.dataset.i); });
+  host.addEventListener('focusin', function (e) { var t = e.target.closest('.th'); if (t) readout(+t.dataset.i); });
+  host.addEventListener('keydown', function (e) {
+    var t = e.target.closest('.th'); if (!t) return;
+    var i = +t.dataset.i + (e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0);
+    if (i !== +t.dataset.i && i >= 0 && i < OPEN.length) { e.preventDefault(); host.querySelector('.th[data-i="' + i + '"]').focus(); }
+  });
+  var lw = 0, tm;
+  window.addEventListener('resize', function () { clearTimeout(tm); tm = setTimeout(function () { if (host.clientWidth !== lw) { lw = host.clientWidth; draw(); } }, 150); });
+  document.addEventListener('langchange', function () { draw(); readout(cur); });
+})();
+</script>

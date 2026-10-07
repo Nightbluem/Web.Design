@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hakkımızda | Firma Adı BIM</title>
+<meta name="description" content="Sahayı bilen BIM uzmanları. İstanbul ve Londra'dan Avrupa, Orta Doğu ve Türkiye'deki projelere ISO 19650 uyumlu BIM yönetimi, modelleme ve koordinasyon.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hakkımızda | Firma Adı BIM">
+<meta property="og:description" content="Sahayı bilen BIM uzmanları. İstanbul ve Londra'dan Avrupa, Orta Doğu ve Türkiye'deki projelere ISO 19650 uyumlu BIM yönetimi, modelleme ve koordinasyon.">
+<meta property="og:url" content="https://www.firmaadi.com/hakkimizda.html">
+<meta property="og:image" content="https://www.firmaadi.com/assets/logo.png">
+<link rel="canonical" href="https://www.firmaadi.com/hakkimizda.html">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+/* ---- ortak çizim stilleri (ab-) ---- */
+.ab-ill { display: block; width: 100%; height: auto; color: var(--ink); overflow: visible; }
+.ab-ill .k { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.ab-ill .k2 { fill: none; stroke: var(--ink-2); stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; }
+.ab-ill .kr { fill: none; stroke: var(--rule); stroke-width: 1; }
+.ab-ill .kd { fill: none; stroke: var(--ink-2); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.ab-ill .ks { fill: none; stroke: var(--signal); stroke-width: 2.2; stroke-linecap: round; }
+.ab-ill .ko { fill: none; stroke: var(--ok); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ab-ill .fp { fill: var(--paper); }
+.ab-ill .fi { fill: currentColor; }
+.ab-ill .fo { fill: var(--ok); }
+.ab-ill .ft { fill: color-mix(in srgb, var(--ink) 10%, transparent); }
+.ab-ill text { font-family: var(--mono); font-weight: 500; letter-spacing: .06em; fill: var(--ink-2); }
+.ab-ill text.b { fill: var(--ink); font-weight: 600; }
+.ab-ill text.s { fill: var(--signal); }
+.ab-ill text.o { fill: var(--ok); }
+.ab-ill text.big { font-family: var(--display); font-weight: 800; font-stretch: 112%; letter-spacing: -.02em; fill: var(--ink); }
+
+/* ---- A-300 başlık ---- */
+.about-head h1 .s { color: var(--signal); }
+.about-head .row { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 28px 56px; align-items: center; }
+.about-head .row > * { min-width: 0; }
+.ab-hero { margin: 0; }
+.ab-stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.ab-stats li { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 2px 14px; padding: 18px 16px 18px 0; min-width: 0; }
+.ab-stats li + li { border-left: 1px solid var(--rule); padding-left: 16px; }
+.ab-stats svg { grid-row: span 2; width: 44px; height: 44px; }
+.ab-stats b { font: 800 clamp(34px, 3.6vw, 52px)/.9 var(--display); font-stretch: 125%; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.ab-stats span.l { font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 860px) { .about-head .row { grid-template-columns: 1fr; } .ab-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ab-stats li:nth-child(3) { border-left: 0; padding-left: 0; } .ab-stats li:nth-child(n+3) { border-top: 1px solid var(--rule); } }
+
+/* ---- 01 Manifesto: piktogram kartları ---- */
+.ab-mani { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); counter-reset: m; }
+.ab-mani li { display: grid; grid-template-rows: auto 1fr auto; gap: 14px; padding: clamp(18px, 2vw, 28px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); counter-increment: m; min-width: 0; transition: background .25s; }
+.ab-mani li::before { content: "§" counter(m); font: 500 12px var(--mono); letter-spacing: .08em; color: var(--ink-2); }
+.ab-mani li { grid-template-rows: auto auto 1fr auto; }
+.ab-mani svg { max-width: 180px; }
+.ab-mani h3 { font: 800 clamp(21px, 1.9vw, 28px)/1.02 var(--display); font-stretch: 118%; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.ab-mani h3 .o { -webkit-text-stroke: 1.2px var(--ink); color: transparent; }
+.ab-mani .tag { font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+@media (hover: hover) { .ab-mani li:hover { background: color-mix(in srgb, var(--ink) 4%, transparent); } }
+@media (max-width: 1100px) { .ab-mani { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .ab-mani { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 460px) {
+  .ab-mani { grid-template-columns: 1fr; }
+  .ab-mani li { grid-template-columns: 110px minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; gap: 4px 16px; }
+  .ab-mani li::before { grid-column: 1 / -1; }
+  .ab-mani svg { grid-row: span 2; }
+  .ab-mani .tag { grid-column: 2; }
+}
+@media (prefers-reduced-motion: reduce) { .ab-mani li { transition: none; } }
+
+/* ---- 02 Ekip: disiplin lejantı ---- */
+.legend-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.legend { border: 1px solid var(--ink); background: var(--paper); }
+.legend-cap { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--ink); font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.legend ul { list-style: none; margin: 0; padding: 0; }
+.legend li + li { border-top: 1px solid var(--rule); }
+.lg { width: 100%; display: grid; grid-template-columns: 64px 48px minmax(0, 1fr) auto; gap: 4px 14px; align-items: center; padding: 14px; background: none; border: 0; color: var(--ink); text-align: left; font: inherit; cursor: pointer; transition: background .2s, opacity .2s; }
+.lg:hover, .lg:focus-visible { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.lg[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.lg[aria-pressed="true"] .who, .lg[aria-pressed="true"] .code { color: color-mix(in srgb, var(--paper) 72%, transparent); }
+.legend.iso .lg[aria-pressed="false"] { opacity: .45; }
+.lg svg { width: 64px; height: 14px; overflow: visible; }
+.lg .code { font: 600 12px var(--mono); letter-spacing: .08em; color: var(--ink-2); }
+.lg .nm { display: grid; min-width: 0; }
+.lg .nm b { font: 700 clamp(16px, 1.6vw, 19px)/1.2 var(--display); font-stretch: 112%; }
+.lg .who { font: 500 11.5px/1.5 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+.lg .ct { font: 800 clamp(30px, 3.4vw, 46px)/1 var(--display); font-stretch: 125%; letter-spacing: -.03em; font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
+.lg .ticks { grid-column: 3 / -1; height: 8px; background: repeating-linear-gradient(90deg, currentColor 0 1.5px, transparent 1.5px 8px); width: calc(var(--n) * 8px); max-width: 100%; opacity: .55; }
+.legend-foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; padding: 12px 14px; border-top: 1px solid var(--ink); font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.legend-foot b { font-weight: 600; }
+/* çizgi stilleri (lejant + plan ortak) */
+.ln { fill: none; stroke-linecap: butt; }
+.ln-arc { stroke: var(--ink); stroke-width: 3.2; }
+.ln-str { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 14 4 2 4; }
+.ln-mep { stroke: var(--ink-2); stroke-width: 2.2; stroke-dasharray: 7 5; }
+.ln-bim { stroke: var(--signal); stroke-width: 2; }
+.ln-dev { stroke: var(--ink-2); stroke-width: 2.4; stroke-dasharray: .1 5; stroke-linecap: round; }
+.lg[aria-pressed="true"] .ln-arc, .lg[aria-pressed="true"] .ln-str { stroke: var(--paper); }
+.lg[aria-pressed="true"] .ln-mep, .lg[aria-pressed="true"] .ln-dev { stroke: color-mix(in srgb, var(--paper) 75%, transparent); }
+/* plan çizimi */
+.plan { border: 1px solid var(--ink); background: var(--paper); position: relative; }
+.plan svg { display: block; width: 100%; height: auto; }
+.plan .cap { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--ink); font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.plan .axis { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 18 5 3 5; }
+.plan .bub circle { fill: var(--paper); stroke: var(--ink-2); stroke-width: 1; }
+.plan .bub text { font: 500 11px var(--mono); fill: var(--ink-2); text-anchor: middle; dominant-baseline: central; }
+.plan .t { font: 500 10.5px var(--mono); fill: var(--ink-2); letter-spacing: .06em; }
+.plan .t.sig { fill: var(--signal); }
+.plan .col { fill: var(--ink); }
+.plan [data-d] { transition: opacity .3s; }
+.plan.iso [data-d]:not(.on) { opacity: .1; }
+@media (prefers-reduced-motion: reduce) { .plan [data-d], .lg { transition: none; } }
+@media (max-width: 900px) { .legend-wrap { grid-template-columns: 1fr; } }
+@media (max-width: 460px) { .lg { grid-template-columns: 44px minmax(0, 1fr) auto; padding: 12px; } .lg svg { width: 44px; } .lg .code { display: none; } .lg .ticks { grid-column: 2 / -1; } }
+
+/* ---- 03 Neden biz ---- */
+.why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); counter-reset: w; margin: 0; padding: 0; list-style: none; }
+.why li { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 28px; padding: clamp(22px, 3vw, 40px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); counter-increment: w; min-width: 0; }
+.why li::before { content: counter(w, decimal-leading-zero); grid-row: span 3; font: 800 clamp(56px, 7vw, 112px)/.8 var(--display); font-stretch: 125%; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+.why li:hover::before, .why li:focus-within::before { color: var(--signal); -webkit-text-stroke-color: var(--signal); }
+.why h3 { font-size: clamp(22px, 2.4vw, 32px); font-stretch: 112%; letter-spacing: -.015em; }
+.why p { color: var(--ink-2); max-width: 46ch; }
+.why .tag { font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.why-cta { margin-top: clamp(28px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+@media (max-width: 860px) { .why { grid-template-columns: 1fr; } }
+@media (max-width: 460px) { .why li { grid-template-columns: 1fr; } .why li::before { grid-row: auto; } }
+
+/* ---- 04 Ofisler ---- */
+.offices { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.office-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.office { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 20px; padding-block: clamp(20px, 2.6vw, 30px); border-bottom: 1px solid var(--rule); outline-offset: 6px; transition: background .2s; }
+.office:hover, .office:focus-visible, .office.on { background: linear-gradient(90deg, color-mix(in srgb, var(--signal) 9%, transparent), transparent 70%); }
+.office h3 { font: 800 clamp(32px, 4.4vw, 64px)/.95 var(--display); font-stretch: 125%; letter-spacing: -.035em; }
+.office .role { font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); align-self: start; text-align: right; padding-top: 6px; }
+.office .coord { grid-column: 1 / -1; font: 500 13px var(--mono); letter-spacing: .04em; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.office .clock { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+.office time { font: 700 clamp(28px, 3vw, 40px)/1 var(--mono); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.office .tz { font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.office .st { font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px; }
+.office .st::before { content: ""; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink); }
+.office .st.open::before { background: var(--ink); }
+.hours { margin-top: 22px; display: grid; gap: 8px; }
+.hours .lab { display: flex; justify-content: space-between; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.hbar { position: relative; height: 18px; border: 1px solid var(--rule); background: repeating-linear-gradient(90deg, transparent 0 calc(100% / 24 - 1px), var(--rule) calc(100% / 24 - 1px) calc(100% / 24)); }
+.hbar i { position: absolute; top: 2px; bottom: 2px; background: color-mix(in srgb, var(--ink) 75%, transparent); }
+.hbar i.ov { background: var(--signal); }
+.hbar .now { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--signal); }
+.hbar-row { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; align-items: center; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.hours .scale { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; font: 500 10px var(--mono); color: var(--ink-2); }
+.hours .scale div { display: flex; justify-content: space-between; }
+.map { border: 1px solid var(--ink); background: var(--paper); }
+.map svg { display: block; width: 100%; height: auto; }
+.map .grat { stroke: var(--rule); stroke-width: 1; fill: none; }
+.map .grat.eq { stroke-dasharray: 6 4; }
+.map .land { stroke: color-mix(in srgb, var(--ink) 38%, transparent); stroke-width: 3.4; stroke-linecap: round; fill: none; }
+.map .gl { font: 500 10px var(--mono); fill: var(--ink-2); letter-spacing: .04em; }
+.map .proj circle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+.map .proj text { font: 500 10px var(--mono); fill: var(--ink); letter-spacing: .04em; }
+.map .route { fill: none; stroke: var(--signal); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.map .rt { font: 500 11px var(--mono); fill: var(--signal); }
+.map .pin .ring { fill: none; stroke: var(--signal); stroke-width: 1.5; }
+.map .pin .dot { fill: var(--signal); }
+.map .pin .hair { stroke: var(--signal); stroke-width: 1; }
+.map .pin .box { fill: var(--ink); }
+.map .pin text { font: 600 12px var(--mono); fill: var(--paper); letter-spacing: .06em; }
+.map .pin .pulse { fill: var(--signal); opacity: .18; transform-box: fill-box; transform-origin: center; }
+.map .pin.on .pulse { animation: mp 1.4s ease-out infinite; }
+@keyframes mp { from { transform: scale(.4); opacity: .35; } to { transform: scale(1.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .map .pin.on .pulse { animation: none; } }
+.map .cap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 14px; padding: 10px 14px; border-top: 1px solid var(--ink); font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.map .cap .k { display: inline-flex; align-items: center; gap: 6px; }
+.map .cap .k::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink); }
+.map .cap .k.of::before { border-color: var(--signal); background: var(--signal); }
+@media (max-width: 900px) { .offices { grid-template-columns: 1fr; } .map { order: -1; } }
+
+/* ---- 03 Neden biz: resimli kartlar ---- */
+.ab-why { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.ab-why li { display: grid; grid-template-rows: auto auto 1fr; gap: 10px; padding: clamp(18px, 2.2vw, 30px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.ab-why figure { margin: 0 0 8px; }
+.ab-why h3 { font-size: clamp(20px, 1.9vw, 26px); font-stretch: 112%; letter-spacing: -.015em; }
+.ab-why p { color: var(--ink-2); margin: 0; }
+.why-cta { margin-top: clamp(28px, 4vw, 48px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+@media (max-width: 1000px) { .ab-why { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .ab-why { grid-template-columns: 1fr; } }
+
+/* ---- 05 Araç zinciri ---- */
+.ab-chain { margin: 0; border: 1px solid var(--ink); background: var(--paper); padding: clamp(12px, 2vw, 24px); }
+.ab-chain .v { display: none; }
+@media (max-width: 900px) { .ab-chain .h { display: none; } .ab-chain .v { display: block; max-width: 420px; margin-inline: auto; } }
+.ab-chain figcaption { margin-top: 12px; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.ab-std { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 4vw, 56px); margin-top: clamp(28px, 4vw, 44px); }
+.ab-std > div { min-width: 0; }
+.ab-std h3 { font: 600 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid var(--ink); }
+.ab-std ul { list-style: none; margin: 0; padding: 0; }
+.ab-std li { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+.ab-std .code { font: 500 12px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.ab-std .nm { font: 700 clamp(15px, 1.4vw, 18px)/1.2 var(--display); font-stretch: 112%; min-width: 0; }
+.ab-std .lv { white-space: nowrap; }
+.ab-std .lv i { display: inline-block; width: 9px; height: 9px; margin-left: 3px; border: 1.5px solid var(--ink); }
+.ab-std .lv i.f { background: var(--ink); }
+.ab-std .key { grid-column: 1 / -1; margin-top: 12px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+@media (max-width: 760px) { .ab-std { grid-template-columns: 1fr; } .ab-std > div + div { margin-top: 24px; } }
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="tr">İçeriğe geç</span><span lang="en">Skip to content</span></a>
+<div class="draft-note"><span lang="tr">Taslak · Firma adı, iletişim bilgileri, projeler ve rakamlar örnektir.</span><span lang="en">Draft · Company name, contact details, projects and figures are placeholders.</span></div>
+<div class="axis-left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+<header class="topbar sheet">
+  <div class="frame">
+    <a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a>
+    <div class="top-right">
+      <span class="mono dim sheet-label" aria-hidden="true">A-300 · <span lang="tr">Hakkımızda</span><span lang="en">About</span></span>
+      <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" aria-pressed="true">TR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i><span lang="tr">Paftalar</span><span lang="en">Sheets</span></button>
+    </div>
+  </div>
+</header>
+<nav class="register" id="register" hidden aria-label="Paftalar">
+  <div class="register-head"><span class="mono"><span lang="tr">Pafta listesi · 5 pafta · 9 alt pafta</span><span lang="en">Sheet register · 5 sheets · 9 sub-sheets</span></span><button class="register-close" type="button" data-close-register><span lang="tr">Kapat</span><span lang="en">Close</span> ✕</button></div>
+  <ol>
+    <li><a href="./" data-sheet="A-000" data-label="Kapak"><span class="no">A-000</span><span class="t"><span lang="tr">Kapak</span><span lang="en">Cover</span></span><span class="d"><span lang="tr">Ana sayfa</span><span lang="en">Home</span></span></a></li><li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler"><span class="no">A-100</span><span class="t"><span lang="tr">Hizmetler</span><span lang="en">Services</span></span><span class="d"><span lang="tr">Strateji · Model · Koordinasyon</span><span lang="en">Strategy · Model · Coordination</span></span></a><ul class="subs"><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="sno">A-101</span><span class="st"><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span><span class="sd"><span lang="tr">EIR, BEP, ISO 19650 yol haritası</span><span lang="en">EIR, BEP, ISO 19650 roadmap</span></span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="sno">A-102</span><span class="st"><span lang="tr">Modelleme</span><span lang="en">Modelling</span></span><span class="sd"><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span class="sno">A-103</span><span class="st"><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="sd"><span lang="tr">Federe model, çakışma, BCF</span><span lang="en">Federated model, clashes, BCF</span></span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span class="sno">A-104</span><span class="st"><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></span><span class="sd"><span lang="tr">ACC kurulumu, isimlendirme, onaylar</span><span lang="en">ACC setup, naming, approvals</span></span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span class="sno">A-105</span><span class="st"><span lang="tr">Otomasyon</span><span lang="en">Automation</span></span><span class="sd"><span lang="tr">Dynamo, Python, Revit API eklentileri</span><span lang="en">Dynamo, Python, Revit API add-ins</span></span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span class="sno">A-106</span><span class="st"><span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></span><span class="sd"><span lang="tr">Revit, Navisworks, ISO 19650 eğitimleri</span><span lang="en">Revit, Navisworks, ISO 19650 courses</span></span></a></li></ul></li><li><a href="projeler.html" data-sheet="A-200" data-label="Projeler"><span class="no">A-200</span><span class="t"><span lang="tr">Projeler</span><span lang="en">Projects</span></span><span class="d"><span lang="tr">Proje dizini</span><span lang="en">Project index</span></span></a><ul class="subs"><li><a href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü"><span class="sno">A-210</span><span class="st"><span lang="tr">Hastane kampüsü</span><span lang="en">Hospital campus</span></span><span class="sd"><span lang="tr">Sağlık · Türkiye · BIM yöneticisi</span><span lang="en">Healthcare · Türkiye · BIM manager</span></span></a></li><li><a href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span class="sno">A-220</span><span class="st"><span lang="tr">Konut kulesi</span><span lang="en">Residential tower</span></span><span class="sd"><span lang="tr">Konut · Almanya · Modelleme ekibi</span><span lang="en">Residential · Germany · Modelling team</span></span></a></li><li><a href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span class="sno">A-230</span><span class="st"><span lang="tr">Lojistik merkezi</span><span lang="en">Logistics hub</span></span><span class="sd"><span lang="tr">Endüstriyel · BAE · Scan-to-BIM</span><span lang="en">Industrial · UAE · Scan-to-BIM</span></span></a></li></ul></li><li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda" aria-current="page"><span class="no">A-300</span><span class="t"><span lang="tr">Hakkımızda</span><span lang="en">About</span></span><span class="d"><span lang="tr">Ekip · Yaklaşım</span><span lang="en">Team · Approach</span></span></a></li><li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span class="no">A-900</span><span class="t"><span lang="tr">İletişim</span><span lang="en">Contact</span></span><span class="d"><span lang="tr">Teklif · Ofisler</span><span lang="en">Proposal · Offices</span></span></a></li>
+  </ol>
+  <div class="register-foot"><span>info@firmaadi.com</span><span>+90 (212) 000 00 00</span><span>İstanbul · London</span></div>
+</nav>
+<aside class="titleblock" aria-hidden="true">
+  <div><span><span lang="tr">Proje</span><span lang="en">Project</span></span><b>Firma Adı BIM</b></div>
+  <div><span><span lang="tr">Pafta</span><span lang="en">Sheet</span></span><b>A-300</b></div>
+  <div><span><span lang="tr">Ölçek</span><span lang="en">Scale</span></span><b>1:100</b></div>
+  <div class="xy"><span><span lang="tr">Koordinat</span><span lang="en">Coordinate</span></span><b id="tb-xy">X 0.0 · Y 0.0</b></div>
+  <div><span>Rev</span><b>P07</b></div>
+  <div><span><span lang="tr">Durum</span><span lang="en">Status</span></span><b>S2 · <span lang="tr">Bilgi</span><span lang="en">Info</span></b></div>
+</aside>
+<main id="main" class="sheet"><div class="frame">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="ab-i-cloud" viewBox="0 0 60 50"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M10 44h0M16 44h0M22 44h0M28 44h0M34 44h0M40 44h0M46 44h0M52 44h0M10 38h0M10 32h0M10 26h0M10 20h0M16 14h0M22 10h0M28 8h0M34 10h0M40 14h0M46 20h0M52 26h0M52 32h0M52 38h0M24 36h0M24 30h0M30 30h0M30 36h0M36 30h0M36 36h0M24 22h0M30 20h0M36 22h0"/></symbol>
+      <symbol id="ab-i-model" viewBox="0 0 60 50"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M8 15L30 4L52 15V37L30 48L8 37Z M8 15L30 26L52 15 M30 26V48 M8 26L30 37L52 26"/></symbol>
+      <symbol id="ab-i-clash" viewBox="0 0 60 50"><rect x="4" y="20" width="52" height="10" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="24" y="2" width="10" height="46" fill="none" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 3"/><circle cx="29" cy="25" r="11" fill="none" style="stroke:var(--signal)" stroke-width="2.4"/></symbol>
+      <symbol id="ab-i-issue" viewBox="0 0 60 50"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" d="M16 47V4 M16 6H48L41 15L48 24H16"/><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" d="M23 12H36M23 18H32"/></symbol>
+      <symbol id="ab-i-cde" viewBox="0 0 60 50"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M15 40a10 10 0 0 1 1-20a14 14 0 0 1 27-3a11 11 0 0 1 2 23Z"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M25 36V24l-4 4M25 24l4 4M36 22v12l-4-4M36 34l4-4"/></symbol>
+      <symbol id="ab-i-hand" viewBox="0 0 60 50"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 20L22 11L40 20V38L22 47L4 38Z M4 20L22 29L40 20 M22 29V47"/><circle cx="46" cy="13" r="10" fill="var(--paper)" style="stroke:var(--ok)" stroke-width="2.2"/><path fill="none" style="stroke:var(--ok)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M41 13l4 4l6-8"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="sheet-head about-head">
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-300</b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>1:100</b></span>
+      <span>Rev <b>P08</b></span>
+      <span><span lang="tr">Konu</span><span lang="en">Subject</span> <b><span lang="tr">Ekip · Yaklaşım</span><span lang="en">Team · Approach</span></b></span>
+    </div>
+    <h1>
+      <span lang="tr">Sahayı bilen <span class="o">BIM</span> uzmanları<span class="s">.</span></span>
+      <span lang="en">BIM people <span class="o">who know</span> the site<span class="s">.</span></span>
+    </h1>
+    <div class="row">
+      <p class="lede">
+        <span lang="tr">Mimar ve mühendislerden oluşan bir ekibiz. Sorunu ekranda çözeriz, sahada değil.</span>
+        <span lang="en">We are a team of architects and engineers. We solve problems on screen, not on site.</span>
+      </p>
+      <figure class="ab-hero">
+        <svg class="ab-ill" viewBox="0 0 520 256" role="img" aria-labelledby="ab-hero-t">
+          <title id="ab-hero-t">Ofisteki dizüstü bilgisayarda bina modeli ve işaretli bir çakışma; ok, çakışmanın çözülmüş olarak şantiyeye ulaştığını gösterir.</title>
+          <!-- laptop -->
+          <rect class="k fp" x="20" y="34" width="220" height="150" rx="6"/>
+          <rect class="kr" x="30" y="44" width="200" height="130"/>
+          <path class="k fp" d="M0 190H260L246 206H14Z"/>
+          <path class="k2" d="M110 196H150"/>
+          <!-- ekrandaki model -->
+          <path class="kr" d="M40 64H220M40 104H220M40 144H220M80 50V170M130 50V170M180 50V170"/>
+          <path class="k fp" d="M80 148L130 168L180 148V78L130 58L80 78Z"/>
+          <path class="k" d="M80 78L130 98L180 78M130 98V168M80 101L130 121L180 101M80 124L130 144L180 124"/>
+          <circle class="ks" cx="158" cy="112" r="12"/>
+          <path class="ks" d="M166 102L184 36" stroke-width="1.2"/>
+          <text class="s" x="132" y="30" font-size="17">CLASH #0142</text>
+          <text x="20" y="240" font-size="18" class="b"><tspan lang="tr">OFİS · MODEL</tspan><tspan lang="en">OFFICE · MODEL</tspan></text>
+          <!-- ok -->
+          <path class="kd" d="M246 112C270 84 286 84 304 104"/>
+          <path class="k" d="M296 100L305 106L304 95"/>
+          <!-- şantiye -->
+          <path class="k" d="M276 206H516"/>
+          <path class="k2" d="M282 214H510" stroke-dasharray="2 6"/>
+          <path class="k" d="M326 206V118M380 206V118M434 206V118M318 176H442M318 147H442M318 118H442"/>
+          <path class="kr" d="M326 176L380 147M380 176L434 147"/>
+          <!-- vinç -->
+          <path class="k" d="M476 206V34M490 206V34M476 34H490"/>
+          <path class="k2" d="M476 190L490 172L476 154L490 136L476 118L490 100L476 82L490 64L476 46"/>
+          <path class="k" d="M300 34H516M300 34L476 20M490 20L516 34M476 20H490V34"/>
+          <path class="k2" d="M352 34V84"/>
+          <rect class="k fp" x="342" y="84" width="20" height="12"/>
+          <!-- kişi -->
+          <circle class="k fp" cx="300" cy="170" r="6"/>
+          <path class="k" d="M293 168a7 7 0 0 1 14 0Z"/>
+          <path class="k" d="M300 177V192M300 192L293 206M300 192L307 206M290 184L310 184"/>
+          <!-- çözüldü -->
+          <circle class="ko fp" cx="407" cy="92" r="13"/>
+          <path class="ko" d="M400 92l5 5l9-10"/>
+          <text x="276" y="240" font-size="18" class="b"><tspan lang="tr">SAHA</tspan><tspan lang="en">SITE</tspan></text>
+          <text x="516" y="240" text-anchor="end" font-size="18" class="o"><tspan lang="tr">✓ ÇÖZÜLDÜ</tspan><tspan lang="en">✓ RESOLVED</tspan></text>
+        </svg>
+      </figure>
+    </div>
+    <ul class="ab-stats">
+      <li><svg class="ab-ill" viewBox="0 0 48 48" aria-hidden="true"><circle class="k" cx="24" cy="15" r="7"/><path class="k" d="M11 40a13 13 0 0 1 26 0"/><circle class="k2" cx="9" cy="19" r="5"/><path class="k2" d="M1 38a9 9 0 0 1 10-10"/><circle class="k2" cx="39" cy="19" r="5"/><path class="k2" d="M47 38a9 9 0 0 0-10-10"/></svg><b data-count="30">30</b><span class="l"><span lang="tr">Kişi · örnek</span><span lang="en">People · sample</span></span></li>
+      <li><svg class="ab-ill" viewBox="0 0 48 48" aria-hidden="true"><path class="k" d="M4 14L24 4L44 14L24 24Z"/><path class="k2" d="M4 22L24 32L44 22M4 30L24 40L44 30M4 38L24 48L44 38"/></svg><b data-count="5">5</b><span class="l"><span lang="tr">Disiplin</span><span lang="en">Disciplines</span></span></li>
+      <li><svg class="ab-ill" viewBox="0 0 48 48" aria-hidden="true"><path class="k" d="M14 42s-10-12-10-20a10 10 0 0 1 20 0c0 8-10 20-10 20Z"/><circle class="k" cx="14" cy="22" r="3.5"/><path class="k2" d="M34 34s-8-9-8-15a8 8 0 0 1 16 0c0 6-8 15-8 15Z"/><path class="k2" d="M2 46H46" stroke-dasharray="3 3"/></svg><b data-count="2">2</b><span class="l"><span lang="tr">Ofis · İST · LON</span><span lang="en">Offices · IST · LON</span></span></li>
+      <li><svg class="ab-ill" viewBox="0 0 48 48" aria-hidden="true"><rect class="k" x="2" y="6" width="28" height="20" rx="4"/><path class="k" d="M8 26L6 34L16 26"/><rect class="k2" x="18" y="20" width="28" height="20" rx="4"/><path class="k2" d="M40 40L42 47L32 40"/></svg><b data-count="2">2</b><span class="l"><span lang="tr">Dil · TR · EN</span><span lang="en">Languages · TR · EN</span></span></li>
+    </ul>
+  </header>
+
+  <section class="block" aria-labelledby="mani-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Manifesto</span><span lang="en">Manifesto</span></span>
+      <h2 id="mani-title"><span lang="tr">BIM bir araçtır, amaç değil.</span><span lang="en">BIM is a tool, not the goal.</span></h2>
+      <p><span lang="tr">Her projede aynı beş ilke.</span><span lang="en">The same five principles on every project.</span></p>
+    </div>
+    <ol class="ab-mani">
+      <li>
+        <svg class="ab-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="k fp" d="M30 6H78L92 20V84H30Z"/><path class="k" d="M78 6V20H92"/><path class="k" d="M45 40L61 31L77 40V56L61 65L45 56Z M45 40L61 49L77 40 M61 49V65"/><path class="k2" d="M38 76c6-6 10 4 16-2s8-4 14 0"/></svg>
+        <h3><span lang="tr">Model <span class="o">sözleşmedir.</span></span><span lang="en">The model <span class="o">is the contract.</span></span></h3>
+        <span class="tag">BEP · EIR</span>
+      </li>
+      <li>
+        <svg class="ab-ill" viewBox="0 0 120 90" aria-hidden="true"><rect class="k fp" x="14" y="6" width="92" height="62" rx="3"/><path class="k" d="M52 68L48 82H72L68 68"/><rect class="k" x="22" y="30" width="76" height="10"/><rect class="kd" x="50" y="12" width="10" height="50"/><circle class="ks" cx="55" cy="35" r="12"/></svg>
+        <h3><span lang="tr">Çakışma <span class="o">ekranda</span> çözülür.</span><span lang="en">Clashes die <span class="o">on screen.</span></span></h3>
+        <span class="tag">Clash · BCF</span>
+      </li>
+      <li>
+        <svg class="ab-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="k fp" d="M14 34L36 22L58 34V62L36 74L14 62Z"/><path class="k" d="M14 34L36 46L58 34M36 46V74"/><path class="k2" d="M58 42L76 30"/><path class="k fp" d="M76 14H110V74H76Z"/><circle class="k" cx="84" cy="22" r="2.5"/><path class="k2" d="M84 36H104M84 46H100M84 56H104M84 66H96"/></svg>
+        <h3><span lang="tr">Veri yoksa <span class="o">model</span> yoktur.</span><span lang="en">No data, <span class="o">no model.</span></span></h3>
+        <span class="tag">IFC · COBie</span>
+      </li>
+      <li>
+        <svg class="ab-ill" viewBox="0 0 120 90" aria-hidden="true"><rect class="k fp" x="8" y="10" width="58" height="34" rx="6"/><path class="k" d="M22 44L18 56L34 44"/><text class="b" x="24" y="32" font-size="15">TR</text><rect class="k fp" x="54" y="38" width="58" height="34" rx="6"/><path class="k" d="M98 72L102 84L86 72"/><text class="b" x="70" y="60" font-size="15">EN</text></svg>
+        <h3><span lang="tr">Standart bir <span class="o">dildir.</span></span><span lang="en">A standard is a <span class="o">language.</span></span></h3>
+        <span class="tag">ISO 19650</span>
+      </li>
+      <li>
+        <svg class="ab-ill" viewBox="0 0 120 90" aria-hidden="true"><path class="k fp" d="M24 64C24 34 84 34 84 64Z"/><path class="k" d="M54 38V64M40 42V64M68 42V64"/><path class="k fp" d="M14 64H98V72H14Z"/><path class="k2" d="M6 84H114" stroke-dasharray="3 5"/><circle class="ko fp" cx="96" cy="24" r="13"/><path class="ko" d="M89 24l5 5l9-10"/></svg>
+        <h3><span lang="tr">Saha her zaman <span class="o">haklıdır.</span></span><span lang="en">The site is always <span class="o">right.</span></span></h3>
+        <span class="tag">As-built</span>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block" aria-labelledby="team-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Ekip</span><span lang="en">Team</span></span>
+      <h2 id="team-title"><span lang="tr">Beş disiplin, tek lejant.</span><span lang="en">Five disciplines, one legend.</span></h2>
+      <p><span lang="tr">Bir disiplin seçin; plandaki çizgileri o ekip çizer.</span><span lang="en">Pick a discipline; its team draws those lines on the plan.</span></p>
+    </div>
+    <div class="legend-wrap">
+      <div class="legend" id="legend">
+        <div class="legend-cap"><span><span lang="tr">Lejant · Disiplinler</span><span lang="en">Legend · Disciplines</span></span><span class="dim"><span lang="tr">Kişi</span><span lang="en">People</span></span></div>
+        <ul>
+          <li><button class="lg" type="button" data-d="arc" aria-pressed="false" style="--n:8">
+            <svg viewBox="0 0 64 14" aria-hidden="true"><path class="ln ln-arc" d="M0 7H64"/></svg>
+            <span class="code">ARC</span>
+            <span class="nm"><b><span lang="tr">Mimari modelleme</span><span lang="en">Architectural modelling</span></b></span>
+            <span class="ct" data-count="8">8</span>
+            <span class="ticks" aria-hidden="true"></span>
+          </button></li>
+          <li><button class="lg" type="button" data-d="str" aria-pressed="false" style="--n:6">
+            <svg viewBox="0 0 64 14" aria-hidden="true"><path class="ln ln-str" d="M0 7H64"/></svg>
+            <span class="code">STR</span>
+            <span class="nm"><b><span lang="tr">Yapısal modelleme</span><span lang="en">Structural modelling</span></b></span>
+            <span class="ct" data-count="6">6</span>
+            <span class="ticks" aria-hidden="true"></span>
+          </button></li>
+          <li><button class="lg" type="button" data-d="mep" aria-pressed="false" style="--n:7">
+            <svg viewBox="0 0 64 14" aria-hidden="true"><path class="ln ln-mep" d="M0 7H64"/></svg>
+            <span class="code">MEP</span>
+            <span class="nm"><b><span lang="tr">Mekanik ve elektrik</span><span lang="en">Mechanical &amp; electrical</span></b></span>
+            <span class="ct" data-count="7">7</span>
+            <span class="ticks" aria-hidden="true"></span>
+          </button></li>
+          <li><button class="lg" type="button" data-d="bim" aria-pressed="false" style="--n:5">
+            <svg viewBox="0 0 64 14" aria-hidden="true"><path class="ln ln-bim" d="M2 7a5 5 0 0 1 10 0a5 5 0 0 1 10 0a5 5 0 0 1 10 0a5 5 0 0 1 10 0a5 5 0 0 1 10 0a5 5 0 0 1 10 0"/></svg>
+            <span class="code">BIM</span>
+            <span class="nm"><b><span lang="tr">BIM yönetimi ve koordinasyon</span><span lang="en">BIM management &amp; coordination</span></b></span>
+            <span class="ct" data-count="5">5</span>
+            <span class="ticks" aria-hidden="true"></span>
+          </button></li>
+          <li><button class="lg" type="button" data-d="dev" aria-pressed="false" style="--n:4">
+            <svg viewBox="0 0 64 14" aria-hidden="true"><path class="ln ln-dev" d="M1 7H64"/></svg>
+            <span class="code">DEV</span>
+            <span class="nm"><b><span lang="tr">Yazılım ve otomasyon</span><span lang="en">Software &amp; automation</span></b></span>
+            <span class="ct" data-count="4">4</span>
+            <span class="ticks" aria-hidden="true"></span>
+          </button></li>
+        </ul>
+        <div class="legend-foot"><span><span lang="tr">Toplam</span><span lang="en">Total</span> <b>30</b> · <span lang="tr">örnek dağılım</span><span lang="en">sample split</span></span><span><span lang="tr">Çalışma dilleri</span><span lang="en">Working languages</span> <b>TR · EN</b></span></div>
+      </div>
+
+      <figure class="plan" id="plan" style="margin:0">
+        <svg viewBox="0 0 600 440" role="img" aria-labelledby="plan-t">
+          <title id="plan-t">Örnek kat planı: mimari duvarlar, taşıyıcı akslar ve kirişler, mekanik kanallar, koordinasyon bulutları ve otomasyonla üretilen etiketler ayrı çizgi stilleriyle çizilmiştir.</title>
+          <!-- akslar -->
+          <g class="axis">
+            <path d="M90 40V400M230 40V400M370 40V400M510 40V400M40 90H560M40 230H560M40 350H560"/>
+          </g>
+          <g class="bub">
+            <circle cx="90" cy="24" r="12"/><text x="90" y="24">A</text>
+            <circle cx="230" cy="24" r="12"/><text x="230" y="24">B</text>
+            <circle cx="370" cy="24" r="12"/><text x="370" y="24">C</text>
+            <circle cx="510" cy="24" r="12"/><text x="510" y="24">D</text>
+            <circle cx="24" cy="90" r="12"/><text x="24" y="90">1</text>
+            <circle cx="24" cy="230" r="12"/><text x="24" y="230">2</text>
+            <circle cx="24" cy="350" r="12"/><text x="24" y="350">3</text>
+          </g>
+          <!-- STR -->
+          <g data-d="str">
+            <path class="ln ln-str" d="M90 90H510M90 230H510M90 350H510M90 90V350M230 90V350M370 90V350M510 90V350"/>
+            <g class="col"><rect x="82" y="82" width="16" height="16"/><rect x="222" y="82" width="16" height="16"/><rect x="362" y="82" width="16" height="16"/><rect x="502" y="82" width="16" height="16"/><rect x="82" y="222" width="16" height="16"/><rect x="222" y="222" width="16" height="16"/><rect x="362" y="222" width="16" height="16"/><rect x="502" y="222" width="16" height="16"/><rect x="82" y="342" width="16" height="16"/><rect x="222" y="342" width="16" height="16"/><rect x="362" y="342" width="16" height="16"/><rect x="502" y="342" width="16" height="16"/></g>
+            <text class="t" x="240" y="222">B 40×70</text>
+          </g>
+          <!-- ARC -->
+          <g data-d="arc">
+            <path class="ln ln-arc" d="M76 76H524V364H76Z"/>
+            <path class="ln ln-arc" d="M76 166H180M216 166H300M300 76V140M300 176V230M300 230H440M476 230H524M440 230V364"/>
+            <path class="ln" stroke="var(--ink)" stroke-width="1" d="M180 166a36 36 0 0 1 36 -36M300 140a36 36 0 0 1 -36 36M440 230a36 36 0 0 0 36 36"/>
+            <text class="t" x="110" y="128"><tspan lang="tr">OFİS 01</tspan><tspan lang="en">OFFICE 01</tspan></text>
+            <text class="t" x="392" y="112"><tspan lang="tr">TOPLANTI</tspan><tspan lang="en">MEETING</tspan></text>
+            <text class="t" x="150" y="300"><tspan lang="tr">AÇIK OFİS</tspan><tspan lang="en">OPEN OFFICE</tspan></text>
+          </g>
+          <!-- MEP -->
+          <g data-d="mep">
+            <path class="ln ln-mep" d="M560 196H150V292M320 196V120M430 196V300H500"/>
+            <path class="ln ln-mep" d="M560 210H160V292" stroke-dasharray="3 6"/>
+            <text class="t" x="452" y="188">SA 600×400</text>
+          </g>
+          <!-- BIM: revizyon bulutu + çakışma -->
+          <g data-d="bim">
+            <path class="ln ln-bim" d="M300 168c6-12 22-12 26 0c10-8 24 0 20 12c12 4 12 22 0 26c4 12-10 20-20 12c-4 12-20 12-26 0c-10 8-24 0-20-12c-12-4-12-22 0-26c-4-12 10-20 20-12z"/>
+            <path class="ln-bim" d="M338 152l14-26h-28z" fill="none" stroke-width="1.5"/>
+            <text class="t sig" x="333" y="146" text-anchor="middle" font-size="9">3</text>
+            <text class="t sig" x="360" y="140">CLASH #0142</text>
+          </g>
+          <!-- DEV: otomatik etiketler -->
+          <g data-d="dev">
+            <path class="ln ln-dev" d="M130 128C130 60 210 60 230 60H400M420 300C470 300 470 400 540 400"/>
+            <text class="t" x="404" y="64">auto_tag.py</text>
+            <text class="t" x="476" y="420">room_data.dyn</text>
+          </g>
+        </svg>
+        <figcaption class="cap"><span id="plan-state"><span lang="tr">Tüm disiplinler</span><span lang="en">All disciplines</span></span><span><span lang="tr">Örnek plan</span><span lang="en">Sample plan</span> · 1:200</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="why-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Neden biz</span><span lang="en">Why us</span></span>
+      <h2 id="why-title"><span lang="tr">Uluslararası projelerde güvenilir ortak.</span><span lang="en">A reliable partner on international projects.</span></h2>
+    </div>
+    <ol class="ab-why">
+      <li>
+        <figure><svg class="ab-ill" viewBox="0 0 200 120" role="img" aria-label="ISO 19650 rozeti"><circle class="k fp" cx="64" cy="50" r="36"/><circle class="kd" cx="64" cy="50" r="28"/><path class="k fp" d="M46 80L38 114L52 106L60 116L64 86M82 80L90 114L76 106L68 116L64 86"/><text class="b" x="64" y="47" font-size="16" text-anchor="middle">ISO</text><text x="64" y="64" font-size="12" text-anchor="middle">19650</text><path class="ko" d="M118 30l4 4l7-8M118 56l4 4l7-8M118 82l4 4l7-8"/><path class="k2" d="M138 30H190M138 56H184M138 82H190"/></svg></figure>
+        <h3><span lang="tr">Standartlara hakim ekip</span><span lang="en">A standards-fluent team</span></h3>
+        <p><span lang="tr">ISO 19650 ve UK BIM Framework deneyimi.</span><span lang="en">ISO 19650 and UK BIM Framework experience.</span></p>
+      </li>
+      <li>
+        <figure><svg class="ab-ill" viewBox="0 0 200 120" role="img" aria-label="Türkçe ve İngilizce konuşma balonları"><rect class="k fp" x="10" y="14" width="70" height="46" rx="8"/><path class="k fp" d="M26 60L22 76L42 60"/><text class="big" x="45" y="46" font-size="24" text-anchor="middle">TR</text><rect class="k fp" x="120" y="50" width="70" height="46" rx="8"/><path class="k fp" d="M174 96L178 112L158 96"/><text class="big" x="155" y="82" font-size="24" text-anchor="middle">EN</text><path class="k" d="M88 52H112M106 46L112 52L106 58M94 46L88 52L94 58"/></svg></figure>
+        <h3><span lang="tr">Çok dilli iletişim</span><span lang="en">Multilingual communication</span></h3>
+        <p><span lang="tr">Türkçe ve İngilizce rapor ve toplantı.</span><span lang="en">Reports and meetings in Turkish and English.</span></p>
+      </li>
+      <li>
+        <figure><svg class="ab-ill" viewBox="0 0 200 120" role="img" aria-label="Örnek haftalık rapor: çakışma sayısı beş haftada 64'ten 4'e düşer"><path class="kr" d="M20 30H192M20 55H192M20 80H192"/><path class="k" d="M20 100H192"/><rect class="k ft" x="28" y="36" width="22" height="64"/><rect class="k ft" x="62" y="54" width="22" height="46"/><rect class="k ft" x="96" y="70" width="22" height="30"/><rect class="k ft" x="130" y="84" width="22" height="16"/><rect class="fo" x="164" y="96" width="22" height="4"/><text x="39" y="115" font-size="11" text-anchor="middle">H1</text><text x="73" y="115" font-size="11" text-anchor="middle">H2</text><text x="107" y="115" font-size="11" text-anchor="middle">H3</text><text x="141" y="115" font-size="11" text-anchor="middle">H4</text><text x="175" y="115" font-size="11" text-anchor="middle">H5</text><text class="b" x="192" y="20" font-size="13" text-anchor="end">CLASH −94%</text></svg></figure>
+        <h3><span lang="tr">Şeffaf raporlama</span><span lang="en">Transparent reporting</span></h3>
+        <p><span lang="tr">Her hafta ilerleme ve çakışma raporu.</span><span lang="en">Progress and clash report every week.</span></p>
+      </li>
+      <li>
+        <figure><svg class="ab-ill" viewBox="0 0 200 120" role="img" aria-label="Ortak veri ortamını koruyan kilit"><rect class="kd" x="30" y="8" width="140" height="106" rx="8"/><text x="40" y="26" font-size="11">CDE</text><path class="k" d="M82 56V42a18 18 0 0 1 36 0V56"/><rect class="k fp" x="70" y="56" width="60" height="46" rx="4"/><circle class="k" cx="100" cy="74" r="6"/><path class="k" d="M100 80V90"/><text x="160" y="26" font-size="11" text-anchor="end">19650-5</text></svg></figure>
+        <h3><span lang="tr">Veri güvenliği</span><span lang="en">Data security</span></h3>
+        <p><span lang="tr">NDA ve erişim kontrollü ortak veri ortamı.</span><span lang="en">NDAs and an access-controlled CDE.</span></p>
+      </li>
+    </ol>
+    <div class="why-cta">
+      <div class="dim-line draw" style="flex:1;min-width:200px"><span lang="tr">4 ilke · tek ekip</span><span lang="en">4 principles · one team</span></div>
+      <div class="btns">
+        <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Projenizi konuşalım</span><span lang="en">Let's talk about your project</span></a>
+        <a class="btn line" href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler"><span lang="tr">Hizmetler</span><span lang="en">Services</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="off-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Ofisler</span><span lang="en">Offices</span></span>
+      <h2 id="off-title"><span lang="tr">İki ofis, ortak bir mesai.</span><span lang="en">Two offices, one working day.</span></h2>
+      <p><span lang="tr">Aynı gün yanıt. Saatler canlıdır.</span><span lang="en">Same-day answers. The clocks are live.</span></p>
+    </div>
+    <div class="offices">
+      <div>
+        <ul class="office-list">
+          <li class="office" tabindex="0" data-office="ist" data-tz="Europe/Istanbul">
+            <h3>İstanbul</h3><span class="role"><span lang="tr">Merkez</span><span lang="en">Head office</span></span>
+            <span class="coord">41°00′30″N · 28°58′42″E</span>
+            <div class="clock"><time data-clock>--:--:--</time><span class="tz" data-off>Europe/Istanbul</span><span class="st" data-st><span lang="tr">Ofis</span><span lang="en">Office</span></span></div>
+          </li>
+          <li class="office" tabindex="0" data-office="lon" data-tz="Europe/London">
+            <h3>London</h3><span class="role"><span lang="tr">Örnek ofis</span><span lang="en">Sample office</span></span>
+            <span class="coord">51°30′27″N · 0°07′40″W</span>
+            <div class="clock"><time data-clock>--:--:--</time><span class="tz" data-off>Europe/London</span><span class="st" data-st><span lang="tr">Ofis</span><span lang="en">Office</span></span></div>
+          </li>
+        </ul>
+        <div class="hours" aria-label="Çalışma saatleri (UTC)">
+          <div class="lab"><span><span lang="tr">Mesai · UTC ekseni</span><span lang="en">Office hours · UTC axis</span></span><span id="overlap" class="signal"></span></div>
+          <div class="hbar-row"><span>IST</span><div class="hbar" data-bar="ist"></div></div>
+          <div class="hbar-row"><span>LON</span><div class="hbar" data-bar="lon"></div></div>
+          <div class="hbar-row"><span class="signal"><span lang="tr">Ortak</span><span lang="en">Shared</span></span><div class="hbar" data-bar="ov"></div></div>
+          <div class="scale" aria-hidden="true"><span></span><div><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div></div>
+        </div>
+      </div>
+      <figure class="map" style="margin:0">
+        <svg viewBox="0 0 750 600" id="map-svg" role="img" aria-labelledby="map-t">
+          <title id="map-t">Avrupa, Orta Doğu ve Kuzey Afrika'yı gösteren eşdikdörtgen projeksiyonlu nokta haritası. İstanbul ve Londra ofisleri ile örnek proje konumları işaretlidir.</title>
+          <g id="map-grat"></g>
+          <path class="land" id="map-land" d=""/>
+          <path class="route" id="map-route" d=""/>
+          <g id="map-proj" class="proj"></g>
+          <g id="map-pins"></g>
+        </svg>
+        <figcaption class="cap"><span class="k of"><span lang="tr">Ofis</span><span lang="en">Office</span></span><span class="k"><span lang="tr">Örnek proje konumu</span><span lang="en">Sample project location</span></span><span>EPSG:4326 · 15°W–60°E</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="std-title">
+    <div class="block-head">
+      <span class="no">05 · <span lang="tr">Standartlar ve araçlar</span><span lang="en">Standards &amp; tools</span></span>
+      <h2 id="std-title"><span lang="tr">Araç zinciri.</span><span lang="en">The tool chain.</span></h2>
+      <p><span lang="tr">Taramadan teslime, ISO 19650 çerçevesinde.</span><span lang="en">From scan to handover, inside the ISO 19650 frame.</span></p>
+    </div>
+    <figure class="ab-chain">
+      <svg class="ab-ill h" viewBox="0 0 1000 400" role="img" aria-labelledby="ab-ch-t">
+        <title id="ab-ch-t">Araç zinciri: nokta bulutu (Recap), modelleme (Revit), çakışma kontrolü (Navisworks, Solibri), sorun kaydı (BCF), ortak veri ortamı (ACC) ve teslim (IFC, COBie). Sorunlar düzeltme için modele geri döner. Dynamo ve Python otomasyonu zincirin altında çalışır. Tümü ISO 19650 çerçevesindedir.</title>
+        <rect class="kd" x="8" y="8" width="984" height="384" rx="4"/>
+        <!-- geri dönüş -->
+        <path class="k2" d="M575 92C575 46 255 46 255 86"/>
+        <path class="k2" d="M249 78L255 88L261 78"/>
+        <text x="415" y="44" font-size="13" text-anchor="middle"><tspan lang="tr">DÜZELT · TEKRAR KONTROL</tspan><tspan lang="en">FIX · RE-CHECK</tspan></text>
+        <!-- düğümler -->
+        <g>
+          <rect class="kd fp" x="30" y="95" width="130" height="110"/>
+          <use href="#ab-i-cloud" x="55" y="122" width="80" height="66"/>
+          <rect class="k fp" x="190" y="95" width="130" height="110"/>
+          <use href="#ab-i-model" x="215" y="122" width="80" height="66"/>
+          <rect class="k fp" x="350" y="95" width="130" height="110"/>
+          <use href="#ab-i-clash" x="375" y="122" width="80" height="66"/>
+          <rect class="k fp" x="510" y="95" width="130" height="110"/>
+          <use href="#ab-i-issue" x="535" y="122" width="80" height="66"/>
+          <rect class="k fp" x="670" y="95" width="130" height="110"/>
+          <use href="#ab-i-cde" x="695" y="122" width="80" height="66"/>
+          <rect class="k fp" x="830" y="95" width="130" height="110"/>
+          <use href="#ab-i-hand" x="855" y="122" width="80" height="66"/>
+        </g>
+        <g font-size="12">
+          <text x="38" y="113">01</text><text x="198" y="113">02</text><text x="358" y="113">03</text><text x="518" y="113">04</text><text x="678" y="113">05</text><text x="838" y="113">06</text>
+        </g>
+        <path class="k" d="M160 150H186M180 144L186 150L180 156M320 150H346M340 144L346 150L340 156M480 150H506M500 144L506 150L500 156M640 150H666M660 144L666 150L660 156M800 150H826M820 144L826 150L820 156"/>
+        <g font-size="14" text-anchor="middle">
+          <text class="b" x="95" y="230">RECAP</text><text x="95" y="250"><tspan lang="tr">Nokta bulutu</tspan><tspan lang="en">Point cloud</tspan></text>
+          <text class="b" x="255" y="230">REVIT</text><text x="255" y="250"><tspan lang="tr">Modelleme</tspan><tspan lang="en">Modelling</tspan></text>
+          <text class="b" x="415" y="230">NAVIS · SOLIBRI</text><text x="415" y="250"><tspan lang="tr">Çakışma</tspan><tspan lang="en">Clash check</tspan></text>
+          <text class="b" x="575" y="230">BCF</text><text x="575" y="250"><tspan lang="tr">Sorun kaydı</tspan><tspan lang="en">Issue log</tspan></text>
+          <text class="b" x="735" y="230">ACC</text><text x="735" y="250"><tspan lang="tr">Ortak veri ortamı</tspan><tspan lang="en">CDE</tspan></text>
+          <text class="b" x="895" y="230">IFC · COBie</text><text x="895" y="250"><tspan lang="tr">Teslim</tspan><tspan lang="en">Handover</tspan></text>
+        </g>
+        <!-- otomasyon -->
+        <path class="k2" d="M215 264V296M375 264V296M535 264V296M695 264V296" stroke-dasharray="1 5"/>
+        <rect class="k ft" x="190" y="296" width="610" height="40"/>
+        <text class="b" x="495" y="321" font-size="14" text-anchor="middle">{ } DYNAMO · PYTHON · REVIT API <tspan lang="tr">· OTOMASYON</tspan><tspan lang="en">· AUTOMATION</tspan></text>
+        <!-- çerçeve etiketleri -->
+        <text class="b" x="28" y="376" font-size="13">ISO 19650-1/-2 · UK BIM FRAMEWORK</text>
+        <path class="k" d="M874 366V360a7 7 0 0 1 14 0V366"/><rect class="k fp" x="870" y="366" width="22" height="16" rx="2"/>
+        <text class="b" x="972" y="380" font-size="13" text-anchor="end">19650-5</text>
+      </svg>
+      <svg class="ab-ill v" viewBox="0 0 360 700" role="img" aria-labelledby="ab-cv-t">
+        <title id="ab-cv-t">Araç zinciri, dikey: nokta bulutu, modelleme, çakışma kontrolü, sorun kaydı, ortak veri ortamı ve teslim. Sorunlar modele geri döner; otomasyon zincirin yanında çalışır.</title>
+        <rect class="kd" x="4" y="4" width="352" height="692" rx="4"/>
+        <g>
+          <rect class="kd fp" x="46" y="30" width="80" height="70"/><use href="#ab-i-cloud" x="56" y="40" width="60" height="50"/>
+          <rect class="k fp" x="46" y="130" width="80" height="70"/><use href="#ab-i-model" x="56" y="140" width="60" height="50"/>
+          <rect class="k fp" x="46" y="230" width="80" height="70"/><use href="#ab-i-clash" x="56" y="240" width="60" height="50"/>
+          <rect class="k fp" x="46" y="330" width="80" height="70"/><use href="#ab-i-issue" x="56" y="340" width="60" height="50"/>
+          <rect class="k fp" x="46" y="430" width="80" height="70"/><use href="#ab-i-cde" x="56" y="440" width="60" height="50"/>
+          <rect class="k fp" x="46" y="530" width="80" height="70"/><use href="#ab-i-hand" x="56" y="540" width="60" height="50"/>
+        </g>
+        <path class="k" d="M86 100V126M80 120L86 126L92 120M86 200V226M80 220L86 226L92 220M86 300V326M80 320L86 326L92 320M86 400V426M80 420L86 426L92 420M86 500V526M80 520L86 526L92 520"/>
+        <path class="k2" d="M46 365C16 365 16 165 42 165"/><path class="k2" d="M34 159L44 165L34 171"/>
+        <g font-size="14">
+          <text class="b" x="142" y="60">RECAP</text><text x="142" y="80"><tspan lang="tr">Nokta bulutu</tspan><tspan lang="en">Point cloud</tspan></text>
+          <text class="b" x="142" y="160">REVIT</text><text x="142" y="180"><tspan lang="tr">Modelleme</tspan><tspan lang="en">Modelling</tspan></text>
+          <text class="b" x="142" y="260">NAVIS·SOLIBRI</text><text x="142" y="280"><tspan lang="tr">Çakışma</tspan><tspan lang="en">Clash check</tspan></text>
+          <text class="b" x="142" y="360">BCF</text><text x="142" y="380"><tspan lang="tr">Sorun kaydı</tspan><tspan lang="en">Issue log</tspan></text>
+          <text class="b" x="142" y="460">ACC</text><text x="142" y="480"><tspan lang="tr">Ortak veri ort.</tspan><tspan lang="en">CDE</tspan></text>
+          <text class="b" x="142" y="560">IFC · COBie</text><text x="142" y="580"><tspan lang="tr">Teslim</tspan><tspan lang="en">Handover</tspan></text>
+        </g>
+        <rect class="k ft" x="306" y="130" width="32" height="370"/>
+        <text class="b" font-size="13" text-anchor="middle" transform="translate(327 315) rotate(-90)">{ } DYNAMO · PYTHON</text>
+        <text class="b" x="20" y="640" font-size="13">ISO 19650-1/-2 · UK BIM</text>
+        <path class="k" d="M24 664V658a7 7 0 0 1 14 0V664"/><rect class="k fp" x="20" y="664" width="22" height="16" rx="2"/>
+        <text class="b" x="52" y="678" font-size="13">19650-5</text>
+      </svg>
+      <figcaption><span lang="tr">Örnek iş akışı · kesik çizgili adım projeye göre</span><span lang="en">Sample workflow · dashed step per project</span></figcaption>
+    </figure>
+
+    <div class="ab-std">
+      <div>
+        <h3><span lang="tr">Standartlar</span><span lang="en">Standards</span></h3>
+        <ul>
+          <li><span class="code">S-01</span><span class="nm">ISO 19650-1 / -2</span><span class="lv" role="img" aria-label="3/3"><i class="f"></i><i class="f"></i><i class="f"></i></span></li>
+          <li><span class="code">S-02</span><span class="nm">ISO 19650-5</span><span class="lv" role="img" aria-label="2/3"><i class="f"></i><i class="f"></i><i></i></span></li>
+          <li><span class="code">S-03</span><span class="nm">UK BIM Framework</span><span class="lv" role="img" aria-label="2/3"><i class="f"></i><i class="f"></i><i></i></span></li>
+          <li><span class="code">S-04</span><span class="nm">IFC 4 · ISO 16739</span><span class="lv" role="img" aria-label="3/3"><i class="f"></i><i class="f"></i><i class="f"></i></span></li>
+          <li><span class="code">S-05</span><span class="nm">BCF 2.1 / 3.0</span><span class="lv" role="img" aria-label="3/3"><i class="f"></i><i class="f"></i><i class="f"></i></span></li>
+          <li><span class="code">S-06</span><span class="nm">COBie</span><span class="lv" role="img" aria-label="1/3"><i class="f"></i><i></i><i></i></span></li>
+        </ul>
+      </div>
+      <div>
+        <h3><span lang="tr">Araçlar</span><span lang="en">Tools</span></h3>
+        <ul>
+          <li><span class="code">T-01</span><span class="nm">Autodesk Revit</span><span class="lv" role="img" aria-label="3/3"><i class="f"></i><i class="f"></i><i class="f"></i></span></li>
+          <li><span class="code">T-02</span><span class="nm">Navisworks · Solibri</span><span class="lv" role="img" aria-label="3/3"><i class="f"></i><i class="f"></i><i class="f"></i></span></li>
+          <li><span class="code">T-03</span><span class="nm">Autodesk Construction Cloud</span><span class="lv" role="img" aria-label="2/3"><i class="f"></i><i class="f"></i><i></i></span></li>
+          <li><span class="code">T-04</span><span class="nm">Dynamo · Python · Revit API</span><span class="lv" role="img" aria-label="2/3"><i class="f"></i><i class="f"></i><i></i></span></li>
+          <li><span class="code">T-05</span><span class="nm">Recap · <span lang="tr">nokta bulutu</span><span lang="en">point cloud</span></span><span class="lv" role="img" aria-label="1/3"><i class="f"></i><i></i><i></i></span></li>
+        </ul>
+      </div>
+      <p class="key"><span lang="tr">■■■ Günlük kullanım · ■□□ Projeye göre · Liste örnektir</span><span lang="en">■■■ Daily use · ■□□ Per project · List is a sample</span></p>
+    </div>
+  </section>
+</div></main>
+<footer class="footer sheet">
+  <div class="frame">
+    <div class="footer-cta">
+      <h2><span lang="tr">Modeli birlikte<br><em>kuralım.</em></span><span lang="en">Let's build<br>the <em>model.</em></span></h2>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin</span><span lang="en">Request a proposal</span></a>
+    </div>
+    <div class="footer-cols">
+      <div><a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a><p><span lang="tr">Uluslararası BIM danışmanlık ve proje geliştirme. İstanbul merkezli, dünya genelinde projeler.</span><span lang="en">International BIM consulting and project development. Based in Istanbul, working worldwide.</span></p></div>
+      <div><h4><span lang="tr">Paftalar</span><span lang="en">Sheets</span></h4><ul>
+        <li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">A-100 · <span lang="tr">Hizmetler</span><span lang="en">Services</span></a></li>
+        <li><a href="projeler.html" data-sheet="A-200" data-label="Projeler">A-200 · <span lang="tr">Projeler</span><span lang="en">Projects</span></a></li>
+        <li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda">A-300 · <span lang="tr">Hakkımızda</span><span lang="en">About</span></a></li>
+        <li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim">A-900 · <span lang="tr">İletişim</span><span lang="en">Contact</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">Hizmetler</span><span lang="en">Services</span></h4><ul>
+        <li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi">A-101 · <span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme">A-102 · <span lang="tr">Modelleme</span><span lang="en">Modelling</span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon">A-103 · <span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı">A-104 · <span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon">A-105 · <span lang="tr">Otomasyon</span><span lang="en">Automation</span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek">A-106 · <span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">İletişim</span><span lang="en">Contact</span></h4><ul><li>info@firmaadi.com</li><li>+90 (212) 000 00 00</li><li>İstanbul, Türkiye</li></ul></div>
+      <div><h4><span lang="tr">Takip</span><span lang="en">Follow</span></h4><ul><li>LinkedIn</li><li>YouTube</li><li>Instagram</li></ul></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 Firma Adı BIM</span><span>ISO 19650 · IFC · BCF · COBie</span><span><span lang="tr">KVKK · Gizlilik</span><span lang="en">Privacy</span></span></div>
+  </div>
+</footer>
+<script src="assets/model.js"></script>
+<script src="assets/site.js"></script>
+<script>
+
+(function () {
+  var root = document.documentElement;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function L() { return root.lang === 'en' ? 'en' : 'tr'; }
+
+  /* ---- Lejant: disiplin izolasyonu ---- */
+  var legend = document.getElementById('legend'), plan = document.getElementById('plan'), state = document.getElementById('plan-state');
+  var btns = legend.querySelectorAll('.lg'), layers = plan.querySelectorAll('g[data-d]');
+  var names = { arc: ['Mimari', 'Architecture'], str: ['Taşıyıcı sistem', 'Structure'], mep: ['Mekanik ve elektrik', 'Mechanical & electrical'], bim: ['Koordinasyon', 'Coordination'], dev: ['Otomasyon', 'Automation'] };
+  var locked = null;
+  function show(d) {
+    plan.classList.toggle('iso', !!d);
+    layers.forEach(function (g) { g.classList.toggle('on', g.dataset.d === d); });
+    state.innerHTML = d
+      ? '<span lang="tr">İzole: ' + names[d][0] + '</span><span lang="en">Isolated: ' + names[d][1] + '</span>'
+      : '<span lang="tr">Tüm disiplinler</span><span lang="en">All disciplines</span>';
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      locked = locked === b.dataset.d ? null : b.dataset.d;
+      btns.forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.d === locked)); });
+      legend.classList.toggle('iso', !!locked);
+      show(locked);
+    });
+    b.addEventListener('pointerenter', function () { if (!locked) show(b.dataset.d); });
+    b.addEventListener('pointerleave', function () { if (!locked) show(null); });
+    b.addEventListener('focus', function () { if (!locked) show(b.dataset.d); });
+    b.addEventListener('blur', function () { if (!locked) show(null); });
+  });
+
+  /* ---- Harita ---- */
+  var W0 = -15, N0 = 72, K = 10;
+  function P(lat, lon) { return [(lon - W0) * K, (N0 - lat) * K]; }
+  var mask = [
+    '...........####........##',
+    '.........#######..#######',
+    '#.......####.############',
+    '......#####.#############',
+    '...#...#.##.#############',
+    '..###..##..##############',
+    '.####.###################',
+    '....#####################',
+    '....############..###..##',
+    '..#####.######.....##.###',
+    '..###....####.#######..##',
+    '..###....##.#.#######..##',
+    '..#######.......#########',
+    '..########..#############',
+    '.###############.####.###',
+    '################.#####.#.',
+    '#################.#######',
+    '#################.#####..',
+    '##################.###...',
+    '###################......'
+  ];
+  var d = '';
+  for (var lat = 71.25; lat > 12; lat -= 1.5) {
+    for (var lon = -14.25; lon < 60; lon += 1.5) {
+      var r = Math.floor((N0 - lat) / 3), c = Math.floor((lon - W0) / 3);
+      if ((mask[r] || '').charAt(c) === '#') { var p = P(lat, lon); d += 'M' + p[0].toFixed(1) + ' ' + p[1].toFixed(1) + 'h0'; }
+    }
+  }
+  document.getElementById('map-land').setAttribute('d', d);
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent, text) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (text) e.textContent = text; parent.appendChild(e); return e; }
+  var grat = document.getElementById('map-grat');
+  [-15, 0, 15, 30, 45, 60].forEach(function (lo) { var x = P(0, lo)[0]; el('path', { 'class': 'grat' + (lo === 0 ? ' eq' : ''), d: 'M' + x + ' 0V600' }, grat); if (lo > -15 && lo < 60) el('text', { 'class': 'gl', x: x + 4, y: 592 }, grat, Math.abs(lo) + '°' + (lo ? 'E' : '')); });
+  [15, 30, 45, 60].forEach(function (la) { var y = P(la, 0)[1]; el('path', { 'class': 'grat', d: 'M0 ' + y + 'H750' }, grat); el('text', { 'class': 'gl', x: 6, y: y - 5 }, grat, la + '°N'); });
+  var projG = document.getElementById('map-proj');
+  [['Berlin', 52.52, 13.40], ['Riyadh', 24.71, 46.68], ['Dubai', 25.20, 55.27], ['Doha', 25.29, 51.53], ['Baku', 40.41, 49.87], ['Ankara', 39.93, 32.86], ['Amsterdam', 52.37, 4.90]].forEach(function (q) {
+    var p = P(q[1], q[2]); el('circle', { cx: p[0], cy: p[1], r: 4.5 }, projG); el('text', { x: p[0] + 7, y: p[1] - 7 }, projG, q[0].toUpperCase());
+  });
+  var offices = { ist: { lat: 41.0082, lon: 28.9784, n: 'İSTANBUL' }, lon: { lat: 51.5074, lon: -0.1278, n: 'LONDON' } };
+  var a = P(offices.lon.lat, offices.lon.lon), b = P(offices.ist.lat, offices.ist.lon);
+  var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2 - 60;
+  document.getElementById('map-route').setAttribute('d', 'M' + a[0] + ' ' + a[1] + 'Q' + mx + ' ' + my + ' ' + b[0] + ' ' + b[1]);
+  var pins = document.getElementById('map-pins');
+  el('text', { 'class': 'rt', x: (a[0] + 2 * mx + b[0]) / 4 - 30, y: (a[1] + 2 * my + b[1]) / 4 + 24 }, pins, '≈ 2.496 km');
+  Object.keys(offices).forEach(function (k) {
+    var o = offices[k], p = P(o.lat, o.lon), g = el('g', { 'class': 'pin', 'data-pin': k }, pins);
+    el('circle', { 'class': 'pulse', cx: p[0], cy: p[1], r: 22 }, g);
+    el('path', { 'class': 'hair', d: 'M' + (p[0] - 18) + ' ' + p[1] + 'H' + (p[0] + 18) + 'M' + p[0] + ' ' + (p[1] - 18) + 'V' + (p[1] + 18) }, g);
+    el('circle', { 'class': 'ring', cx: p[0], cy: p[1], r: 10 }, g);
+    el('circle', { 'class': 'dot', cx: p[0], cy: p[1], r: 3.5 }, g);
+    var left = k === 'lon', w = o.n.length * 8 + 16, bx = left ? p[0] - w - 16 : p[0] + 16;
+    el('rect', { 'class': 'box', x: bx, y: p[1] - 30, width: w, height: 22 }, g);
+    el('text', { x: bx + 8, y: p[1] - 15 }, g, o.n);
+  });
+  document.querySelectorAll('.office').forEach(function (li) {
+    var pin = pins.querySelector('[data-pin="' + li.dataset.office + '"]');
+    function on(v) { li.classList.toggle('on', v); pin.classList.toggle('on', v); }
+    li.addEventListener('pointerenter', function () { on(true); });
+    li.addEventListener('pointerleave', function () { on(false); });
+    li.addEventListener('focus', function () { on(true); });
+    li.addEventListener('blur', function () { on(false); });
+  });
+
+  /* ---- Canlı saatler + mesai çubukları ---- */
+  function offsetMin(tz, now) {
+    try {
+      var f = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }).formatToParts(now);
+      var g = {}; f.forEach(function (x) { g[x.type] = +x.value; });
+      return Math.round((Date.UTC(g.year, g.month - 1, g.day, g.hour % 24, g.minute) - now.getTime()) / 900000) * 15;
+    } catch (e) { return 0; }
+  }
+  var items = document.querySelectorAll('.office'), fmt = {};
+  var bars = { ist: document.querySelector('[data-bar="ist"]'), lon: document.querySelector('[data-bar="lon"]'), ov: document.querySelector('[data-bar="ov"]') };
+  function seg(bar, s, e, cls) { var i = document.createElement('i'); if (cls) i.className = cls; i.style.left = (s / 24 * 100) + '%'; i.style.width = ((e - s) / 24 * 100) + '%'; bar.appendChild(i); }
+  var lastBars = '';
+  function tick() {
+    var now = new Date(), utcH = now.getUTCHours() + now.getUTCMinutes() / 60, win = {};
+    items.forEach(function (li) {
+      var tz = li.dataset.tz, off = offsetMin(tz, now);
+      if (!fmt[tz]) { try { fmt[tz] = new Intl.DateTimeFormat('tr-TR', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }); } catch (e) { fmt[tz] = null; } }
+      var t = li.querySelector('[data-clock]');
+      t.textContent = fmt[tz] ? fmt[tz].format(now) : '--:--:--';
+      var h = off / 60, sign = h >= 0 ? '+' : '−';
+      li.querySelector('[data-off]').textContent = 'UTC' + sign + Math.abs(h) + ' · ' + tz;
+      var lh = ((utcH + h) % 24 + 24) % 24, day = new Date(now.getTime() + off * 60000).getUTCDay();
+      var open = day >= 1 && day <= 5 && lh >= 9 && lh < 18;
+      var st = li.querySelector('[data-st]'); st.classList.toggle('open', open);
+      st.innerHTML = open ? '<span lang="tr">Ofis açık</span><span lang="en">Office open</span>' : '<span lang="tr">Ofis kapalı</span><span lang="en">Office closed</span>';
+      win[li.dataset.office] = [9 - h, 18 - h];
+    });
+    var key = JSON.stringify(win) + Math.floor(utcH * 12);
+    if (key !== lastBars) {
+      lastBars = key;
+      ['ist', 'lon', 'ov'].forEach(function (k) { bars[k].innerHTML = ''; });
+      seg(bars.ist, win.ist[0], win.ist[1]); seg(bars.lon, win.lon[0], win.lon[1]);
+      var s = Math.max(win.ist[0], win.lon[0]), e = Math.min(win.ist[1], win.lon[1]);
+      if (e > s) seg(bars.ov, s, e, 'ov');
+      ['ist', 'lon', 'ov'].forEach(function (k) { var n = document.createElement('span'); n.className = 'now'; n.style.left = (utcH / 24 * 100) + '%'; bars[k].appendChild(n); });
+      var hrs = Math.round(Math.max(0, e - s) * 10) / 10;
+      document.getElementById('overlap').innerHTML = '<span lang="tr">Ortak mesai ' + hrs + ' saat</span><span lang="en">' + hrs + ' h shared</span>';
+    }
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+</script>
+</body>
+</html>

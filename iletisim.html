@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>İletişim | Firma Adı BIM</title>
+<meta name="description" content="Bilgi talebi (RFI) formuyla projenizi anlatın; iki iş günü içinde kapsam ve teklifle dönelim. E-posta, telefon, ofisler ve sık sorulan sorular.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="İletişim | Firma Adı BIM">
+<meta property="og:description" content="Bilgi talebi (RFI) formuyla projenizi anlatın; iki iş günü içinde kapsam ve teklifle dönelim. E-posta, telefon, ofisler ve sık sorulan sorular.">
+<meta property="og:url" content="https://www.firmaadi.com/iletisim.html">
+<meta property="og:image" content="https://www.firmaadi.com/assets/logo.png">
+<link rel="canonical" href="https://www.firmaadi.com/iletisim.html">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+/* ---- A-900 · Bilgi talebi ---- */
+.jump { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.jump a { text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; }
+.jump a:hover, .jump a:focus-visible { color: var(--signal); border-color: var(--signal); }
+.jump a b { color: var(--signal); font-weight: 600; margin-right: 6px; }
+
+.rfi { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(24px, 3.5vw, 56px); align-items: start; }
+.rfi > * { min-width: 0; }
+
+/* Form başlığı: antet şeridi */
+.rfi-form { border: 1px solid var(--ink); background: var(--paper); }
+.rfi-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); }
+.rfi-strip > div { padding: 10px 14px; border-right: 1px solid var(--rule); min-width: 0; }
+.rfi-strip > div:last-child { border-right: 0; }
+.rfi-strip .k { display: block; font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.rfi-strip .v { display: block; font: 600 13.5px/1.3 var(--mono); letter-spacing: .02em; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.rfi-strip .v.sig { color: var(--signal); }
+.rfi-req { padding: 10px 14px; border-bottom: 1px solid var(--rule); font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.rfi-req i { font-style: normal; color: var(--signal); }
+
+/* Numaralı satırlar */
+.row { display: grid; grid-template-columns: 64px minmax(0, 1fr); border-bottom: 1px solid var(--rule); position: relative; }
+.row > * { min-width: 0; }
+.row .n { font: 600 13px var(--mono); padding: 22px 0 0 14px; color: var(--ink-2); border-right: 1px solid var(--rule); transition: color .2s, background .2s; display: flex; flex-direction: column; gap: 4px; }
+.row .n::after { content: ""; font: 600 12px var(--mono); }
+.row.ok .n { color: var(--ok); }
+.row.ok .n::after { content: "✓"; }
+.row.bad .n { color: var(--signal); }
+.row.bad .n::after { content: "!"; }
+.row:focus-within .n { background: var(--ink); color: var(--paper); }
+.row .body { padding: 16px clamp(14px, 2vw, 22px) 18px; display: grid; gap: 8px; }
+.row label.lbl, .row legend { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); padding: 0; }
+.row .lbl i, .row legend i { font-style: normal; color: var(--signal); margin-left: 4px; }
+.row .lbl small, .row legend small { text-transform: none; letter-spacing: 0; font-size: 11px; margin-left: 6px; }
+.row input[type=text], .row input[type=email], .row textarea {
+  width: 100%; font: 500 clamp(17px, 1.6vw, 20px)/1.4 var(--body); color: var(--ink); background: transparent;
+  border: 0; border-bottom: 1px solid var(--ink); border-radius: 0; padding: 8px 0;
+}
+.row input::placeholder, .row textarea::placeholder { color: var(--ink-2); opacity: .6; }
+.row input:focus, .row textarea:focus { outline: none; border-bottom: 2px solid var(--signal); padding-bottom: 7px; }
+.row textarea { min-height: 150px; resize: vertical; font-size: 17px; }
+.row.bad input, .row.bad textarea { border-bottom-color: var(--signal); }
+.row fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 12px; }
+.err { font: 500 12.5px/1.4 var(--mono); color: var(--signal); }
+.err[hidden] { display: none; }
+.err::before { content: "▲ "; }
+.hint { font: 500 11.5px var(--mono); color: var(--ink-2); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.pair > .row:first-child { border-right: 1px solid var(--rule); }
+
+/* Seçim çipleri (gerçek checkbox/radio) */
+.pick { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick label { position: relative; display: inline-flex; align-items: baseline; gap: 8px; font: 500 12.5px var(--mono); letter-spacing: .03em; text-transform: uppercase; border: 1px solid var(--rule); padding: 9px 12px; cursor: pointer; background: var(--paper); transition: background .15s, color .15s, border-color .15s; }
+.pick label b { font-weight: 600; color: var(--signal); font-size: 11px; }
+.pick label:hover { border-color: var(--ink); }
+.pick input, .scale input, .stages input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+.pick label.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pick label.on b { color: var(--paper); }
+.pick label.on::after { content: "✓"; }
+.pick label:has(input:focus-visible), .scale label:has(input:focus-visible), .stages label:has(input:focus-visible) { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+/* 06 · Grafik ölçek çubuğu */
+.scale { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-top: 4px; }
+.scale label { display: grid; gap: 8px; cursor: pointer; position: relative; min-width: 0; padding-top: 2px; }
+.scale .bar { height: 12px; border: 1px solid var(--ink); border-left-width: 0; transition: background .2s; }
+.scale label:first-child .bar { border-left-width: 1px; }
+.scale label:nth-child(odd) .bar { background: var(--ink); }
+.scale label:hover .bar { background: color-mix(in srgb, var(--signal) 45%, transparent); }
+.scale label.on .bar { background: var(--signal); border-color: var(--signal); }
+.scale .t { font: 500 11.5px/1.3 var(--mono); letter-spacing: .02em; color: var(--ink-2); overflow-wrap: anywhere; }
+.scale label.on .t { color: var(--ink); font-weight: 600; }
+.scale-foot { display: flex; justify-content: space-between; font: 500 10.5px var(--mono); letter-spacing: .06em; color: var(--ink-2); text-transform: uppercase; }
+
+/* 07 · Aşama zaman çizgisi */
+.stages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); position: relative; padding-top: 6px; }
+.stages::before { content: ""; position: absolute; left: 9px; right: 12%; top: 15px; height: 1px; background: var(--ink); }
+.stages label { display: grid; gap: 8px; justify-items: start; cursor: pointer; position: relative; min-width: 0; padding-right: 8px; }
+.stages .dot { width: 19px; height: 19px; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper); display: grid; place-items: center; font: 600 9.5px var(--mono); color: var(--ink-2); transition: background .2s, border-color .2s; }
+.stages label:hover .dot { border-color: var(--signal); }
+.stages label.on .dot { background: var(--signal); border-color: var(--signal); color: var(--on-signal); }
+.stages .t { font: 600 12px/1.3 var(--mono); letter-spacing: .04em; text-transform: uppercase; overflow-wrap: anywhere; }
+.stages .d { font-size: 13.5px; line-height: 1.4; color: var(--ink-2); }
+.stages label.on .t { color: var(--signal); }
+
+/* Gönder satırı */
+.send { display: grid; gap: 14px; padding: 20px clamp(14px, 2vw, 22px); }
+.send-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+.send .btn { border: 1px solid var(--ink); }
+.err-sum { border: 1px solid var(--signal); padding: 12px 14px; font: 500 13px/1.5 var(--mono); color: var(--signal); }
+.err-sum[hidden] { display: none; }
+.err-sum ul { margin: 6px 0 0; padding-left: 18px; }
+.err-sum a { color: inherit; }
+#form-msg { border: 1px solid var(--ok); color: var(--ink); padding: 14px 16px; display: grid; gap: 4px; background: color-mix(in srgb, var(--ok) 8%, var(--paper)); }
+#form-msg[hidden] { display: none; }
+#form-msg .mono { color: var(--ok); }
+.mini-prog { display: none; }
+
+/* ---- Yanıt paftası (transmittal) ---- */
+.tx { position: sticky; top: 88px; border: 1px solid var(--ink); background: var(--paper); font-family: var(--mono); }
+.tx-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; background: var(--ink); color: var(--paper); font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.stamp { border: 1.5px solid var(--signal); color: var(--signal); padding: 3px 8px; font: 700 11px var(--mono); letter-spacing: .1em; transform: rotate(-3deg); background: var(--ink); white-space: nowrap; }
+.stamp.ready { border-color: var(--ok); color: var(--ok); }
+.tx dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.tx dl > div { padding: 10px 14px; border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); min-width: 0; }
+.tx dl > div:nth-child(2n) { border-right: 0; }
+.tx dl > div.w { grid-column: 1 / -1; border-right: 0; }
+.tx dt { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 3px; }
+.tx dd { margin: 0; font: 500 13px/1.45 var(--mono); overflow-wrap: anywhere; color: var(--ink); }
+.tx dd.empty { color: var(--ink-2); opacity: .7; }
+.tx dd.big { font: 800 clamp(20px, 2vw, 26px)/1.05 var(--display); font-stretch: 118%; letter-spacing: -.01em; }
+.tx .msg { font-family: var(--body); font-size: 14px; }
+.tx-prog { padding: 14px 14px 16px; display: grid; gap: 10px; }
+.chain { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); position: relative; height: 26px; }
+.chain::before { content: ""; position: absolute; left: 0; right: 0; top: 12px; height: 1px; background: var(--ink-2); }
+.chain span { position: relative; border-left: 1px solid var(--ink-2); }
+.chain span:last-child { border-right: 1px solid var(--ink-2); }
+.chain span::after { content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 5px; background: transparent; transition: background .25s; }
+.chain span.f::after { background: var(--ink); }
+.chain span.req.f::after { background: var(--ok); }
+.chain span i { position: absolute; left: 3px; top: -2px; font: 500 9px var(--mono); font-style: normal; color: var(--ink-2); }
+.chain-lbl { display: flex; justify-content: space-between; gap: 10px; font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); flex-wrap: wrap; }
+.chain-lbl b { color: var(--ink); font-weight: 600; }
+.tx-foot { padding: 12px 14px; border-top: 1px solid var(--ink); font: 500 11px/1.5 var(--mono); color: var(--ink-2); letter-spacing: .03em; }
+
+/* ---- Doğrudan iletişim ---- */
+.direct { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 0; border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.direct > * { min-width: 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.line-item { padding: clamp(18px, 2.4vw, 30px); display: grid; gap: 12px; }
+.line-item .k { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: flex; justify-content: space-between; gap: 12px; }
+.line-item .val { font: 800 clamp(24px, 3.6vw, 48px)/1.05 var(--display); font-stretch: 112%; letter-spacing: -.02em; user-select: all; -webkit-user-select: all; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.line-item .acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.act { font: 600 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 9px 12px; border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
+.act:hover { background: var(--ink); color: var(--paper); }
+.act.done { border-color: var(--ok); color: var(--ok); }
+.act.done:hover { background: transparent; }
+.copy-st { font: 500 11.5px var(--mono); color: var(--ink-2); }
+.promise { padding: clamp(18px, 2.4vw, 30px); display: grid; gap: 14px; align-content: start; background: var(--ink); color: var(--paper); }
+.promise .k { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.promise .big { font: 800 clamp(56px, 8vw, 120px)/.86 var(--display); font-stretch: 125%; letter-spacing: -.04em; }
+.promise .big em { font-style: normal; color: var(--signal); }
+.promise p { color: color-mix(in srgb, var(--paper) 80%, transparent); max-width: 40ch; font-size: 15.5px; }
+.promise .dim-line { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.promise .dim-line::before, .promise .dim-line::after { border-color: color-mix(in srgb, var(--paper) 70%, transparent); background-image: linear-gradient(color-mix(in srgb, var(--paper) 70%, transparent), color-mix(in srgb, var(--paper) 70%, transparent)); }
+.promise-span { grid-row: span 2; }
+
+/* Ofisler */
+.offices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); margin-top: clamp(32px, 4vw, 56px); }
+.office { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: clamp(18px, 2.2vw, 26px); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px 18px; min-width: 0; }
+.office > * { min-width: 0; }
+.office .tag { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.office h3 { font-size: clamp(24px, 2.6vw, 36px); font-stretch: 118%; letter-spacing: -.02em; margin-top: 6px; }
+.office .clock { width: 64px; height: 64px; }
+.clock circle { fill: none; stroke: var(--ink); }
+.clock .tk { stroke: var(--ink-2); stroke-width: 1; }
+.clock .hh { stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
+.clock .mh { stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+.clock .sh { stroke: var(--signal); stroke-width: 1; }
+.office .time { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.office .time b { font: 800 clamp(30px, 3.2vw, 44px)/1 var(--display); font-stretch: 112%; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.office .st { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 8px; border: 1px solid var(--rule); color: var(--ink-2); }
+.office .st.open { border-color: var(--ok); color: var(--ok); }
+.office dl { grid-column: 1 / -1; margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; font: 500 12px/1.5 var(--mono); }
+.office dt { color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+.office dd { margin: 0; overflow-wrap: anywhere; }
+
+/* ---- Notlar (SSS) ---- */
+.notes { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px 40px; }
+.notes > * { min-width: 0; }
+.notes-title { font: 700 13px var(--mono); letter-spacing: .12em; text-transform: uppercase; border-bottom: 2px solid var(--ink); align-self: start; padding-bottom: 6px; }
+.notes ol { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); counter-reset: n; }
+.notes li { counter-increment: n; border-bottom: 1px solid var(--rule); }
+.notes summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 48px minmax(0, 1fr) 28px; gap: 14px; align-items: baseline; padding: 18px 0; }
+.notes summary::-webkit-details-marker { display: none; }
+.notes summary::before { content: counter(n) "."; font: 600 15px var(--mono); color: var(--signal); }
+.notes summary .q { font: 700 clamp(19px, 2vw, 26px)/1.2 var(--display); font-stretch: 108%; letter-spacing: -.01em; }
+.notes summary::after { content: "+"; font: 500 20px/1 var(--mono); color: var(--ink-2); justify-self: end; transition: transform .2s; }
+.notes details[open] summary::after { transform: rotate(45deg); color: var(--signal); }
+.notes summary:hover .q { color: var(--signal); }
+.notes .a { padding: 0 42px 22px 62px; color: var(--ink-2); max-width: 74ch; display: grid; gap: 10px; }
+.notes .a .ref { font: 500 11.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.notes .a .ref a { color: var(--ink); }
+.notes .more { margin-top: 28px; }
+
+/* ---- Duyarlı ---- */
+@media (max-width: 1080px) {
+  .rfi { grid-template-columns: minmax(0, 1fr); }
+  .tx { position: static; }
+  .mini-prog { display: flex; position: sticky; bottom: 0; z-index: 4; background: var(--ink); color: var(--paper); padding: 10px 14px; gap: 12px; align-items: center; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; border-top: 1px solid var(--ink); }
+  .mini-prog .track { flex: 1; height: 5px; background: color-mix(in srgb, var(--paper) 22%, transparent); position: relative; min-width: 40px; }
+  .mini-prog .track i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--signal); width: 0; transition: width .25s; }
+  .mini-prog a { color: var(--paper); }
+}
+@media (max-width: 900px) {
+  .direct { grid-template-columns: minmax(0, 1fr); }
+  .promise-span { grid-row: auto; }
+  .offices { grid-template-columns: minmax(0, 1fr); }
+  .notes { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .rfi-strip { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .rfi-strip > div:nth-child(2) { border-right: 0; }
+  .rfi-strip > div:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .pair { grid-template-columns: minmax(0, 1fr); }
+  .pair > .row:first-child { border-right: 0; }
+  .row { grid-template-columns: 44px minmax(0, 1fr); }
+  .row .n { padding-left: 10px; font-size: 12px; }
+  .scale { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 14px; }
+  .scale label:nth-child(3) .bar { border-left-width: 1px; }
+  .stages { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 18px; }
+  .stages::before { display: none; }
+  .notes summary { grid-template-columns: 34px minmax(0, 1fr) 22px; gap: 10px; }
+  .notes .a { padding: 0 0 20px 44px; }
+  .tx dl { grid-template-columns: minmax(0, 1fr); }
+  .tx dl > div { border-right: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .chain span::after, .mini-prog .track i { transition: none; } }
+/* A-900 infografikleri (c9-) */
+.c9-flow { list-style: none; margin: 0 0 clamp(28px, 4vw, 48px); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.c9-flow li { position: relative; display: grid; gap: 8px; justify-items: start; padding: 20px clamp(12px, 2vw, 24px) 20px 0; min-width: 0; }
+.c9-flow li + li { padding-left: clamp(12px, 2vw, 24px); }
+.c9-flow li:not(:last-child)::after { content: "→"; position: absolute; right: -8px; top: 34px; font: 500 20px var(--mono); color: var(--ink-2); }
+.c9-flow svg { width: 56px; height: 56px; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.c9-flow .c9-sig { stroke: var(--signal); stroke-width: 2.2; }
+.c9-flow b { font: 700 clamp(17px, 1.6vw, 21px)/1.15 var(--display); font-stretch: 110%; }
+.c9-t { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.c9-48 { width: 100%; max-width: 380px; height: auto; display: block; color: currentColor; }
+.c9-48 line, .c9-48 path { stroke: currentColor; stroke-width: 1.2; fill: none; opacity: .7; }
+.c9-48 .c9-fill { fill: currentColor; opacity: .18; }
+.c9-48 .c9-pt { fill: var(--ink); stroke: currentColor; stroke-width: 1.5; }
+.c9-48 .c9-end { fill: var(--signal); }
+.c9-48 text { font: 500 13px var(--mono); fill: currentColor; opacity: .8; }
+.c9-48 .c9-l { font-size: 14px; opacity: 1; }
+.c9-hrs { margin: clamp(32px, 4vw, 56px) 0 0; border: 1px solid var(--rule); padding: clamp(16px, 2.4vw, 28px); display: grid; gap: 16px; }
+.c9-hrs figcaption { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.c9-hrs figcaption b { color: var(--ink); font-weight: 600; }
+.c9-rows { position: relative; display: grid; gap: 10px; }
+.c9-row, .c9-axis { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; align-items: center; font: 600 12px var(--mono); }
+.c9-trk { position: relative; height: 18px; border-bottom: 1px dashed var(--rule); }
+.c9-trk i { position: absolute; top: 2px; bottom: 2px; background: var(--ink); left: 18.75%; width: 56.25%; }
+.c9-ticks { position: relative; height: 16px; }
+.c9-ticks b { position: absolute; transform: translateX(-50%); font: 500 11px var(--mono); color: var(--ink-2); }
+.c9-ticks b:first-child { transform: none; } .c9-ticks b:last-child { transform: translateX(-100%); }
+.c9-ov { position: absolute; top: -4px; bottom: 22px; border-left: 1px dashed var(--ink); border-right: 1px dashed var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); pointer-events: none; }
+.c9-now { position: absolute; top: -8px; bottom: 18px; width: 2px; background: var(--signal); pointer-events: none; display: none; }
+.c9-curve { margin: 0; display: grid; gap: 10px; align-self: start; }
+.c9-curve svg { width: 100%; max-width: 440px; height: auto; display: block; }
+.c9-curve path { fill: none; stroke: var(--ink); stroke-width: 1.4; }
+.c9-curve .c9-c1 { stroke-width: 2.2; }
+.c9-curve .c9-c2 { stroke-dasharray: 6 5; stroke: var(--ink-2); }
+.c9-curve .c9-band { fill: color-mix(in srgb, var(--signal) 12%, transparent); stroke: var(--signal); stroke-dasharray: 3 3; }
+.c9-curve text { font: 500 13px var(--mono); fill: var(--ink-2); }
+.c9-curve .c9-k { fill: var(--ink); font-weight: 600; }
+.c9-curve .c9-s { fill: var(--signal); font-weight: 600; }
+.c9-curve figcaption { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+@media (min-width: 901px) { .notes { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); } }
+@media (max-width: 760px) {
+  .c9-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .c9-flow li:nth-child(3) { padding-left: 0; }
+  .c9-flow li:nth-child(2)::after { display: none; }
+  .c9-flow li:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="tr">İçeriğe geç</span><span lang="en">Skip to content</span></a>
+<div class="draft-note"><span lang="tr">Taslak · Firma adı, iletişim bilgileri, projeler ve rakamlar örnektir.</span><span lang="en">Draft · Company name, contact details, projects and figures are placeholders.</span></div>
+<div class="axis-left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+<header class="topbar sheet">
+  <div class="frame">
+    <a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a>
+    <div class="top-right">
+      <span class="mono dim sheet-label" aria-hidden="true">A-900 · <span lang="tr">İletişim</span><span lang="en">Contact</span></span>
+      <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" aria-pressed="true">TR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i><span lang="tr">Paftalar</span><span lang="en">Sheets</span></button>
+    </div>
+  </div>
+</header>
+<nav class="register" id="register" hidden aria-label="Paftalar">
+  <div class="register-head"><span class="mono"><span lang="tr">Pafta listesi · 5 pafta · 9 alt pafta</span><span lang="en">Sheet register · 5 sheets · 9 sub-sheets</span></span><button class="register-close" type="button" data-close-register><span lang="tr">Kapat</span><span lang="en">Close</span> ✕</button></div>
+  <ol>
+    <li><a href="./" data-sheet="A-000" data-label="Kapak"><span class="no">A-000</span><span class="t"><span lang="tr">Kapak</span><span lang="en">Cover</span></span><span class="d"><span lang="tr">Ana sayfa</span><span lang="en">Home</span></span></a></li><li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler"><span class="no">A-100</span><span class="t"><span lang="tr">Hizmetler</span><span lang="en">Services</span></span><span class="d"><span lang="tr">Strateji · Model · Koordinasyon</span><span lang="en">Strategy · Model · Coordination</span></span></a><ul class="subs"><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="sno">A-101</span><span class="st"><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span><span class="sd"><span lang="tr">EIR, BEP, ISO 19650 yol haritası</span><span lang="en">EIR, BEP, ISO 19650 roadmap</span></span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="sno">A-102</span><span class="st"><span lang="tr">Modelleme</span><span lang="en">Modelling</span></span><span class="sd"><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span class="sno">A-103</span><span class="st"><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="sd"><span lang="tr">Federe model, çakışma, BCF</span><span lang="en">Federated model, clashes, BCF</span></span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span class="sno">A-104</span><span class="st"><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></span><span class="sd"><span lang="tr">ACC kurulumu, isimlendirme, onaylar</span><span lang="en">ACC setup, naming, approvals</span></span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span class="sno">A-105</span><span class="st"><span lang="tr">Otomasyon</span><span lang="en">Automation</span></span><span class="sd"><span lang="tr">Dynamo, Python, Revit API eklentileri</span><span lang="en">Dynamo, Python, Revit API add-ins</span></span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span class="sno">A-106</span><span class="st"><span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></span><span class="sd"><span lang="tr">Revit, Navisworks, ISO 19650 eğitimleri</span><span lang="en">Revit, Navisworks, ISO 19650 courses</span></span></a></li></ul></li><li><a href="projeler.html" data-sheet="A-200" data-label="Projeler"><span class="no">A-200</span><span class="t"><span lang="tr">Projeler</span><span lang="en">Projects</span></span><span class="d"><span lang="tr">Proje dizini</span><span lang="en">Project index</span></span></a><ul class="subs"><li><a href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü"><span class="sno">A-210</span><span class="st"><span lang="tr">Hastane kampüsü</span><span lang="en">Hospital campus</span></span><span class="sd"><span lang="tr">Sağlık · Türkiye · BIM yöneticisi</span><span lang="en">Healthcare · Türkiye · BIM manager</span></span></a></li><li><a href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span class="sno">A-220</span><span class="st"><span lang="tr">Konut kulesi</span><span lang="en">Residential tower</span></span><span class="sd"><span lang="tr">Konut · Almanya · Modelleme ekibi</span><span lang="en">Residential · Germany · Modelling team</span></span></a></li><li><a href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span class="sno">A-230</span><span class="st"><span lang="tr">Lojistik merkezi</span><span lang="en">Logistics hub</span></span><span class="sd"><span lang="tr">Endüstriyel · BAE · Scan-to-BIM</span><span lang="en">Industrial · UAE · Scan-to-BIM</span></span></a></li></ul></li><li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda"><span class="no">A-300</span><span class="t"><span lang="tr">Hakkımızda</span><span lang="en">About</span></span><span class="d"><span lang="tr">Ekip · Yaklaşım</span><span lang="en">Team · Approach</span></span></a></li><li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim" aria-current="page"><span class="no">A-900</span><span class="t"><span lang="tr">İletişim</span><span lang="en">Contact</span></span><span class="d"><span lang="tr">Teklif · Ofisler</span><span lang="en">Proposal · Offices</span></span></a></li>
+  </ol>
+  <div class="register-foot"><span>info@firmaadi.com</span><span>+90 (212) 000 00 00</span><span>İstanbul · London</span></div>
+</nav>
+<aside class="titleblock" aria-hidden="true">
+  <div><span><span lang="tr">Proje</span><span lang="en">Project</span></span><b>Firma Adı BIM</b></div>
+  <div><span><span lang="tr">Pafta</span><span lang="en">Sheet</span></span><b>A-900</b></div>
+  <div><span><span lang="tr">Ölçek</span><span lang="en">Scale</span></span><b>1:100</b></div>
+  <div class="xy"><span><span lang="tr">Koordinat</span><span lang="en">Coordinate</span></span><b id="tb-xy">X 0.0 · Y 0.0</b></div>
+  <div><span>Rev</span><b>P07</b></div>
+  <div><span><span lang="tr">Durum</span><span lang="en">Status</span></span><b>S2 · <span lang="tr">Bilgi</span><span lang="en">Info</span></b></div>
+</aside>
+<main id="main" class="sheet"><div class="frame">
+  <header class="sheet-head">
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-900</b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>1:1</b></span>
+      <span>Rev <b>P07</b></span>
+      <span><span lang="tr">Belge</span><span lang="en">Document</span> <b>RFI · <span lang="tr">Bilgi talebi</span><span lang="en">Request for information</span></b></span>
+    </div>
+    <h1><span lang="tr">Bilgi <span class="o">talebi</span>.</span><span lang="en">Send an <span class="o">RFI</span>.</span></h1>
+    <p class="lede">
+      <span lang="tr">Projenizi anlatın. İki iş günü içinde kapsam ve teklifle döneriz.</span>
+      <span lang="en">Tell us about your project. We reply with a scope and proposal within two working days.</span>
+    </p>
+    <nav class="jump mono" aria-label="Bu paftada / On this sheet">
+      <a href="#rfi"><b>01</b><span lang="tr">Talep formu</span><span lang="en">Request form</span></a>
+      <a href="#direct"><b>02</b><span lang="tr">Doğrudan iletişim</span><span lang="en">Direct contact</span></a>
+      <a href="#offices"><b>03</b><span lang="tr">Ofisler</span><span lang="en">Offices</span></a>
+      <a href="#notes"><b>04</b><span lang="tr">SSS</span><span lang="en">FAQ</span></a>
+    </nav>
+  </header>
+
+  <!-- 01 · RFI formu -->
+  <section class="block" id="rfi" aria-labelledby="rfi-title">
+    <div class="block-head">
+      <span class="no">01 · RFI</span>
+      <h2 id="rfi-title"><span lang="tr">Talep paftası</span><span lang="en">Request sheet</span></h2>
+      <p><span lang="tr">Yıldızlı dört alan yeterli.</span><span lang="en">The four starred fields are enough.</span></p>
+    </div>
+    <ol class="c9-flow" aria-label="Süreç / Process"><li><svg viewBox="0 0 56 56" aria-hidden="true"><rect x="12" y="6" width="32" height="44"/><path d="M18 16h20M18 23h20M18 30h12"/><path d="M34 40l4 4 8-10" class="c9-sig"/></svg><span class="c9-t mono"><span lang="tr">Gün 0</span><span lang="en">Day 0</span><span class="sr-only"> · </span></span><b><span lang="tr">Formu doldurun</span><span lang="en">Send the RFI</span></b></li><li><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="20"/><path d="M28 14v14l9 6"/><path d="M28 4v4M28 48v4M4 28h4M48 28h4"/></svg><span class="c9-t mono"><span lang="tr">48 sa</span><span lang="en">48 h</span><span class="sr-only"> · </span></span><b><span lang="tr">Ekip inceler</span><span lang="en">We review</span></b></li><li><svg viewBox="0 0 56 56" aria-hidden="true"><rect x="10" y="6" width="30" height="40"/><path d="M16 15h18M16 21h18M16 27h10"/><circle cx="40" cy="40" r="9"/><path d="M36 40l3 3 5-6"/></svg><span class="c9-t mono"><span lang="tr">Gün 2</span><span lang="en">Day 2</span><span class="sr-only"> · </span></span><b><span lang="tr">Kapsam ve teklif</span><span lang="en">Scope and proposal</span></b></li><li><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="18" cy="17" r="6"/><circle cx="38" cy="17" r="6"/><path d="M6 44c0-9 5-15 12-15s12 6 12 15M26 44c0-9 5-15 12-15s12 6 12 15"/></svg><span class="c9-t mono"><span lang="tr">30 dk</span><span lang="en">30 min</span><span class="sr-only"> · </span></span><b><span lang="tr">Tanışma görüşmesi</span><span lang="en">Intro call</span></b></li></ol>
+
+    <div class="rfi">
+      <form id="contact-form" class="rfi-form" novalidate aria-labelledby="rfi-title">
+        <div class="rfi-strip">
+          <div><span class="k">RFI No</span><span class="v sig" data-rfi-no>RFI-2026-001</span></div>
+          <div><span class="k"><span lang="tr">Tarih</span><span lang="en">Date</span></span><span class="v" data-rfi-date>2026-01-01</span></div>
+          <div><span class="k"><span lang="tr">Kime</span><span lang="en">To</span></span><span class="v"><span lang="tr">Teklif ekibi</span><span lang="en">Proposals team</span></span></div>
+          <div><span class="k"><span lang="tr">Sayfa</span><span lang="en">Page</span></span><span class="v">1 / 1</span></div>
+        </div>
+        <p class="rfi-req"><i>*</i> <span lang="tr">Zorunlu alan</span><span lang="en">Required field</span></p>
+
+        <div class="pair">
+          <div class="row" data-k="name">
+            <span class="n" aria-hidden="true">01</span>
+            <div class="body">
+              <label class="lbl" for="f-name"><span lang="tr">Ad soyad</span><span lang="en">Full name</span><i aria-hidden="true">*</i></label>
+              <input type="text" id="f-name" name="name" autocomplete="name" required aria-required="true" aria-describedby="e-name">
+              <p class="err" id="e-name" hidden><span lang="tr">Adınızı yazın.</span><span lang="en">Please enter your name.</span></p>
+            </div>
+          </div>
+          <div class="row" data-k="company">
+            <span class="n" aria-hidden="true">02</span>
+            <div class="body">
+              <label class="lbl" for="f-company"><span lang="tr">Firma</span><span lang="en">Company</span></label>
+              <input type="text" id="f-company" name="company" autocomplete="organization">
+            </div>
+          </div>
+        </div>
+
+        <div class="row" data-k="email">
+          <span class="n" aria-hidden="true">03</span>
+          <div class="body">
+            <label class="lbl" for="f-mail"><span lang="tr">E-posta</span><span lang="en">Email</span><i aria-hidden="true">*</i></label>
+            <input type="email" id="f-mail" name="email" autocomplete="email" inputmode="email" required aria-required="true" aria-describedby="e-mail" data-ph-tr="ad@firma.com" data-ph-en="name@company.com">
+            <p class="err" id="e-mail" hidden><span lang="tr">Geçerli bir e-posta adresi yazın, örneğin ad@firma.com.</span><span lang="en">Enter a valid email address, for example name@company.com.</span></p>
+          </div>
+        </div>
+
+        <div class="row" data-k="service">
+          <span class="n" aria-hidden="true">04</span>
+          <div class="body">
+            <fieldset aria-describedby="e-service">
+              <legend><span lang="tr">İlgilendiğiniz hizmet</span><span lang="en">Service of interest</span><i aria-hidden="true">*</i><small><span lang="tr">birden fazla seçebilirsiniz</span><span lang="en">choose one or more</span></small></legend>
+              <div class="pick">
+                <label><input type="checkbox" name="service" value="A-101" data-tr="BIM stratejisi" data-en="BIM strategy"><b>101</b><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></label>
+                <label><input type="checkbox" name="service" value="A-102" data-tr="Modelleme" data-en="Modelling"><b>102</b><span lang="tr">Modelleme</span><span lang="en">Modelling</span></label>
+                <label><input type="checkbox" name="service" value="A-103" data-tr="Koordinasyon" data-en="Coordination"><b>103</b><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></label>
+                <label><input type="checkbox" name="service" value="A-104" data-tr="Ortak veri ortamı" data-en="CDE setup"><b>104</b><span lang="tr">Ortak veri ortamı</span><span lang="en">CDE setup</span></label>
+                <label><input type="checkbox" name="service" value="A-105" data-tr="Otomasyon" data-en="Automation"><b>105</b><span lang="tr">Otomasyon</span><span lang="en">Automation</span></label>
+                <label><input type="checkbox" name="service" value="A-106" data-tr="Eğitim ve destek" data-en="Training &amp; support"><b>106</b><span lang="tr">Eğitim ve destek</span><span lang="en">Training &amp; support</span></label>
+              </div>
+              <p class="err" id="e-service" hidden><span lang="tr">En az bir hizmet seçin.</span><span lang="en">Choose at least one service.</span></p>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="row" data-k="location">
+          <span class="n" aria-hidden="true">05</span>
+          <div class="body">
+            <label class="lbl" for="f-loc"><span lang="tr">Proje konumu</span><span lang="en">Project location</span></label>
+            <input type="text" id="f-loc" name="location" autocomplete="off" data-ph-tr="Şehir, ülke" data-ph-en="City, country">
+          </div>
+        </div>
+
+        <div class="row" data-k="area">
+          <span class="n" aria-hidden="true">06</span>
+          <div class="body">
+            <fieldset>
+              <legend><span lang="tr">Yaklaşık inşaat alanı</span><span lang="en">Approximate floor area</span></legend>
+              <div class="scale">
+                <label><input type="radio" name="area" value="lt5" data-tr="5.000 m² altı" data-en="Under 5,000 m²"><span class="bar" aria-hidden="true"></span><span class="t"><span lang="tr">&lt; 5.000 m²</span><span lang="en">&lt; 5,000 m²</span></span></label>
+                <label><input type="radio" name="area" value="5-20" data-tr="5.000–20.000 m²" data-en="5,000–20,000 m²"><span class="bar" aria-hidden="true"></span><span class="t"><span lang="tr">5–20 bin m²</span><span lang="en">5k–20k m²</span></span></label>
+                <label><input type="radio" name="area" value="20-50" data-tr="20.000–50.000 m²" data-en="20,000–50,000 m²"><span class="bar" aria-hidden="true"></span><span class="t"><span lang="tr">20–50 bin m²</span><span lang="en">20k–50k m²</span></span></label>
+                <label><input type="radio" name="area" value="gt50" data-tr="50.000 m² üstü" data-en="Over 50,000 m²"><span class="bar" aria-hidden="true"></span><span class="t"><span lang="tr">50 bin m² +</span><span lang="en">50k m² +</span></span></label>
+              </div>
+              <div class="scale-foot" aria-hidden="true"><span>0</span><span><span lang="tr">Grafik ölçek</span><span lang="en">Graphic scale</span></span><span>m²</span></div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="row" data-k="stage">
+          <span class="n" aria-hidden="true">07</span>
+          <div class="body">
+            <fieldset>
+              <legend><span lang="tr">Proje aşaması</span><span lang="en">Project stage</span></legend>
+              <div class="stages">
+                <label><input type="radio" name="stage" value="concept" data-tr="Konsept" data-en="Concept"><span class="dot" aria-hidden="true">1</span><span class="t"><span lang="tr">Konsept</span><span lang="en">Concept</span></span></label>
+                <label><input type="radio" name="stage" value="design" data-tr="Tasarım" data-en="Design"><span class="dot" aria-hidden="true">2</span><span class="t"><span lang="tr">Tasarım</span><span lang="en">Design</span></span></label>
+                <label><input type="radio" name="stage" value="construction" data-tr="Yapım" data-en="Construction"><span class="dot" aria-hidden="true">3</span><span class="t"><span lang="tr">Yapım</span><span lang="en">Construction</span></span></label>
+                <label><input type="radio" name="stage" value="operation" data-tr="İşletme" data-en="Operation"><span class="dot" aria-hidden="true">4</span><span class="t"><span lang="tr">İşletme</span><span lang="en">Operation</span></span></label>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="row" data-k="message">
+          <span class="n" aria-hidden="true">08</span>
+          <div class="body">
+            <label class="lbl" for="f-msg"><span lang="tr">Talep / mesaj</span><span lang="en">Request / message</span><i aria-hidden="true">*</i></label>
+            <textarea id="f-msg" name="message" required aria-required="true" maxlength="2000" aria-describedby="e-msg h-msg" data-ph-tr="Kapsam, disiplinler, takvim ve beklediğiniz teslimatlar…" data-ph-en="Scope, disciplines, timeline and the deliverables you expect…"></textarea>
+            <p class="hint" id="h-msg"><span><span lang="tr">En az 20 karakter</span><span lang="en">At least 20 characters</span></span><span><span data-count-msg>0</span> / 2000</span></p>
+            <p class="err" id="e-msg" hidden><span lang="tr">Projenizi birkaç cümleyle anlatın (en az 20 karakter).</span><span lang="en">Describe your project in a few sentences (at least 20 characters).</span></p>
+          </div>
+        </div>
+
+        <div class="send">
+          <div class="err-sum" id="err-sum" role="alert" tabindex="-1" hidden></div>
+          <div class="send-row">
+            <button class="btn" type="submit"><span lang="tr">RFI'yi gönder</span><span lang="en">Issue RFI</span></button>
+            <span class="mono dim"><span lang="tr">Yanıt: en geç</span><span lang="en">Reply by</span> <b data-due>—</b></span>
+          </div>
+          <div id="form-msg" role="status" hidden>
+            <span class="mono"><span data-rfi-no>RFI</span> · <span lang="tr">Kaydedildi</span><span lang="en">Logged</span></span>
+            <span><span lang="tr">Bu örnek bir formdur; gerçek sitede talebiniz teklif ekibine iletilecek.</span><span lang="en">This is a sample form; on the live site your request will be sent to the proposals team.</span></span>
+          </div>
+        </div>
+
+        <div class="mini-prog" aria-hidden="true">
+          <span data-mini-count>0/8</span>
+          <span class="track"><i></i></span>
+          <span data-mini-state>TASLAK</span>
+        </div>
+      </form>
+
+      <aside class="tx" aria-labelledby="tx-title">
+        <div class="tx-head">
+          <span id="tx-title"><span lang="tr">Gönderi formu</span><span lang="en">Transmittal</span></span>
+          <span class="stamp" data-stamp><span lang="tr">Taslak</span><span lang="en">Draft</span></span>
+        </div>
+        <dl>
+          <div><dt>RFI No</dt><dd data-rfi-no>RFI</dd></div>
+          <div><dt><span lang="tr">Tarih</span><span lang="en">Date</span></dt><dd data-rfi-date>—</dd></div>
+          <div class="w"><dt><span lang="tr">Kimden</span><span lang="en">From</span></dt><dd class="big empty" data-out="from">—</dd></div>
+          <div class="w"><dt><span lang="tr">E-posta</span><span lang="en">Email</span></dt><dd class="empty" data-out="email">—</dd></div>
+          <div class="w"><dt><span lang="tr">Kapsam</span><span lang="en">Scope</span></dt><dd class="empty" data-out="service">—</dd></div>
+          <div><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd class="empty" data-out="location">—</dd></div>
+          <div><dt><span lang="tr">Alan</span><span lang="en">Area</span></dt><dd class="empty" data-out="area">—</dd></div>
+          <div><dt><span lang="tr">Aşama</span><span lang="en">Stage</span></dt><dd class="empty" data-out="stage">—</dd></div>
+          <div><dt><span lang="tr">Yanıt en geç</span><span lang="en">Reply by</span></dt><dd data-due>—</dd></div>
+          <div class="w"><dt><span lang="tr">Mesaj</span><span lang="en">Message</span></dt><dd class="msg empty" data-out="message">—</dd></div>
+        </dl>
+        <div class="tx-prog">
+          <div class="chain" aria-hidden="true">
+            <span class="req" data-c="name"><i>01</i></span><span data-c="company"><i>02</i></span><span class="req" data-c="email"><i>03</i></span><span class="req" data-c="service"><i>04</i></span><span data-c="location"><i>05</i></span><span data-c="area"><i>06</i></span><span data-c="stage"><i>07</i></span><span class="req" data-c="message"><i>08</i></span>
+          </div>
+          <p class="chain-lbl"><span><span lang="tr">Dolu alan</span><span lang="en">Fields filled</span> <b data-filled>0 / 8</b></span><span><span lang="tr">Zorunlu</span><span lang="en">Required</span> <b data-req>0 / 4</b></span></p>
+        </div>
+        <p class="tx-foot"><span lang="tr">Bilgileriniz yalnızca teklif hazırlamak için kullanılır. KVKK ve GDPR kapsamında saklanır.</span><span lang="en">Your details are used only to prepare a proposal and are kept in line with GDPR.</span></p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 02 · Doğrudan iletişim -->
+  <section class="block" id="direct" aria-labelledby="direct-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Doğrudan</span><span lang="en">Direct</span></span>
+      <h2 id="direct-title"><span lang="tr">Ya da doğrudan yazın.</span><span lang="en">Or write to us directly.</span></h2>
+      <p><span lang="tr">Pazartesi–Cuma, 09:00–18:00.</span><span lang="en">Monday to Friday, 09:00–18:00.</span></p>
+    </div>
+
+    <div class="direct">
+      <div class="line-item">
+        <span class="k"><span><span lang="tr">E-posta</span><span lang="en">Email</span></span><span>T-01</span></span>
+        <span class="val" id="v-mail">info@firmaadi.com</span>
+        <div class="acts">
+          <button class="act" type="button" data-copy="v-mail"><span lang="tr">Kopyala</span><span lang="en">Copy</span></button>
+          <a class="act" href="mailto:info@firmaadi.com"><span lang="tr">E-posta yaz</span><span lang="en">Write email</span> →</a>
+          <span class="copy-st" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="promise promise-span">
+        <span class="k"><span lang="tr">Yanıt süresi taahhüdü</span><span lang="en">Response commitment</span></span>
+        <span class="big"><span lang="tr">2 iş<br><em>günü.</em></span><span lang="en">2 work<br><em>days.</em></span></span>
+        <svg class="c9-48" viewBox="0 0 300 92" role="img" aria-labelledby="c9-48t"><title id="c9-48t">0 ile 48 iş saati arasında: talep, inceleme, yanıt / 0 to 48 working hours: request, review, reply</title>
+          <line x1="14" y1="40" x2="286" y2="40"/><path d="M14 32v16M150 34v12M286 32v16"/>
+          <rect x="14" y="36" width="272" height="8" class="c9-fill"/>
+          <circle cx="14" cy="40" r="7" class="c9-pt"/><circle cx="150" cy="40" r="7" class="c9-pt"/><circle cx="286" cy="40" r="9" class="c9-end"/>
+          <text x="14" y="18" lang="tr">0 sa</text><text x="14" y="18" lang="en">0 h</text><text x="150" y="18" text-anchor="middle" lang="tr">24 sa</text><text x="150" y="18" text-anchor="middle" lang="en">24 h</text><text x="286" y="18" text-anchor="end" lang="tr">48 sa</text><text x="286" y="18" text-anchor="end" lang="en">48 h</text>
+          <text x="14" y="76" class="c9-l">RFI</text><text x="150" y="76" text-anchor="middle" class="c9-l" lang="tr">İnceleme</text><text x="150" y="76" text-anchor="middle" class="c9-l" lang="en">Review</text><text x="286" y="76" text-anchor="end" class="c9-l" lang="tr">Yanıt</text><text x="286" y="76" text-anchor="end" class="c9-l" lang="en">Reply</text>
+        </svg>
+      </div>
+      <div class="line-item">
+        <span class="k"><span><span lang="tr">Telefon</span><span lang="en">Phone</span></span><span>T-02</span></span>
+        <span class="val" id="v-tel">+90 (212) 000 00 00</span>
+        <div class="acts">
+          <button class="act" type="button" data-copy="v-tel"><span lang="tr">Kopyala</span><span lang="en">Copy</span></button>
+          <a class="act" href="tel:+902120000000"><span lang="tr">Ara</span><span lang="en">Call</span> →</a>
+          <span class="copy-st" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <figure class="c9-hrs" id="c9-hrs">
+      <figcaption class="mono"><span lang="tr">Çalışma saatleri · İstanbul saatiyle</span><span lang="en">Office hours · Istanbul time</span> <b data-overlap></b></figcaption>
+      <div class="c9-rows" aria-hidden="true">
+        <div class="c9-row" data-tz="Europe/Istanbul"><span>IST</span><span class="c9-trk"><i></i></span></div>
+        <div class="c9-row" data-tz="Europe/London"><span>LON</span><span class="c9-trk"><i></i></span></div>
+        <div class="c9-row" data-tz="Asia/Dubai"><span>DXB</span><span class="c9-trk"><i></i></span></div>
+        <div class="c9-axis"><span></span><span class="c9-ticks"><b style="left:0">06</b><b style="left:25%">10</b><b style="left:50%">14</b><b style="left:75%">18</b><b style="left:100%">22</b></span></div>
+        <span class="c9-ov"></span><span class="c9-now"></span>
+      </div>
+    </figure>
+
+    <div class="offices" id="offices" aria-label="Ofisler / Offices">
+      <article class="office" data-tz="Europe/Istanbul">
+        <div><span class="tag"><span lang="tr">Merkez</span><span lang="en">Head office</span></span><h3><span lang="tr">İstanbul</span><span lang="en">Istanbul</span></h3></div>
+        <svg class="clock" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"/><g class="tk"><path d="M32 4v6M32 54v6M4 32h6M54 32h6"/></g><line class="hh" x1="32" y1="32" x2="32" y2="17"/><line class="mh" x1="32" y1="32" x2="32" y2="9"/><line class="sh" x1="32" y1="36" x2="32" y2="7"/></svg>
+        <p class="time"><b data-clock>--:--</b><span class="st" data-open>—</span></p>
+        <dl><dt><span lang="tr">Adres</span><span lang="en">Address</span></dt><dd><span lang="tr">Örnek Mah., İstanbul, Türkiye</span><span lang="en">Sample district, Istanbul, Türkiye</span></dd><dt><span lang="tr">Fark</span><span lang="en">Offset</span></dt><dd data-off>GMT+3</dd></dl>
+      </article>
+      <article class="office" data-tz="Europe/London">
+        <div><span class="tag"><span lang="tr">Örnek ofis</span><span lang="en">Sample office</span></span><h3><span lang="tr">Londra</span><span lang="en">London</span></h3></div>
+        <svg class="clock" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"/><g class="tk"><path d="M32 4v6M32 54v6M4 32h6M54 32h6"/></g><line class="hh" x1="32" y1="32" x2="32" y2="17"/><line class="mh" x1="32" y1="32" x2="32" y2="9"/><line class="sh" x1="32" y1="36" x2="32" y2="7"/></svg>
+        <p class="time"><b data-clock>--:--</b><span class="st" data-open>—</span></p>
+        <dl><dt><span lang="tr">Adres</span><span lang="en">Address</span></dt><dd><span lang="tr">Örnek adres, Londra, Birleşik Krallık</span><span lang="en">Sample address, London, United Kingdom</span></dd><dt><span lang="tr">Fark</span><span lang="en">Offset</span></dt><dd data-off>—</dd></dl>
+      </article>
+      <article class="office" data-tz="Asia/Dubai">
+        <div><span class="tag"><span lang="tr">Örnek temsilcilik</span><span lang="en">Sample representative</span></span><h3><span lang="tr">Dubai</span><span lang="en">Dubai</span></h3></div>
+        <svg class="clock" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"/><g class="tk"><path d="M32 4v6M32 54v6M4 32h6M54 32h6"/></g><line class="hh" x1="32" y1="32" x2="32" y2="17"/><line class="mh" x1="32" y1="32" x2="32" y2="9"/><line class="sh" x1="32" y1="36" x2="32" y2="7"/></svg>
+        <p class="time"><b data-clock>--:--</b><span class="st" data-open>—</span></p>
+        <dl><dt><span lang="tr">Adres</span><span lang="en">Address</span></dt><dd><span lang="tr">Örnek adres, Dubai, BAE</span><span lang="en">Sample address, Dubai, UAE</span></dd><dt><span lang="tr">Fark</span><span lang="en">Offset</span></dt><dd data-off>—</dd></dl>
+      </article>
+    </div>
+  </section>
+
+  <!-- 03 · Notlar (SSS) -->
+  <section class="block" id="notes" aria-labelledby="notes-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">SSS</span><span lang="en">FAQ</span></span>
+      <h2 id="notes-title"><span lang="tr">Merak edilenler</span><span lang="en">Common questions</span></h2>
+    </div>
+    <div class="notes">
+      <figure class="c9-curve">
+        <svg viewBox="0 0 400 230" role="img" aria-labelledby="c9-ct"><title id="c9-ct">Erken katılımda etki yüksek, değişiklik maliyeti düşük / Early involvement: high impact, low cost of change</title>
+          <rect x="44" y="20" width="96" height="160" class="c9-band"/>
+          <path d="M40 16v164h348"/>
+          <path d="M44 40C140 46 210 150 384 168" class="c9-c1"/>
+          <path d="M44 170C190 166 250 70 384 36" class="c9-c2"/>
+          <text x="92" y="14" text-anchor="middle" class="c9-s" lang="tr">İdeal giriş</text><text x="92" y="14" text-anchor="middle" class="c9-s" lang="en">Ideal entry</text>
+          <text x="248" y="122" class="c9-k" lang="tr">Etki gücü</text><text x="248" y="122" class="c9-k" lang="en">Ability to influence</text>
+          <text x="300" y="66" class="c9-k" text-anchor="end" lang="tr">Değişiklik maliyeti</text><text x="300" y="66" class="c9-k" text-anchor="end" lang="en">Cost of change</text>
+          <text x="86" y="202" text-anchor="middle" lang="tr">Konsept</text><text x="86" y="202" text-anchor="middle" lang="en">Concept</text><text x="182" y="202" text-anchor="middle" lang="tr">Tasarım</text><text x="182" y="202" text-anchor="middle" lang="en">Design</text><text x="270" y="202" text-anchor="middle" lang="tr">Yapım</text><text x="270" y="202" text-anchor="middle" lang="en">Construction</text><text x="352" y="202" text-anchor="middle" lang="tr">İşletme</text><text x="352" y="202" text-anchor="middle" lang="en">Operation</text>
+        </svg>
+        <figcaption class="mono"><span lang="tr">Ne kadar erken, o kadar ucuz.</span><span lang="en">The earlier, the cheaper.</span></figcaption>
+      </figure>
+      <div>
+        <ol>
+          <li><details>
+            <summary><span class="q"><span lang="tr">Projeye hangi aşamada dahil olmalısınız?</span><span lang="en">At what stage should you bring us in?</span></span></summary>
+            <div class="a"><p><span lang="tr">İdeali tasarımın başı; yapım aşamasında da destek veririz.</span><span lang="en">Ideally at the start of design; we also help during construction.</span></p></div>
+          </details></li>
+          <li><details>
+            <summary><span class="q"><span lang="tr">Yurt dışında nasıl çalışıyorsunuz?</span><span lang="en">How do you work abroad?</span></span></summary>
+            <div class="a"><p><span lang="tr">Ortak veri ortamı üzerinden uzaktan, kritik toplantılarda sahada.</span><span lang="en">Remotely through the CDE, on site for key meetings.</span></p></div>
+          </details></li>
+          <li><details>
+            <summary><span class="q"><span lang="tr">Hangi yazılımlar?</span><span lang="en">Which software?</span></span></summary>
+            <div class="a"><p><span lang="tr">Revit, Navisworks, ACC; açık BIM için IFC ve BCF.</span><span lang="en">Revit, Navisworks, ACC; IFC and BCF for open BIM.</span></p></div>
+          </details></li>
+          <li><details>
+            <summary><span class="q"><span lang="tr">Gizlilik sözleşmesi imzalıyor musunuz?</span><span lang="en">Do you sign NDAs?</span></span></summary>
+            <div class="a"><p><span lang="tr">Evet, kendi şablonunuzla da.</span><span lang="en">Yes, on your own template too.</span></p></div>
+          </details></li>
+        </ol>
+        <div class="btns more">
+          <a class="btn line" href="projeler.html" data-sheet="A-200" data-label="Projeler"><span lang="tr">Proje dizini</span><span lang="en">Project index</span></a>
+          <a class="btn line" href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda"><span lang="tr">Ekibi tanıyın</span><span lang="en">Meet the team</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div></main>
+<footer class="footer sheet">
+  <div class="frame">
+    <div class="footer-cta">
+      <h2><span lang="tr">Modeli birlikte<br><em>kuralım.</em></span><span lang="en">Let's build<br>the <em>model.</em></span></h2>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin</span><span lang="en">Request a proposal</span></a>
+    </div>
+    <div class="footer-cols">
+      <div><a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a><p><span lang="tr">Uluslararası BIM danışmanlık ve proje geliştirme. İstanbul merkezli, dünya genelinde projeler.</span><span lang="en">International BIM consulting and project development. Based in Istanbul, working worldwide.</span></p></div>
+      <div><h4><span lang="tr">Paftalar</span><span lang="en">Sheets</span></h4><ul>
+        <li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">A-100 · <span lang="tr">Hizmetler</span><span lang="en">Services</span></a></li>
+        <li><a href="projeler.html" data-sheet="A-200" data-label="Projeler">A-200 · <span lang="tr">Projeler</span><span lang="en">Projects</span></a></li>
+        <li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda">A-300 · <span lang="tr">Hakkımızda</span><span lang="en">About</span></a></li>
+        <li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim">A-900 · <span lang="tr">İletişim</span><span lang="en">Contact</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">Hizmetler</span><span lang="en">Services</span></h4><ul>
+        <li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi">A-101 · <span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme">A-102 · <span lang="tr">Modelleme</span><span lang="en">Modelling</span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon">A-103 · <span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı">A-104 · <span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon">A-105 · <span lang="tr">Otomasyon</span><span lang="en">Automation</span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek">A-106 · <span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">İletişim</span><span lang="en">Contact</span></h4><ul><li>info@firmaadi.com</li><li>+90 (212) 000 00 00</li><li>İstanbul, Türkiye</li></ul></div>
+      <div><h4><span lang="tr">Takip</span><span lang="en">Follow</span></h4><ul><li>LinkedIn</li><li>YouTube</li><li>Instagram</li></ul></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 Firma Adı BIM</span><span>ISO 19650 · IFC · BCF · COBie</span><span><span lang="tr">KVKK · Gizlilik</span><span lang="en">Privacy</span></span></div>
+  </div>
+</footer>
+<script src="assets/model.js"></script>
+<script src="assets/site.js"></script>
+<script>
+
+(function () {
+  var root = document.documentElement;
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+  function lang() { return root.lang === 'en' ? 'en' : 'tr'; }
+  function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function bi(el, tr, en) {
+    el.textContent = '';
+    var a = document.createElement('span'); a.lang = 'tr'; a.textContent = tr;
+    var b = document.createElement('span'); b.lang = 'en'; b.textContent = en;
+    el.appendChild(a); el.appendChild(b);
+  }
+
+  /* RFI numarası ve tarih */
+  var now = new Date();
+  var seq = ss('rfi-seq');
+  if (!seq) { seq = String(12 + Math.floor(Math.random() * 80)); ss('rfi-seq', seq); }
+  var rfiNo = 'RFI-' + now.getFullYear() + '-' + ('000' + seq).slice(-3);
+  document.querySelectorAll('[data-rfi-no]').forEach(function (e) { e.textContent = rfiNo; });
+  document.querySelectorAll('[data-rfi-date]').forEach(function (e) { e.textContent = iso(now); });
+  /* 2 iş günü sonrası */
+  var due = new Date(now), added = 0;
+  while (added < 2) { due.setDate(due.getDate() + 1); var wd = due.getDay(); if (wd !== 0 && wd !== 6) added++; }
+  document.querySelectorAll('[data-due]').forEach(function (e) { e.textContent = iso(due); });
+
+  /* Yer tutucular dile göre */
+  function placeholders() {
+    form.querySelectorAll('[data-ph-tr]').forEach(function (el) { el.placeholder = el.getAttribute('data-ph-' + lang()); });
+  }
+  placeholders();
+  document.addEventListener('langchange', placeholders);
+
+  /* Alanlar */
+  var F = {
+    name: form.elements.name, company: form.elements.company, email: form.elements.email,
+    location: form.elements.location, message: form.elements.message
+  };
+  var ORDER = ['name', 'company', 'email', 'service', 'location', 'area', 'stage', 'message'];
+  var REQ = { name: 1, email: 1, service: 1, message: 1 };
+  var mailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function checked(n) { return Array.prototype.filter.call(form.querySelectorAll('input[name="' + n + '"]'), function (i) { return i.checked; }); }
+  function value(k) {
+    if (k === 'service' || k === 'area' || k === 'stage') return checked(k);
+    return F[k].value.trim();
+  }
+  function filled(k) { var v = value(k); return Array.isArray(v) ? v.length > 0 : v.length > 0; }
+  function valid(k) {
+    var v = value(k);
+    if (k === 'name') return v.length > 1;
+    if (k === 'email') return mailRe.test(v);
+    if (k === 'service') return v.length > 0;
+    if (k === 'message') return v.length >= 20;
+    return true;
+  }
+  var touched = {};
+  var ERR = { name: 'e-name', email: 'e-mail', service: 'e-service', message: 'e-msg' };
+  function rowOf(k) { return form.querySelector('.row[data-k="' + k + '"]'); }
+  function setErr(k, show) {
+    var e = document.getElementById(ERR[k]); if (!e) return;
+    e.hidden = !show;
+    var r = rowOf(k); r.classList.toggle('bad', show);
+    if (F[k]) F[k].setAttribute('aria-invalid', show ? 'true' : 'false');
+    else r.querySelector('fieldset').setAttribute('aria-invalid', show ? 'true' : 'false');
+  }
+
+  var out = {}; document.querySelectorAll('[data-out]').forEach(function (e) { out[e.getAttribute('data-out')] = e; });
+  var chain = {}; document.querySelectorAll('[data-c]').forEach(function (e) { chain[e.getAttribute('data-c')] = e; });
+  var stamp = document.querySelector('[data-stamp]');
+  var miniBar = form.querySelector('.mini-prog .track i'), miniCount = form.querySelector('[data-mini-count]'), miniState = form.querySelector('[data-mini-state]');
+  var countMsg = form.querySelector('[data-count-msg]');
+  var sent = false;
+
+  function put(k, setter) {
+    var el = out[k]; var has = filled(k);
+    el.classList.toggle('empty', !has);
+    if (!has) { el.textContent = '—'; return; }
+    setter(el);
+  }
+  function list(k, el) {
+    var c = checked(k);
+    bi(el, c.map(function (i) { return i.getAttribute('data-tr'); }).join(' · '), c.map(function (i) { return i.getAttribute('data-en'); }).join(' · '));
+  }
+
+  function update() {
+    var nm = value('name'), co = value('company');
+    out.from.classList.toggle('empty', !nm && !co);
+    out.from.textContent = (nm || co) ? [nm, co].filter(Boolean).join(' · ') : '—';
+    put('email', function (el) { el.textContent = value('email'); });
+    put('service', function (el) { list('service', el); });
+    put('location', function (el) { el.textContent = value('location'); });
+    put('area', function (el) { list('area', el); });
+    put('stage', function (el) { list('stage', el); });
+    put('message', function (el) { var m = value('message'); el.textContent = m.length > 160 ? m.slice(0, 160) + '…' : m; });
+    countMsg.textContent = F.message.value.length;
+
+    var n = 0, r = 0;
+    ORDER.forEach(function (k) {
+      var ok = filled(k) && valid(k);
+      if (ok) n++; if (ok && REQ[k]) r++;
+      chain[k].classList.toggle('f', ok);
+      var row = rowOf(k); row.classList.toggle('ok', ok);
+      if (REQ[k] && touched[k]) setErr(k, !valid(k));
+    });
+    document.querySelector('[data-filled]').textContent = n + ' / 8';
+    document.querySelector('[data-req]').textContent = r + ' / 4';
+    miniCount.textContent = n + '/8';
+    miniBar.style.width = (n / 8 * 100) + '%';
+    var ready = r === 4;
+    stamp.classList.toggle('ready', ready || sent);
+    if (sent) { bi(stamp, 'İletildi · örnek', 'Issued · sample'); bi(miniState, 'İletildi', 'Issued'); }
+    else if (ready) { bi(stamp, 'Hazır', 'Ready'); bi(miniState, 'Hazır', 'Ready'); }
+    else { bi(stamp, 'Taslak', 'Draft'); bi(miniState, 'Taslak', 'Draft'); }
+  }
+
+  /* Çip durumu (:has desteklemeyen tarayıcılar için de) */
+  function syncPicks() {
+    form.querySelectorAll('.pick label, .scale label, .stages label').forEach(function (l) {
+      var i = l.querySelector('input'); l.classList.toggle('on', i.checked);
+    });
+  }
+  form.addEventListener('input', function (e) { if (sent) { sent = false; } update(); });
+  form.addEventListener('change', function (e) {
+    var t = e.target; if (t.name && REQ[t.name]) touched[t.name] = true;
+    syncPicks(); update();
+  });
+  form.addEventListener('focusout', function (e) {
+    var t = e.target; if (!t.name || !REQ[t.name]) return;
+    if (t.name === 'service') { if (!form.querySelector('.row[data-k="service"]').contains(e.relatedTarget)) touched.service = true; }
+    else if (t.value.trim()) touched[t.name] = true;
+    update();
+  });
+
+  /* Doğrulama: site.js gönderim mesajından önce yakalar */
+  var sum = document.getElementById('err-sum');
+  var NAMES = { name: ['01 Ad soyad', '01 Full name'], email: ['03 E-posta', '03 Email'], service: ['04 Hizmet', '04 Service'], message: ['08 Mesaj', '08 Message'] };
+  var FOCUS = { name: 'f-name', email: 'f-mail', service: null, message: 'f-msg' };
+  document.addEventListener('submit', function (e) {
+    if (e.target !== form) return;
+    var bad = [];
+    Object.keys(REQ).forEach(function (k) { touched[k] = true; if (!valid(k)) bad.push(k); });
+    update();
+    if (bad.length) {
+      e.preventDefault(); e.stopPropagation();
+      sum.innerHTML = '';
+      var h = document.createElement('p'); bi(h, bad.length + ' alan eksik ya da hatalı:', bad.length + ' field(s) missing or invalid:'); sum.appendChild(h);
+      var ul = document.createElement('ul');
+      bad.forEach(function (k) {
+        var li = document.createElement('li'), a = document.createElement('a');
+        a.href = '#'; bi(a, NAMES[k][0], NAMES[k][1]);
+        a.addEventListener('click', function (ev) { ev.preventDefault(); var t = FOCUS[k] ? document.getElementById(FOCUS[k]) : form.querySelector('input[name="service"]'); t.focus(); });
+        li.appendChild(a); ul.appendChild(li);
+      });
+      sum.appendChild(ul); sum.hidden = false;
+      document.getElementById('form-msg').hidden = true;
+      var first = FOCUS[bad[0]] ? document.getElementById(FOCUS[bad[0]]) : form.querySelector('input[name="service"]');
+      first.focus();
+      return;
+    }
+    sum.hidden = true; sent = true; update();
+  }, true);
+
+  syncPicks(); update();
+
+  /* Kopyala */
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.left = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    var ok = false; try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta); return ok;
+  }
+  function selectEl(el) { try { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {} }
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    var src = document.getElementById(btn.getAttribute('data-copy'));
+    var st = btn.parentNode.querySelector('.copy-st');
+    var timer;
+    function report(ok) {
+      clearTimeout(timer);
+      if (ok) { btn.classList.add('done'); bi(st, 'Panoya kopyalandı.', 'Copied to clipboard.'); }
+      else { selectEl(src); bi(st, 'Metin seçildi, Ctrl+C ile kopyalayın.', 'Text selected, press Ctrl+C to copy.'); }
+      timer = setTimeout(function () { btn.classList.remove('done'); st.textContent = ''; }, 3000);
+    }
+    btn.addEventListener('click', function () {
+      var text = src.textContent.trim();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { report(true); }, function () { report(fallbackCopy(text)); });
+      } else report(fallbackCopy(text));
+    });
+  });
+
+  /* Ofis saatleri */
+  var offices = document.querySelectorAll('.office[data-tz]');
+  function parts(tz, d) {
+    var o = {};
+    try {
+      new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'short', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit' })
+        .formatToParts(d).forEach(function (p) { o[p.type] = p.value; });
+    } catch (e) { return null; }
+    o.h = +o.hour % 24; o.m = +o.minute; o.s = +o.second;
+    o.abs = Date.UTC(+o.year, +o.month - 1, +o.day, o.h, o.m);
+    return o;
+  }
+  function tick() {
+    var d = new Date(), ist = parts('Europe/Istanbul', d);
+    offices.forEach(function (of) {
+      var p = parts(of.getAttribute('data-tz'), d); if (!p) return;
+      of.querySelector('[data-clock]').textContent = pad(p.h) + ':' + pad(p.m);
+      var hh = of.querySelector('.hh'), mh = of.querySelector('.mh'), sh = of.querySelector('.sh');
+      hh.setAttribute('transform', 'rotate(' + ((p.h % 12) * 30 + p.m * .5) + ' 32 32)');
+      mh.setAttribute('transform', 'rotate(' + (p.m * 6) + ' 32 32)');
+      sh.setAttribute('transform', 'rotate(' + (p.s * 6) + ' 32 32)');
+      var open = p.weekday !== 'Sat' && p.weekday !== 'Sun' && p.h >= 9 && p.h < 18;
+      var st = of.querySelector('[data-open]'); st.classList.toggle('open', open);
+      bi(st, open ? 'Açık' : 'Kapalı', open ? 'Open' : 'Closed');
+      if (ist && of.getAttribute('data-tz') !== 'Europe/Istanbul') {
+        var diff = Math.round((p.abs - ist.abs) / 36e5);
+        var s = (diff === 0 ? '±0' : (diff > 0 ? '+' : '−') + Math.abs(diff));
+        bi(of.querySelector('[data-off]'), 'İstanbul ' + s + ' sa', 'Istanbul ' + s + ' h');
+      }
+    });
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* Çalışma saatleri bandı (İstanbul saatiyle 06–22) */
+  var hrs = document.getElementById('c9-hrs');
+  if (hrs) {
+    var rows = hrs.querySelector('.c9-rows'), ovEl = hrs.querySelector('.c9-ov'), nowEl = hrs.querySelector('.c9-now');
+    var x0 = 6, x1 = 22;
+    function pctH(h) { return Math.max(0, Math.min(1, (h - x0) / (x1 - x0))); }
+    function band() {
+      var d = new Date(), ist = parts('Europe/Istanbul', d); if (!ist) return;
+      var lo = 0, hi = 24;
+      hrs.querySelectorAll('.c9-row').forEach(function (r) {
+        var p = parts(r.getAttribute('data-tz'), d); if (!p) return;
+        var diff = Math.round((ist.abs - p.abs) / 36e5), a = 9 + diff, b = 18 + diff;
+        lo = Math.max(lo, a); hi = Math.min(hi, b);
+        var i = r.querySelector('i'); i.style.left = pctH(a) * 100 + '%'; i.style.width = (pctH(b) - pctH(a)) * 100 + '%';
+      });
+      var trk = rows.querySelector('.c9-trk'), rr = rows.getBoundingClientRect(), tr = trk.getBoundingClientRect();
+      var off = tr.left - rr.left, w = tr.width;
+      if (hi > lo) {
+        ovEl.style.left = off + pctH(lo) * w + 'px'; ovEl.style.width = (pctH(hi) - pctH(lo)) * w + 'px';
+        bi(hrs.querySelector('[data-overlap]'), 'Ortak saat ' + pad(lo) + ':00–' + pad(hi) + ':00', 'Shared hours ' + pad(lo) + ':00–' + pad(hi) + ':00');
+      }
+      var nh = ist.h + ist.m / 60;
+      nowEl.style.display = nh >= x0 && nh <= x1 ? 'block' : 'none';
+      nowEl.style.left = off + pctH(nh) * w - 1 + 'px';
+    }
+    band(); setInterval(band, 60000); addEventListener('resize', band);
+  }
+})();
+
+</script>
+</body>
+</html>

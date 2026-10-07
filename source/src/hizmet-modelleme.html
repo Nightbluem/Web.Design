@@ -1,0 +1,864 @@
+<!--meta {"title": "Modelleme | Firma Adı BIM", "desc": "Mimari, yapı ve MEP modelleme, LOD 100–500 ve LOIN, Scan-to-BIM ve as-built modeller. LOD seviyelerini bir çelik birleşim üzerinde karşılaştırın.", "sheet": "A-102", "tr": "Modelleme", "en": "Modelling", "nav": "hizmetler"}-->
+<style>
+/* ---- A-102 · ortak ---- */
+.back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 4px; justify-self: start; }
+.back:hover, .back:focus-visible { color: var(--signal); border-color: var(--signal); }
+.sv-spec { margin: 0; }
+.sv-spec dd { font-size: clamp(17px, 1.7vw, 22px); }
+.md-head h1 { font-size: clamp(44px, 10vw, 160px); }
+.md-head h1 .s { color: var(--signal); }
+.md-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.md-ill { display: block; width: 100%; height: auto; color: var(--ink); overflow: visible; }
+.md-ill .ln { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+.md-ill .th { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+.md-ill .rl { fill: none; stroke: var(--rule); stroke-width: 1.2; }
+.md-ill .dsh { fill: none; stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 4 4; }
+.md-ill .sg { fill: none; stroke: var(--signal); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.md-ill .okl { fill: none; stroke: var(--ok); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.md-ill .f1 { fill: var(--paper); }
+.md-ill .f2 { fill: color-mix(in srgb, var(--ink) 10%, var(--paper)); }
+.md-ill .f3 { fill: color-mix(in srgb, var(--ink) 20%, var(--paper)); }
+.md-ill .dots { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+.md-ill text { font: 600 12px var(--mono); fill: var(--ink-2); letter-spacing: .04em; }
+.md-ill text.tk { fill: var(--ink); font-size: 13px; }
+.md-ill text.ts { fill: var(--signal); }
+.md-ill text.to { fill: var(--ok); }
+.md-ic { width: 30px; height: 30px; flex: none; color: var(--ink); fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+
+/* 01 · ne zaman */
+.md-trig { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.md-trig li { display: grid; grid-template-rows: auto 1fr auto; gap: 14px; padding: 20px 18px 22px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.md-trig .md-ill { max-width: 280px; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 10px 10px; }
+.md-trig q { font: 700 clamp(18px, 1.5vw, 21px)/1.25 var(--display); font-stretch: 104%; quotes: "“" "”"; }
+.md-trig .to { font: 600 12px/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; border-top: 1px dashed var(--rule); padding-top: 10px; }
+.md-trig .to b { color: var(--signal); margin-right: 6px; }
+@media (max-width: 1000px) { .md-trig { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .md-trig { grid-template-columns: 1fr; } }
+
+/* 02 · tek model hub */
+.md-hub { display: grid; grid-template-columns: minmax(0, 1fr) 48px minmax(0, 1.5fr) 48px minmax(0, 1fr); align-items: center; border: 1px solid var(--ink); background: var(--paper); padding: clamp(18px, 3vw, 36px); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 14px 14px; }
+.md-hub > * { min-width: 0; }
+.md-hub .col { display: grid; gap: 10px; }
+.md-hub .cap { font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1px solid var(--ink); padding-bottom: 6px; }
+.md-hub ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.md-hub li { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border: 1px solid var(--rule); background: var(--paper); font: 600 15px/1.2 var(--display); font-stretch: 106%; }
+.md-hub li small { display: block; font: 500 11px var(--mono); letter-spacing: .04em; color: var(--ink-2); margin-top: 2px; }
+.md-hub .out li { border-color: var(--ink); }
+.md-hub .arw { height: 2px; background: var(--ink); position: relative; }
+.md-hub .arw::after { content: ""; position: absolute; right: -2px; top: -5px; border: 6px solid transparent; border-left: 9px solid var(--ink); border-right: 0; }
+.md-hub .arw.sig { background: var(--signal); }
+.md-hub .arw.sig::after { border-left-color: var(--signal); }
+.md-hub figure { margin: 0; display: grid; gap: 8px; justify-items: center; }
+.md-hub figure .md-ill { max-width: 400px; }
+.case-vis .md-ill text { font-size: 15px; }
+.md-kpi .md-ill text { font-size: 15px; }
+.md-hub figcaption { font: 800 clamp(20px, 2vw, 28px)/1 var(--display); font-stretch: 118%; letter-spacing: -.01em; text-align: center; }
+.md-hub figcaption span.signal { color: var(--signal); }
+.md-scope { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.md-scope li { font: 500 12px var(--mono); letter-spacing: .04em; text-transform: uppercase; border: 1px solid var(--rule); padding: 7px 11px; background: var(--paper); }
+.md-scope li b { color: var(--signal); margin-right: 6px; font-weight: 600; }
+@media (max-width: 900px) {
+  .md-hub { grid-template-columns: minmax(0, 1fr); justify-items: stretch; gap: 0; }
+  .md-hub .arw { width: 2px; height: 34px; justify-self: center; }
+  .md-hub .arw::after { right: auto; top: auto; left: -5px; bottom: -2px; border: 6px solid transparent; border-top: 9px solid var(--ink); border-bottom: 0; }
+  .md-hub .arw.sig::after { border-top-color: var(--signal); border-left-color: transparent; }
+  .md-hub figure { padding-block: 10px; }
+  .md-hub .out ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* 03 · LOD gezgini */
+.lod { border: 1px solid var(--ink); background: var(--paper); }
+.lod-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 20px; padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+.lod-bar .live { display: inline-flex; align-items: center; gap: 8px; }
+.lod-bar .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
+.lod-seg { margin: 0; padding: 0; border: 0; border-bottom: 1px solid var(--ink); display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); min-width: 0; }
+.lod-seg legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.lod-seg label { position: relative; display: grid; gap: 2px; padding: 12px 12px 14px; border-right: 1px solid var(--rule); cursor: pointer; min-width: 0; transition: background .15s, color .15s; }
+.lod-seg label:last-child { border-right: 0; }
+.lod-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.lod-seg .sn { font: 800 clamp(22px, 2.6vw, 34px)/1 var(--display); font-stretch: 125%; letter-spacing: -.02em; }
+.lod-seg .sl { font: 500 10.5px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.lod-seg label:hover { background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.lod-seg label:has(input:checked) { background: var(--ink); color: var(--paper); }
+.lod-seg label:has(input:checked) .sl { color: var(--signal); }
+.lod-seg label:has(input:focus-visible) { outline: 2px solid var(--signal); outline-offset: -4px; }
+.lod-body { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); }
+.lod-body > * { min-width: 0; }
+.lod-fig { margin: 0; position: relative; border-right: 1px solid var(--rule); padding: 16px; display: grid; place-items: center; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 12px 12px; }
+.lod-fig .corner { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.lod-fig .key { position: absolute; left: 12px; bottom: 10px; display: flex; gap: 14px; flex-wrap: wrap; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.lod-fig .key span { display: inline-flex; align-items: center; gap: 6px; }
+.lod-fig .key i { width: 16px; height: 0; border-top: 2px solid var(--signal); }
+.lod-fig .key i.v { border-top-color: var(--ok); }
+.lod-svg { width: 100%; max-width: 560px; height: auto; display: block; overflow: visible; }
+.lod-svg { --st: var(--ink); }
+.lod-svg polygon { stroke: var(--st); stroke-width: 1; stroke-linejoin: round; }
+.lod-svg .fz { fill: var(--paper); }
+.lod-svg .fx { fill: color-mix(in srgb, var(--ink) 10%, var(--paper)); }
+.lod-svg .ft { fill: color-mix(in srgb, var(--ink) 20%, var(--paper)); }
+.lod-svg .mass polygon { stroke-dasharray: 5 4; fill-opacity: .55; }
+.lod-svg .gh { fill: none; stroke: var(--ink-2); stroke-dasharray: 4 4; stroke-width: 1; }
+.lod-svg .ax { stroke: var(--ink-2); stroke-dasharray: 10 4 2 4; stroke-width: .8; fill: none; }
+.lod-svg .bub { fill: var(--paper); stroke: var(--ink-2); }
+.lod-svg .bt { font: 600 11px var(--mono); fill: var(--ink-2); }
+.lod-svg .sym { stroke: var(--signal); stroke-width: 2; stroke-dasharray: 12 5; fill: none; }
+.lod-svg .wd { stroke: var(--signal); stroke-width: 3; stroke-linecap: round; fill: none; }
+.lod-svg .ld { stroke: var(--ink-2); stroke-width: .8; fill: none; }
+.lod-svg .ldp { fill: var(--ink-2); }
+.lod-svg .lb { font: 500 11px var(--mono); fill: var(--ink); letter-spacing: .02em; }
+.lod-svg .pm { font: 700 11px var(--mono); fill: var(--signal); letter-spacing: .04em; }
+.lod-svg .sv circle, .lod-svg .sv path { fill: none; stroke: var(--ok); stroke-width: 1.6; }
+.lod-svg .sv text { font: 600 11px var(--mono); fill: var(--ok); }
+.lod .g, .lod .lp { display: none; }
+.lod:has(#lod-100:checked) .o100 { display: inline; }
+.lod:has(#lod-200:checked) .o200 { display: inline; }
+.lod:has(#lod-300:checked) .f300, .lod:has(#lod-350:checked) .f300, .lod:has(#lod-400:checked) .f300, .lod:has(#lod-500:checked) .f300 { display: inline; }
+.lod:has(#lod-350:checked) .f350, .lod:has(#lod-400:checked) .f350, .lod:has(#lod-500:checked) .f350 { display: inline; }
+.lod:has(#lod-400:checked) .f400, .lod:has(#lod-500:checked) .f400 { display: inline; }
+.lod:has(#lod-500:checked) .o500 { display: inline; }
+.lod:has(#lod-100:checked) .lp[data-l="100"], .lod:has(#lod-200:checked) .lp[data-l="200"], .lod:has(#lod-300:checked) .lp[data-l="300"], .lod:has(#lod-350:checked) .lp[data-l="350"], .lod:has(#lod-400:checked) .lp[data-l="400"], .lod:has(#lod-500:checked) .lp[data-l="500"] { display: grid; }
+.lod:has(#lod-100:checked) .o100, .lod:has(#lod-200:checked) .o200, .lod:has(#lod-300:checked) .f300, .lod:has(#lod-350:checked) .f350, .lod:has(#lod-400:checked) .f400, .lod:has(#lod-500:checked) .o500 { --st: var(--signal); }
+@supports not selector(:has(*)) { .lod .lp { display: grid; } .lod .g { display: inline; } .lod-seg { display: none; } }
+.lp { padding: 20px 18px; gap: 16px; align-content: start; }
+.lp-top { display: grid; gap: 6px; }
+.lp-n { font: 500 12px var(--mono); letter-spacing: .08em; color: var(--ink-2); }
+.lp-n b { font: 800 clamp(48px, 5.4vw, 76px)/.85 var(--display); font-stretch: 125%; letter-spacing: -.04em; color: var(--ink); margin-left: 4px; }
+.lp-name { font: 700 clamp(20px, 2vw, 26px)/1.1 var(--display); font-stretch: 112%; }
+.lp-d { color: var(--ink-2); font-size: 15.5px; line-height: 1.45; }
+.lp-use { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.lp-use > div { padding: 10px 12px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.lp-use dt { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 4px; }
+.lp-use dd { margin: 0; font-size: 14.5px; line-height: 1.35; }
+.lp-use dd code { font: 500 12px var(--mono); overflow-wrap: anywhere; }
+.lod-foot { padding: 10px 16px; border-top: 1px solid var(--rule); }
+@media (max-width: 999px) { .lod-body { grid-template-columns: 1fr; } .lod-fig { border-right: 0; border-bottom: 1px solid var(--rule); } }
+@media (max-width: 640px) {
+  .lod-seg { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lod-seg label { border-bottom: 1px solid var(--rule); padding: 10px; }
+  .lod-seg label:nth-child(3n+1) { border-right: 1px solid var(--rule); }
+  .lod-seg label:nth-child(3n) { border-right: 0; }
+  .lod-fig { padding: 36px 6px 44px; }
+  .lp { padding: 16px 14px 18px; }
+  .lod-svg .lb, .lod-svg .pm, .lod-svg .sv text, .lod-svg .bt { font-size: 15px; }
+}
+
+/* LOIN + ayrıntının bedeli */
+.md-pair { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 0; border: 1px solid var(--ink); border-top: 0; background: var(--paper); }
+.md-pair > * { min-width: 0; padding: clamp(18px, 2.4vw, 28px); display: grid; gap: 16px; align-content: start; }
+.md-pair > * + * { border-left: 1px solid var(--rule); }
+.md-pair h3 { font-size: clamp(20px, 2vw, 26px); font-stretch: 112%; letter-spacing: -.01em; }
+.md-pair .mono { color: var(--ink-2); }
+.md-loin { display: grid; grid-template-columns: minmax(0, .8fr) 30px minmax(0, 1.2fr); align-items: center; gap: 10px; }
+.md-loin > * { min-width: 0; }
+.md-loin ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.md-loin .q li { display: flex; align-items: center; gap: 10px; border: 1px solid var(--rule); padding: 8px 10px; font: 600 15px/1.2 var(--display); }
+.md-loin .q .md-ic { width: 24px; height: 24px; }
+.md-loin .brk { align-self: stretch; border: 2px solid var(--ink); border-left: 0; width: 14px; position: relative; margin-block: 14px; }
+.md-loin .brk::after { content: ""; position: absolute; right: -16px; top: calc(50% - 1px); width: 14px; height: 2px; background: var(--ink); }
+.md-loin .ch li { display: grid; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+.md-loin .ch .h { display: flex; justify-content: space-between; gap: 8px; font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.md-loin .ch .h b { color: var(--signal); font-weight: 700; }
+.md-meter { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; }
+.md-meter i { height: 10px; border: 1px solid var(--ink); }
+.md-meter i.on { background: var(--ink); }
+.md-meter i.hot { background: var(--signal); border-color: var(--signal); }
+.md-meter.ok i.on { background: var(--ok); border-color: var(--ok); }
+.md-cost { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; align-items: end; height: 220px; border-bottom: 1px solid var(--ink); position: relative; }
+.md-cost > div { display: grid; grid-template-rows: auto 1fr; justify-items: center; align-items: end; height: 100%; min-width: 0; }
+.md-cost .val { font: 600 11px var(--mono); color: var(--ink-2); margin-bottom: 4px; white-space: nowrap; }
+.md-cost .bar { width: 100%; max-width: 46px; height: var(--h); min-height: 2px; background: var(--ink); }
+.md-cost .hot .bar { background: var(--signal); }
+.md-cost .hot .val { color: var(--signal); }
+.md-cost-x { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; text-align: center; font: 700 13px var(--mono); margin-top: 6px; }
+.md-cost-n { position: absolute; left: 50%; top: 18%; transform: translateX(-30%); font: 800 clamp(28px, 3vw, 40px)/1 var(--display); font-stretch: 120%; color: var(--signal); }
+.md-cost-n small { display: block; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); margin-top: 4px; }
+@media (max-width: 900px) { .md-pair { grid-template-columns: 1fr; } .md-pair > * + * { border-left: 0; border-top: 1px solid var(--rule); } }
+@media (max-width: 520px) { .md-loin { grid-template-columns: 1fr; } .md-loin .brk { width: auto; height: 14px; margin: 0 30%; border: 2px solid var(--ink); border-top: 0; } .md-loin .brk::after { right: auto; left: calc(50% - 1px); top: auto; bottom: -16px; width: 2px; height: 14px; } .md-loin .ch { margin-top: 14px; } .md-cost { height: 200px; gap: 5px; } .md-cost-n { left: 0; top: 26%; transform: none; } .md-cost-x { gap: 5px; font-size: 12px; } .md-cost .val { font-size: 10.5px; } }
+
+/* Alt başlıklar */
+.sub { margin-top: clamp(56px, 7vw, 96px); }
+.sub-head { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 10px 24px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+.sub-head h3 { font-size: clamp(24px, 3vw, 40px); font-stretch: 114%; letter-spacing: -.02em; }
+.sub-head p { max-width: 46ch; color: var(--ink-2); font-size: 15.5px; }
+
+/* Disiplinler */
+.disc { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); border: 1px solid var(--ink); border-top: 0; background: var(--paper); }
+.disc > * { min-width: 0; }
+.disc-vis { position: relative; border-right: 1px solid var(--rule); min-height: 380px; display: grid; }
+.disc-vis canvas { width: 100%; height: 100%; min-height: 380px; display: block; }
+.disc-vis .corner { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.disc-side { display: grid; align-content: start; }
+.disc-tabs { margin: 0; padding: 0; border: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); min-width: 0; }
+.disc-tabs legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.disc-tabs label { position: relative; display: grid; gap: 2px; padding: 12px; border-right: 1px solid var(--rule); cursor: pointer; min-width: 0; transition: background .15s, color .15s; }
+.disc-tabs label:last-child { border-right: 0; }
+.disc-tabs input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.disc-tabs b { font: 800 22px/1 var(--display); font-stretch: 125%; }
+.disc-tabs span { font: 500 10.5px/1.3 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); overflow-wrap: anywhere; }
+.disc-tabs label:hover { background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.disc-tabs label:has(input:checked) { background: var(--ink); color: var(--paper); }
+.disc-tabs label:has(input:checked) span { color: var(--signal); }
+.disc-tabs label:has(input:focus-visible) { outline: 2px solid var(--signal); outline-offset: -4px; }
+.disc .dp { display: none; }
+.disc:has(#disc-arc:checked) .dp[data-d="arc"], .disc:has(#disc-str:checked) .dp[data-d="str"], .disc:has(#disc-mep:checked) .dp[data-d="mep"], .disc:has(#disc-fed:checked) .dp[data-d="fed"] { display: grid; }
+@supports not selector(:has(*)) { .disc .dp { display: grid; } }
+.dp { padding: 18px 18px 22px; gap: 10px; align-content: start; }
+.dp h4 { font-size: clamp(22px, 2.4vw, 30px); font-stretch: 114%; letter-spacing: -.015em; margin-bottom: 4px; }
+.dp .k { font: 600 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); border-top: 1px solid var(--ink); padding-top: 8px; margin-top: 6px; }
+.dp .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.dp .tags li { font: 500 11.5px var(--mono); letter-spacing: .04em; text-transform: uppercase; border: 1px solid var(--rule); padding: 5px 8px; }
+.dp .fn { font: 600 12px var(--mono); overflow-wrap: anywhere; background: color-mix(in srgb, var(--ink) 7%, transparent); padding: 6px 8px; justify-self: start; }
+.dp p { font-size: 15px; line-height: 1.45; }
+@media (max-width: 999px) { .disc { grid-template-columns: 1fr; } .disc-vis { border-right: 0; border-bottom: 1px solid var(--rule); min-height: 280px; } .disc-vis canvas { min-height: 280px; } }
+@media (max-width: 560px) { .disc-tabs b { font-size: 18px; } .disc-tabs label { padding: 10px 8px; } }
+
+/* Scan-to-BIM */
+.s2b { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); border: 1px solid var(--ink); border-top: 0; background: var(--paper); }
+.s2b > * { min-width: 0; }
+.s2b-vis { position: relative; border-right: 1px solid var(--rule); display: grid; grid-template-rows: 1fr auto; }
+.s2b-vis canvas { width: 100%; height: 400px; display: block; }
+.s2b-vis .corner { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.s2b-ctl { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-top: 1px solid var(--rule); }
+.s2b-ctl[hidden] { display: none; }
+.s2b-ctl button { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); padding: 8px 12px; cursor: pointer; flex: none; }
+.s2b-ctl button:hover { background: var(--signal); border-color: var(--signal); color: var(--on-signal); }
+.s2b-ctl label { flex: 1; display: grid; gap: 4px; min-width: 0; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.s2b-ctl input[type=range] { width: 100%; accent-color: var(--signal); }
+.s2b-steps { list-style: none; margin: 0; padding: 0; display: grid; }
+.s2b-steps li { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 18px 16px; border-bottom: 1px solid var(--rule); transition: background .2s, color .2s; }
+.s2b-steps li:last-child { border-bottom: 0; }
+.s2b-steps .sn { font: 600 11px var(--mono); color: var(--signal); }
+.s2b-steps b { font: 700 17px/1.25 var(--display); font-stretch: 108%; }
+.s2b-steps code { font: 600 10.5px/1 var(--mono); letter-spacing: .04em; border: 1px solid var(--ink); padding: 4px 5px; white-space: nowrap; }
+.s2b-steps li.on { background: var(--ink); color: var(--paper); }
+.s2b-steps li.on code { border-color: var(--paper); }
+.md-loa { margin-top: 22px; display: grid; gap: 8px; }
+.md-loa .cap { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.md-loa .track { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--ink); }
+.md-loa .track > div { position: relative; padding: 30px 8px 10px; border-right: 1px solid var(--rule); min-width: 0; display: grid; gap: 2px; }
+.md-loa .track > div:last-child { border-right: 0; }
+.md-loa .track b { font: 800 clamp(15px, 1.6vw, 20px)/1 var(--display); font-stretch: 116%; }
+.md-loa .track span { font: 500 11px var(--mono); color: var(--ink-2); }
+.md-loa .track i { position: absolute; left: 0; right: 0; top: 0; height: 18px; background: color-mix(in srgb, var(--ink) calc(var(--d) * 1%), transparent); }
+.md-loa .track .tg { background: color-mix(in srgb, var(--signal) 9%, var(--paper)); }
+.md-loa .track .tg b { color: var(--signal); }
+.md-loa .track em { position: absolute; right: 8px; top: 2px; font: 700 10.5px var(--mono); font-style: normal; letter-spacing: .06em; text-transform: uppercase; color: var(--paper); background: var(--signal); padding: 1px 5px; }
+.md-loa .track em span { color: inherit; font: inherit; }
+.md-loa .ends { display: flex; justify-content: space-between; font: 500 11px var(--mono); color: var(--ink-2); }
+@media (max-width: 999px) { .s2b { grid-template-columns: 1fr; } .s2b-vis { border-right: 0; border-bottom: 1px solid var(--rule); } .s2b-vis canvas { height: 300px; } }
+@media (max-width: 560px) { .md-loa .track { grid-template-columns: 1fr; } .md-loa .track > div { grid-template-columns: 70px minmax(0, 1fr); align-items: baseline; padding: 10px 10px 10px 26px; border-right: 0; border-bottom: 1px solid var(--rule); } .md-loa .track > div:last-child { border-bottom: 0; } .md-loa .track i { right: auto; bottom: 0; width: 14px; height: auto; } .md-loa .track em { top: 50%; transform: translateY(-50%); } }
+@media (prefers-reduced-motion: reduce) { .lod-seg label, .disc-tabs label, .s2b-steps li { transition: none; } }
+
+/* 04 · teslimat istasyonları */
+.md-dlv { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
+.md-dlv > section { min-width: 0; padding: 0 16px 20px; border-left: 1px solid var(--rule); display: grid; gap: 14px; align-content: start; }
+.md-dlv > section:first-child { border-left: 0; padding-left: 0; }
+.md-dlv .st { display: flex; align-items: center; gap: 10px; margin-top: -11px; }
+.md-dlv .st i { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--ink); background: var(--paper); flex: none; }
+.md-dlv > section:last-child .st i { background: var(--ok); border-color: var(--ok); }
+.md-dlv .st b { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; background: var(--paper); padding-right: 6px; }
+.md-dlv ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 14px 10px; }
+.md-dlv li { display: grid; gap: 6px; justify-items: start; min-width: 0; }
+.md-file { position: relative; width: 64px; height: 78px; color: var(--ink); }
+.md-file svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--paper); stroke: currentColor; stroke-width: 1.4; stroke-linejoin: round; }
+.md-file span { position: absolute; left: 6px; right: 6px; bottom: 10px; font: 700 10.5px/1.1 var(--mono); letter-spacing: .02em; text-align: center; color: var(--on-signal); background: var(--ink); padding: 3px 0; }
+.md-file.ifc span { background: var(--signal); }
+.md-dlv li b { font: 700 14.5px/1.2 var(--display); font-stretch: 104%; }
+.md-dlv li small { font: 500 10.5px var(--mono); color: var(--signal); letter-spacing: .06em; }
+@media (max-width: 900px) { .md-dlv { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; } .md-dlv > section:nth-child(3) { border-left: 0; padding-left: 0; } }
+@media (max-width: 480px) { .md-dlv { grid-template-columns: 1fr; border-top: 0; border-left: 1px solid var(--ink); row-gap: 22px; } .md-dlv > section, .md-dlv > section:first-child, .md-dlv > section:nth-child(3) { border-left: 0; padding: 0 0 0 20px; } .md-dlv .st { margin: 0 0 0 -31px; } .md-dlv ul { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* 05 · süreç (hafta ölçekli) */
+.tl { border-top: 1px solid var(--ink); }
+.tl-scale, .tl-row { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 24px; }
+.tl-scale { padding-block: 10px; }
+.tl-ticks { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); font: 500 10.5px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.tl-ticks span { border-left: 1px solid var(--rule); padding-left: 5px; }
+.tl-row { padding-block: 14px; border-bottom: 1px solid var(--rule); align-items: center; }
+.tl-row > * { min-width: 0; }
+.tl-row h3 { font-size: 18px; font-stretch: 110%; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.tl-row h3 .mono { color: var(--signal); }
+.tl-row .out { display: inline-block; margin-top: 6px; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; border-left: 2px solid var(--signal); padding-left: 8px; }
+.tl-track { position: relative; height: 34px; background-image: linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: calc(100% / var(--n)) 100%; border-right: 1px solid var(--rule); }
+.tl-bar { position: absolute; top: 8px; bottom: 8px; left: calc(var(--s) * 100% / var(--n)); width: calc(var(--l) * 100% / var(--n)); background: var(--ink); }
+.tl-bar.hot { background: var(--signal); }
+.tl-bar.end { background: var(--ok); }
+.tl-bar::before, .tl-bar::after { content: ""; position: absolute; top: -8px; bottom: -8px; width: 1px; background: var(--ink); }
+.tl-bar::before { left: 0; } .tl-bar::after { right: -1px; }
+@media (max-width: 760px) {
+  .tl-scale { display: none; }
+  .tl-row { grid-template-columns: 1fr; gap: 10px; }
+  .tl-track { height: 22px; }
+  .tl-bar { top: 6px; bottom: 6px; }
+}
+
+/* 06 · örnek senaryo */
+.case { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+.case > * { min-width: 0; }
+.case-vis { display: grid; gap: 16px; }
+.case-vis .tag-ex { justify-self: start; font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--on-signal); background: var(--signal); padding: 5px 8px; }
+.case-vis h3 { font-size: clamp(22px, 2.4vw, 32px); font-stretch: 112%; letter-spacing: -.02em; }
+.case-vis figure { margin: 0; border: 1px solid var(--ink); background: var(--paper); padding: 14px; }
+.case-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.case-stats > div { padding: 12px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; display: grid; gap: 4px; }
+.case-stats b { font: 800 clamp(26px, 3vw, 40px)/1 var(--display); font-stretch: 120%; letter-spacing: -.02em; }
+.case-stats span { font: 500 11px/1.3 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+.ba { border: 1px solid var(--ink); background: var(--paper); }
+.ba-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding: 12px 16px; border-bottom: 1px solid var(--rule); font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.ba-key { display: flex; gap: 16px; }
+.ba-key span { display: inline-flex; align-items: center; gap: 6px; }
+.ba-key i { width: 14px; height: 8px; display: inline-block; }
+.ba-key .b { background: var(--signal); } .ba-key .a { background: var(--ok); }
+.ba ul { list-style: none; margin: 0; padding: 0; }
+.ba li { padding: 18px 16px; border-bottom: 1px solid var(--rule); display: grid; gap: 8px; }
+.ba li:last-child { border-bottom: 0; }
+.ba .lbl { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.ba .lbl b { font: 700 16px/1.25 var(--display); font-stretch: 108%; }
+.ba .lbl .d { font: 800 22px var(--display); font-stretch: 115%; color: var(--ok); white-space: nowrap; }
+.ba .row { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px; align-items: center; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.ba .bar { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ba .bar i { display: block; height: 14px; width: var(--w); flex: none; max-width: calc(100% - 72px); }
+.ba .bar.b i { background: var(--signal); } .ba .bar.a i { background: var(--ok); }
+.ba .bar span { font: 600 12.5px var(--mono); color: var(--ink); letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.ba-foot { padding: 10px 16px; border-top: 1px solid var(--rule); }
+@media (max-width: 900px) { .case { grid-template-columns: 1fr; } }
+
+/* 07 · KPI */
+.md-kpi { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.md-kpi > div { padding: clamp(18px, 2.4vw, 28px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 12px; align-content: start; min-width: 0; }
+.md-kpi .md-ill { max-width: 150px; }
+.md-kpi .v { font: 800 clamp(36px, 4.4vw, 64px)/.95 var(--display); font-stretch: 125%; letter-spacing: -.035em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.md-kpi .v .u { font-size: .42em; letter-spacing: 0; margin-left: 4px; }
+.md-kpi .v.ok { color: var(--ok); }
+.md-kpi .k { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; border-top: 1px solid var(--ink); padding-top: 10px; }
+@media (max-width: 1000px) { .md-kpi { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .md-kpi .md-ill { max-width: 110px; } .md-kpi .v { font-size: 34px; } }
+
+/* 08 · SSS */
+.faq { border-top: 1px solid var(--ink); counter-reset: fq; }
+.faq details { counter-increment: fq; border-bottom: 1px solid var(--rule); }
+.faq summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 52px minmax(0, 1fr) 28px; gap: 14px; align-items: baseline; padding: 20px 0; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: "Q" counter(fq, decimal-leading-zero); font: 600 12px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.faq summary::after { content: "+"; font: 500 22px/1 var(--mono); color: var(--ink-2); justify-self: end; transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); color: var(--signal); }
+.faq summary .q { font: 700 clamp(18px, 1.9vw, 25px)/1.25 var(--display); font-stretch: 106%; letter-spacing: -.01em; }
+.faq summary:hover .q { color: var(--signal); }
+.faq .a { padding: 0 42px 24px 66px; max-width: 80ch; color: var(--ink-2); }
+@media (max-width: 640px) { .faq summary { grid-template-columns: 40px minmax(0, 1fr) 22px; gap: 10px; } .faq .a { padding: 0 0 22px 50px; } }
+@media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
+
+/* 09 · alt gezinme */
+.sv-related { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--ink); text-decoration: none; }
+.sv-related > * { min-width: 0; }
+.sv-related .pv { border-right: 1px solid var(--ink); background: var(--paper-2); display: grid; place-items: center; padding: 20px; position: relative; min-height: 220px; }
+.sv-related .pv svg { width: 100%; max-width: 420px; height: auto; color: var(--ink); }
+.sv-related .pv .mono { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.sv-related .body { padding: clamp(20px, 3vw, 40px); display: grid; gap: 14px; align-content: center; }
+.sv-related h3 { font-size: clamp(28px, 3.6vw, 52px); font-stretch: 118%; letter-spacing: -.03em; }
+.sv-related p { color: var(--ink-2); }
+.sv-related .go { font: 600 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.sv-related:hover h3, .sv-related:focus-visible h3 { color: var(--signal); }
+.sv-pn { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: clamp(28px, 4vw, 48px); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.sv-pn a { display: grid; gap: 6px; padding: 22px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); text-decoration: none; min-width: 0; transition: background .2s, color .2s; }
+.sv-pn a:hover, .sv-pn a:focus-visible { background: var(--ink); color: var(--paper); }
+.sv-pn a:focus-visible { outline-offset: -3px; }
+.sv-pn .n { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.sv-pn b { font: 800 clamp(22px, 2.6vw, 36px)/1.05 var(--display); font-stretch: 118%; letter-spacing: -.02em; }
+.sv-pn small { font-size: 14px; color: var(--ink-2); }
+.sv-pn a:hover small, .sv-pn a:focus-visible small { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.sv-pn .nx { text-align: right; }
+.sv-end { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-block: 28px clamp(56px, 8vw, 96px); }
+@media (max-width: 760px) { .sv-related { grid-template-columns: 1fr; } .sv-related .pv { border-right: 0; border-bottom: 1px solid var(--ink); min-height: 0; } }
+@media (max-width: 520px) { .sv-pn { grid-template-columns: 1fr; } .sv-pn .nx { text-align: left; } }
+</style>
+
+<main id="main">
+  <svg class="md-sprite" aria-hidden="true" focusable="false">
+    <symbol id="md-i-sheet" viewBox="0 0 30 30"><path d="M7 3h11l6 6v18H7z"/><path d="M18 3v6h6M10 14h10M10 18h10M10 22h6"/></symbol>
+    <symbol id="md-i-cloud" viewBox="0 0 30 30"><path d="M5 25h.01M9 25h.01M13 25h.01M17 25h.01M21 25h.01M25 25h.01M5 21h.01M5 17h.01M5 13h.01M9 10h.01M13 7h.01M17 7h.01M21 10h.01M25 13h.01M25 17h.01M25 21h.01M15 18h.01M11 16h.01M19 16h.01" stroke-width="2.6"/></symbol>
+    <symbol id="md-i-table" viewBox="0 0 30 30"><path d="M4 6h22v18H4zM4 11h22M4 16h22M4 21h22M11 6v18"/></symbol>
+    <symbol id="md-i-cube" viewBox="0 0 30 30"><path d="M15 3l11 6v12l-11 6-11-6V9z"/><path d="M4 9l11 6 11-6M15 15v12"/></symbol>
+    <symbol id="md-i-qty" viewBox="0 0 30 30"><path d="M4 26h22M7 26V16M12 26V9M17 26V13M22 26V5"/></symbol>
+    <symbol id="md-i-tag" viewBox="0 0 30 30"><path d="M4 15V5h10l12 12-10 10z"/><circle cx="9.5" cy="10.5" r="2"/></symbol>
+    <symbol id="md-i-check" viewBox="0 0 30 30"><path d="M6 4h18v23H6z"/><path d="M10 11l2 2 4-4M10 19l2 2 4-4M19 11h2M19 19h2"/></symbol>
+    <symbol id="md-i-target" viewBox="0 0 30 30"><circle cx="15" cy="15" r="11"/><circle cx="15" cy="15" r="6"/><circle cx="15" cy="15" r="1.5"/></symbol>
+    <symbol id="md-i-cal" viewBox="0 0 30 30"><path d="M4 7h22v19H4zM4 12h22M10 4v6M20 4v6"/><path d="M9 17h3M14 17h3M19 17h3M9 21h3"/></symbol>
+    <symbol id="md-i-user" viewBox="0 0 30 30"><circle cx="15" cy="10" r="5"/><path d="M5 27c0-6 4-9 10-9s10 3 10 9"/></symbol>
+    <symbol id="md-i-file" viewBox="0 0 64 78"><path d="M2 2h44l16 16v58H2z"/><path d="M46 2v16h16" fill="none"/></symbol>
+  </svg>
+
+  <header class="sheet-head md-head">
+    <a class="back" href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">← A-100 · <span lang="tr">Tüm hizmetler</span><span lang="en">All services</span></a>
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-102</b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>1:50</b></span>
+      <span>Rev <b>P08</b></span>
+      <span class="signal"><b>LOD 100–500 · ISO 7817-1</b></span>
+    </div>
+    <h1><span lang="tr">Model<span class="o">leme</span><span class="s">.</span></span><span lang="en">Model<span class="o">ling</span><span class="s">.</span></span></h1>
+    <p class="lede"><span lang="tr">Mimari, yapı ve MEP modellerini sözleşmedeki ayrıntıda üretiriz. Paftalar, metraj ve IFC aynı modelden gelir.</span><span lang="en">We build architectural, structural and MEP models at the detail the contract asks for. Sheets, quantities and IFC all come from the same model.</span></p>
+    <dl class="spec sv-spec">
+      <div><dt><span lang="tr">Süre (örnek)</span><span lang="en">Duration (example)</span></dt><dd><span lang="tr">6–16 hafta</span><span lang="en">6–16 weeks</span></dd></div>
+      <div><dt><span lang="tr">Ekip</span><span lang="en">Team</span></dt><dd><span lang="tr">3–8 kişi</span><span lang="en">3–8 people</span></dd></div>
+      <div><dt><span lang="tr">Standart</span><span lang="en">Standard</span></dt><dd>ISO 19650 · 7817-1</dd></div>
+      <div><dt><span lang="tr">Çıktı</span><span lang="en">Output</span></dt><dd>RVT · IFC 4 · COBie</dd></div>
+    </dl>
+  </header>
+
+  <section class="block" aria-labelledby="w-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Ne zaman</span><span lang="en">When</span></span>
+      <h2 id="w-title"><span lang="tr">Ne zaman ihtiyacınız olur?</span><span lang="en">When you need it</span></h2>
+    </div>
+    <ul class="md-trig">
+      <li>
+        <svg class="md-ill" viewBox="0 0 200 110" role="img" aria-label="DWG paftasından IFC modeline / From DWG sheet to IFC model"><title>DWG → IFC</title>
+          <path class="f1 ln" d="M24 14h40l12 12v70H24z"/><path class="ln" d="M64 14v12h12"/><path class="rl" d="M32 38h36M32 48h36M32 58h36M32 68h24M32 78h30"/>
+          <text x="50" y="106" text-anchor="middle">DWG</text>
+          <path class="sg" d="M88 55h24M106 49l6 6-6 6"/>
+          <path class="f1 ln" d="M156 26l26 15-26 15-26-15z"/><path class="f3 ln" d="M130 41l26 15v34l-26-15z"/><path class="f2 ln" d="M182 41l-26 15v34l26-15z"/>
+          <path class="rl" d="M130 58l26 15 26-15"/>
+          <text class="ts" x="156" y="106" text-anchor="middle">IFC</text>
+        </svg>
+        <q><span lang="tr">Proje DWG’de, işveren IFC ve COBie istiyor.</span><span lang="en">The design is in DWG; the client wants IFC and COBie.</span></q>
+        <p class="to"><b>→</b><span lang="tr">LOD 300 model + IFC</span><span lang="en">LOD 300 model + IFC</span></p>
+      </li>
+      <li>
+        <svg class="md-ill" viewBox="0 0 200 110" role="img" aria-label="Küçük ekibe eklenen modelleyiciler / Modellers added to a small team"><title>+ 3–8</title>
+          <g class="ln"><circle cx="30" cy="40" r="9"/><path d="M14 80c0-14 7-22 16-22s16 8 16 22"/><circle cx="62" cy="40" r="9"/><path d="M46 80c0-14 7-22 16-22s16 8 16 22"/></g>
+          <path class="sg" d="M90 52h14M97 45v14"/>
+          <g class="dsh"><circle cx="128" cy="34" r="8"/><path d="M114 70c0-12 6-19 14-19s14 7 14 19"/><circle cx="168" cy="34" r="8"/><path d="M154 70c0-12 6-19 14-19s14 7 14 19"/><circle cx="148" cy="64" r="8"/><path d="M134 100c0-12 6-19 14-19s14 7 14 19"/></g>
+          <path class="rl" d="M8 96h76"/><text x="46" y="108" text-anchor="middle">2</text><text class="ts" x="150" y="20" text-anchor="middle">+3–8</text>
+        </svg>
+        <q><span lang="tr">Teslim tarihi yakın, ekibimiz iki kişi.</span><span lang="en">The deadline is close, our team is two people.</span></q>
+        <p class="to"><b>→</b><span lang="tr">Şablonunuzda ek ekip</span><span lang="en">Extra team, your template</span></p>
+      </li>
+      <li>
+        <svg class="md-ill" viewBox="0 0 200 110" role="img" aria-label="Lazer tarayıcı eski bir fabrikayı nokta bulutuna çeviriyor / A laser scanner turns an old factory into a point cloud"><title>Scan-to-BIM</title>
+          <path class="ln" d="M36 70l-14 30M36 70l14 30M36 70v30"/><path class="f2 ln" d="M28 52h16v18H28z"/><circle class="ln" cx="36" cy="61" r="4"/>
+          <path class="sg" d="M44 58L100 50M44 61L118 46M44 64L136 70M44 66L100 92" stroke-width="1.2" stroke-dasharray="3 4"/>
+          <path class="dots" d="M99.7 96.1h.01M99.8 90.4h.01M100.2 84.1h.01M99.4 79.3h.01M99.7 72.8h.01M100.6 67.4h.01M100.4 61.7h.01M100.2 55.6h.01M104.7 52.9h.01M109.0 49.3h.01M113.7 45.0h.01M118.3 42.1h.01M117.8 48.4h.01M118.4 56.0h.01M122.8 53.0h.01M127.3 49.5h.01M131.4 45.9h.01M135.9 42.5h.01M136.5 48.5h.01M135.6 55.7h.01M141.1 52.4h.01M145.2 48.8h.01M149.5 45.4h.01M153.8 42.1h.01M154.1 49.5h.01M154.2 56.5h.01M158.9 53.1h.01M163.2 48.6h.01M167.9 46.1h.01M172.5 42.1h.01M176.9 45.0h.01M181.7 48.8h.01M185.7 51.5h.01M186.4 58.1h.01M185.5 63.4h.01M185.9 68.1h.01M185.8 74.3h.01M186.4 79.0h.01M186.1 84.5h.01M186.3 90.3h.01M186.0 96.0h.01M136.0 70.0h.01M150.0 70.0h.01M136.0 76.0h.01M150.0 76.0h.01M136.0 82.0h.01M150.0 82.0h.01M136.0 88.0h.01M150.0 88.0h.01M136.0 94.0h.01M150.0 94.0h.01M141.0 70.0h.01M146.0 70.0h.01"/>
+          <path class="rl" d="M8 100h186"/><text x="143" y="22" text-anchor="middle">1994 → E57</text>
+        </svg>
+        <q><span lang="tr">30 yıllık fabrika, çizimler güncel değil.</span><span lang="en">A 30-year-old factory with outdated drawings.</span></q>
+        <p class="to"><b>→</b>Scan-to-BIM · LOA30</p>
+      </li>
+      <li>
+        <svg class="md-ill" viewBox="0 0 200 110" role="img" aria-label="Cıvatalı çelik kolon-kiriş birleşimi / Bolted steel column-beam connection"><title>LOD 400</title>
+          <path class="f2 ln" d="M40 6h30v100H40z"/><path class="ln" d="M44 6v100M66 6v100"/><path class="rl" d="M44 36h22M44 76h22"/>
+          <path class="f1 ln" d="M70 28h8v54h-8z"/>
+          <path class="f2 ln" d="M78 34h100v6H78zM78 70h100v6H78z"/><path class="ln" d="M78 40v30M178 40v30"/><path class="rl" d="M78 55h100"/>
+          <g class="sg"><circle cx="74" cy="34" r="2.6"/><circle cx="74" cy="46" r="2.6"/><circle cx="74" cy="64" r="2.6"/><circle cx="74" cy="76" r="2.6"/></g>
+          <path class="dsh" d="M80 46l40-32"/><text class="ts" x="124" y="16">6 × M20</text>
+          <text x="130" y="100" text-anchor="middle">DSTV · NC1</text>
+        </svg>
+        <q><span lang="tr">İmalatçı modelden atölye çizimi alamıyor.</span><span lang="en">The fabricator cannot get shop drawings out of the model.</span></q>
+        <p class="to"><b>→</b><span lang="tr">LOD 400 birleşim</span><span lang="en">LOD 400 connections</span></p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="sc-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Kapsam</span><span lang="en">Scope</span></span>
+      <h2 id="sc-title"><span lang="tr">Tek model, tüm çıktılar.</span><span lang="en">One model, every output.</span></h2>
+      <p><span lang="tr">Girdi ne olursa olsun, her şey tek bir modelde toplanır.</span><span lang="en">Whatever the input, it all ends up in one model.</span></p>
+    </div>
+    <div class="md-hub">
+      <div class="col">
+        <span class="cap"><span lang="tr">Girdi</span><span lang="en">Input</span></span>
+        <ul>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-sheet"/></svg><span><span lang="tr">2B paftalar</span><span lang="en">2D sheets</span><small>DWG · PDF</small></span></li>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-cloud"/></svg><span><span lang="tr">Nokta bulutu</span><span lang="en">Point cloud</span><small>E57 · RCP</small></span></li>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-table"/></svg><span><span lang="tr">LOIN tablosu</span><span lang="en">LOIN table</span><small>EIR · BEP</small></span></li>
+        </ul>
+      </div>
+      <span class="arw" aria-hidden="true"></span>
+      <figure>
+        <svg class="md-ill" viewBox="60 -160 290 305" role="img" aria-labelledby="hub-t"><title id="hub-t">Ortak koordinatta üç katman: mimari, yapı ve MEP / Three layers on shared coordinates: architecture, structure and MEP</title>
+          <path class="dsh" d="M150.0 40.0L150.0 -116.0 M172.5 131.0L172.5 -25.0 M240.1 92.0L240.1 -64.0 M82.5 79.0L82.5 -77.0"/>
+          <path class="f2 ln" d="M150.0 40.0 L240.1 92.0 L172.5 131.0 L82.5 79.0Z"/>
+          <path class="th" d="M123.0 56.9L199.5 101.1"/><path class="ln" d="M138.7 66.0L163.5 51.7 M138.7 66.0L114.0 80.3 M161.3 79.0L186.0 64.7 M161.3 79.0L136.5 93.3 M183.8 92.0L208.5 77.7 M183.8 92.0L159.0 106.3"/>
+          <path class="dsh" d="M151.1 43.2L227.7 87.4 M227.7 87.4L170.3 120.6" style="stroke-dasharray:none;stroke-width:1.6"/>
+          <path class="f1 ln" d="M150.0 -38.0 L240.1 14.0 L172.5 53.0 L82.5 1.0Z"/>
+          <path class="ln" d="M150.0 -38.0L150.0 -61.4 M127.5 -25.0L127.5 -48.4 M105.0 -12.0L105.0 -35.4 M82.5 1.0L82.5 -22.4 M172.5 -25.0L172.5 -48.4 M150.0 -12.0L150.0 -35.4 M127.5 1.0L127.5 -22.4 M105.0 14.0L105.0 -9.4 M195.0 -12.0L195.0 -35.4 M172.5 1.0L172.5 -22.4 M150.0 14.0L150.0 -9.4 M127.5 27.0L127.5 3.6 M217.5 1.0L217.5 -22.4 M195.0 14.0L195.0 -9.4 M172.5 27.0L172.5 3.6 M150.0 40.0L150.0 16.6 M240.1 14.0L240.1 -9.4 M217.5 27.0L217.5 3.6 M195.0 40.0L195.0 16.6 M172.5 53.0L172.5 29.6"/>
+          <path class="ln" d="M150.0 -61.4L240.1 -9.4 M127.5 -48.4L217.5 3.6 M105.0 -35.4L195.0 16.6 M82.5 -22.4L172.5 29.6 M150.0 -61.4L82.5 -22.4 M172.5 -48.4L105.0 -9.4 M195.0 -35.4L127.5 3.6 M217.5 -22.4L150.0 16.6 M240.1 -9.4L172.5 29.6"/>
+          <path class="f3 ln" d="M82.5 -77.0 L172.5 -25.0 L172.5 -53.6 L82.5 -105.6Z"/><path class="f2 ln" d="M240.1 -64.0 L172.5 -25.0 L172.5 -53.6 L240.1 -92.6Z"/><path class="f1 ln" d="M150.0 -144.6 L240.1 -92.6 L172.5 -53.6 L82.5 -105.6Z"/>
+          <path class="ln" d="M88.1 -81.5 L99.3 -75.0 L99.3 -88.0 L88.1 -94.5Z M110.6 -68.5 L121.9 -62.0 L121.9 -75.0 L110.6 -81.5Z M133.1 -55.5 L144.4 -49.0 L144.4 -62.0 L133.1 -68.5Z M155.6 -42.5 L166.9 -36.0 L166.9 -49.0 L155.6 -55.5Z M234.4 -68.5 L223.2 -62.0 L223.2 -75.0 L234.4 -81.5Z M211.9 -55.5 L200.7 -49.0 L200.7 -62.0 L211.9 -68.5Z M189.4 -42.5 L178.1 -36.0 L178.1 -49.0 L189.4 -55.5Z"/>
+          <path class="dsh" d="M244 -80h28M244 -2h28M244 84h28"/>
+          <text class="tk" x="278" y="-76">ARC</text><text class="tk" x="278" y="2">STR</text><text class="tk" x="278" y="88">MEP</text>
+          <circle cx="150" cy="40" r="4.5" fill="var(--signal)"/><text class="ts" x="70" y="140">0,0,0 · <tspan lang="tr">ortak koordinat</tspan><tspan lang="en">shared origin</tspan></text>
+        </svg>
+        <figcaption><span lang="tr">1 model</span><span lang="en">1 model</span><span class="signal">.</span></figcaption>
+      </figure>
+      <span class="arw sig" aria-hidden="true"></span>
+      <div class="col out">
+        <span class="cap"><span lang="tr">Çıktı</span><span lang="en">Output</span></span>
+        <ul>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-sheet"/></svg><span lang="tr">Paftalar</span><span lang="en">Sheets</span></li>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-qty"/></svg><span lang="tr">Metraj</span><span lang="en">Quantities</span></li>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-cube"/></svg>IFC 4</li>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-tag"/></svg>COBie</li>
+          <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-check"/></svg><span lang="tr">QC raporu</span><span lang="en">QC report</span></li>
+        </ul>
+      </div>
+    </div>
+    <ol class="md-scope" aria-label="Kapsam / Scope">
+      <li><b>01</b><span lang="tr">Şablon ve koordinat</span><span lang="en">Template, coordinates</span></li>
+      <li><b>02</b><span lang="tr">Mimari</span><span lang="en">Architecture</span></li>
+      <li><b>03</b><span lang="tr">Yapı</span><span lang="en">Structure</span></li>
+      <li><b>04</b>MEP</li>
+      <li><b>05</b><span lang="tr">Aile kütüphanesi</span><span lang="en">Family library</span></li>
+      <li><b>06</b>Scan-to-BIM</li>
+      <li><b>07</b><span lang="tr">Pafta seti</span><span lang="en">Sheet set</span></li>
+      <li><b>08</b><span lang="tr">Metraj · 5B</span><span lang="en">Quantities · 5D</span></li>
+      <li><b>09</b><span lang="tr">Kalite kontrol</span><span lang="en">Quality control</span></li>
+      <li><b>10</b><span lang="tr">As-built teslim</span><span lang="en">As-built handover</span></li>
+    </ol>
+  </section>
+
+  <section class="block" aria-labelledby="lod-title">
+    <div class="block-head">
+      <span class="no">03 · LOD / LOIN</span>
+      <h2 id="lod-title"><span lang="tr">Aynı birleşim, altı ayrıntı seviyesi.</span><span lang="en">One joint, six levels of detail.</span></h2>
+      <p><span lang="tr">Bir seviye seçin. Turuncu çizgiler o seviyede eklenenleri gösterir.</span><span lang="en">Pick a level. Orange lines show what that level adds.</span></p>
+    </div>
+
+    <div class="lod">
+      <div class="lod-bar mono dim"><span class="live"><span lang="tr">LOD gezgini · örnek eleman</span><span lang="en">LOD explorer · sample element</span></span><span>HEB 300 × IPE 400</span></div>
+      <fieldset class="lod-seg"><legend><span lang="tr">LOD seviyesi seçin</span><span lang="en">Choose an LOD level</span></legend><label><input type="radio" name="lod" id="lod-100" value="100"><span class="sn">100</span><span class="sl"><span lang="tr">Kavramsal</span><span lang="en">Conceptual</span></span></label><label><input type="radio" name="lod" id="lod-200" value="200"><span class="sn">200</span><span class="sl"><span lang="tr">Yaklaşık</span><span lang="en">Approximate</span></span></label><label><input type="radio" name="lod" id="lod-300" value="300" checked><span class="sn">300</span><span class="sl"><span lang="tr">Kesin</span><span lang="en">Precise</span></span></label><label><input type="radio" name="lod" id="lod-350" value="350"><span class="sn">350</span><span class="sl"><span lang="tr">Arayüzler</span><span lang="en">Interfaces</span></span></label><label><input type="radio" name="lod" id="lod-400" value="400"><span class="sn">400</span><span class="sl"><span lang="tr">İmalat</span><span lang="en">Fabrication</span></span></label><label><input type="radio" name="lod" id="lod-500" value="500"><span class="sn">500</span><span class="sl"><span lang="tr">Sahada ölçülmüş</span><span lang="en">Field verified</span></span></label></fieldset>
+      <div class="lod-body">
+        <figure class="lod-fig">
+          <span class="corner mono">ISO · 3D · 1:20</span>
+          <svg class="lod-svg" viewBox="-275 -392 566 600" role="img" aria-labelledby="lod-svg-t"><title id="lod-svg-t">Çelik kolon-kiriş birleşimi, seçili LOD seviyesinde izometrik çizim / Steel column-beam connection, isometric drawing at the selected LOD</title><g class="axes"><path class="ax" d="M-115.2 -66.5L115.2 66.5"/><path class="ax" d="M115.2 -66.5L-115.2 66.5"/><circle class="bub" cx="-125.1" cy="-72.2" r="11"/><text class="bt" x="-125.1" y="-68.2" text-anchor="middle">C</text><circle class="bub" cx="125.1" cy="-72.2" r="11"/><text class="bt" x="125.1" y="-68.2" text-anchor="middle">4</text></g><g class="g o100"><g class="mass"><polygon class="ft" points="-65.8,0.0 0.0,38.0 0.0,-285.0 -65.8,-323.0"/><polygon class="fx" points="65.8,0.0 0.0,38.0 0.0,-285.0 65.8,-323.0"/><polygon class="fz" points="0.0,-361.0 65.8,-323.0 0.0,-285.0 -65.8,-323.0"/></g><path class="sym" d="M32.9 -228.0L205.7 -128.2"/><path class="ld" d="M-32.9 -152.0L-102.9 -112.0"/><circle class="ldp" cx="-32.9" cy="-152.0" r="2"/><text class="lb" lang="tr" x="-108.9" y="-108.0" text-anchor="end">≈ 400 × 400 · kütle</text><text class="lb" lang="en" x="-108.9" y="-108.0" text-anchor="end">≈ 400 × 400 · mass</text><path class="ld" d="M131.6 -171.0L161.6 -231.0"/><circle class="ldp" cx="131.6" cy="-171.0" r="2"/><text class="lb" lang="tr" x="167.6" y="-227.0" text-anchor="start">kiriş: sembol çizgi</text><text class="lb" lang="en" x="167.6" y="-227.0" text-anchor="start">beam: symbolic line</text></g><g class="g o200"><g><polygon class="ft" points="-49.4,0.0 0.0,28.5 0.0,-294.5 -49.4,-323.0"/><polygon class="fx" points="49.4,0.0 0.0,28.5 0.0,-294.5 49.4,-323.0"/><polygon class="fz" points="0.0,-351.5 49.4,-323.0 0.0,-294.5 -49.4,-323.0"/></g><g><polygon class="ft" points="9.9,-186.2 190.9,-81.7 190.9,-157.7 9.9,-262.2"/><polygon class="fx" points="220.5,-98.8 190.9,-81.7 190.9,-157.7 220.5,-174.8"/><polygon class="fz" points="39.5,-279.3 220.5,-174.8 190.9,-157.7 9.9,-262.2"/></g><path class="ld" d="M-24.7 -156.8L-104.7 -116.8"/><circle class="ldp" cx="-24.7" cy="-156.8" r="2"/><text class="lb" lang="tr" x="-110.7" y="-112.8" text-anchor="end">300 × 300 · genel kesit</text><text class="lb" lang="en" x="-110.7" y="-112.8" text-anchor="end">300 × 300 · generic section</text><path class="ld" d="M116.8 -124.5L136.8 -54.5"/><circle class="ldp" cx="116.8" cy="-124.5" r="2"/><text class="lb" lang="tr" x="142.8" y="-50.5" text-anchor="start">180 × 400 · yaklaşık</text><text class="lb" lang="en" x="142.8" y="-50.5" text-anchor="start">180 × 400 · approximate</text></g><g class="g f350"><path class="gh" d="M0.0 -62.7L118.5 5.7M118.5 5.7L0.0 74.1M0.0 74.1L-118.5 5.7M-118.5 5.7L0.0 -62.7M118.5 79.8L0.0 148.2M0.0 148.2L-118.5 79.8M118.5 79.8L118.5 5.7M0.0 148.2L0.0 74.1M-118.5 79.8L-118.5 5.7"/><g><polygon class="ft" points="-85.6,5.7 0.0,55.1 0.0,49.4 -85.6,0.0"/><polygon class="fx" points="85.6,5.7 0.0,55.1 0.0,49.4 85.6,0.0"/><polygon class="fz" points="0.0,-49.4 85.6,0.0 0.0,49.4 -85.6,0.0"/></g><g><polygon class="ft" points="-4.6,-38.0 0.0,-35.3 0.0,-50.5 -4.6,-53.2"/><polygon class="fx" points="4.6,-38.0 0.0,-35.3 0.0,-50.5 4.6,-53.2"/><polygon class="fz" points="0.0,-55.9 4.6,-53.2 0.0,-50.5 -4.6,-53.2"/></g><g><polygon class="ft" points="-7.2,-38.0 0.0,-33.8 0.0,-38.0 -7.2,-42.2"/><polygon class="fx" points="7.2,-38.0 0.0,-33.8 0.0,-38.0 7.2,-42.2"/><polygon class="fz" points="0.0,-46.4 7.2,-42.2 0.0,-38.0 -7.2,-42.2"/></g><g><polygon class="ft" points="61.2,0.0 65.8,2.7 65.8,-12.5 61.2,-15.2"/><polygon class="fx" points="70.4,0.0 65.8,2.7 65.8,-12.5 70.4,-15.2"/><polygon class="fz" points="65.8,-17.9 70.4,-15.2 65.8,-12.5 61.2,-15.2"/></g><g><polygon class="ft" points="58.6,0.0 65.8,4.2 65.8,0.0 58.6,-4.2"/><polygon class="fx" points="73.1,0.0 65.8,4.2 65.8,0.0 73.1,-4.2"/><polygon class="fz" points="65.8,-8.4 73.1,-4.2 65.8,0.0 58.6,-4.2"/></g><g><polygon class="ft" points="-70.4,0.0 -65.8,2.7 -65.8,-12.5 -70.4,-15.2"/><polygon class="fx" points="-61.2,0.0 -65.8,2.7 -65.8,-12.5 -61.2,-15.2"/><polygon class="fz" points="-65.8,-17.9 -61.2,-15.2 -65.8,-12.5 -70.4,-15.2"/></g><g><polygon class="ft" points="-73.1,0.0 -65.8,4.2 -65.8,0.0 -73.1,-4.2"/><polygon class="fx" points="-58.6,0.0 -65.8,4.2 -65.8,0.0 -58.6,-4.2"/><polygon class="fz" points="-65.8,-8.4 -58.6,-4.2 -65.8,0.0 -73.1,-4.2"/></g></g><g class="g f300"><g><polygon class="ft" points="-49.4,0.0 -46.2,1.8 -46.2,-321.2 -49.4,-323.0"/><polygon class="fx" points="3.1,-26.7 -46.2,1.8 -46.2,-321.2 3.1,-349.7"/><polygon class="fz" points="0.0,-351.5 3.1,-349.7 -46.2,-321.2 -49.4,-323.0"/></g><g><polygon class="ft" points="-22.5,-11.9 20.7,13.0 20.7,-310.0 -22.5,-334.9"/><polygon class="fx" points="22.5,11.9 20.7,13.0 20.7,-310.0 22.5,-311.1"/><polygon class="fz" points="-20.7,-336.0 22.5,-311.1 20.7,-310.0 -22.5,-334.9"/></g></g><g class="g f400"><g><polygon class="ft" points="-20.7,-222.0 22.5,-197.1 22.5,-199.6 -20.7,-224.5"/><polygon class="fx" points="45.4,-210.3 22.5,-197.1 22.5,-199.6 45.4,-212.9"/><polygon class="fz" points="2.3,-237.8 45.4,-212.9 22.5,-199.6 -20.7,-224.5"/></g><g><polygon class="ft" points="-20.7,-295.4 22.5,-270.5 22.5,-273.1 -20.7,-298.0"/><polygon class="fx" points="45.4,-283.8 22.5,-270.5 22.5,-273.1 45.4,-286.3"/><polygon class="fz" points="2.3,-311.2 45.4,-286.3 22.5,-273.1 -20.7,-298.0"/></g></g><g class="g f400"><g><polygon class="ft" points="-45.4,-207.7 -2.3,-182.8 -2.3,-185.3 -45.4,-210.2"/><polygon class="fx" points="20.7,-196.0 -2.3,-182.8 -2.3,-185.3 20.7,-198.6"/><polygon class="fz" points="-22.5,-223.5 20.7,-198.6 -2.3,-185.3 -45.4,-210.2"/></g><g><polygon class="ft" points="-45.4,-281.1 -2.3,-256.2 -2.3,-258.8 -45.4,-283.7"/><polygon class="fx" points="20.7,-269.5 -2.3,-256.2 -2.3,-258.8 20.7,-272.0"/><polygon class="fz" points="-22.5,-296.9 20.7,-272.0 -2.3,-258.8 -45.4,-283.7"/></g></g><g class="g f300"><g><polygon class="ft" points="-3.1,26.7 0.0,28.5 0.0,-294.5 -3.1,-296.3"/><polygon class="fx" points="49.4,0.0 0.0,28.5 0.0,-294.5 49.4,-323.0"/><polygon class="fz" points="46.2,-324.8 49.4,-323.0 0.0,-294.5 -3.1,-296.3"/></g></g><g class="g f350"><g><polygon class="ft" points="-4.6,38.0 0.0,40.7 0.0,25.5 -4.6,22.8"/><polygon class="fx" points="4.6,38.0 0.0,40.7 0.0,25.5 4.6,22.8"/><polygon class="fz" points="0.0,20.1 4.6,22.8 0.0,25.5 -4.6,22.8"/></g><g><polygon class="ft" points="-7.2,38.0 0.0,42.2 0.0,38.0 -7.2,33.8"/><polygon class="fx" points="7.2,38.0 0.0,42.2 0.0,38.0 7.2,33.8"/><polygon class="fz" points="0.0,29.6 7.2,33.8 0.0,38.0 -7.2,33.8"/></g><g><polygon class="ft" points="8.2,-179.6 11.5,-177.7 11.5,-265.1 8.2,-266.9"/><polygon class="fx" points="44.4,-196.7 11.5,-177.7 11.5,-265.1 44.4,-284.1"/><polygon class="fz" points="41.1,-285.9 44.4,-284.1 11.5,-265.1 8.2,-266.9"/></g></g><g class="g f300"><g><polygon class="ft" points="13.2,-184.3 190.9,-81.7 190.9,-84.3 13.2,-186.9"/><polygon class="fx" points="220.5,-98.8 190.9,-81.7 190.9,-84.3 220.5,-101.4"/><polygon class="fz" points="42.8,-204.0 220.5,-101.4 190.9,-84.3 13.2,-186.9"/></g></g><g class="g f400"><g><polygon class="ft" points="36.4,-209.3 39.0,-207.8 39.0,-211.2 36.4,-212.7"/><polygon class="fx" points="42.0,-209.5 39.0,-207.8 39.0,-211.2 42.0,-212.9"/><polygon class="fz" points="39.3,-214.4 42.0,-212.9 39.0,-211.2 36.4,-212.7"/></g><g><polygon class="ft" points="36.4,-234.0 39.0,-232.5 39.0,-235.9 36.4,-237.4"/><polygon class="fx" points="42.0,-234.2 39.0,-232.5 39.0,-235.9 42.0,-237.6"/><polygon class="fz" points="39.3,-239.1 42.0,-237.6 39.0,-235.9 36.4,-237.4"/></g><g><polygon class="ft" points="36.4,-258.7 39.0,-257.2 39.0,-260.6 36.4,-262.1"/><polygon class="fx" points="42.0,-258.9 39.0,-257.2 39.0,-260.6 42.0,-262.3"/><polygon class="fz" points="39.3,-263.8 42.0,-262.3 39.0,-260.6 36.4,-262.1"/></g></g><g class="g f300"><g><polygon class="ft" points="27.3,-195.0 205.0,-92.4 205.0,-163.3 27.3,-265.9"/><polygon class="fx" points="206.4,-93.2 205.0,-92.4 205.0,-163.3 206.4,-164.1"/><polygon class="fz" points="28.7,-266.7 206.4,-164.1 205.0,-163.3 27.3,-265.9"/></g></g><g class="g f400"><g><polygon class="ft" points="16.6,-197.9 19.3,-196.4 19.3,-199.8 16.6,-201.3"/><polygon class="fx" points="22.2,-198.1 19.3,-196.4 19.3,-199.8 22.2,-201.5"/><polygon class="fz" points="19.6,-203.0 22.2,-201.5 19.3,-199.8 16.6,-201.3"/></g><g><polygon class="ft" points="16.6,-222.6 19.3,-221.1 19.3,-224.5 16.6,-226.0"/><polygon class="fx" points="22.2,-222.8 19.3,-221.1 19.3,-224.5 22.2,-226.2"/><polygon class="fz" points="19.6,-227.7 22.2,-226.2 19.3,-224.5 16.6,-226.0"/></g><g><polygon class="ft" points="16.6,-247.3 19.3,-245.8 19.3,-249.2 16.6,-250.7"/><polygon class="fx" points="22.2,-247.5 19.3,-245.8 19.3,-249.2 22.2,-250.9"/><polygon class="fz" points="19.6,-252.4 22.2,-250.9 19.3,-249.2 16.6,-250.7"/></g></g><g class="g f300"><g><polygon class="ft" points="13.2,-257.7 190.9,-155.1 190.9,-157.7 13.2,-260.3"/><polygon class="fx" points="220.5,-172.2 190.9,-155.1 190.9,-157.7 220.5,-174.8"/><polygon class="fz" points="42.8,-277.4 220.5,-174.8 190.9,-157.7 13.2,-260.3"/></g></g><g class="g f400"><path class="wd" d="M42.8 -277.4L13.2 -260.3"/><path class="wd" d="M27.3 -195.1L27.3 -265.8"/><path class="wd" d="M13.2 -186.9L42.8 -204.0"/></g><g class="g f300"><path class="ld" d="M-49.4 -133.0L-89.4 -103.0"/><circle class="ldp" cx="-49.4" cy="-133.0" r="2"/><text class="lb" x="-95.4" y="-99.0" text-anchor="end">HEB 300 · S355</text><path class="ld" d="M133.3 -115.0L143.3 -55.0"/><circle class="ldp" cx="133.3" cy="-115.0" r="2"/><text class="lb" x="149.3" y="-51.0" text-anchor="start">IPE 400 · S355</text></g><g class="g f350"><path class="ld" d="M11.5 -265.1L51.5 -305.1"/><circle class="ldp" cx="11.5" cy="-265.1" r="2"/><text class="lb" lang="tr" x="57.5" y="-301.1" text-anchor="start">alın levhası 20 mm</text><text class="lb" lang="en" x="57.5" y="-301.1" text-anchor="start">end plate 20 mm</text><path class="ld" d="M0.0 49.4L30.0 79.4"/><circle class="ldp" cx="0.0" cy="49.4" r="2"/><text class="lb" lang="tr" x="36.0" y="83.4" text-anchor="start">taban levhası · 4 × M24</text><text class="lb" lang="en" x="36.0" y="83.4" text-anchor="start">base plate · 4 × M24</text><path class="ld" d="M-118.5 79.8L-128.5 105.8"/><circle class="ldp" cx="-118.5" cy="79.8" r="2"/><text class="lb" lang="tr" x="-134.5" y="109.8" text-anchor="end">kaide arayüzü (STR)</text><text class="lb" lang="en" x="-134.5" y="109.8" text-anchor="end">pedestal interface (STR)</text></g><g class="g f400"><path class="ld" d="M20.7 -248.3L90.7 -318.3"/><circle class="ldp" cx="20.7" cy="-248.3" r="2"/><text class="lb" lang="tr" x="96.7" y="-314.3" text-anchor="start">6 × M20 · 10.9 · kaynak a5</text><text class="lb" lang="en" x="96.7" y="-314.3" text-anchor="start">6 × M20 · 10.9 · weld a5</text><path class="ld" d="M-23.9 -195.2L-83.9 -125.2"/><circle class="ldp" cx="-23.9" cy="-195.2" r="2"/><text class="lb" lang="tr" x="-89.9" y="-121.2" text-anchor="end">berkitme 12 mm</text><text class="lb" lang="en" x="-89.9" y="-121.2" text-anchor="end">stiffener 12 mm</text><text class="pm" x="-4.0" y="-361.5" text-anchor="middle">C1-03</text><text class="pm" x="211.7" y="-178.2">B2-17</text></g><g class="g o500"><g class="sv"><circle cx="0.0" cy="-294.5" r="7"/><path d="M-11.0 -294.5h22M0.0 -305.5v22"/><text x="-12.0" y="-272.5" text-anchor="end">Δ +4 mm</text></g><g class="sv"><circle cx="190.9" cy="-157.7" r="7"/><path d="M179.9 -157.7h22M190.9 -168.7v22"/><text x="178.9" y="-135.7" text-anchor="end">Δ −3 mm</text></g><g class="sv"><circle cx="0.0" cy="49.4" r="7"/><path d="M-11.0 49.4h22M0.0 38.4v22"/><text x="-12.0" y="71.4" text-anchor="end">Δ +2 mm</text></g></g></svg>
+          <figcaption class="key" aria-hidden="true"><span><i></i><span lang="tr">Bu seviyede eklenen</span><span lang="en">Added at this level</span></span><span><i class="v"></i><span lang="tr">Sahada ölçülen</span><span lang="en">Surveyed on site</span></span></figcaption>
+        </figure>
+        <div class="lod-info" aria-live="polite">
+<div class="lp" data-l="100" id="lp-100"><div class="lp-top"><span class="lp-n">LOD <b>100</b></span><span class="lp-name"><span lang="tr">Kavramsal</span><span lang="en">Conceptual</span></span></div><p class="lp-d"><span lang="tr">Kütle ya da sembol; ölçü alınmaz.</span><span lang="en">A mass or symbol; nothing is measured.</span></p><dl class="lp-use"><div><dt><span lang="tr">Ne için</span><span lang="en">Used for</span></dt><dd><span lang="tr">Kütle, maliyet tahmini</span><span lang="en">Massing, cost estimate</span></dd></div><div><dt><span lang="tr">Aşama</span><span lang="en">Stage</span></dt><dd>RIBA 2</dd></div><div><dt>IFC</dt><dd><code>IfcBuildingElementProxy</code></dd></div><div><dt><span lang="tr">Dosya</span><span lang="en">File</span></dt><dd><span lang="tr">0,02 MB</span><span lang="en">0.02 MB</span></dd></div></dl></div>
+<div class="lp" data-l="200" id="lp-200"><div class="lp-top"><span class="lp-n">LOD <b>200</b></span><span class="lp-name"><span lang="tr">Yaklaşık geometri</span><span lang="en">Approximate geometry</span></span></div><p class="lp-d"><span lang="tr">Genel kutu kesit, ±50 mm.</span><span lang="en">Generic box section, ±50 mm.</span></p><dl class="lp-use"><div><dt><span lang="tr">Ne için</span><span lang="en">Used for</span></dt><dd><span lang="tr">Ön boyutlandırma</span><span lang="en">Preliminary sizing</span></dd></div><div><dt><span lang="tr">Aşama</span><span lang="en">Stage</span></dt><dd>RIBA 3</dd></div><div><dt>IFC</dt><dd><code>IfcColumn · IfcBeam</code></dd></div><div><dt><span lang="tr">Dosya</span><span lang="en">File</span></dt><dd><span lang="tr">0,05 MB</span><span lang="en">0.05 MB</span></dd></div></dl></div>
+<div class="lp" data-l="300" id="lp-300"><div class="lp-top"><span class="lp-n">LOD <b>300</b></span><span class="lp-name"><span lang="tr">Kesin geometri</span><span lang="en">Precise geometry</span></span></div><p class="lp-d"><span lang="tr">Gerçek profil; ölçü ve metraj modelden.</span><span lang="en">Real sections; dimensions and quantities from the model.</span></p><dl class="lp-use"><div><dt><span lang="tr">Ne için</span><span lang="en">Used for</span></dt><dd><span lang="tr">Paftalar, metraj, çakışma</span><span lang="en">Sheets, quantities, clashes</span></dd></div><div><dt><span lang="tr">Aşama</span><span lang="en">Stage</span></dt><dd>RIBA 4</dd></div><div><dt>IFC</dt><dd><code>IfcColumn.COLUMN</code></dd></div><div><dt><span lang="tr">Dosya</span><span lang="en">File</span></dt><dd><span lang="tr">0,4 MB</span><span lang="en">0.4 MB</span></dd></div></dl></div>
+<div class="lp" data-l="350" id="lp-350"><div class="lp-top"><span class="lp-n">LOD <b>350</b></span><span class="lp-name"><span lang="tr">Arayüzler</span><span lang="en">Interfaces</span></span></div><p class="lp-d"><span lang="tr">Levhalar, ankrajlar, kaide eklenir.</span><span lang="en">Plates, anchors and pedestal are added.</span></p><dl class="lp-use"><div><dt><span lang="tr">Ne için</span><span lang="en">Used for</span></dt><dd><span lang="tr">Disiplinler arası koordinasyon</span><span lang="en">Cross-discipline coordination</span></dd></div><div><dt><span lang="tr">Aşama</span><span lang="en">Stage</span></dt><dd>RIBA 4</dd></div><div><dt>IFC</dt><dd><code>+ IfcPlate</code></dd></div><div><dt><span lang="tr">Dosya</span><span lang="en">File</span></dt><dd><span lang="tr">1,1 MB</span><span lang="en">1.1 MB</span></dd></div></dl></div>
+<div class="lp" data-l="400" id="lp-400"><div class="lp-top"><span class="lp-n">LOD <b>400</b></span><span class="lp-name"><span lang="tr">İmalat</span><span lang="en">Fabrication</span></span></div><p class="lp-d"><span lang="tr">Cıvata, kaynak ve parça numarası.</span><span lang="en">Bolts, welds and piece marks.</span></p><dl class="lp-use"><div><dt><span lang="tr">Ne için</span><span lang="en">Used for</span></dt><dd><span lang="tr">Atölye çizimi, CNC</span><span lang="en">Shop drawings, CNC</span></dd></div><div><dt><span lang="tr">Aşama</span><span lang="en">Stage</span></dt><dd>RIBA 5</dd></div><div><dt>IFC</dt><dd><code>+ IfcElementAssembly</code></dd></div><div><dt><span lang="tr">Dosya</span><span lang="en">File</span></dt><dd><span lang="tr">3,8 MB</span><span lang="en">3.8 MB</span></dd></div></dl></div>
+<div class="lp" data-l="500" id="lp-500"><div class="lp-top"><span class="lp-n">LOD <b>500</b></span><span class="lp-name"><span lang="tr">Sahada ölçülmüş</span><span lang="en">Field verified</span></span></div><p class="lp-d"><span lang="tr">As-built; sapmalar kayıtlı.</span><span lang="en">As-built; deviations logged.</span></p><dl class="lp-use"><div><dt><span lang="tr">Ne için</span><span lang="en">Used for</span></dt><dd><span lang="tr">Teslim, tesis yönetimi</span><span lang="en">Handover, FM</span></dd></div><div><dt><span lang="tr">Aşama</span><span lang="en">Stage</span></dt><dd>RIBA 6</dd></div><div><dt>IFC</dt><dd><code>+ IfcAsset · COBie</code></dd></div><div><dt><span lang="tr">Dosya</span><span lang="en">File</span></dt><dd><span lang="tr">4,0 MB</span><span lang="en">4.0 MB</span></dd></div></dl></div>
+        </div>
+      </div>
+      <div class="lod-foot mono dim"><span lang="tr">Kaynak: BIMForum LOD Spec · değerler örnektir</span><span lang="en">Source: BIMForum LOD Spec · values are examples</span></div>
+    </div>
+
+    <div class="md-pair">
+      <div>
+        <span class="mono">ISO 7817-1 · LOIN</span>
+        <h3><span lang="tr">Geometri ayrı, bilgi ayrı.</span><span lang="en">Geometry and information, separately.</span></h3>
+        <div class="md-loin">
+          <ul class="q">
+            <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-target"/></svg><span lang="tr">Ne için?</span><span lang="en">What for?</span></li>
+            <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-cal"/></svg><span lang="tr">Ne zaman?</span><span lang="en">When?</span></li>
+            <li><svg class="md-ic" aria-hidden="true"><use href="#md-i-user"/></svg><span lang="tr">Kim için?</span><span lang="en">For whom?</span></li>
+          </ul>
+          <span class="brk" aria-hidden="true"></span>
+          <ul class="ch">
+            <li><span class="h"><span lang="tr">Geometri</span><span lang="en">Geometry</span><b>LOD 300</b></span><span class="md-meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></li>
+            <li><span class="h"><span lang="tr">Bilgi</span><span lang="en">Information</span><b>LOD 400</b></span><span class="md-meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="hot"></i><i></i></span></li>
+            <li><span class="h"><span lang="tr">Doküman</span><span lang="en">Documents</span><b><span lang="tr">Yok</span><span lang="en">None</span></b></span><span class="md-meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></li>
+          </ul>
+        </div>
+        <span class="mono"><span lang="tr">Örnek · 4. kat kolonu, ihale aşaması, yüklenici için</span><span lang="en">Example · level 4 columns, tender stage, for the contractor</span></span>
+      </div>
+      <div>
+        <span class="mono"><span lang="tr">Ayrıntının bedeli · örnek</span><span lang="en">The cost of detail · example</span></span>
+        <h3><span lang="tr">Her şeyi LOD 400 yapmayın.</span><span lang="en">Do not model everything at LOD 400.</span></h3>
+        <div>
+          <div class="md-cost" role="img" aria-label="Bu birleşim için dosya boyutu: LOD 100 0,02 MB, 200 0,05 MB, 300 0,4 MB, 350 1,1 MB, 400 3,8 MB, 500 4,0 MB / File size for this joint: LOD 100 0.02 MB, 200 0.05 MB, 300 0.4 MB, 350 1.1 MB, 400 3.8 MB, 500 4.0 MB">
+            <div><span class="val">0,02</span><i class="bar" style="--h:1%"></i></div>
+            <div><span class="val">0,05</span><i class="bar" style="--h:1.5%"></i></div>
+            <div><span class="val">0,4</span><i class="bar" style="--h:10%"></i></div>
+            <div><span class="val">1,1</span><i class="bar" style="--h:27%"></i></div>
+            <div class="hot"><span class="val">3,8</span><i class="bar" style="--h:88%"></i></div>
+            <div><span class="val">4,0</span><i class="bar" style="--h:92%"></i></div>
+            <span class="md-cost-n" aria-hidden="true">4–8×<small><span lang="tr">300 → 400 süre</span><span lang="en">300 → 400 time</span></small></span>
+          </div>
+          <div class="md-cost-x" aria-hidden="true"><span>100</span><span>200</span><span>300</span><span>350</span><span>400</span><span>500</span></div>
+        </div>
+        <span class="mono"><span lang="tr">MB · bu birleşim için dosya boyutu</span><span lang="en">MB · file size for this joint</span></span>
+      </div>
+    </div>
+
+    <div class="sub" id="disiplin">
+      <div class="sub-head"><h3><span lang="tr">Kim neyi modeller?</span><span lang="en">Who models what?</span></h3><p><span lang="tr">Bir disiplin seçin; model o katmanı gösterir.</span><span lang="en">Pick a discipline; the model shows that layer.</span></p></div>
+      <div class="disc">
+        <div class="disc-vis"><canvas id="disc-model" aria-hidden="true"></canvas><span class="corner mono" id="disc-corner">ARC · 3D</span></div>
+        <div class="disc-side">
+          <fieldset class="disc-tabs"><legend><span lang="tr">Disiplin seçin</span><span lang="en">Choose a discipline</span></legend><label><input type="radio" name="disc" id="disc-arc" value="arc" checked><b>ARC</b><span><span lang="tr">Mimari</span><span lang="en">Architecture</span></span></label><label><input type="radio" name="disc" id="disc-str" value="str"><b>STR</b><span><span lang="tr">Yapı</span><span lang="en">Structure</span></span></label><label><input type="radio" name="disc" id="disc-mep" value="mep"><b>MEP</b><span><span lang="tr">Tesisat</span><span lang="en">Services</span></span></label><label><input type="radio" name="disc" id="disc-fed" value="fed"><b>FED</b><span><span lang="tr">Federe</span><span lang="en">Federated</span></span></label></fieldset>
+          <div class="disc-panels" aria-live="polite">
+            <div class="dp" data-d="arc"><h4><span class="mono signal">ARC</span> <span lang="tr">Mimari</span><span lang="en">Architecture</span></h4><span class="k"><span lang="tr">İçerik</span><span lang="en">Contains</span></span><ul class="tags"><li><span lang="tr">Duvar · döşeme</span><span lang="en">Walls · floors</span></li><li><span lang="tr">Cephe</span><span lang="en">Facade</span></li><li><span lang="tr">Kapı · pencere</span><span lang="en">Doors · windows</span></li><li><span lang="tr">Mahal · yangın bölmesi</span><span lang="en">Rooms · fire zones</span></li></ul><span class="k"><span lang="tr">Dosya adı</span><span lang="en">File name</span></span><code class="fn">PRJ-FAB-ZZ-XX-M3-A-0001</code><span class="k"><span lang="tr">Çıktı</span><span lang="en">Output</span></span><p><span lang="tr">Plan, kesit, mahal ve kapı listeleri.</span><span lang="en">Plans, sections, room and door schedules.</span></p></div>
+            <div class="dp" data-d="str"><h4><span class="mono signal">STR</span> <span lang="tr">Yapı</span><span lang="en">Structure</span></h4><span class="k"><span lang="tr">İçerik</span><span lang="en">Contains</span></span><ul class="tags"><li><span lang="tr">Temel · kolon</span><span lang="en">Foundations · columns</span></li><li><span lang="tr">Kiriş · döşeme</span><span lang="en">Beams · slabs</span></li><li><span lang="tr">Çelik birleşim</span><span lang="en">Steel connections</span></li><li><span lang="tr">Boşluklar</span><span lang="en">Openings</span></li></ul><span class="k"><span lang="tr">Dosya adı</span><span lang="en">File name</span></span><code class="fn">PRJ-FAB-ZZ-XX-M3-S-0001</code><span class="k"><span lang="tr">Çıktı</span><span lang="en">Output</span></span><p><span lang="tr">Kalıp planı, çelik metrajı, DSTV/NC1.</span><span lang="en">Formwork plans, steel quantities, DSTV/NC1.</span></p></div>
+            <div class="dp" data-d="mep"><h4><span class="mono signal">MEP</span> <span lang="tr">Tesisat</span><span lang="en">Services</span></h4><span class="k"><span lang="tr">İçerik</span><span lang="en">Contains</span></span><ul class="tags"><li><span lang="tr">Kanal</span><span lang="en">Ductwork</span></li><li><span lang="tr">Boru</span><span lang="en">Pipework</span></li><li><span lang="tr">Kablo tavası</span><span lang="en">Cable trays</span></li><li><span lang="tr">Askı · bakım boşluğu</span><span lang="en">Hangers · clearances</span></li></ul><span class="k"><span lang="tr">Dosya adı</span><span lang="en">File name</span></span><code class="fn">PRJ-FAB-ZZ-XX-M3-M-0001</code><span class="k"><span lang="tr">Çıktı</span><span lang="en">Output</span></span><p><span lang="tr">Sistem şemaları, ekipman listesi, COBie.</span><span lang="en">Schematics, equipment register, COBie.</span></p></div>
+            <div class="dp" data-d="fed"><h4><span class="mono signal">FED</span> <span lang="tr">Federe model</span><span lang="en">Federated model</span></h4><span class="k"><span lang="tr">İçerik</span><span lang="en">Contains</span></span><ul class="tags"><li><span lang="tr">Üç disiplin, tek koordinat</span><span lang="en">Three disciplines, one origin</span></li><li><span lang="tr">Çakışma testi · BCF</span><span lang="en">Clash tests · BCF</span></li><li><span lang="tr">Haftalık güncelleme</span><span lang="en">Weekly refresh</span></li></ul><span class="k"><span lang="tr">Dosya adı</span><span lang="en">File name</span></span><code class="fn">PRJ-FAB-ZZ-XX-M3-Z-0001</code><span class="k"><span lang="tr">Çıktı</span><span lang="en">Output</span></span><p><span lang="tr">Koordinasyon raporu; ayrıntısı A-103’te.</span><span lang="en">Coordination report; details on A-103.</span></p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub" id="scan">
+      <div class="sub-head"><h3><span lang="tr">Scan-to-BIM: nokta bulutundan modele.</span><span lang="en">Scan-to-BIM: point cloud to model.</span></h3><p><span lang="tr">Kaydırın ya da oynatın; adımlar modelle ilerler.</span><span lang="en">Drag or press play; the steps follow the model.</span></p></div>
+      <div class="s2b">
+        <div class="s2b-vis">
+          <canvas id="s2b-model" aria-hidden="true"></canvas>
+          <span class="corner mono" id="s2b-corner">POINT CLOUD · E57</span>
+          <div class="s2b-ctl" id="s2b-ctl" hidden>
+            <button type="button" id="s2b-play"><span lang="tr">Oynat</span><span lang="en">Play</span></button>
+            <label for="s2b-range"><span lang="tr">Süreç adımı</span><span lang="en">Process step</span><input type="range" id="s2b-range" min="0" max="100" value="12" aria-valuetext="01"></label>
+          </div>
+        </div>
+        <ol class="s2b-steps" id="s2b-steps"><li data-a="0.0" data-b="0.18"><span class="sn">01</span><b><span lang="tr">Tarama</span><span lang="en">Scanning</span></b><code>E57 · RCP</code></li><li data-a="0.18" data-b="0.34"><span class="sn">02</span><b><span lang="tr">Kayıt ve temizlik</span><span lang="en">Registration, clean-up</span></b><code>RMS ≤ 3 mm</code></li><li data-a="0.34" data-b="0.6"><span class="sn">03</span><b><span lang="tr">Yapı ve mimari</span><span lang="en">Structure, architecture</span></b><code>LOA30</code></li><li data-a="0.6" data-b="0.86"><span class="sn">04</span><b><span lang="tr">MEP ve cephe</span><span lang="en">MEP, facade</span></b><code>LOD 300</code></li><li data-a="0.86" data-b="1.0"><span class="sn">05</span><b><span lang="tr">Sapma kontrolü</span><span lang="en">Deviation check</span></b><code>±15 mm</code></li></ol>
+      </div>
+      <div class="md-loa">
+        <span class="cap"><span lang="tr">Doğruluk sınıfı · USIBD LOA (2σ)</span><span lang="en">Accuracy class · USIBD LOA (2σ)</span></span>
+        <div class="track" role="list">
+          <div role="listitem"><i style="--d:4"></i><b>LOA10</b><span>&gt;50 mm</span></div>
+          <div role="listitem"><i style="--d:10"></i><b>LOA20</b><span>15–50</span></div>
+          <div role="listitem" class="tg"><i style="--d:20"></i><em><span lang="tr">model</span><span lang="en">model</span></em><b>LOA30</b><span>5–15</span></div>
+          <div role="listitem" class="tg"><i style="--d:34"></i><em><span lang="tr">tarama</span><span lang="en">scan</span></em><b>LOA40</b><span>1–5</span></div>
+          <div role="listitem"><i style="--d:52"></i><b>LOA50</b><span>0–1</span></div>
+        </div>
+        <div class="ends" aria-hidden="true"><span>← <span lang="tr">kaba</span><span lang="en">coarse</span></span><span><span lang="tr">hassas</span><span lang="en">precise</span> →</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="dl-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Teslimatlar</span><span lang="en">Deliverables</span></span>
+      <h2 id="dl-title"><span lang="tr">Elinize ne geçer?</span><span lang="en">What you receive</span></h2>
+      <p><span lang="tr">Dokuz dosya, dört teslim anı. Yerel dosyalar da sizindir.</span><span lang="en">Nine files, four moments. The native files are yours too.</span></p>
+    </div>
+    <div class="md-dlv">
+      <section aria-labelledby="dv1"><div class="st"><i></i><b id="dv1"><span lang="tr">Her teslimde</span><span lang="en">Every submission</span></b></div>
+        <ul>
+          <li><span class="md-file"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>RVT</span></span><small>M-01</small><b><span lang="tr">Disiplin modelleri</span><span lang="en">Discipline models</span></b></li>
+          <li><span class="md-file ifc"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>IFC 4</span></span><small>M-02</small><b><span lang="tr">Açık model</span><span lang="en">Open model</span></b></li>
+          <li><span class="md-file"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>BCF</span></span><small>M-07</small><b><span lang="tr">Denetim raporu</span><span lang="en">Audit report</span></b></li>
+        </ul>
+      </section>
+      <section aria-labelledby="dv2"><div class="st"><i></i><b id="dv2"><span lang="tr">Haftalık</span><span lang="en">Weekly</span></b></div>
+        <ul>
+          <li><span class="md-file"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>NWC</span></span><small>M-03</small><b><span lang="tr">Koordinasyon modeli</span><span lang="en">Coordination model</span></b></li>
+        </ul>
+      </section>
+      <section aria-labelledby="dv3"><div class="st"><i></i><b id="dv3"><span lang="tr">Aşama sonu</span><span lang="en">End of stage</span></b></div>
+        <ul>
+          <li><span class="md-file"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>PDF</span></span><small>M-04</small><b><span lang="tr">Pafta seti</span><span lang="en">Sheet set</span></b></li>
+          <li><span class="md-file"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>XLSX</span></span><small>M-05</small><b><span lang="tr">Metraj</span><span lang="en">Quantities</span></b></li>
+          <li><span class="md-file"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>E57</span></span><small>M-08</small><b><span lang="tr">Sapma raporu</span><span lang="en">Deviation report</span></b></li>
+        </ul>
+      </section>
+      <section aria-labelledby="dv4"><div class="st"><i></i><b id="dv4"><span lang="tr">Proje teslimi</span><span lang="en">Handover</span></b></div>
+        <ul>
+          <li><span class="md-file"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>RFA</span></span><small>M-06</small><b><span lang="tr">Aile kütüphanesi</span><span lang="en">Family library</span></b></li>
+          <li><span class="md-file ifc"><svg viewBox="0 0 64 78" aria-hidden="true"><use href="#md-i-file"/></svg><span>COBie</span></span><small>M-09</small><b><span lang="tr">As-built</span><span lang="en">As-built</span></b></li>
+        </ul>
+      </section>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="tl-title">
+    <div class="block-head">
+      <span class="no">05 · <span lang="tr">Süreç</span><span lang="en">Process</span></span>
+      <h2 id="tl-title"><span lang="tr">On iki haftada uygulama modeli.</span><span lang="en">A construction model in twelve weeks.</span></h2>
+      <p><span lang="tr">Örnek: 18 bin m² ofis, üç disiplin, LOD 350.</span><span lang="en">Example: 18,000 m² office, three disciplines, LOD 350.</span></p>
+    </div>
+    <div class="tl" style="--n:12">
+      <div class="tl-scale" aria-hidden="true"><span class="mono dim"><span lang="tr">Hafta</span><span lang="en">Week</span></span><div class="tl-ticks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>1</span><span lang="tr">Şablon ve kurulum</span><span lang="en">Template and setup</span></h3><span class="out">→ M-06</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:0;--l:1"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>2–4</span>LOD 200</h3><span class="out">→ M-01 · M-03</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:1;--l:3"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>4–8</span>LOD 300</h3><span class="out">→ M-01 · M-07</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:3;--l:5"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>8–10</span><span lang="tr">LOD 350 arayüzler</span><span lang="en">LOD 350 interfaces</span></h3><span class="out">→ M-02 · M-07</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar hot" style="--s:7;--l:3"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>9–11</span><span lang="tr">Pafta ve metraj</span><span lang="en">Sheets and quantities</span></h3><span class="out">→ M-04 · M-05</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar" style="--s:8;--l:3"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H</span><span lang="en">W</span>11–12</span><span lang="tr">Teslim</span><span lang="en">Handover</span></h3><span class="out">→ M-02 · M-09</span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar end" style="--s:10;--l:2"></span></div></div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="cs-title">
+    <div class="block-head">
+      <span class="no">06 · <span lang="tr">Örnek senaryo</span><span lang="en">Sample scenario</span></span>
+      <h2 id="cs-title"><span lang="tr">DWG’den modele.</span><span lang="en">From DWG to model.</span></h2>
+    </div>
+    <div class="case">
+      <div class="case-vis">
+        <span class="tag-ex"><span lang="tr">Örnek · kurgusal senaryo</span><span lang="en">Example · fictional scenario</span></span>
+        <h3><span lang="tr">25 kişilik ofis, 22 bin m² okul kampüsü.</span><span lang="en">A 25-person office, a 22,000 m² school campus.</span></h3>
+        <figure>
+          <svg class="md-ill" viewBox="0 0 360 170" role="img" aria-labelledby="cs-svg-t"><title id="cs-svg-t">Önce: üç ekip ayrı 2B pafta çiziyor. Sonra: tek model, paftalar modelden / Before: three teams drawing separate 2D sheets. After: one model, sheets from the model</title>
+            <text x="70" y="14" text-anchor="middle"><tspan lang="tr">ÖNCE</tspan><tspan lang="en">BEFORE</tspan></text>
+            <g transform="rotate(-8 34 80)"><path class="f1 ln" d="M12 40h44v58H12z"/><path class="rl" d="M18 52h32M18 62h32M18 72h22"/></g>
+            <g transform="rotate(5 76 86)"><path class="f1 ln" d="M54 46h44v58H54z"/><path class="rl" d="M60 58h32M60 68h32M60 78h22"/></g>
+            <g transform="rotate(-3 114 78)"><path class="f1 ln" d="M92 38h44v58H92z"/><path class="rl" d="M98 50h32M98 60h32M98 70h22"/></g>
+            <text x="30" y="128" text-anchor="middle">ARC</text><text x="76" y="128" text-anchor="middle">STR</text><text x="116" y="128" text-anchor="middle">MEP</text>
+            <path class="sg" d="M48 30l6 6m0-6l-6 6M92 26l6 6m0-6l-6 6"/>
+            <text class="ts" x="70" y="152" text-anchor="middle">≠</text>
+            <path class="ln" d="M152 85h40M184 79l8 6-8 6"/>
+            <text x="270" y="14" text-anchor="middle"><tspan lang="tr">SONRA</tspan><tspan lang="en">AFTER</tspan></text>
+            <path class="f1 ln" d="M246 40l30 17-30 17-30-17z"/><path class="f3 ln" d="M216 57l30 17v44l-30-17z"/><path class="f2 ln" d="M276 57l-30 17v44l30-17z"/>
+            <path class="rl" d="M216 72l30 17 30-17M216 87l30 17 30-17"/>
+            <path class="dsh" d="M282 92l18-6"/>
+            <path class="f1 ln" d="M304 62h40v52h-40z"/><path class="f1 ln" d="M300 66h40v52h-40z"/><path class="rl" d="M306 78h28M306 88h28M306 98h18"/>
+            <circle class="okl" cx="340" cy="128" r="10"/><path class="okl" d="M335 128l4 4 6-7"/>
+            <text class="to" x="270" y="152" text-anchor="middle"><tspan lang="tr">1 MODEL</tspan><tspan lang="en">1 MODEL</tspan></text>
+          </svg>
+        </figure>
+        <div class="case-stats">
+          <div><b>312</b><span><span lang="tr">DWG pafta, önce</span><span lang="en">DWG sheets, before</span></span></div>
+          <div><b>288</b><span><span lang="tr">Pafta, modelden</span><span lang="en">Sheets from model</span></span></div>
+          <div><b>140</b><span><span lang="tr">Aile, kalıcı</span><span lang="en">Families, kept</span></span></div>
+        </div>
+      </div>
+      <figure class="ba" aria-labelledby="ba-t" style="margin:0">
+        <div class="ba-head"><span id="ba-t"><span lang="tr">Önce / sonra</span><span lang="en">Before / after</span></span><span class="ba-key" aria-hidden="true"><span><i class="b"></i><span lang="tr">Önce</span><span lang="en">Before</span></span><span><i class="a"></i><span lang="tr">Sonra</span><span lang="en">After</span></span></span></div>
+        <ul><li><div class="lbl"><b><span lang="tr">Pafta başına süre</span><span lang="en">Time per sheet</span></b><span class="d"><span lang="tr">−%58</span><span lang="en">−58%</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100%"></i><span><span lang="tr">6,2 saat</span><span lang="en">6.2 h</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:42%"></i><span><span lang="tr">2,6 saat</span><span lang="en">2.6 h</span></span></span></div></li><li><div class="lbl"><b><span lang="tr">Sahada RFI</span><span lang="en">Site RFIs</span></b><span class="d"><span lang="tr">−%71</span><span lang="en">−71%</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100%"></i><span>84</span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:29%"></i><span>24</span></span></div></li><li><div class="lbl"><b><span lang="tr">Metraj sapması</span><span lang="en">Quantity variance</span></b><span class="d"><span lang="tr">−6,5 puan</span><span lang="en">−6.5 pts</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100%"></i><span><span lang="tr">%8,5</span><span lang="en">8.5%</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:24%"></i><span><span lang="tr">%2,0</span><span lang="en">2.0%</span></span></span></div></li></ul>
+        <figcaption class="ba-foot mono dim"><span lang="tr">Örnek değerler</span><span lang="en">Sample values</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="kp-title">
+    <div class="block-head">
+      <span class="no">07 · <span lang="tr">Çıktılar</span><span lang="en">Outcomes</span></span>
+      <h2 id="kp-title"><span lang="tr">Her teslimde dört ölçü.</span><span lang="en">Four checks at every delivery.</span></h2>
+      <p><span lang="tr">Tipik hedef değerler (örnek).</span><span lang="en">Typical target values (examples).</span></p>
+    </div>
+    <div class="md-kpi">
+      <div>
+        <svg class="md-ill" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--rule)" stroke-width="12"/><circle cx="60" cy="60" r="46" fill="none" stroke="var(--ok)" stroke-width="12" stroke-dasharray="283.2 289" transform="rotate(-90 60 60)"/><path class="ln" d="M44 50h32M44 60h32M44 70h20"/></svg>
+        <span class="v ok"><span lang="tr"><span class="u">%</span><span data-count="98">98</span></span><span lang="en"><span data-count="98">98</span><span class="u">%</span></span></span>
+        <span class="k"><span lang="tr">Parametre doluluğu</span><span lang="en">Parameters filled</span></span>
+      </div>
+      <div>
+        <svg class="md-ill" viewBox="0 0 120 120" aria-hidden="true"><path d="M8 44h104M8 76h104" class="dsh"/><path class="th" d="M8 60c20-4 30 5 52 0s34-4 52 0"/><path class="dots" d="M14 55h.01M24 66h.01M34 52h.01M44 64h.01M54 57h.01M66 66h.01M76 54h.01M86 62h.01M96 51h.01M106 64h.01M30 72h.01M70 48h.01" style="color:var(--ink-2)"/><path class="sg" d="M112 44v32M108 44h8M108 76h8"/></svg>
+        <span class="v"><span class="u">±</span><span data-count="15">15</span><span class="u">mm</span></span>
+        <span class="k"><span lang="tr">Scan-to-BIM sapması</span><span lang="en">Scan-to-BIM deviation</span></span>
+      </div>
+      <div>
+        <svg class="md-ill" viewBox="0 0 120 120" aria-hidden="true"><path class="f2 ln" d="M50 8h20v104H50z"/><path class="ln" d="M8 82h40M72 82h40M8 96h104"/><circle class="okl" cx="60" cy="82" r="8"/><path class="ln" d="M48 82h24" stroke-dasharray="3 3"/><circle class="okl" cx="92" cy="40" r="14"/><path class="okl" d="M85 40l5 5 9-10"/></svg>
+        <span class="v ok"><span data-count="0">0</span></span>
+        <span class="k"><span lang="tr">Kritik çakışma</span><span lang="en">Critical clashes</span></span>
+      </div>
+      <div>
+        <svg class="md-ill" viewBox="0 0 120 120" aria-hidden="true"><path class="rl" d="M10 96h100"/><path d="M16 96V40M30 96V54M44 96V66M58 96V76M72 96V84M86 96V88M100 96V90" stroke="var(--ink)" stroke-width="8"/><path class="dsh" d="M8 60h104" style="stroke:var(--signal);stroke-dasharray:5 4"/><text class="ts" x="112" y="54" text-anchor="end">150</text></svg>
+        <span class="v"><span class="u">&lt;</span><span data-count="150">150</span></span>
+        <span class="k"><span lang="tr">Model uyarısı</span><span lang="en">Model warnings</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="fq-title">
+    <div class="block-head">
+      <span class="no">08 · <span lang="tr">Sık sorulanlar</span><span lang="en">FAQ</span></span>
+      <h2 id="fq-title"><span lang="tr">Dört kısa soru.</span><span lang="en">Four short questions.</span></h2>
+    </div>
+    <div class="faq">
+      <details><summary><span class="q"><span lang="tr">LOD ile LOIN arasındaki fark nedir?</span><span lang="en">What is the difference between LOD and LOIN?</span></span></summary><div class="a"><p><span lang="tr">LOD tek bir olgunluk sayısıdır. LOIN (ISO 7817-1) geometri, bilgi ve dokümanı amaç, aşama ve aktöre göre ayrı ayrı tanımlar.</span><span lang="en">LOD is a single maturity number. LOIN (ISO 7817-1) defines geometry, information and documents separately, by purpose, milestone and actor.</span></p></div></details>
+      <details><summary><span class="q"><span lang="tr">Her şeyi LOD 400 modellemek daha güvenli değil mi?</span><span lang="en">Is it not safer to model everything at LOD 400?</span></span></summary><div class="a"><p><span lang="tr">Hayır. 400, 300’e göre 4–8 kat süre ister; bunu yalnızca imalat çizimi gereken elemanlara veririz.</span><span lang="en">No. LOD 400 takes four to eight times as long as 300, so we give it only to elements that need shop drawings.</span></p></div></details>
+      <details><summary><span class="q"><span lang="tr">Kendi Revit şablonumuzla çalışabilir misiniz?</span><span lang="en">Can you work in our own Revit template?</span></span></summary><div class="a"><p><span lang="tr">Evet, tercih ettiğimiz yol budur. Sizin CDE’nizde ve sizin isimlendirmenizle çalışırız.</span><span lang="en">Yes, that is our preferred way. We work in your CDE and to your naming.</span></p></div></details>
+      <details><summary><span class="q"><span lang="tr">Model kimin olur?</span><span lang="en">Who owns the model?</span></span></summary><div class="a"><p><span lang="tr">Varsayılan olarak model ve aileler teslimde size devredilir. Haklar BEP ile birlikte bilgi protokolüne yazılır.</span><span lang="en">By default the model and families are transferred to you at handover. The rights are written into the information protocol alongside the BEP.</span></p></div></details>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="nx-title" style="border-bottom:0;padding-bottom:0">
+    <div class="block-head">
+      <span class="no">09 · <span lang="tr">Devam</span><span lang="en">Continue</span></span>
+      <h2 id="nx-title"><span lang="tr">Sahada nasıl göründü?</span><span lang="en">What it looked like on a project</span></h2>
+    </div>
+    <a class="sv-related" href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi">
+      <div class="pv"><svg viewBox="0 0 320 200" fill="none" aria-hidden="true">
+  <g stroke="currentColor" stroke-width="1.4">
+    <path d="M120 40 170 15 220 40V170L170 195 120 170Z" opacity=".9"/>
+    <path d="M120 40 170 65 220 40M170 65V195"/>
+    <path d="M120 66 170 91 220 66M120 92 170 117 220 92M120 118 170 143 220 118M120 144 170 169 220 144" opacity=".55"/>
+    <path d="M60 170 170 115 280 170 170 225" opacity=".25" stroke-dasharray="3 4"/>
+  </g>
+  <path d="M120 92 170 117 220 92 170 67Z" fill="var(--signal)" opacity=".18"/>
+  <g font-family="JetBrains Mono, monospace" font-size="10" fill="currentColor" letter-spacing=".08em"><text x="232" y="96">TYP</text><text x="232" y="44">ROOF</text><text x="232" y="172">GF</text></g>
+</svg><span class="mono">A-220 · LOD 300 · 408</span></div>
+      <div class="body">
+        <span class="mono dim"><span lang="tr">İlgili proje · örnek vaka</span><span lang="en">Related project · sample case</span></span>
+        <h3><span lang="tr">Örnek Konut Kulesi</span><span lang="en">Sample Residential Tower</span></h3>
+        <p><span lang="tr">24 kat, 16 hafta, modelden 408 pafta.</span><span lang="en">24 storeys, 16 weeks, 408 sheets from the model.</span></p>
+        <span class="go"><span lang="tr">Vaka çalışmasını aç</span><span lang="en">Open the case study</span> →</span>
+      </div>
+    </a>
+    <nav class="sv-pn" aria-label="Hizmet paftaları / Service sheets">
+      <a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="n">← <span lang="tr">Önceki</span><span lang="en">Previous</span> · A-101</span><b><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></b><small><span lang="tr">EIR, BEP, ISO 19650</span><span lang="en">EIR, BEP, ISO 19650</span></small></a>
+      <a class="nx" href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span class="n"><span lang="tr">Sonraki</span><span lang="en">Next</span> · A-103 →</span><b><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></b><small><span lang="tr">Federe model, çakışma, BCF</span><span lang="en">Federated model, clashes, BCF</span></small></a>
+    </nav>
+    <div class="sv-end">
+      <a class="back" href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">← A-100 · <span lang="tr">Tüm hizmetler</span><span lang="en">All services</span></a>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">LOIN tablosu için görüşelim</span><span lang="en">Talk to us about a LOIN table</span></a>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* LOD gezgini: CSS :has ile çalışır; JS yalnızca Home/End kısayolu ekler */
+  var lod = document.querySelector('.lod');
+  if (lod) {
+    lod.addEventListener('keydown', function (e) {
+      if (e.target.name !== 'lod') return;
+      if (e.key === 'Home' || e.key === 'End') {
+        var r = lod.querySelectorAll('input[name=lod]'), t = r[e.key === 'Home' ? 0 : r.length - 1];
+        t.checked = true; t.focus(); e.preventDefault();
+      }
+    });
+  }
+
+  if (!window.BIMModel) return;
+
+  /* Disiplin modeli */
+  var dc = document.getElementById('disc-model');
+  var dm = dc && BIMModel.mount(dc, { bays: [4, 3], floors: 5, stage: 1, seed: 11, rot: .18, clash: false, labels: true, layers: { arc: true, str: false, mep: false } });
+  var corner = document.getElementById('disc-corner');
+  function setDisc() {
+    var v = (document.querySelector('input[name=disc]:checked') || {}).value || 'arc';
+    var L3 = { arc: v === 'arc' || v === 'fed', str: v === 'str' || v === 'fed', mep: v === 'mep' || v === 'fed' };
+    if (dm) dm.set({ layers: L3, clash: v === 'fed' });
+    if (corner) corner.textContent = v.toUpperCase() + ' · 3D';
+  }
+  document.querySelectorAll('input[name=disc]').forEach(function (r) { r.addEventListener('change', setDisc); });
+  setDisc();
+
+  /* Scan-to-BIM */
+  var sc = document.getElementById('s2b-model');
+  var sm = sc && BIMModel.mount(sc, { bays: [5, 3], floors: 3, stage: .12, seed: 23, rot: -.2, clash: false, labels: true });
+  var ctl = document.getElementById('s2b-ctl'), rg = document.getElementById('s2b-range'), play = document.getElementById('s2b-play');
+  var steps = [].slice.call(document.querySelectorAll('#s2b-steps li'));
+  var sCorner = document.getElementById('s2b-corner');
+  var CORN = ['POINT CLOUD · E57', 'REGISTERED · RMS 2.4 mm', 'ARC + STR · LOA30', 'MEP + FACADE · LOD 300', 'DEVIATION · ±15 mm'];
+  if (ctl) ctl.hidden = false;
+  function show(t) {
+    if (sm) sm.set({ stage: t });
+    var idx = 0;
+    steps.forEach(function (li, i) { var a = +li.dataset.a, b = +li.dataset.b; if (t >= a && (t < b || i === steps.length - 1)) idx = i; });
+    steps.forEach(function (li, i) { li.classList.toggle('on', i === idx); });
+    if (sCorner) sCorner.textContent = CORN[idx];
+    if (rg) rg.setAttribute('aria-valuetext', '0' + (idx + 1) + ' · ' + steps[idx].querySelector('b').textContent);
+  }
+  if (rg) rg.addEventListener('input', function () { show(rg.value / 100); });
+  var playing = false;
+  if (play) play.addEventListener('click', function () {
+    if (playing) return;
+    if (reduce) { rg.value = 100; show(1); return; }
+    playing = true;
+    var t0 = performance.now(), from = rg.value >= 99 ? 0 : rg.value / 100, dur = 7000 * (1 - from);
+    (function step(now) {
+      var p = Math.min(1, (now - t0) / dur), t = from + (1 - from) * p;
+      rg.value = Math.round(t * 100); show(t);
+      if (p < 1) requestAnimationFrame(step); else playing = false;
+    })(t0);
+  });
+  show(rg ? rg.value / 100 : .12);
+  document.addEventListener('langchange', function () { show(rg ? rg.value / 100 : .12); });
+})();
+</script>

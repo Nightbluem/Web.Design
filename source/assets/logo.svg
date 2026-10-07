@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <title>Firma Adı BIM logo</title>
+  <!-- Vizör köşeleri: model görünümü / çalışma alanı -->
+  <g stroke="#2f6fc0" stroke-width="4">
+    <path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94"/>
+  </g>
+  <!-- Kesikli izometrik altıgen: yapı modeli sınırı -->
+  <path d="M60 22 92.9 41v38L60 98 27.1 79V41Z" stroke="#2f6fc0" stroke-width="2" stroke-dasharray="4 5" opacity=".55"/>
+  <!-- Kod ayraçları -->
+  <g stroke="#2f6fc0" stroke-width="5">
+    <path d="M42 47 32 60l10 13M78 47l10 13-10 13"/>
+  </g>
+  <!-- Ortadaki izometrik küp: BIM -->
+  <path d="M60 48 70.4 54v12L60 72 49.6 66V54Z" stroke="#2f6fc0" stroke-width="3"/>
+  <path d="M49.6 54 60 60l10.4-6M60 60v12" stroke="#2f6fc0" stroke-width="3"/>
+  <path d="M60 48 70.4 54 60 60 49.6 54Z" fill="#2f6fc0" opacity=".25"/>
+  <!-- Veri düğümleri: bağlı ekipler -->
+  <g stroke="#2f6fc0" stroke-width="2.5">
+    <path d="M110 52h8M110 68h8M124 52l8-8"/>
+    <circle cx="121" cy="52" r="3"/>
+    <circle cx="121" cy="68" r="3"/>
+    <circle cx="134.5" cy="41.5" r="2.5"/>
+  </g>
+</svg>

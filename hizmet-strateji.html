@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIM stratejisi | Firma Adı BIM</title>
+<meta name="description" content="BIM olgunluk değerlendirmesi, OIR/AIR/PIR ve EIR yazımı, ön ve sözleşme sonrası BEP, MIDP/TIDP ve ISO 19650 yol haritası. Kendi olgunluğunuzu ölçün.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BIM stratejisi | Firma Adı BIM">
+<meta property="og:description" content="BIM olgunluk değerlendirmesi, OIR/AIR/PIR ve EIR yazımı, ön ve sözleşme sonrası BEP, MIDP/TIDP ve ISO 19650 yol haritası. Kendi olgunluğunuzu ölçün.">
+<meta property="og:url" content="https://www.firmaadi.com/hizmet-strateji.html">
+<meta property="og:image" content="https://www.firmaadi.com/assets/logo.png">
+<link rel="canonical" href="https://www.firmaadi.com/hizmet-strateji.html">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+/* ---- Hizmet alt paftası: ortak iskelet ---- */
+.back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 4px; justify-self: start; }
+.back:hover, .back:focus-visible { color: var(--signal); border-color: var(--signal); }
+.sv-spec { margin: 0; }
+.sv-spec dd { font-size: clamp(17px, 1.7vw, 22px); }
+.sv-spec dd small { display: block; margin-top: 6px; font: 500 11px/1.4 var(--mono); letter-spacing: .04em; color: var(--ink-2); }
+.sv-note { font-size: 14px; color: var(--ink-2); margin-top: 14px; max-width: 80ch; }
+
+/* ---- A-101 · çizim dili (satır içi SVG) ---- */
+.st-ill { color: var(--ink); overflow: visible; }
+.st-ill .pf { fill: var(--paper); }
+.st-ill .p2 { fill: var(--paper-2); }
+.st-ill .fi { fill: currentColor; stroke: none; }
+.st-ill .sf { fill: var(--signal); stroke: none; }
+.st-ill .of { fill: var(--ok); stroke: none; }
+.st-ill .ss { stroke: var(--signal); }
+.st-ill .os { stroke: var(--ok); }
+.st-ill .rs { stroke: var(--rule); }
+.st-ill .ck { stroke: var(--paper); stroke-width: 2.2; fill: none; }
+.st-ill .lt { stroke-opacity: .5; }
+.st-ill .tw { stroke: none; fill: var(--on-signal); font: 700 15px var(--mono); }
+.st-ill .t9 { font-size: 11px; }
+
+/* başlık */
+.st-head h1 { font-size: clamp(44px, 10vw, 160px); }
+.st-head h1 .s { color: var(--signal); }
+.st-hero { margin: 8px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--ink); background: var(--paper); }
+.st-hero > div { position: relative; display: grid; gap: 8px; justify-items: center; align-content: start; text-align: center; padding: clamp(14px, 2vw, 26px) clamp(8px, 1.5vw, 20px); border-right: 1px solid var(--rule); min-width: 0; }
+.st-hero > div:last-child { border-right: 0; }
+.st-hero > div:not(:last-child)::after { content: "→"; position: absolute; right: -13px; top: 38%; width: 24px; height: 24px; display: grid; place-items: center; background: var(--paper); border: 1px solid var(--ink); font: 600 13px/1 var(--mono); color: var(--signal); z-index: 1; }
+.st-hero svg { width: 100%; max-width: 230px; height: auto; }
+.st-hero .n { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.st-hero b { font: 700 clamp(15px, 1.8vw, 26px)/1.1 var(--display); font-stretch: 112%; letter-spacing: -.01em; }
+.st-hero small { font: 500 11px/1.4 var(--mono); letter-spacing: .04em; color: var(--ink-2); }
+@media (max-width: 560px) { .st-hero > div { padding: 12px 6px 14px; } .st-hero > div:not(:last-child)::after { width: 20px; height: 20px; right: -11px; font-size: 11px; } .st-hero small { display: none; } }
+
+/* 01 · tetikleyiciler */
+.st-trig { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.st-trig li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 6px 16px; align-items: start; padding: 22px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; transition: background .2s; }
+.st-trig li:hover { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+.st-trig svg { width: 56px; height: 56px; grid-row: span 2; }
+.st-trig q { font: 700 clamp(17px, 1.45vw, 20px)/1.3 var(--display); font-stretch: 104%; quotes: "“" "”"; }
+.st-trig .to { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.st-trig .to b { color: var(--signal); font-weight: 600; }
+@media (max-width: 1000px) { .st-trig { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .st-trig { grid-template-columns: 1fr; } .st-trig li { padding: 18px 12px; grid-template-columns: 48px minmax(0, 1fr); } .st-trig svg { width: 48px; height: 48px; } }
+
+/* 02 · kapsam zinciri */
+.st-chain { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; counter-reset: ch; }
+.st-chain > li { counter-increment: ch; position: relative; display: grid; grid-template-rows: auto auto 1fr; gap: 12px; padding: 0 clamp(10px, 1.6vw, 22px) 0 0; min-width: 0; }
+.st-chain .ic { position: relative; display: grid; place-items: center; height: 120px; border: 1px solid var(--ink); background: var(--paper); }
+.st-chain .ic svg { width: 72px; height: 72px; }
+.st-chain .ic::before { content: counter(ch, decimal-leading-zero); position: absolute; left: 8px; top: 6px; font: 600 11px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.st-chain > li:not(:last-child) .ic::after { content: ""; position: absolute; right: calc(-1 * clamp(10px, 1.6vw, 22px) - 1px); top: 50%; width: clamp(10px, 1.6vw, 22px); border-top: 1.5px solid var(--ink); }
+.st-chain h3 { font-size: clamp(20px, 2vw, 28px); font-stretch: 114%; letter-spacing: -.015em; }
+.st-chain ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; align-content: start; }
+.st-chain ul li { font: 500 12.5px/1.35 var(--mono); letter-spacing: .02em; border-left: 2px solid var(--rule); padding: 2px 0 2px 9px; }
+.st-chain > li:nth-child(3) .ic { background: var(--ink); color: var(--paper); }
+.st-chain > li:nth-child(3) .ic svg { color: var(--paper); }
+.st-chain > li:nth-child(3) .ic .pf { fill: var(--ink); }
+@media (max-width: 900px) {
+  .st-chain { grid-template-columns: 1fr; gap: 18px; }
+  .st-chain > li { grid-template-columns: 96px minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 6px 16px; padding: 0; }
+  .st-chain .ic { grid-row: span 2; height: 96px; }
+  .st-chain .ic svg { width: 56px; height: 56px; }
+  .st-chain > li:not(:last-child) .ic::after { right: auto; left: 50%; top: auto; bottom: -19px; width: 0; height: 18px; border-top: 0; border-left: 1.5px solid var(--ink); }
+}
+
+/* 03 · olgunluk öz değerlendirmesi */
+.mat { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: clamp(24px, 3.4vw, 52px); align-items: start; }
+.mat > * { min-width: 0; }
+.mat-form { display: grid; gap: 0; border-top: 1px solid var(--ink); }
+.mq { margin: 0; padding: 18px 0 20px; border: 0; border-bottom: 1px solid var(--rule); min-width: 0; }
+.mq legend { padding: 0; margin-bottom: 12px; display: grid; gap: 4px; float: left; width: 100%; }
+.mq legend + * { clear: both; }
+.mq .qn { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.mq .qt { font: 700 clamp(17px, 1.5vw, 21px)/1.25 var(--display); font-stretch: 106%; letter-spacing: -.01em; }
+.opts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.opts label { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; align-content: start; padding: 10px 10px 12px; border: 1px solid var(--rule); background: var(--paper); cursor: pointer; font-size: 14px; line-height: 1.38; transition: border-color .15s, background .15s, color .15s; min-width: 0; }
+.opts label:hover { border-color: var(--ink); }
+.opts input { margin: 2px 0 0; accent-color: var(--signal); width: 15px; height: 15px; }
+.opts .lv { font: 600 11px/1.6 var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.opts .tx { grid-column: 1 / -1; }
+.opts label:has(input:checked) { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.opts label:has(input:checked) .lv { color: var(--signal); }
+.opts label:has(input:focus-visible) { outline: 2px solid var(--signal); outline-offset: 2px; }
+@media (max-width: 1180px) { .opts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 460px) { .opts { grid-template-columns: 1fr; } .opts label { grid-template-columns: auto auto minmax(0, 1fr); } .opts .tx { grid-column: 3; } }
+.mat-res { position: sticky; top: 84px; border: 1px solid var(--ink); background: var(--paper); }
+.mr-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+.mr-top .live { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); }
+.mr-top .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
+.mr-score { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; align-items: end; padding: 16px; border-bottom: 1px solid var(--rule); }
+.mr-lvl { font: 800 clamp(64px, 7vw, 104px)/.8 var(--display); font-stretch: 125%; letter-spacing: -.04em; grid-row: span 2; }
+.mr-lvl small { display: block; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 8px; }
+.mr-name { font: 700 clamp(20px, 2vw, 26px)/1.1 var(--display); font-stretch: 112%; }
+.mr-pct { display: grid; gap: 6px; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.mr-pct b { color: var(--ink); font-weight: 600; }
+.mr-meter { position: relative; height: 10px; border: 1px solid var(--ink); }
+.mr-meter i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--p, 33%); background: var(--signal); transition: width .4s cubic-bezier(.2,.7,.2,1); }
+.mr-meter::after { content: ""; position: absolute; left: 66.67%; top: -4px; bottom: -4px; width: 1px; background: var(--ink); }
+.mr-radar { padding: 10px 12px 0; }
+.mr-radar svg { display: block; width: 100%; height: auto; max-width: 420px; margin-inline: auto; }
+.rd-ring { fill: none; stroke: var(--rule); }
+.rd-ring.r3 { stroke: var(--ink-2); }
+.rd-ax { stroke: var(--rule); }
+.rd-tgt { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.rd-cur { fill: color-mix(in srgb, var(--signal) 18%, transparent); stroke: var(--signal); stroke-width: 2; stroke-linejoin: round; transition: all .35s cubic-bezier(.2,.7,.2,1); }
+.rd-pt { fill: var(--signal); }
+.rd-lb { font: 500 11px var(--mono); fill: var(--ink-2); letter-spacing: .04em; text-transform: uppercase; }
+.rd-lb.weak { fill: var(--signal); font-weight: 600; }
+.rd-rv { font: 500 9.5px var(--mono); fill: var(--ink-2); }
+.mr-key { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; padding: 4px 16px 12px; font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.mr-key span { display: inline-flex; align-items: center; gap: 6px; }
+.mr-key i { width: 18px; height: 0; border-top: 2px solid var(--signal); }
+.mr-key i.t { border-top: 1.5px dashed var(--ink); }
+.mr-sum { padding: 12px 16px; border-top: 1px solid var(--rule); font-size: 14.5px; color: var(--ink-2); }
+.mr-recs { padding: 14px 16px 16px; border-top: 1px solid var(--rule); }
+.mr-recs h3 { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 8px; }
+.mr-recs ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.mr-recs a { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 2px 10px; padding: 10px; border: 1px solid var(--rule); text-decoration: none; font-size: 14px; line-height: 1.4; transition: background .2s, color .2s, border-color .2s; }
+.mr-recs a:hover, .mr-recs a:focus-visible { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.mr-recs a .n { font: 600 11px/1.6 var(--mono); color: var(--signal); letter-spacing: .06em; grid-row: span 2; }
+.mr-recs a b { font: 700 15px/1.2 var(--display); font-stretch: 108%; }
+.mr-btns { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 16px; }
+.mr-btns button { font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; border: 1px solid var(--ink); background: transparent; color: var(--ink); padding: 8px 10px; cursor: pointer; }
+.mr-btns button:hover { background: var(--ink); color: var(--paper); }
+.mat-mini { display: none; }
+@media (max-width: 999px) {
+  .mat { grid-template-columns: 1fr; }
+  .mat-res { position: static; }
+  .mat-mini { display: flex; justify-content: space-between; align-items: center; gap: 12px; position: sticky; top: 66px; z-index: 4; padding: 10px 12px; background: var(--ink); color: var(--paper); font: 600 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; text-decoration: none; }
+  .mat-mini b { color: var(--signal); font-weight: 600; }
+}
+/* seviye merdiveni */
+.levels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; margin-top: clamp(36px, 5vw, 56px); border-bottom: 1.5px solid var(--ink); }
+.levels > div { display: grid; gap: 4px; align-content: end; min-width: 0; }
+.levels > div > :not(.stp) { padding-right: 12px; }
+.levels .lno { font: 800 clamp(30px, 3vw, 44px)/1 var(--display); font-stretch: 125%; transition: color .25s; }
+.levels b { font: 700 clamp(15px, 1.5vw, 19px)/1.15 var(--display); font-stretch: 108%; }
+.levels small { font: 500 11px/1.4 var(--mono); letter-spacing: .04em; color: var(--ink-2); }
+.levels .stp { display: block; margin-top: 10px; height: calc(16px + var(--h) * 26px); border: 1px solid var(--ink); border-bottom: 0; background: repeating-linear-gradient(135deg, transparent 0 7px, var(--rule) 7px 8px); transition: background .25s, border-color .25s; }
+.levels > div + div .stp { border-left: 0; }
+.levels > div.on .stp { background: var(--signal); border-color: var(--signal); }
+.levels > div.on .lno { color: var(--signal); }
+@media (max-width: 560px) { .levels { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 18px; } .levels > div:nth-child(3) .stp { border-left: 1px solid var(--ink); } }
+
+/* bilgi gereksinimleri hiyerarşisi */
+.ir { margin: clamp(48px, 6vw, 88px) 0 0; }
+.ir-head { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 10px 24px; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+.ir-head h3 { font-size: clamp(24px, 3vw, 40px); font-stretch: 114%; letter-spacing: -.02em; }
+.ir-fig { border: 1px solid var(--ink); border-top: 0; background: var(--paper); padding: 12px clamp(8px, 2vw, 20px); }
+.ir-fig svg { display: block; width: 100%; height: auto; }
+.ir-fig .ir-m { display: none; max-width: 420px; margin-inline: auto; }
+@media (max-width: 760px) { .ir-fig .ir-d { display: none; } .ir-fig .ir-m { display: block; } }
+.hn rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.3; transition: fill .2s, stroke .2s; }
+.hn .hc { font: 800 22px var(--display); font-stretch: 125%; fill: var(--ink); letter-spacing: -.01em; }
+.hn .hs { font: 500 10.5px var(--mono); fill: var(--ink-2); letter-spacing: .03em; text-transform: uppercase; }
+.hn.lvl rect { fill: var(--paper-2); }
+.hn.model rect { stroke-dasharray: 5 3; }
+.hn.hl rect { fill: var(--ink); stroke: var(--ink); }
+.hn.hl .hc { fill: var(--signal); }
+.hn.hl .hs { fill: var(--paper); }
+.ir-fig .ar { fill: none; stroke: var(--ink); stroke-width: 1.3; }
+.ir-fig .ar.d { stroke-dasharray: 4 3; stroke: var(--ink-2); }
+.ir-fig .ah { fill: var(--ink); }
+.ir-fig .at { font: 500 10px var(--mono); fill: var(--ink-2); letter-spacing: .04em; text-transform: uppercase; }
+.ir-fig .lane { font: 600 10.5px var(--mono); fill: var(--signal); letter-spacing: .08em; text-transform: uppercase; }
+.ir-fig .lane-l { stroke: var(--rule); stroke-dasharray: 2 4; }
+.ir-defs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 1px solid var(--rule); margin-top: 24px; border-top: 1px solid var(--ink); }
+.ir-defs > div { padding: 14px 16px 16px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 4px; align-content: start; min-width: 0; cursor: default; transition: background .2s; }
+.ir-defs > div:hover, .ir-defs > div:focus-visible, .ir-defs > div.hl { background: color-mix(in srgb, var(--signal) 8%, transparent); }
+.ir-defs > div:focus-visible { outline-offset: -3px; }
+.ir-defs .top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.ir-defs b { font: 800 22px/1 var(--display); font-stretch: 125%; }
+.ir-defs .ref { font: 500 10.5px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--signal); }
+.ir-defs .full { font: 500 11px var(--mono); letter-spacing: .03em; color: var(--ink-2); }
+.ir-defs p { font-size: 14.5px; line-height: 1.4; }
+@media (max-width: 1000px) { .ir-defs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .ir-defs { grid-template-columns: 1fr; } }
+
+/* 04 · teslimat dosyaları */
+.st-docs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.st-docs li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 4px 16px; align-items: center; padding: 18px 18px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.st-docs svg { width: 52px; height: 65px; grid-row: span 3; }
+.st-docs .c { font: 600 11px var(--mono); letter-spacing: .06em; color: var(--signal); }
+.st-docs b { font: 700 clamp(16px, 1.4vw, 19px)/1.2 var(--display); font-stretch: 108%; }
+.st-docs .m { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font: 500 11px var(--mono); letter-spacing: .04em; color: var(--ink-2); }
+.st-docs .m code { font: 600 10.5px/1 var(--mono); letter-spacing: .06em; border: 1px solid var(--ink); color: var(--ink); padding: 3px 5px; }
+.st-docs .m .w { margin-left: 6px; }
+.st-docs li.key { background: color-mix(in srgb, var(--signal) 7%, transparent); }
+@media (max-width: 1000px) { .st-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .st-docs { grid-template-columns: 1fr; } .st-docs li { padding: 14px 12px; } }
+
+/* 05 · süreç (hafta ölçekli) */
+.tl { border-top: 1px solid var(--ink); }
+.tl-scale, .tl-row { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; }
+.tl-scale { padding-block: 10px; }
+.tl-ticks { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); font: 500 10.5px var(--mono); letter-spacing: .06em; color: var(--ink-2); }
+.tl-ticks span { border-left: 1px solid var(--rule); padding-left: 5px; }
+.tl-row { padding-block: 14px; border-bottom: 1px solid var(--rule); align-items: center; }
+.tl-row > * { min-width: 0; }
+.tl-row h3 { font-size: 19px; font-stretch: 110%; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.tl-row h3 .mono { color: var(--signal); }
+.tl-row .out { display: inline-block; margin-top: 6px; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; border-left: 2px solid var(--signal); padding-left: 8px; }
+.tl-track { position: relative; height: 34px; background-image: linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: calc(100% / var(--n)) 100%; border-right: 1px solid var(--rule); }
+.tl-bar { position: absolute; top: 8px; bottom: 8px; left: calc(var(--s) * 100% / var(--n)); width: calc(var(--l) * 100% / var(--n)); background: var(--ink); }
+.tl-bar.hot { background: var(--signal); }
+.tl-bar.end { background: var(--ok); }
+.tl-bar::before, .tl-bar::after { content: ""; position: absolute; top: -8px; bottom: -8px; width: 1px; background: var(--ink); }
+.tl-bar::before { left: 0; } .tl-bar::after { right: -1px; }
+@media (max-width: 760px) {
+  .tl-scale { display: none; }
+  .tl-row { grid-template-columns: 1fr; gap: 8px; }
+  .tl-track { height: 22px; }
+  .tl-bar { top: 6px; bottom: 6px; }
+}
+
+/* 06 · örnek senaryo */
+.case { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+.case > * { min-width: 0; }
+.case-prose { display: grid; gap: 16px; }
+.case-prose .tag-ex { justify-self: start; font: 600 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--on-signal); background: var(--signal); padding: 5px 8px; }
+.case-prose h3 { font-size: clamp(24px, 2.6vw, 36px); font-stretch: 112%; letter-spacing: -.02em; }
+.case-prose p { color: var(--ink-2); }
+.st-dn { border: 1px solid var(--ink); background: var(--paper); padding: 12px; }
+.st-dn svg { display: block; width: 100%; height: auto; }
+.st-dn .big { font: 800 24px var(--display); font-stretch: 112%; fill: var(--ink); }
+.st-dn .lb { font: 500 12px var(--mono); fill: var(--ink-2); letter-spacing: .04em; text-transform: uppercase; }
+.st-dn .lb.s { fill: var(--signal); font-weight: 600; }
+.ba { border: 1px solid var(--ink); background: var(--paper); }
+.ba-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding: 12px 16px; border-bottom: 1px solid var(--rule); font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.ba-key { display: flex; gap: 16px; }
+.ba-key span { display: inline-flex; align-items: center; gap: 6px; }
+.ba-key i { width: 14px; height: 8px; display: inline-block; }
+.ba-key .b { background: var(--signal); } .ba-key .a { background: var(--ok); }
+.ba ul { list-style: none; margin: 0; padding: 0; }
+.ba li { padding: 16px; border-bottom: 1px solid var(--rule); display: grid; gap: 8px; }
+.ba li:last-child { border-bottom: 0; }
+.ba .lbl { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.ba .lbl b { font: 700 16px/1.25 var(--display); font-stretch: 108%; }
+.ba .lbl .d { font: 600 12px var(--mono); color: var(--ok); white-space: nowrap; }
+.ba .row { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 10px; align-items: center; font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.ba .bar { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ba .bar i { display: block; height: 12px; width: var(--w); flex: none; max-width: calc(100% - 72px); }
+.ba .bar.b i { background: var(--signal); } .ba .bar.a i { background: var(--ok); }
+.ba .bar span { font: 600 12.5px var(--mono); color: var(--ink); letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.ba-foot { padding: 10px 16px; border-top: 1px solid var(--rule); }
+@media (max-width: 900px) { .case { grid-template-columns: 1fr; } }
+
+/* 07 · KPI */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.kpis > div { padding: clamp(18px, 2.4vw, 30px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 12px; align-content: start; min-width: 0; }
+.kpis svg { width: 64px; height: 64px; }
+.kpis .v { font: 800 clamp(40px, 5vw, 76px)/.95 var(--display); font-stretch: 125%; letter-spacing: -.035em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.kpis .v .u { font-size: .42em; letter-spacing: 0; margin-left: 4px; }
+.kpis .v.ok { color: var(--ok); }
+.kpis .k { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); border-top: 1px solid var(--ink); padding-top: 10px; }
+@media (max-width: 1000px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .kpis > div { padding: 16px 12px; } .kpis .v { font-size: 38px; } }
+
+/* 08 · SSS */
+.faq { border-top: 1px solid var(--ink); counter-reset: fq; }
+.faq details { counter-increment: fq; border-bottom: 1px solid var(--rule); }
+.faq summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 52px minmax(0, 1fr) 28px; gap: 14px; align-items: baseline; padding: 20px 0; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: "Q" counter(fq, decimal-leading-zero); font: 600 12px var(--mono); color: var(--signal); letter-spacing: .06em; }
+.faq summary::after { content: "+"; font: 500 22px/1 var(--mono); color: var(--ink-2); justify-self: end; transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); color: var(--signal); }
+.faq summary .q { font: 700 clamp(18px, 1.9vw, 25px)/1.25 var(--display); font-stretch: 106%; letter-spacing: -.01em; }
+.faq summary:hover .q { color: var(--signal); }
+.faq .a { padding: 0 42px 24px 66px; max-width: 86ch; color: var(--ink-2); }
+@media (max-width: 640px) { .faq summary { grid-template-columns: 40px minmax(0, 1fr) 22px; gap: 10px; } .faq .a { padding: 0 0 22px 50px; } }
+
+/* 09 · alt gezinme */
+.sv-related { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--ink); text-decoration: none; }
+.sv-related > * { min-width: 0; }
+.sv-related .pv { border-right: 1px solid var(--ink); background: var(--paper-2); display: grid; place-items: center; padding: 20px; position: relative; min-height: 220px; }
+.sv-related .pv svg { width: 100%; max-width: 420px; height: auto; color: var(--ink); }
+.sv-related .pv .mono { position: absolute; left: 12px; top: 10px; color: var(--ink-2); }
+.sv-related .body { padding: clamp(20px, 3vw, 40px); display: grid; gap: 14px; align-content: center; }
+.sv-related h3 { font-size: clamp(28px, 3.6vw, 52px); font-stretch: 118%; letter-spacing: -.03em; }
+.sv-related p { color: var(--ink-2); }
+.sv-related .go { font: 600 13px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.sv-related:hover h3, .sv-related:focus-visible h3 { color: var(--signal); }
+.sv-pn { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin-top: clamp(28px, 4vw, 48px); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.sv-pn a { display: grid; gap: 6px; padding: 22px 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); text-decoration: none; min-width: 0; transition: background .2s, color .2s; }
+.sv-pn a:hover, .sv-pn a:focus-visible { background: var(--ink); color: var(--paper); }
+.sv-pn a:focus-visible { outline-offset: -3px; }
+.sv-pn .n { font: 600 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); }
+.sv-pn b { font: 800 clamp(22px, 2.6vw, 36px)/1.05 var(--display); font-stretch: 118%; letter-spacing: -.02em; }
+.sv-pn small { font-size: 14px; color: var(--ink-2); }
+.sv-pn a:hover small, .sv-pn a:focus-visible small { color: color-mix(in srgb, var(--paper) 70%, transparent); }
+.sv-pn .nx { text-align: right; }
+.sv-end { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-block: 28px clamp(56px, 8vw, 96px); }
+@media (max-width: 760px) { .sv-related { grid-template-columns: 1fr; } .sv-related .pv { border-right: 0; border-bottom: 1px solid var(--ink); min-height: 0; } }
+@media (max-width: 520px) { .sv-pn { grid-template-columns: 1fr; } .sv-pn .nx { text-align: left; } }
+@media (prefers-reduced-motion: reduce) { .rd-cur, .mr-meter i, .levels .stp, .faq summary::after { transition: none; } }
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="tr">İçeriğe geç</span><span lang="en">Skip to content</span></a>
+<div class="draft-note"><span lang="tr">Taslak · Firma adı, iletişim bilgileri, projeler ve rakamlar örnektir.</span><span lang="en">Draft · Company name, contact details, projects and figures are placeholders.</span></div>
+<div class="axis-left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+<header class="topbar sheet">
+  <div class="frame">
+    <a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a>
+    <div class="top-right">
+      <span class="mono dim sheet-label" aria-hidden="true">A-101 · <span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span>
+      <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" aria-pressed="true">TR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i><span lang="tr">Paftalar</span><span lang="en">Sheets</span></button>
+    </div>
+  </div>
+</header>
+<nav class="register" id="register" hidden aria-label="Paftalar">
+  <div class="register-head"><span class="mono"><span lang="tr">Pafta listesi · 5 pafta · 9 alt pafta</span><span lang="en">Sheet register · 5 sheets · 9 sub-sheets</span></span><button class="register-close" type="button" data-close-register><span lang="tr">Kapat</span><span lang="en">Close</span> ✕</button></div>
+  <ol>
+    <li><a href="./" data-sheet="A-000" data-label="Kapak"><span class="no">A-000</span><span class="t"><span lang="tr">Kapak</span><span lang="en">Cover</span></span><span class="d"><span lang="tr">Ana sayfa</span><span lang="en">Home</span></span></a></li><li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler" aria-current="page"><span class="no">A-100</span><span class="t"><span lang="tr">Hizmetler</span><span lang="en">Services</span></span><span class="d"><span lang="tr">Strateji · Model · Koordinasyon</span><span lang="en">Strategy · Model · Coordination</span></span></a><ul class="subs"><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi" aria-current="page"><span class="sno">A-101</span><span class="st"><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span><span class="sd"><span lang="tr">EIR, BEP, ISO 19650 yol haritası</span><span lang="en">EIR, BEP, ISO 19650 roadmap</span></span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="sno">A-102</span><span class="st"><span lang="tr">Modelleme</span><span lang="en">Modelling</span></span><span class="sd"><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span class="sno">A-103</span><span class="st"><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="sd"><span lang="tr">Federe model, çakışma, BCF</span><span lang="en">Federated model, clashes, BCF</span></span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span class="sno">A-104</span><span class="st"><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></span><span class="sd"><span lang="tr">ACC kurulumu, isimlendirme, onaylar</span><span lang="en">ACC setup, naming, approvals</span></span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span class="sno">A-105</span><span class="st"><span lang="tr">Otomasyon</span><span lang="en">Automation</span></span><span class="sd"><span lang="tr">Dynamo, Python, Revit API eklentileri</span><span lang="en">Dynamo, Python, Revit API add-ins</span></span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span class="sno">A-106</span><span class="st"><span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></span><span class="sd"><span lang="tr">Revit, Navisworks, ISO 19650 eğitimleri</span><span lang="en">Revit, Navisworks, ISO 19650 courses</span></span></a></li></ul></li><li><a href="projeler.html" data-sheet="A-200" data-label="Projeler"><span class="no">A-200</span><span class="t"><span lang="tr">Projeler</span><span lang="en">Projects</span></span><span class="d"><span lang="tr">Proje dizini</span><span lang="en">Project index</span></span></a><ul class="subs"><li><a href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü"><span class="sno">A-210</span><span class="st"><span lang="tr">Hastane kampüsü</span><span lang="en">Hospital campus</span></span><span class="sd"><span lang="tr">Sağlık · Türkiye · BIM yöneticisi</span><span lang="en">Healthcare · Türkiye · BIM manager</span></span></a></li><li><a href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span class="sno">A-220</span><span class="st"><span lang="tr">Konut kulesi</span><span lang="en">Residential tower</span></span><span class="sd"><span lang="tr">Konut · Almanya · Modelleme ekibi</span><span lang="en">Residential · Germany · Modelling team</span></span></a></li><li><a href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span class="sno">A-230</span><span class="st"><span lang="tr">Lojistik merkezi</span><span lang="en">Logistics hub</span></span><span class="sd"><span lang="tr">Endüstriyel · BAE · Scan-to-BIM</span><span lang="en">Industrial · UAE · Scan-to-BIM</span></span></a></li></ul></li><li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda"><span class="no">A-300</span><span class="t"><span lang="tr">Hakkımızda</span><span lang="en">About</span></span><span class="d"><span lang="tr">Ekip · Yaklaşım</span><span lang="en">Team · Approach</span></span></a></li><li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span class="no">A-900</span><span class="t"><span lang="tr">İletişim</span><span lang="en">Contact</span></span><span class="d"><span lang="tr">Teklif · Ofisler</span><span lang="en">Proposal · Offices</span></span></a></li>
+  </ol>
+  <div class="register-foot"><span>info@firmaadi.com</span><span>+90 (212) 000 00 00</span><span>İstanbul · London</span></div>
+</nav>
+<aside class="titleblock" aria-hidden="true">
+  <div><span><span lang="tr">Proje</span><span lang="en">Project</span></span><b>Firma Adı BIM</b></div>
+  <div><span><span lang="tr">Pafta</span><span lang="en">Sheet</span></span><b>A-101</b></div>
+  <div><span><span lang="tr">Ölçek</span><span lang="en">Scale</span></span><b>1:100</b></div>
+  <div class="xy"><span><span lang="tr">Koordinat</span><span lang="en">Coordinate</span></span><b id="tb-xy">X 0.0 · Y 0.0</b></div>
+  <div><span>Rev</span><b>P07</b></div>
+  <div><span><span lang="tr">Durum</span><span lang="en">Status</span></span><b>S2 · <span lang="tr">Bilgi</span><span lang="en">Info</span></b></div>
+</aside>
+<main id="main" class="sheet"><div class="frame">
+  <header class="sheet-head st-head">
+    <a class="back" href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">← A-100 · <span lang="tr">Tüm hizmetler</span><span lang="en">All services</span></a>
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-101</b></span>
+      <span><span lang="tr">Üst pafta</span><span lang="en">Parent</span> <b>A-100</b></span>
+      <span>Rev <b>P08</b></span>
+      <span class="signal"><b>ISO 19650-1 · -2 · -3</b></span>
+    </div>
+    <h1><span lang="tr">BIM <span class="o">stratejisi</span><span class="s">.</span></span><span lang="en">BIM <span class="o">strategy</span><span class="s">.</span></span></h1>
+    <p class="lede"><span lang="tr">İlk çizgiden önce kimin neyi, hangi formatta ve ne zaman teslim edeceğini belirleriz. Sonuç rafta duran bir rapor değil, çalışan bir sistemdir.</span><span lang="en">Before the first line is drawn, we set who delivers what, in which format and when. The result is not a report on a shelf but a working system.</span></p>
+    <figure class="st-hero" role="group" aria-label="Gereksinim, plan, teslim / Requirements, plan, delivery">
+      <div>
+        <svg class="st-ill" viewBox="0 0 160 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+          <path class="pf" d="M20 90 80 60 140 90 80 120Z"/>
+          <path class="pf" d="M20 78 80 48 140 78 80 108Z"/>
+          <path class="pf" d="M20 66 80 36 140 66 80 96Z"/>
+          <path class="lt" d="M35 73.5 83 49.5M44 78 92 54M53 82.5 99 59.5M62 87 92 72"/>
+          <circle class="sf" cx="126" cy="26" r="16"/><path class="sf" d="M114 36 108 48 122 40Z"/>
+          <text class="tw" x="126" y="31" text-anchor="middle">?</text>
+        </svg>
+        <span class="n">01</span>
+        <b><span lang="tr">Gereksinim</span><span lang="en">Requirements</span></b>
+        <small>OIR · AIR · EIR</small>
+      </div>
+      <div>
+        <svg class="st-ill" viewBox="0 0 160 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true">
+          <rect class="pf" x="18" y="12" width="124" height="96" rx="7"/>
+          <rect class="lt" x="27" y="21" width="106" height="76"/>
+          <circle class="fi" cx="80" cy="102.5" r="1.8"/>
+          <path class="lt" d="M48 21V97M69 21V97M90 21V97M111 21V97" stroke-dasharray="2 3"/>
+          <rect class="fi" x="31" y="28" width="30" height="7"/>
+          <rect class="fi" x="42" y="40" width="40" height="7"/>
+          <rect class="sf" x="55" y="52" width="44" height="7"/>
+          <rect class="fi" x="76" y="64" width="36" height="7"/>
+          <rect class="of" x="104" y="78" width="25" height="7"/>
+        </svg>
+        <span class="n">02</span>
+        <b><span lang="tr">Plan</span><span lang="en">Plan</span></b>
+        <small>BEP · MIDP · TIDP</small>
+      </div>
+      <div>
+        <svg class="st-ill" viewBox="0 0 160 124" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+          <path class="p2" d="M24 40 80 68 80 120 24 92Z"/>
+          <path class="pf" d="M80 68 136 40 136 92 80 120Z"/>
+          <path class="pf" d="M24 40 80 12 136 40 80 68Z"/>
+          <path class="lt" d="M24 57 80 85M24 74 80 102M80 85 136 57M80 102 136 74"/>
+          <path class="lt" d="M92 72v10M104 66v10M116 60v10M92 89v10M104 83v10M116 77v10"/>
+          <circle class="of" cx="134" cy="18" r="14"/><path class="ck" d="M127 18l5 5 9-9"/>
+        </svg>
+        <span class="n">03</span>
+        <b><span lang="tr">Teslim</span><span lang="en">Delivery</span></b>
+        <small><span lang="tr">Doğrulanmış veri</span><span lang="en">Verified data</span></small>
+      </div>
+    </figure>
+    <dl class="spec sv-spec">
+      <div><dt><span lang="tr">Süre</span><span lang="en">Duration</span></dt><dd><span lang="tr">3–6 hafta</span><span lang="en">3–6 weeks</span><small><span lang="tr">Örnek</span><span lang="en">Example</span></small></dd></div>
+      <div><dt><span lang="tr">Ekip</span><span lang="en">Team</span></dt><dd><span lang="tr">2 kişi</span><span lang="en">2 people</span></dd></div>
+      <div><dt><span lang="tr">Standart</span><span lang="en">Standard</span></dt><dd>ISO 19650</dd></div>
+      <div><dt><span lang="tr">Çıktı</span><span lang="en">Output</span></dt><dd>DOCX · XLSX · PDF</dd></div>
+    </dl>
+  </header>
+
+  <section class="block" aria-labelledby="w-title">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Ne zaman</span><span lang="en">When</span></span>
+      <h2 id="w-title"><span lang="tr">Ne zaman ihtiyacınız olur?</span><span lang="en">When you need it</span></h2>
+    </div>
+    <ul class="st-trig">
+      <li><svg class="st-ill" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path class="pf" d="M9 4h20l8 8v32H9Z"/><path d="M29 4v8h8M14 18h16M14 24h16M14 30h9"/><circle class="sf" cx="34" cy="38" r="8"/><path class="ck" d="M30.5 38l2.5 2.5 4.5-4.5"/></svg><q><span lang="tr">İhale ISO 19650 istiyor, ekibimiz hazır değil.</span><span lang="en">The tender asks for ISO 19650; our team is not ready.</span></q><span class="to">→ <b><span lang="tr">Ön sözleşme BEP</span><span lang="en">Pre-appointment BEP</span></b></span></li>
+      <li><svg class="st-ill" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="17" cy="19" r="6"/><path d="M5 43c0-7 5-12 12-12s12 5 12 12"/><path class="sf" d="M26 4h18v13h-9l-5 5v-5h-4Z"/><text class="tw t9" x="35" y="15" text-anchor="middle">?</text></svg><q><span lang="tr">Model istiyoruz ama neyi isteyeceğimizi bilmiyoruz.</span><span lang="en">We want a model but don't know what to ask for.</span></q><span class="to">→ <b>OIR · AIR · EIR</b></span></li>
+      <li><svg class="st-ill" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M38 18a15 15 0 0 0-27-5"/><path d="M10 6v7h7"/><path d="M10 30a15 15 0 0 0 27 5"/><path d="M38 42v-7h-7"/><rect class="ss" x="19" y="19" width="10" height="10" stroke-dasharray="2 2"/></svg><q><span lang="tr">Her projede BIM'i sıfırdan kuruyoruz.</span><span lang="en">We set BIM up from scratch every time.</span></q><span class="to">→ <b><span lang="tr">Kurumsal standart</span><span lang="en">Company standard</span></b></span></li>
+      <li><svg class="st-ill" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 44h36M9 44V14h18v30M27 22h10v22"/><path class="lt" d="M14 20h3M14 26h3M14 32h3M20 20h3M20 26h3M20 32h3M31 28h2M31 34h2"/><circle class="sf" cx="38" cy="11" r="8"/><path class="ck" d="M35 8l6 6M41 8l-6 6"/></svg><q><span lang="tr">Teslim modeli tesis yönetiminde işe yaramadı.</span><span lang="en">The handover model was useless for FM.</span></q><span class="to">→ <b>AIR · COBie</b></span></li>
+      <li><svg class="st-ill" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle cx="22" cy="26" r="17"/><ellipse cx="22" cy="26" rx="7" ry="17"/><path d="M5 26h34M8 17h28M8 35h28"/><path class="sf" d="M38 2a7 7 0 0 1 7 7c0 6-7 12-7 12s-7-6-7-12a7 7 0 0 1 7-7Z"/></svg><q><span lang="tr">Yurt dışı işverenin protokolü bize yabancı.</span><span lang="en">The overseas client's protocol is new to us.</span></q><span class="to">→ <b><span lang="tr">Uyum planı</span><span lang="en">Compliance plan</span></b></span></li>
+      <li><svg class="st-ill" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 44h40"/><rect x="8" y="32" width="7" height="12"/><rect x="19" y="26" width="7" height="18"/><rect class="sf" x="30" y="18" width="7" height="26"/><path class="ss" d="M7 22 17 14 25 18 40 5M34 5h6v6"/></svg><q><span lang="tr">Yönetim yatırımın karşılığını rakamla istiyor.</span><span lang="en">Management wants the return in numbers.</span></q><span class="to">→ <b><span lang="tr">Olgunluk + KPI</span><span lang="en">Maturity + KPIs</span></b></span></li>
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="sc-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Kapsam</span><span lang="en">Scope</span></span>
+      <h2 id="sc-title"><span lang="tr">On kalem, tek bir zincir.</span><span lang="en">Ten items, one chain.</span></h2>
+      <p><span lang="tr">Her halka bir sonrakini besler.</span><span lang="en">Each link feeds the next.</span></p>
+    </div>
+    <ol class="st-chain">
+      <li><div class="ic"><svg class="st-ill" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10 46a22 22 0 0 1 44 0"/><path class="lt" d="M10 46h44"/><path d="M32 24v4M16.5 30.5l3 3M47.5 30.5l-3 3"/><path class="ss" stroke-width="2.6" d="M32 46 21 33"/><circle class="fi" cx="32" cy="46" r="3.2"/></svg></div><h3><span lang="tr">Ölç</span><span lang="en">Measure</span></h3><ul><li><span lang="tr">Olgunluk ve boşluk analizi</span><span lang="en">Maturity and gap analysis</span></li></ul></li>
+      <li><div class="ic"><svg class="st-ill" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path class="pf" d="M14 5h28l8 8v46H14Z"/><path d="M42 5v8h8"/><path class="ss" stroke-width="2" d="M20 24l3 3 5-5M20 36l3 3 5-5M20 48l3 3 5-5"/><path d="M32 25h12M32 37h12M32 49h8"/></svg></div><h3><span lang="tr">Tanımla</span><span lang="en">Define</span></h3><ul><li>OIR · AIR · PIR</li><li><span lang="tr">EIR ve LOIN tablosu</span><span lang="en">EIR and LOIN table</span></li></ul></li>
+      <li><div class="ic"><svg class="st-ill" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect class="pf" x="7" y="12" width="50" height="44"/><path d="M7 22h50M18 7v9M46 7v9"/><rect class="fi" x="11" y="27" width="18" height="5"/><rect class="sf" x="22" y="37" width="24" height="5"/><rect class="fi" x="36" y="47" width="17" height="5"/></svg></div><h3><span lang="tr">Planla</span><span lang="en">Plan</span></h3><ul><li><span lang="tr">Ön ve sonrası BEP</span><span lang="en">Pre- and post-appointment BEP</span></li><li>MIDP · TIDP</li></ul></li>
+      <li><div class="ic"><svg class="st-ill" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path class="lt" d="M28 19 15 40M36 19 49 40M19 47h26" stroke-dasharray="3 3"/><circle class="pf" cx="32" cy="13" r="7"/><circle class="pf" cx="12" cy="47" r="7"/><circle class="pf" cx="52" cy="47" r="7"/><circle class="sf" cx="32" cy="13" r="3.2"/></svg></div><h3><span lang="tr">Kur</span><span lang="en">Set up</span></h3><ul><li><span lang="tr">Bilgi standartları</span><span lang="en">Information standards</span></li><li><span lang="tr">Roller ve RACI</span><span lang="en">Roles and RACI</span></li><li><span lang="tr">İhale ve sözleşme dili</span><span lang="en">Tender and contract wording</span></li></ul></li>
+      <li><div class="ic"><svg class="st-ill" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><circle class="pf" cx="27" cy="27" r="17"/><path stroke-width="3.2" d="M40 40l15 15"/><path class="os" stroke-width="2.6" d="M19 27l6 6 10-11"/></svg></div><h3><span lang="tr">Denetle</span><span lang="en">Audit</span></h3><ul><li><span lang="tr">Mobilizasyon ve risk kaydı</span><span lang="en">Mobilisation and risk register</span></li><li><span lang="tr">Uyum denetimi ve KPI</span><span lang="en">Compliance audits and KPIs</span></li></ul></li>
+    </ol>
+  </section>
+
+  <section class="block" aria-labelledby="mat-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Öz değerlendirme</span><span lang="en">Self-assessment</span></span>
+      <h2 id="mat-title"><span lang="tr">Bugün hangi seviyedesiniz?</span><span lang="en">Where are you today?</span></h2>
+      <p><span lang="tr">Sekiz soru, anında sonuç. En zayıf üç eksen nereden başlayacağınızı gösterir.</span><span lang="en">Eight questions, instant result. The three weakest axes show where to start.</span></p>
+    </div>
+    <div class="mat">
+      <div>
+        <a class="mat-mini" href="#mat-res" aria-hidden="true" tabindex="-1"><span><span lang="tr">Seviye</span><span lang="en">Level</span> <b id="mm-lvl">1</b></span><span><span lang="tr">Hazırlık</span><span lang="en">Readiness</span> <b id="mm-pct">33%</b></span><span><span lang="tr">Sonuç</span><span lang="en">Result</span> ↓</span></a>
+        <form class="mat-form" id="mat-form" aria-describedby="mat-note">
+          <fieldset class="mq"><legend><span class="qn">Q1 · <span lang="tr">Bilgi gereksinimleri</span><span lang="en">Information requirements</span></span><span class="qt"><span lang="tr">Projelerinizde bilgi gereksinimleri (EIR) yazılı olarak tanımlı mı?</span><span lang="en">Are information requirements (EIR) written down on your projects?</span></span></legend><div class="opts"><label><input type="radio" name="q0" value="0"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">Hayır, beklentiler sözlü kalıyor.</span><span lang="en">No, expectations stay verbal.</span></span></label><label><input type="radio" name="q0" value="1" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Sözleşmede genel bir "BIM uygulanacak" maddesi var.</span><span lang="en">The contract has a generic "BIM shall be used" clause.</span></span></label><label><input type="radio" name="q0" value="2"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">Her proje için ayrı bir EIR yazıyoruz.</span><span lang="en">We write a separate EIR for each project.</span></span></label><label><input type="radio" name="q0" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">OIR → AIR / PIR → EIR zinciri kurulu ve güncel.</span><span lang="en">An OIR → AIR / PIR → EIR chain exists and is maintained.</span></span></label></div></fieldset><fieldset class="mq"><legend><span class="qn">Q2 · <span lang="tr">BEP</span><span lang="en">BEP</span></span><span class="qt"><span lang="tr">BIM Uygulama Planı (BEP) nasıl hazırlanıyor?</span><span lang="en">How is the BIM Execution Plan (BEP) prepared?</span></span></legend><div class="opts"><label><input type="radio" name="q1" value="0"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">Hazırlanmıyor.</span><span lang="en">It is not prepared.</span></span></label><label><input type="radio" name="q1" value="1" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Her projede sıfırdan, kişiye bağlı.</span><span lang="en">From scratch each time, depending on who writes it.</span></span></label><label><input type="radio" name="q1" value="2"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">Kurumsal şablondan; ön ve sözleşme sonrası ayrı.</span><span lang="en">From a company template; pre- and post-appointment versions.</span></span></label><label><input type="radio" name="q1" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">Şablon BEP, MIDP/TIDP ile bağlı ve düzenli güncelleniyor.</span><span lang="en">Template BEP linked to the MIDP/TIDP and updated regularly.</span></span></label></div></fieldset><fieldset class="mq"><legend><span class="qn">Q3 · <span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></span><span class="qt"><span lang="tr">Proje dosyaları nerede ve nasıl paylaşılıyor?</span><span lang="en">Where and how are project files shared?</span></span></legend><div class="opts"><label><input type="radio" name="q2" value="0"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">E-posta ekleri ve yerel sunucu.</span><span lang="en">Email attachments and a local server.</span></span></label><label><input type="radio" name="q2" value="1"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Bulut klasörü var, durum takibi yok.</span><span lang="en">A cloud folder, no status tracking.</span></span></label><label><input type="radio" name="q2" value="2" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">CDE'de WIP / Shared / Published ayrımı var.</span><span lang="en">A CDE with WIP / Shared / Published areas.</span></span></label><label><input type="radio" name="q2" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">CDE'de onay akışları ve denetim kaydı işliyor.</span><span lang="en">CDE approval workflows and audit trail are in use.</span></span></label></div></fieldset><fieldset class="mq"><legend><span class="qn">Q4 · <span lang="tr">İsimlendirme</span><span lang="en">Naming</span></span><span class="qt"><span lang="tr">Dosya isimlendirme standardınız var mı?</span><span lang="en">Do you have a file naming standard?</span></span></legend><div class="opts"><label><input type="radio" name="q3" value="0"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">Kural yok, herkes kendine göre.</span><span lang="en">No rule, everyone does their own.</span></span></label><label><input type="radio" name="q3" value="1" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Ofis içi bir kural var.</span><span lang="en">There is an in-house rule.</span></span></label><label><input type="radio" name="q3" value="2"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">ISO 19650 alanları kullanılıyor, elle kontrol.</span><span lang="en">ISO 19650 fields are used, checked by hand.</span></span></label><label><input type="radio" name="q3" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">ISO 19650 + kod listeleri, yüklemede otomatik doğrulama.</span><span lang="en">ISO 19650 + code lists, validated automatically on upload.</span></span></label></div></fieldset><fieldset class="mq"><legend><span class="qn">Q5 · <span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="qt"><span lang="tr">Disiplin modelleri nasıl koordine ediliyor?</span><span lang="en">How are discipline models coordinated?</span></span></legend><div class="opts"><label><input type="radio" name="q4" value="0"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">2B paftalar üst üste konarak.</span><span lang="en">By overlaying 2D drawings.</span></span></label><label><input type="radio" name="q4" value="1" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Ara sıra çakışma testi yapılıyor.</span><span lang="en">Clash tests are run occasionally.</span></span></label><label><input type="radio" name="q4" value="2"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">Düzenli testler, test matrisi ve toleranslar var.</span><span lang="en">Regular tests with a test matrix and tolerances.</span></span></label><label><input type="radio" name="q4" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">Haftalık döngü; sorunlar BCF ile sahipli ve tarihli.</span><span lang="en">Weekly cycle; issues tracked in BCF with owner and date.</span></span></label></div></fieldset><fieldset class="mq"><legend><span class="qn">Q6 · <span lang="tr">Bilgi ihtiyacı seviyesi</span><span lang="en">Level of information need</span></span><span class="qt"><span lang="tr">Modelde neyin, hangi ayrıntıda olacağı nasıl tanımlanıyor?</span><span lang="en">How do you define what goes into the model, and at what detail?</span></span></legend><div class="opts"><label><input type="radio" name="q5" value="0"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">Tanımlanmıyor.</span><span lang="en">It is not defined.</span></span></label><label><input type="radio" name="q5" value="1" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Tüm projeye tek bir "LOD 300" yazılıyor.</span><span lang="en">One "LOD 300" for the whole project.</span></span></label><label><input type="radio" name="q5" value="2"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">Eleman bazında LOD matrisi var.</span><span lang="en">There is an element-level LOD matrix.</span></span></label><label><input type="radio" name="q5" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">Amaç ve aşamaya göre LOIN: geometri, veri, doküman.</span><span lang="en">LOIN by purpose and stage: geometry, data, documents.</span></span></label></div></fieldset><fieldset class="mq"><legend><span class="qn">Q7 · <span lang="tr">Teslim ve COBie</span><span lang="en">Handover and COBie</span></span><span class="qt"><span lang="tr">İşletmeye teslimde ne veriyorsunuz?</span><span lang="en">What do you hand over to operations?</span></span></legend><div class="opts"><label><input type="radio" name="q6" value="0" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">PDF paftalar ve klasörler.</span><span lang="en">PDF drawings and binders.</span></span></label><label><input type="radio" name="q6" value="1"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Yapıldığı gibi model.</span><span lang="en">An as-built model.</span></span></label><label><input type="radio" name="q6" value="2"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">Kısmi COBie ya da parametre listesi.</span><span lang="en">Partial COBie or a parameter list.</span></span></label><label><input type="radio" name="q6" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">AIR'e göre doğrulanmış IFC ve COBie.</span><span lang="en">IFC and COBie validated against the AIR.</span></span></label></div></fieldset><fieldset class="mq"><legend><span class="qn">Q8 · <span lang="tr">Roller ve yetkinlik</span><span lang="en">Roles and capability</span></span><span class="qt"><span lang="tr">BIM rolleri ve yetkinlik nasıl yönetiliyor?</span><span lang="en">How are BIM roles and capability managed?</span></span></legend><div class="opts"><label><input type="radio" name="q7" value="0"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 0</span><span class="tx"><span lang="tr">Tanımlı rol yok.</span><span lang="en">No defined roles.</span></span></label><label><input type="radio" name="q7" value="1" checked><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 1</span><span class="tx"><span lang="tr">Tek bir "BIM sorumlusu" her şeyi yapıyor.</span><span lang="en">One "BIM person" does everything.</span></span></label><label><input type="radio" name="q7" value="2"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 2</span><span class="tx"><span lang="tr">BIM yöneticisi ve koordinatörler tanımlı.</span><span lang="en">A BIM manager and coordinators are defined.</span></span></label><label><input type="radio" name="q7" value="3"><span class="lv"><span lang="tr">Seviye</span><span lang="en">Level</span> 3</span><span class="tx"><span lang="tr">ISO 19650 rolleri, RACI ve eğitim planı var.</span><span lang="en">ISO 19650 roles, a RACI and a training plan.</span></span></label></div></fieldset>
+        </form>
+        <p class="sv-note" id="mat-note"><span lang="tr">Basitleştirilmiş öz değerlendirme; resmi denetim yerine geçmez. Cevaplar yalnızca tarayıcınızda hesaplanır.</span><span lang="en">A simplified self-assessment, not a formal audit. Answers are calculated only in your browser.</span></p>
+      </div>
+      <aside class="mat-res" id="mat-res" aria-labelledby="mr-h">
+        <div class="mr-top"><h3 id="mr-h" class="mono"><span lang="tr">Sonuç</span><span lang="en">Result</span></h3><span class="live mono"><span lang="tr">Canlı</span><span lang="en">Live</span></span></div>
+        <div class="mr-score">
+          <div class="mr-lvl"><small><span lang="tr">Seviye</span><span lang="en">Level</span></small><span id="mr-lvl">1</span><span class="mono dim" style="font-size:16px;letter-spacing:0"> / 3</span></div>
+          <div class="mr-name" id="mr-name"><span lang="tr">Proje bazlı</span><span lang="en">Project by project</span></div>
+          <div class="mr-pct"><span><span lang="tr">ISO 19650 hazırlığı</span><span lang="en">ISO 19650 readiness</span> · <b id="mr-pct">33%</b></span><span class="mr-meter" id="mr-meter" style="--p:33.3%"><i></i></span></div>
+        </div>
+        <div class="mr-radar"><svg id="mat-radar" viewBox="-205 -172 410 344" role="img" aria-label="Olgunluk örümcek grafiği / Maturity radar chart"></svg></div>
+        <div class="mr-key" aria-hidden="true"><span><i></i><span lang="tr">Sizin profiliniz</span><span lang="en">Your profile</span></span><span><i class="t"></i><span lang="tr">ISO 19650 eşiği · seviye 2</span><span lang="en">ISO 19650 threshold · level 2</span></span></div>
+        <p class="mr-sum" id="mr-sum" aria-live="polite"><span lang="tr">Ortalama 1,0 / 3. Sekiz eksenden yedisi ISO 19650 eşiğinin altında.</span><span lang="en">Average 1.0 / 3. Seven of eight axes are below the ISO 19650 threshold.</span></p>
+        <div class="mr-recs"><h3><span lang="tr">Önerilen başlangıç</span><span lang="en">Suggested starting point</span></h3><ol id="mr-recs"><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span class="n">A-105</span><b><span lang="tr">Otomasyon</span><span lang="en">Automation</span></b><span><span lang="tr">AIR'e bağlı COBie ve IFC çıktısını otomatik doğrulayın.</span><span lang="en">Validate COBie and IFC output against the AIR automatically.</span></span></a></li><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="n">A-101</span><b><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></b><span><span lang="tr">Gereksinim atölyesiyle OIR ve AIR'den ölçülebilir bir EIR yazın.</span><span lang="en">Run a requirements workshop and turn OIR and AIR into a measurable EIR.</span></span></a></li><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="n">A-101</span><b><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></b><span><span lang="tr">Kurumsal BEP şablonu ve MIDP/TIDP yapısı kurun.</span><span lang="en">Set up a company BEP template and an MIDP/TIDP structure.</span></span></a></li></ol></div>
+        <div class="mr-btns"><button type="button" id="mat-sample"><span lang="tr">Örnek profil</span><span lang="en">Sample profile</span></button><button type="button" id="mat-zero"><span lang="tr">Sıfırdan</span><span lang="en">From zero</span></button><button type="button" id="mat-max"><span lang="tr">Hedef: seviye 3</span><span lang="en">Target: level 3</span></button></div>
+      </aside>
+    </div>
+    <div class="levels" id="levels" aria-label="Seviye tanımları / Level definitions">
+      <div data-lv="0"><span class="lno">0</span><b><span lang="tr">Dağınık</span><span lang="en">Ad hoc</span></b><small><span lang="tr">E-posta ve CAD</span><span lang="en">Email and CAD</span></small><span class="stp" style="--h:0" aria-hidden="true"></span></div>
+      <div data-lv="1" class="on"><span class="lno">1</span><b><span lang="tr">Proje bazlı</span><span lang="en">Project by project</span></b><small><span lang="tr">Her proje yeniden</span><span lang="en">Reinvented each time</span></small><span class="stp" style="--h:1" aria-hidden="true"></span></div>
+      <div data-lv="2"><span class="lno">2</span><b><span lang="tr">Standartlaşmış</span><span lang="en">Standardised</span></b><small><span lang="tr">Şablon · CDE · isim</span><span lang="en">Templates · CDE · naming</span></small><span class="stp" style="--h:2" aria-hidden="true"></span></div>
+      <div data-lv="3"><span class="lno">3</span><b><span lang="tr">Bütünleşik</span><span lang="en">Integrated</span></b><small><span lang="tr">OIR'den AIM'e</span><span lang="en">OIR through to AIM</span></small><span class="stp" style="--h:3" aria-hidden="true"></span></div>
+    </div>
+
+    <figure class="ir" aria-labelledby="ir-t">
+      <div class="ir-head"><h3 id="ir-t"><span lang="tr">Bilgi gereksinimleri hiyerarşisi</span><span lang="en">Information requirements hierarchy</span></h3><span class="mono dim">ISO 19650-1 · <span lang="tr">Şekil 2 uyarlaması</span><span lang="en">adapted from Figure 2</span></span></div>
+      <div class="ir-fig">
+        <p class="sr-only" id="ir-desc"><span lang="tr">Kurumsal gereksinim (OIR), proje (PIR) ve varlık (AIR) gereksinimlerini besler. PIR ve AIR, atama başına değişim gereksinimlerinde (EIR) birleşir. Teslim ekibi EIR'e BEP ile yanıt verir. BEP, görev ekiplerinin TIDP'lerinden derlenen MIDP ile uygulanır. Teslim edilen bilgi konteynerleri proje bilgi modelini (PIM) oluşturur ve teslimde, AIR'in tanımladığı varlık bilgi modeline (AIM) aktarılır.</span><span lang="en">Organisational requirements (OIR) feed project (PIR) and asset (AIR) requirements. PIR and AIR combine into exchange requirements (EIR) per appointment. The delivery team responds with a BEP, carried out through an MIDP compiled from task teams' TIDPs. Delivered information containers form the project information model (PIM), which is transferred at handover into the asset information model (AIM) defined by the AIR.</span></p>
+        <svg class="ir-d" viewBox="0 0 1000 470" role="img" aria-labelledby="ir-t ir-desc"><defs><marker id="ahd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10Z"/></marker></defs><line class="lane-l" x1="199" y1="30" x2="199" y2="356"/><line class="lane-l" x1="397" y1="30" x2="397" y2="356"/><line class="lane-l" x1="595" y1="30" x2="595" y2="356"/><line class="lane-l" x1="793" y1="30" x2="793" y2="356"/><text lang="tr" class="lane" x="16" y="22">Kurum</text><text lang="en" class="lane" x="16" y="22">Organisation</text><text lang="tr" class="lane" x="214" y="22">Proje · varlık</text><text lang="en" class="lane" x="214" y="22">Project · asset</text><text lang="tr" class="lane" x="412" y="22">Atama</text><text lang="en" class="lane" x="412" y="22">Appointment</text><text lang="tr" class="lane" x="610" y="22">Yanıt</text><text lang="en" class="lane" x="610" y="22">Response</text><text lang="tr" class="lane" x="808" y="22">Plan</text><text lang="en" class="lane" x="808" y="22">Plan</text><g class="hn lvl" data-node="oir"><rect x="16" y="150" width="168" height="74"/><text class="hc" x="28" y="180">OIR</text><text lang="tr" class="hs" x="28" y="210">Kurumsal gereksinim</text><text lang="en" class="hs" x="28" y="210">Organisational req.</text></g><g class="hn " data-node="pir"><rect x="214" y="40" width="168" height="74"/><text class="hc" x="226" y="70">PIR</text><text lang="tr" class="hs" x="226" y="100">Proje gereksinimi</text><text lang="en" class="hs" x="226" y="100">Project requirements</text></g><g class="hn " data-node="air"><rect x="214" y="260" width="168" height="74"/><text class="hc" x="226" y="290">AIR</text><text lang="tr" class="hs" x="226" y="320">Varlık gereksinimi</text><text lang="en" class="hs" x="226" y="320">Asset requirements</text></g><g class="hn " data-node="eir"><rect x="412" y="150" width="168" height="74"/><text class="hc" x="424" y="180">EIR</text><text lang="tr" class="hs" x="424" y="210">Değişim gereksinimi</text><text lang="en" class="hs" x="424" y="210">Exchange requirements</text></g><g class="hn " data-node="bep"><rect x="610" y="150" width="168" height="74"/><text class="hc" x="622" y="180">BEP</text><text lang="tr" class="hs" x="622" y="210">BIM uygulama planı</text><text lang="en" class="hs" x="622" y="210">BIM execution plan</text></g><g class="hn " data-node="midp"><rect x="808" y="90" width="168" height="74"/><text class="hc" x="820" y="120">MIDP</text><text lang="tr" class="hs" x="820" y="150">Ana teslim planı</text><text lang="en" class="hs" x="820" y="150">Master delivery plan</text></g><g class="hn" data-node="tidp"><rect x="808" y="230" width="50" height="44"/><text class="hs" x="833.0" y="247" text-anchor="middle">TIDP</text><text class="hc" x="833.0" y="266" text-anchor="middle" style="font-size:16px">A</text></g><g class="hn" data-node="tidp"><rect x="867" y="230" width="50" height="44"/><text class="hs" x="892.0" y="247" text-anchor="middle">TIDP</text><text class="hc" x="892.0" y="266" text-anchor="middle" style="font-size:16px">S</text></g><g class="hn" data-node="tidp"><rect x="926" y="230" width="50" height="44"/><text class="hs" x="951.0" y="247" text-anchor="middle">TIDP</text><text class="hc" x="951.0" y="266" text-anchor="middle" style="font-size:16px">M</text></g><text lang="tr" class="at" x="892" y="292" text-anchor="middle">Görev ekipleri</text><text lang="en" class="at" x="892" y="292" text-anchor="middle">Task teams</text><g class="hn model" data-node="aim"><rect x="214" y="380" width="168" height="74"/><text class="hc" x="226" y="410">AIM</text><text lang="tr" class="hs" x="226" y="440">Varlık bilgi modeli</text><text lang="en" class="hs" x="226" y="440">Asset info model</text></g><g class="hn model" data-node="pim"><rect x="808" y="380" width="168" height="74"/><text class="hc" x="820" y="410">PIM</text><text lang="tr" class="hs" x="820" y="440">Proje bilgi modeli</text><text lang="en" class="hs" x="820" y="440">Project info model</text></g><path class="ar" d="M184 187H199V77H210" marker-end="url(#ahd)"/><path class="ar" d="M184 187H199V297H210" marker-end="url(#ahd)"/><path class="ar" d="M382 77H397V187H408" marker-end="url(#ahd)"/><path class="ar" d="M382 297H397V187H408" marker-end="url(#ahd)"/><path class="ar" d="M580 187H606" marker-end="url(#ahd)"/><path class="ar" d="M778 187H793V127H804" marker-end="url(#ahd)"/><path class="ar" d="M833 230V168" marker-end="url(#ahd)"/><path class="ar" d="M892 230V168" marker-end="url(#ahd)"/><path class="ar" d="M951 230V168" marker-end="url(#ahd)"/><path class="ar d" d="M298 334V376" marker-end="url(#ahd)"/><path class="ar d" d="M892 300V376" marker-end="url(#ahd)"/><path class="ar d" d="M808 417H386" marker-end="url(#ahd)"/><text lang="tr" class="at" x="306" y="360">tanımlar</text><text lang="en" class="at" x="306" y="360">specifies</text><text lang="tr" class="at" x="900" y="350">bilgi konteynerleri</text><text lang="en" class="at" x="900" y="350">information containers</text><text lang="tr" class="at" x="597" y="409" text-anchor="middle">teslimde aktarılır</text><text lang="en" class="at" x="597" y="409" text-anchor="middle">transferred at handover</text><text lang="tr" class="at" x="593" y="178" text-anchor="middle">yanıtlar</text><text lang="en" class="at" x="593" y="178" text-anchor="middle">responds</text></svg>
+        <svg class="ir-m" viewBox="0 0 364 720" aria-hidden="true"><defs><marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10Z"/></marker></defs><g class="hn lvl" data-node="oir"><rect x="105" y="10" width="150" height="62"/><text class="hc" x="115" y="37" style="font-size:20px">OIR</text><text lang="tr" class="hs" x="115" y="60">Kurumsal gereksinim</text><text lang="en" class="hs" x="115" y="60">Organisational req.</text></g><g class="hn " data-node="pir"><rect x="12" y="120" width="150" height="62"/><text class="hc" x="22" y="147" style="font-size:20px">PIR</text><text lang="tr" class="hs" x="22" y="170">Proje gereksinimi</text><text lang="en" class="hs" x="22" y="170">Project requirements</text></g><g class="hn " data-node="air"><rect x="198" y="120" width="150" height="62"/><text class="hc" x="208" y="147" style="font-size:20px">AIR</text><text lang="tr" class="hs" x="208" y="170">Varlık gereksinimi</text><text lang="en" class="hs" x="208" y="170">Asset requirements</text></g><g class="hn " data-node="eir"><rect x="105" y="230" width="150" height="62"/><text class="hc" x="115" y="257" style="font-size:20px">EIR</text><text lang="tr" class="hs" x="115" y="280">Değişim gereksinimi</text><text lang="en" class="hs" x="115" y="280">Exchange requirements</text></g><g class="hn " data-node="bep"><rect x="105" y="340" width="150" height="62"/><text class="hc" x="115" y="367" style="font-size:20px">BEP</text><text lang="tr" class="hs" x="115" y="390">BIM uygulama planı</text><text lang="en" class="hs" x="115" y="390">BIM execution plan</text></g><g class="hn " data-node="midp"><rect x="105" y="450" width="150" height="62"/><text class="hc" x="115" y="477" style="font-size:20px">MIDP</text><text lang="tr" class="hs" x="115" y="500">Ana teslim planı</text><text lang="en" class="hs" x="115" y="500">Master delivery plan</text></g><g class="hn" data-node="tidp"><rect x="105" y="552" width="44" height="40"/><text class="hs" x="127.0" y="569" text-anchor="middle">TIDP</text><text class="hc" x="127.0" y="584" text-anchor="middle" style="font-size:16px">A</text></g><g class="hn" data-node="tidp"><rect x="158" y="552" width="44" height="40"/><text class="hs" x="180.0" y="569" text-anchor="middle">TIDP</text><text class="hc" x="180.0" y="584" text-anchor="middle" style="font-size:16px">S</text></g><g class="hn" data-node="tidp"><rect x="211" y="552" width="44" height="40"/><text class="hs" x="233.0" y="569" text-anchor="middle">TIDP</text><text class="hc" x="233.0" y="584" text-anchor="middle" style="font-size:16px">M</text></g><g class="hn model" data-node="pim"><rect x="12" y="646" width="150" height="62"/><text class="hc" x="22" y="673" style="font-size:20px">PIM</text><text lang="tr" class="hs" x="22" y="696">Proje bilgi modeli</text><text lang="en" class="hs" x="22" y="696">Project info model</text></g><g class="hn model" data-node="aim"><rect x="198" y="646" width="150" height="62"/><text class="hc" x="208" y="673" style="font-size:20px">AIM</text><text lang="tr" class="hs" x="208" y="696">Varlık bilgi modeli</text><text lang="en" class="hs" x="208" y="696">Asset info model</text></g><path class="ar" d="M180 72V96H87V116" marker-end="url(#ahm)"/><path class="ar" d="M180 72V96H273V116" marker-end="url(#ahm)"/><path class="ar" d="M87 182V206H180V226" marker-end="url(#ahm)"/><path class="ar" d="M273 182V206H180V226" marker-end="url(#ahm)"/><path class="ar" d="M180 292V336" marker-end="url(#ahm)"/><path class="ar" d="M180 402V446" marker-end="url(#ahm)"/><path class="ar" d="M127 552V516" marker-end="url(#ahm)"/><path class="ar" d="M180 552V516" marker-end="url(#ahm)"/><path class="ar" d="M233 552V516" marker-end="url(#ahm)"/><path class="ar d" d="M127 592V642" marker-end="url(#ahm)"/><path class="ar d" d="M162 677H194" marker-end="url(#ahm)"/><path class="ar d" d="M348 151H358V640H352V642" marker-end="url(#ahm)"/></svg>
+      </div>
+      <figcaption class="ir-defs" id="ir-defs">
+        <div tabindex="0" data-node="oir"><div class="top"><b>OIR</b><span class="ref">ISO 19650-1</span></div><span class="full">Organisational information requirements</span><p><span lang="tr">Kurumun stratejik bilgi ihtiyacı.</span><span lang="en">The organisation's strategic information needs.</span></p></div>
+        <div tabindex="0" data-node="pir"><div class="top"><b>PIR</b><span class="ref">ISO 19650-1</span></div><span class="full">Project information requirements</span><p><span lang="tr">Proje karar noktalarındaki sorular.</span><span lang="en">Questions at project decision points.</span></p></div>
+        <div tabindex="0" data-node="air"><div class="top"><b>AIR</b><span class="ref">ISO 19650-3</span></div><span class="full">Asset information requirements</span><p><span lang="tr">İşletme ve bakım için varlık verisi.</span><span lang="en">Asset data for operation and maintenance.</span></p></div>
+        <div tabindex="0" data-node="eir"><div class="top"><b>EIR</b><span class="ref">ISO 19650-2</span></div><span class="full">Exchange information requirements</span><p><span lang="tr">Her atamada ne, ne zaman, hangi kriterle.</span><span lang="en">Per appointment: what, when, to which criteria.</span></p></div>
+        <div tabindex="0" data-node="bep"><div class="top"><b>BEP</b><span class="ref">ISO 19650-2</span></div><span class="full">BIM execution plan</span><p><span lang="tr">Teslim ekibinin EIR'e yanıtı.</span><span lang="en">The delivery team's answer to the EIR.</span></p></div>
+        <div tabindex="0" data-node="midp"><div class="top"><b>MIDP</b><span class="ref">ISO 19650-2</span></div><span class="full">Master information delivery plan</span><p><span lang="tr">Tüm ekiplerin ana teslim takvimi.</span><span lang="en">Master delivery schedule for all teams.</span></p></div>
+        <div tabindex="0" data-node="tidp"><div class="top"><b>TIDP</b><span class="ref">ISO 19650-2</span></div><span class="full">Task information delivery plan</span><p><span lang="tr">Her görev ekibinin teslim listesi.</span><span lang="en">Each task team's delivery list.</span></p></div>
+        <div tabindex="0" data-node="pim"><div class="top"><b>PIM</b><span class="ref">ISO 19650-1</span></div><span class="full">Project information model</span><p><span lang="tr">Tasarım ve yapımda biriken bilgi.</span><span lang="en">Information built up in design and construction.</span></p></div>
+        <div tabindex="0" data-node="aim"><div class="top"><b>AIM</b><span class="ref">ISO 19650-3</span></div><span class="full">Asset information model</span><p><span lang="tr">İşletmeye aktarılan doğrulanmış veri.</span><span lang="en">Verified data handed to operations.</span></p></div>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="block" aria-labelledby="dl-title">
+    <div class="block-head">
+      <span class="no">04 · <span lang="tr">Teslimatlar</span><span lang="en">Deliverables</span></span>
+      <h2 id="dl-title"><span lang="tr">Elinize ne geçer?</span><span lang="en">What you receive</span></h2>
+      <p><span lang="tr">Dokuz düzenlenebilir dosya, sonraki projede yeniden kullanılır.</span><span lang="en">Nine editable files, reused on the next project.</span></p>
+    </div>
+    <ul class="st-docs">
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 20h22M9 26h22M9 32h22M9 38h13"/></svg><span class="c">D-01</span><b><span lang="tr">Olgunluk ve boşluk raporu</span><span lang="en">Maturity and gap report</span></b><span class="m"><code>PDF</code><code>XLSX</code><span class="w"><span lang="tr">H2</span><span lang="en">W2</span></span></span></li>
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 20h22M9 26h22M9 32h22M9 38h13"/></svg><span class="c">D-02</span><b><span lang="tr">OIR / AIR / PIR seti</span><span lang="en">OIR / AIR / PIR set</span></b><span class="m"><code>DOCX</code><code>XLSX</code><span class="w"><span lang="tr">H3</span><span lang="en">W3</span></span></span></li>
+      <li class="key"><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 19h22v20H9ZM9 26h22M9 33h22M17 19v20"/><path class="ss" stroke-width="2" d="M22 44h12"/></svg><span class="c">D-03</span><b><span lang="tr">EIR ve LOIN tablosu</span><span lang="en">EIR and LOIN table</span></b><span class="m"><code>DOCX</code><code>XLSX</code><span class="w"><span lang="tr">H4</span><span lang="en">W4</span></span></span></li>
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 20h22M9 26h22M9 32h22M9 38h13"/></svg><span class="c">D-04</span><b><span lang="tr">Ön sözleşme BEP</span><span lang="en">Pre-appointment BEP</span></b><span class="m"><code>DOCX</code><code>PDF</code><span class="w"><span lang="tr">İhale</span><span lang="en">Tender</span></span></span></li>
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 20h22M9 26h22M9 32h22M9 38h13"/></svg><span class="c">D-05</span><b><span lang="tr">Sözleşme sonrası BEP</span><span lang="en">Post-appointment BEP</span></b><span class="m"><code>DOCX</code><code>PDF</code><span class="w"><span lang="tr">Atama + 2H</span><span lang="en">Appointment + 2W</span></span></span></li>
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 19h22v20H9ZM9 26h22M9 33h22M17 19v20"/></svg><span class="c">D-06</span><b><span lang="tr">MIDP / TIDP şablonları</span><span lang="en">MIDP / TIDP templates</span></b><span class="m"><code>XLSX</code><span class="w"><span lang="tr">H5</span><span lang="en">W5</span></span></span></li>
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 19h22v20H9ZM9 26h22M9 33h22M17 19v20"/></svg><span class="c">D-07</span><b><span lang="tr">Sorumluluk matrisi (RACI)</span><span lang="en">Responsibility matrix (RACI)</span></b><span class="m"><code>XLSX</code><span class="w"><span lang="tr">H4</span><span lang="en">W4</span></span></span></li>
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 20h22M9 26h22M9 32h22M9 38h13"/></svg><span class="c">D-08</span><b><span lang="tr">Kurumsal BIM standardı</span><span lang="en">Company BIM standard</span></b><span class="m"><code>PDF</code><code>DOCX</code><span class="w"><span lang="tr">H6</span><span lang="en">W6</span></span></span></li>
+      <li><svg class="st-ill" viewBox="0 0 40 50" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path class="pf" d="M4 3h22l10 10v34H4Z"/><path d="M26 3v10h10"/><path class="lt" d="M9 19h22v20H9ZM9 26h22M9 33h22M17 19v20"/></svg><span class="c">D-09</span><b><span lang="tr">Mobilizasyon ve risk kaydı</span><span lang="en">Mobilisation and risk register</span></b><span class="m"><code>XLSX</code><code>PDF</code><span class="w"><span lang="tr">H6</span><span lang="en">W6</span></span></span></li>
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="tl-title">
+    <div class="block-head">
+      <span class="no">05 · <span lang="tr">Süreç</span><span lang="en">Process</span></span>
+      <h2 id="tl-title"><span lang="tr">Altı haftada çalışan bir sistem.</span><span lang="en">A working system in six weeks.</span></h2>
+      <p><span lang="tr">Örnek takvim, orta ölçekli bir ofis için.</span><span lang="en">Sample schedule for a mid-sized office.</span></p>
+    </div>
+    <div class="tl" style="--n:6">
+      <div class="tl-scale" aria-hidden="true"><span class="mono dim"><span lang="tr">Örnek takvim · hafta</span><span lang="en">Sample schedule · week</span></span><div class="tl-ticks"><span><span lang="tr">H</span><span lang="en">W</span>1</span><span><span lang="tr">H</span><span lang="en">W</span>2</span><span><span lang="tr">H</span><span lang="en">W</span>3</span><span><span lang="tr">H</span><span lang="en">W</span>4</span><span><span lang="tr">H</span><span lang="en">W</span>5</span><span><span lang="tr">H</span><span lang="en">W</span>6</span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H1</span><span lang="en">W1</span></span><span lang="tr">Keşif ve mülakatlar</span><span lang="en">Discovery and interviews</span></h3><span class="out">→ <span lang="tr">Mülakat notları</span><span lang="en">Interview notes</span></span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar " style="--s:0;--l:1"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H1–2</span><span lang="en">W1–2</span></span><span lang="tr">Olgunluk ölçümü</span><span lang="en">Maturity baseline</span></h3><span class="out">→ <span lang="tr">D-01</span><span lang="en">D-01</span></span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar " style="--s:0;--l:2"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H2–4</span><span lang="en">W2–4</span></span><span lang="tr">Gereksinim atölyeleri</span><span lang="en">Requirements workshops</span></h3><span class="out">→ <span lang="tr">D-02 · D-03</span><span lang="en">D-02 · D-03</span></span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar hot" style="--s:1;--l:3"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H3–5</span><span lang="en">W3–5</span></span><span lang="tr">BEP ve teslim planları</span><span lang="en">BEP and delivery plans</span></h3><span class="out">→ <span lang="tr">D-04 – D-07</span><span lang="en">D-04 – D-07</span></span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar " style="--s:2;--l:3"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H5–6</span><span lang="en">W5–6</span></span><span lang="tr">Mobilizasyon testi ve pilot</span><span lang="en">Mobilisation test and pilot</span></h3><span class="out">→ <span lang="tr">D-09</span><span lang="en">D-09</span></span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar " style="--s:4;--l:2"></span></div></div>
+      <div class="tl-row"><div><h3><span class="mono"><span lang="tr">H6</span><span lang="en">W6</span></span><span lang="tr">Devir ve denetim takvimi</span><span lang="en">Handover and audit schedule</span></h3><span class="out">→ <span lang="tr">D-08</span><span lang="en">D-08</span></span></div><div class="tl-track" aria-hidden="true"><span class="tl-bar end" style="--s:5;--l:1"></span></div></div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="cs-title">
+    <div class="block-head">
+      <span class="no">06 · <span lang="tr">Örnek senaryo</span><span lang="en">Sample scenario</span></span>
+      <h2 id="cs-title"><span lang="tr">İlk ISO 19650 ihalesine hazırlanan bir müteahhit.</span><span lang="en">A contractor preparing for its first ISO 19650 tender.</span></h2>
+    </div>
+    <div class="case">
+      <div class="case-prose">
+        <span class="tag-ex"><span lang="tr">Örnek · kurgusal senaryo</span><span lang="en">Example · fictional scenario</span></span>
+        <h3><span lang="tr">120 kişilik müteahhit, Körfez'de hastane ihalesi.</span><span lang="en">A 120-person contractor, a hospital tender in the Gulf.</span></h3>
+        <p><span lang="tr">Dört haftada kurumsal standart, şablon BEP ve TIDP yapısı kuruldu; sonraki dört ihalede aynı şablon kullanıldı.</span><span lang="en">In four weeks we built the company standard, template BEP and TIDP structure; the same template served the next four tenders.</span></p>
+        <figure class="st-dn" style="margin:0" aria-labelledby="dn-t">
+          <figcaption class="sr-only" id="dn-t"><span lang="tr">ISO 19650 hazırlığı: başlangıçta seviye 1 ve yüzde 35, altı ay sonra seviye 2 ve yüzde 74.</span><span lang="en">ISO 19650 readiness: level 1 and 35 percent at the start, level 2 and 74 percent six months later.</span></figcaption>
+          <svg class="st-ill" viewBox="0 0 340 168" fill="none" aria-hidden="true">
+            <circle class="rs" cx="70" cy="70" r="48" stroke-width="12"/>
+            <circle class="ss" cx="70" cy="70" r="48" stroke-width="12" pathLength="100" stroke-dasharray="35 100" transform="rotate(-90 70 70)"/>
+            <text class="big" x="70" y="79" text-anchor="middle"><tspan lang="tr">%35</tspan><tspan lang="en">35%</tspan></text>
+            <text class="lb" x="70" y="146" text-anchor="middle"><tspan lang="tr">Başlangıç</tspan><tspan lang="en">Start</tspan></text>
+            <text class="lb s" x="70" y="162" text-anchor="middle"><tspan lang="tr">Seviye 1</tspan><tspan lang="en">Level 1</tspan></text>
+            <path stroke="currentColor" stroke-width="1.5" d="M138 70H200M192 64l8 6-8 6"/>
+            <text class="lb" x="169" y="60" text-anchor="middle"><tspan lang="tr">6 ay</tspan><tspan lang="en">6 months</tspan></text>
+            <circle class="rs" cx="270" cy="70" r="48" stroke-width="12"/>
+            <circle class="os" cx="270" cy="70" r="48" stroke-width="12" pathLength="100" stroke-dasharray="74 100" transform="rotate(-90 270 70)"/>
+            <text class="big" x="270" y="79" text-anchor="middle"><tspan lang="tr">%74</tspan><tspan lang="en">74%</tspan></text>
+            <text class="lb" x="270" y="146" text-anchor="middle"><tspan lang="tr">Altı ay sonra</tspan><tspan lang="en">Six months on</tspan></text>
+            <text class="lb" x="270" y="162" text-anchor="middle" style="fill:var(--ok);font-weight:600"><tspan lang="tr">Seviye 2</tspan><tspan lang="en">Level 2</tspan></text>
+          </svg>
+        </figure>
+      </div>
+      <figure class="ba" aria-labelledby="ba-t" style="margin:0">
+        <div class="ba-head"><span id="ba-t"><span lang="tr">Önce / sonra · ölçekli</span><span lang="en">Before / after · to scale</span></span><span class="ba-key" aria-hidden="true"><span><i class="b"></i><span lang="tr">Önce</span><span lang="en">Before</span></span><span><i class="a"></i><span lang="tr">Sonra</span><span lang="en">After</span></span></span></div>
+        <ul><li><div class="lbl"><b><span lang="tr">BEP'in BIM bölümünü hazırlama süresi</span><span lang="en">Time to prepare the BIM part of the bid</span></b><span class="d"><span lang="tr">−%60</span><span lang="en">−60%</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:100.0%"></i><span><span lang="tr">15 gün</span><span lang="en">15 days</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:40.0%"></i><span><span lang="tr">6 gün</span><span lang="en">6 days</span></span></span></div></li><li><div class="lbl"><b><span lang="tr">Teklif değerlendirmesinde BIM puanı</span><span lang="en">BIM score in tender evaluation</span></b><span class="d"><span lang="tr">+34</span><span lang="en">+34</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:54.0%"></i><span><span lang="tr">54 / 100</span><span lang="en">54 / 100</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:88.0%"></i><span><span lang="tr">88 / 100</span><span lang="en">88 / 100</span></span></span></div></li><li><div class="lbl"><b><span lang="tr">İlk teslimde iade edilen bilgi konteyneri</span><span lang="en">Information containers rejected at first submission</span></b><span class="d"><span lang="tr">−31 puan</span><span lang="en">−31 pts</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:95.0%"></i><span><span lang="tr">%38</span><span lang="en">38%</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:17.5%"></i><span><span lang="tr">%7</span><span lang="en">7%</span></span></span></div></li><li><div class="lbl"><b><span lang="tr">ISO 19650 isimlendirmesine uyan dosya</span><span lang="en">Files compliant with ISO 19650 naming</span></b><span class="d"><span lang="tr">+54 puan</span><span lang="en">+54 pts</span></span></div><div class="row"><span><span lang="tr">Önce</span><span lang="en">Before</span></span><span class="bar b"><i style="--w:42.0%"></i><span><span lang="tr">%42</span><span lang="en">42%</span></span></span></div><div class="row"><span><span lang="tr">Sonra</span><span lang="en">After</span></span><span class="bar a"><i style="--w:96.0%"></i><span><span lang="tr">%96</span><span lang="en">96%</span></span></span></div></li></ul>
+        <figcaption class="ba-foot mono dim"><span lang="tr">Örnek değerler · çubuk uzunlukları her satırın kendi ölçeğine göre</span><span lang="en">Sample values · bar lengths use each row's own scale</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="kp-title">
+    <div class="block-head">
+      <span class="no">07 · <span lang="tr">Çıktılar</span><span lang="en">Outcomes</span></span>
+      <h2 id="kp-title"><span lang="tr">Ölçtüğümüz dört gösterge.</span><span lang="en">Four indicators we measure.</span></h2>
+      <p><span lang="tr">Tipik hedef değerler (örnek).</span><span lang="en">Typical target values (example).</span></p>
+    </div>
+    <div class="kpis">
+      <div><svg class="st-ill" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle class="rs" cx="32" cy="32" r="26" stroke-width="7"/><circle class="os" cx="32" cy="32" r="26" stroke-width="7" pathLength="100" stroke-dasharray="95 100" transform="rotate(-90 32 32)"/></svg><span class="v ok"><span lang="tr"><span class="u">%</span><span data-count="95">95</span></span><span lang="en"><span data-count="95">95</span><span class="u">%</span></span></span><span class="k"><span lang="tr">İsim uyumu</span><span lang="en">Naming compliance</span></span></div>
+      <div><svg class="st-ill" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle class="rs" cx="32" cy="32" r="26" stroke-width="7"/><circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="7" pathLength="100" stroke-dasharray="90 100" transform="rotate(-90 32 32)"/></svg><span class="v"><span lang="tr"><span class="u">%</span><span data-count="90">90</span></span><span lang="en"><span data-count="90">90</span><span class="u">%</span></span></span><span class="k"><span lang="tr">Zamanında teslim</span><span lang="en">On-time delivery</span></span></div>
+      <div><svg class="st-ill" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="os" stroke-width="2.6" d="M8 14l4 4 7-7M8 32l4 4 7-7M8 50l4 4 7-7"/><path d="M27 15h30M27 33h30M27 51h22"/></svg><span class="v"><span data-count="0">0</span></span><span class="k"><span lang="tr">Açık BEP maddesi</span><span lang="en">Open BEP items</span></span></div>
+      <div><svg class="st-ill" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect class="sf" x="4" y="14" width="56" height="13"/><rect class="of" x="4" y="38" width="17" height="13"/></svg><span class="v"><span lang="tr"><span class="u">−%</span><span data-count="70">70</span></span><span lang="en"><span class="u">−</span><span data-count="70">70</span><span class="u">%</span></span></span><span class="k"><span lang="tr">İade oranı</span><span lang="en">Rejection rate</span></span></div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="fq-title">
+    <div class="block-head">
+      <span class="no">08 · <span lang="tr">Sık sorulanlar</span><span lang="en">FAQ</span></span>
+      <h2 id="fq-title"><span lang="tr">Dört kısa cevap.</span><span lang="en">Four short answers.</span></h2>
+    </div>
+    <div class="faq">
+      <details><summary><span class="q"><span lang="tr">ISO 19650 sertifikası zorunlu mu?</span><span lang="en">Is ISO 19650 certification required?</span></span></summary><div class="a"><p><span lang="tr">Hayır. Önce süreçleri gerçek bir projede çalıştırmanızı, sonra denetime hazırlanmanızı öneririz.</span><span lang="en">No. We suggest running the processes on a real project first, then preparing for an audit.</span></p></div></details>
+      <details><summary><span class="q"><span lang="tr">EIR ile BEP arasındaki fark nedir?</span><span lang="en">What is the difference between EIR and BEP?</span></span></summary><div class="a"><p><span lang="tr">EIR işverenin ne istediğini, BEP teslim ekibinin bunu nasıl karşılayacağını anlatır.</span><span lang="en">The EIR says what the client wants; the BEP says how the delivery team will meet it.</span></p></div></details>
+      <details><summary><span class="q"><span lang="tr">Neden LOD yerine LOIN?</span><span lang="en">Why LOIN instead of LOD?</span></span></summary><div class="a"><p><span lang="tr">LOIN (ISO 7817-1) geometri, veri ve dokümanı amaca göre ayrı tanımlar; gereksiz modellemeyi önler.</span><span lang="en">LOIN (ISO 7817-1) sets geometry, data and documents separately by purpose, avoiding over-modelling.</span></p></div></details>
+      <details><summary><span class="q"><span lang="tr">Türkiye'deki projelerde geçerli mi?</span><span lang="en">Does it apply to projects in Türkiye?</span></span></summary><div class="a"><p><span lang="tr">Evet. Seri TS EN ISO 19650 olarak yayımlandı; uluslararası finansmanlı projelerde giderek daha sık isteniyor.</span><span lang="en">Yes. The series is published as TS EN ISO 19650 and is increasingly required on internationally funded projects.</span></p></div></details>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="nx-title" style="border-bottom:0;padding-bottom:0">
+    <div class="block-head">
+      <span class="no">09 · <span lang="tr">Devam</span><span lang="en">Continue</span></span>
+      <h2 id="nx-title"><span lang="tr">Sahada nasıl göründü?</span><span lang="en">What it looked like on a project</span></h2>
+    </div>
+    <a class="sv-related" href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü">
+      <div class="pv"><svg viewBox="0 0 320 200" fill="none" aria-hidden="true">
+  <g stroke="currentColor" stroke-width="1.4">
+    <path d="M70 150 160 105 250 150 160 195Z" opacity=".35"/>
+    <path d="M70 120 160 75 250 120 160 165Z" opacity=".6"/>
+    <path d="M70 90 160 45 250 90 160 135Z"/>
+    <path d="M70 90V150M250 90V150M160 135V195" stroke-dasharray="3 4" opacity=".6"/>
+    <path d="M118 83 160 62 202 83M110 94 160 69 214 96M124 103 160 85 196 103" opacity=".7"/>
+  </g>
+  <path d="M160 45 250 90 160 135 70 90Z" fill="var(--signal)" opacity=".12"/>
+  <g font-family="JetBrains Mono, monospace" font-size="10" fill="currentColor" letter-spacing=".08em"><text x="262" y="93">EIR</text><text x="262" y="123">BEP</text><text x="262" y="153">MIDP</text></g>
+</svg><span class="mono">A-210 · BEP → COBie</span></div>
+      <div class="body">
+        <span class="mono dim"><span lang="tr">İlgili proje · örnek vaka</span><span lang="en">Related project · sample case</span></span>
+        <h3><span lang="tr">Örnek Hastane Kampüsü</span><span lang="en">Sample Hospital Campus</span></h3>
+        <p><span lang="tr">Yedi disiplin, beş ofis. BEP ve MIDP bizden; teslimde COBie ve IFC 4 doğrulandı.</span><span lang="en">Seven disciplines, five offices. We wrote the BEP and MIDP; COBie and IFC 4 were verified at handover.</span></p>
+        <span class="go"><span lang="tr">Vaka çalışmasını aç</span><span lang="en">Open the case study</span> →</span>
+      </div>
+    </a>
+    <nav class="sv-pn" aria-label="Hizmet paftaları / Service sheets">
+      <a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span class="n">← <span lang="tr">Önceki</span><span lang="en">Previous</span> · A-106</span><b><span lang="tr">Eğitim ve destek</span><span lang="en">Training &amp; support</span></b><small><span lang="tr">Revit, Navisworks, ISO 19650 eğitimleri</span><span lang="en">Revit, Navisworks, ISO 19650 courses</span></small></a>
+      <a class="nx" href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="n"><span lang="tr">Sonraki</span><span lang="en">Next</span> · A-102 →</span><b><span lang="tr">Modelleme</span><span lang="en">Modelling</span></b><small><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></small></a>
+    </nav>
+    <div class="sv-end">
+      <a class="back" href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">← A-100 · <span lang="tr">Tüm hizmetler</span><span lang="en">All services</span></a>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Olgunluk görüşmesi isteyin</span><span lang="en">Book a maturity review</span></a>
+    </div>
+  </section>
+</div></main>
+<footer class="footer sheet">
+  <div class="frame">
+    <div class="footer-cta">
+      <h2><span lang="tr">Modeli birlikte<br><em>kuralım.</em></span><span lang="en">Let's build<br>the <em>model.</em></span></h2>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin</span><span lang="en">Request a proposal</span></a>
+    </div>
+    <div class="footer-cols">
+      <div><a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a><p><span lang="tr">Uluslararası BIM danışmanlık ve proje geliştirme. İstanbul merkezli, dünya genelinde projeler.</span><span lang="en">International BIM consulting and project development. Based in Istanbul, working worldwide.</span></p></div>
+      <div><h4><span lang="tr">Paftalar</span><span lang="en">Sheets</span></h4><ul>
+        <li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">A-100 · <span lang="tr">Hizmetler</span><span lang="en">Services</span></a></li>
+        <li><a href="projeler.html" data-sheet="A-200" data-label="Projeler">A-200 · <span lang="tr">Projeler</span><span lang="en">Projects</span></a></li>
+        <li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda">A-300 · <span lang="tr">Hakkımızda</span><span lang="en">About</span></a></li>
+        <li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim">A-900 · <span lang="tr">İletişim</span><span lang="en">Contact</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">Hizmetler</span><span lang="en">Services</span></h4><ul>
+        <li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi">A-101 · <span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme">A-102 · <span lang="tr">Modelleme</span><span lang="en">Modelling</span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon">A-103 · <span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı">A-104 · <span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon">A-105 · <span lang="tr">Otomasyon</span><span lang="en">Automation</span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek">A-106 · <span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">İletişim</span><span lang="en">Contact</span></h4><ul><li>info@firmaadi.com</li><li>+90 (212) 000 00 00</li><li>İstanbul, Türkiye</li></ul></div>
+      <div><h4><span lang="tr">Takip</span><span lang="en">Follow</span></h4><ul><li>LinkedIn</li><li>YouTube</li><li>Instagram</li></ul></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 Firma Adı BIM</span><span>ISO 19650 · IFC · BCF · COBie</span><span><span lang="tr">KVKK · Gizlilik</span><span lang="en">Privacy</span></span></div>
+  </div>
+</footer>
+<script src="assets/model.js"></script>
+<script src="assets/site.js"></script>
+<script>
+
+(function () {
+  var root = document.documentElement;
+  var form = document.getElementById('mat-form');
+  if (!form) return;
+  function L(tr, en) { return root.lang === 'en' ? en : tr; }
+  var AX = [
+    ['Gereksinim', 'Requirements'], ['BEP', 'BEP'], ['CDE', 'CDE'], ['İsimlendirme', 'Naming'],
+    ['Koordinasyon', 'Coordination'], ['LOIN', 'LOIN'], ['Teslim', 'Handover'], ['Roller', 'Roles']
+  ];
+  var REC = [
+    ['A-101', 'hizmet-strateji.html', 'BIM stratejisi', 'BIM strategy', 'Gereksinim atölyesiyle OIR ve AIR\'den ölçülebilir bir EIR yazın.', 'Run a requirements workshop and turn OIR and AIR into a measurable EIR.'],
+    ['A-101', 'hizmet-strateji.html', 'BIM stratejisi', 'BIM strategy', 'Kurumsal BEP şablonu ve MIDP/TIDP yapısı kurun.', 'Set up a company BEP template and an MIDP/TIDP structure.'],
+    ['A-104', 'hizmet-cde.html', 'Ortak veri ortamı', 'Common data environment', 'WIP, SHARED ve PUBLISHED alanları ayrılmış bir CDE ve onay akışı kurun.', 'Set up a CDE with separate WIP, SHARED and PUBLISHED areas and an approval workflow.'],
+    ['A-104', 'hizmet-cde.html', 'Ortak veri ortamı', 'Common data environment', 'ISO 19650 isimlendirmesini kod listeleri ve yükleme anında doğrulamayla oturtun.', 'Embed ISO 19650 naming with code lists and validation on upload.'],
+    ['A-103', 'hizmet-koordinasyon.html', 'Koordinasyon', 'Coordination', 'Test matrisi, toleranslar ve BCF ile haftalık koordinasyon döngüsü başlatın.', 'Start a weekly coordination cycle with a test matrix, tolerances and BCF.'],
+    ['A-102', 'hizmet-modelleme.html', 'Modelleme', 'Modelling', 'Eleman bazında LOIN tablosu tanımlayın, modelleme kapsamını buna göre belirleyin.', 'Define an element-level LOIN table and scope modelling against it.'],
+    ['A-105', 'hizmet-otomasyon.html', 'Otomasyon', 'Automation', 'AIR\'e bağlı COBie ve IFC çıktısını otomatik doğrulayın.', 'Validate COBie and IFC output against the AIR automatically.'],
+    ['A-106', 'hizmet-egitim.html', 'Eğitim ve destek', 'Training & support', 'ISO 19650 rollerini, RACI\'yi ve rol bazlı eğitim planını tanımlayın.', 'Define ISO 19650 roles, a RACI and a role-based training plan.']
+  ];
+  var LV = [['Dağınık', 'Ad hoc'], ['Proje bazlı', 'Project by project'], ['Standartlaşmış', 'Standardised'], ['Bütünleşik', 'Integrated']];
+  var SAMPLE = [1, 1, 2, 1, 1, 1, 0, 1];
+  var NS = 'http://www.w3.org/2000/svg', R = 116, svg = document.getElementById('mat-radar');
+  function el(t, a, p) { var e = document.createElementNS(NS, t); for (var k in a) e.setAttribute(k, a[k]); (p || svg).appendChild(e); return e; }
+  function pt(i, r) { var a = -Math.PI / 2 + i * Math.PI / 4; return [r * Math.cos(a), r * Math.sin(a)]; }
+  function poly(vals) { return vals.map(function (v, i) { var p = pt(i, v / 3 * R); return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' '); }
+  // grid
+  for (var r = 1; r <= 3; r++) el('polygon', { 'class': 'rd-ring' + (r === 3 ? ' r3' : ''), points: poly([r, r, r, r, r, r, r, r]) });
+  for (var i = 0; i < 8; i++) { var p = pt(i, R); el('line', { 'class': 'rd-ax', x1: 0, y1: 0, x2: p[0].toFixed(1), y2: p[1].toFixed(1) }); }
+  for (r = 1; r <= 3; r++) { var rt = el('text', { 'class': 'rd-rv', x: 4, y: (-r / 3 * R + 11).toFixed(1) }); rt.textContent = r; }
+  el('polygon', { 'class': 'rd-tgt', points: poly([2, 2, 2, 2, 2, 2, 2, 2]) });
+  var cur = el('polygon', { 'class': 'rd-cur', points: poly(SAMPLE) });
+  var dots = [], labels = [], vals = [];
+  for (i = 0; i < 8; i++) {
+    dots.push(el('circle', { 'class': 'rd-pt', r: 3.5, cx: 0, cy: 0 }));
+    var lp = pt(i, R + 18), c = Math.cos(-Math.PI / 2 + i * Math.PI / 4);
+    var anchor = Math.abs(c) < .2 ? 'middle' : (c > 0 ? 'start' : 'end');
+    var dy = i === 0 ? -4 : (i === 4 ? 12 : 4);
+    labels.push(el('text', { 'class': 'rd-lb', x: lp[0].toFixed(1), y: (lp[1] + dy).toFixed(1), 'text-anchor': anchor }));
+  }
+  function read() { var v = []; for (var i = 0; i < 8; i++) { var c = form.querySelector('input[name="q' + i + '"]:checked'); v.push(c ? +c.value : 0); } return v; }
+  function update() {
+    var v = read(), sum = v.reduce(function (a, b) { return a + b; }, 0), avg = sum / 8;
+    var lvl = avg < .75 ? 0 : avg < 1.5 ? 1 : avg < 2.25 ? 2 : 3;
+    var pct = Math.round(sum / 24 * 100);
+    cur.setAttribute('points', poly(v));
+    var order = v.map(function (x, i) { return [x, i]; }).sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+    var weak = order.filter(function (o) { return o[0] < 3; }).slice(0, 3).map(function (o) { return o[1]; });
+    for (var i = 0; i < 8; i++) {
+      var p = pt(i, v[i] / 3 * R); dots[i].setAttribute('cx', p[0].toFixed(1)); dots[i].setAttribute('cy', p[1].toFixed(1));
+      labels[i].textContent = L(AX[i][0], AX[i][1]) + ' · ' + v[i];
+      labels[i].setAttribute('class', 'rd-lb' + (weak.indexOf(i) > -1 && v[i] < 2 ? ' weak' : ''));
+    }
+    var pctTxt = root.lang === 'en' ? pct + '%' : '%' + pct;
+    document.getElementById('mr-lvl').textContent = lvl;
+    document.getElementById('mm-lvl').textContent = lvl;
+    document.getElementById('mr-pct').textContent = pctTxt;
+    document.getElementById('mm-pct').textContent = pctTxt;
+    document.getElementById('mr-meter').style.setProperty('--p', (sum / 24 * 100).toFixed(1) + '%');
+    document.getElementById('mr-name').textContent = L(LV[lvl][0], LV[lvl][1]);
+    var below = v.filter(function (x) { return x < 2; }).length;
+    var avgTxt = avg.toLocaleString(root.lang === 'en' ? 'en-GB' : 'tr-TR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    var nums = L(['Hiçbiri', 'Biri', 'İkisi', 'Üçü', 'Dördü', 'Beşi', 'Altısı', 'Yedisi', 'Sekizi'][below], ['None', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'All eight'][below]);
+    document.getElementById('mr-sum').textContent = L('Seviye ' + lvl + ', ' + LV[lvl][0].toLowerCase() + '. Ortalama ' + avgTxt + ' / 3. Sekiz eksenden ' + nums.toLowerCase() + ' ISO 19650 eşiğinin (2) altında.',
+      'Level ' + lvl + ', ' + LV[lvl][1].toLowerCase() + '. Average ' + avgTxt + ' / 3. ' + nums + (below === 8 ? '' : ' of eight') + ' axes ' + (below === 1 ? 'is' : 'are') + ' below the ISO 19650 threshold (2).');
+    var ol = document.getElementById('mr-recs'); ol.textContent = '';
+    if (!weak.length) {
+      var li0 = document.createElement('li'); li0.className = 'sv-note'; li0.style.margin = '0';
+      li0.textContent = L('Tüm eksenler hedefte. Bir sonraki adım düzenli uyum denetimi ve verinin işletmede kullanımını ölçmek.', 'Every axis is on target. Next step: regular compliance audits and measuring how data is used in operation.');
+      ol.appendChild(li0);
+    }
+    weak.forEach(function (k) {
+      var r = REC[k], li = document.createElement('li'), a = document.createElement('a');
+      a.href = r[1]; a.dataset.sheet = r[0]; a.dataset.label = r[2];
+      a.innerHTML = '<span class="n"></span><b></b><span></span>';
+      a.children[0].textContent = r[0] + (r[1] === 'hizmet-strateji.html' ? L(' · bu pafta', ' · this sheet') : '');
+      a.children[1].textContent = L(r[2], r[3]) + ' · ' + L(AX[k][0], AX[k][1]) + ' ' + v[k] + '/3';
+      a.children[2].textContent = L(r[4], r[5]);
+      li.appendChild(a); ol.appendChild(li);
+    });
+    document.querySelectorAll('#levels > div').forEach(function (d) { d.classList.toggle('on', +d.dataset.lv === lvl); });
+  }
+  function setAll(arr) { arr.forEach(function (x, i) { var inp = form.querySelector('input[name="q' + i + '"][value="' + x + '"]'); if (inp) inp.checked = true; }); update(); }
+  form.addEventListener('change', update);
+  document.getElementById('mat-sample').addEventListener('click', function () { setAll(SAMPLE); });
+  document.getElementById('mat-zero').addEventListener('click', function () { setAll([0, 0, 0, 0, 0, 0, 0, 0]); });
+  document.getElementById('mat-max').addEventListener('click', function () { setAll([3, 3, 3, 3, 3, 3, 3, 3]); });
+  document.addEventListener('langchange', update);
+  update();
+
+  /* Hiyerarşi: tanım kartı <-> şema düğümü */
+  var nodes = document.querySelectorAll('.ir-fig .hn'), defs = document.querySelectorAll('#ir-defs > div');
+  function hl(k) {
+    nodes.forEach(function (n) { n.classList.toggle('hl', n.dataset.node === k); });
+    defs.forEach(function (d) { d.classList.toggle('hl', d.dataset.node === k); });
+  }
+  defs.forEach(function (d) {
+    d.addEventListener('mouseenter', function () { hl(d.dataset.node); });
+    d.addEventListener('focus', function () { hl(d.dataset.node); });
+    d.addEventListener('mouseleave', function () { hl(null); });
+    d.addEventListener('blur', function () { hl(null); });
+  });
+  nodes.forEach(function (n) {
+    n.addEventListener('mouseenter', function () { hl(n.dataset.node); });
+    n.addEventListener('mouseleave', function () { hl(null); });
+  });
+})();
+
+</script>
+</body>
+</html>

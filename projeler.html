@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Projeler | Firma Adı BIM</title>
+<meta name="description" content="Proje dizini: sağlıktan altyapıya, sekiz ülkede BIM yöneticisi, koordinatör ve modelleme ekibi olarak yürüttüğümüz örnek projeler.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Projeler | Firma Adı BIM">
+<meta property="og:description" content="Proje dizini: sağlıktan altyapıya, sekiz ülkede BIM yöneticisi, koordinatör ve modelleme ekibi olarak yürüttüğümüz örnek projeler.">
+<meta property="og:url" content="https://www.firmaadi.com/projeler.html">
+<meta property="og:image" content="https://www.firmaadi.com/assets/logo.png">
+<link rel="canonical" href="https://www.firmaadi.com/projeler.html">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+
+/* ---- A-200 · Proje dizini ---- */
+.sheet-head .meta .signal b { color: var(--signal); }
+.sum .spec > div { padding: clamp(16px, 2.2vw, 28px); }
+.sum .spec .v { font-size: clamp(30px, 3.8vw, 56px); font-stretch: 125%; font-weight: 800; letter-spacing: -.03em; white-space: nowrap; }
+.sum .spec .v small { font: 500 13px var(--mono); letter-spacing: .04em; margin-left: 6px; color: var(--ink-2); }
+.sum { padding-block: clamp(28px, 4vw, 48px) 0; }
+
+/* araç çubuğu */
+.reg-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px 32px; align-items: end; padding-bottom: 18px; border-bottom: 1px solid var(--ink); }
+.reg-tools > * { min-width: 0; }
+.fgroup { display: grid; gap: 8px; }
+.fgroup + .fgroup { margin-top: 14px; }
+.fgroup .lbl { font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.reg-right { display: grid; gap: 10px; justify-items: end; }
+.seg { display: inline-flex; border: 1px solid var(--ink); }
+.seg button { border: 0; background: none; color: var(--ink); font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 9px 14px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+.seg button + button { border-left: 1px solid var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg svg { width: 14px; height: 14px; }
+.reg-count { font: 500 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.reg-count b { color: var(--signal); font-weight: 600; }
+.sort-m { display: none; }
+.sort-m select { font: 500 13px var(--mono); color: var(--ink); background: var(--paper); border: 1px solid var(--ink); padding: 8px 10px; border-radius: 0; max-width: 100%; }
+
+/* tablo */
+.reg-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.reg-table thead th { text-align: left; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1px solid var(--rule); padding: 0; white-space: nowrap; }
+.reg-table thead th button { all: unset; box-sizing: border-box; display: flex; gap: 6px; align-items: center; width: 100%; padding: 12px 10px; cursor: pointer; }
+.reg-table thead th.c-num button { justify-content: flex-end; }
+.reg-table thead th button:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+.reg-table thead th button:hover { color: var(--ink); }
+.reg-table thead th i { font-style: normal; width: 10px; opacity: .45; }
+.reg-table thead th i::before { content: "↕"; }
+.reg-table thead th[aria-sort="ascending"] i::before { content: "↑"; }
+.reg-table thead th[aria-sort="descending"] i::before { content: "↓"; }
+.reg-table thead th[aria-sort] { color: var(--ink); }
+.reg-table thead th[aria-sort] i { opacity: 1; color: var(--signal); }
+.reg-table tbody tr { border-bottom: 1px solid var(--rule); transition: background .15s; }
+.reg-table tbody tr[hidden] { display: none !important; }
+.reg-table tbody th, .reg-table tbody td { padding: 20px 10px; vertical-align: top; text-align: left; font-weight: 400; }
+.reg-table tbody .c-no { font: 500 12px var(--mono); color: var(--signal); letter-spacing: .06em; padding-top: 26px; white-space: nowrap; width: 72px; }
+.reg-table .nm { display: block; font: 800 clamp(20px, 2.1vw, 30px)/1.05 var(--display); font-stretch: 112%; letter-spacing: -.015em; text-decoration: none; color: var(--ink); }
+.reg-table a.nm::after { content: " →"; color: var(--signal); }
+.reg-table .sub { display: block; margin-top: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+.reg-table .sub.mono { font-size: 11px; }
+.reg-table .case { display: inline-block; margin-top: 8px; color: var(--on-signal); background: var(--signal); padding: 3px 7px; font-size: 10.5px; }
+.reg-table .c-loc { font-size: 15px; min-width: 150px; }
+.reg-table .c-sec { font-size: 15px; }
+.reg-table td.c-num { text-align: right; font: 500 14px var(--mono); white-space: nowrap; padding-top: 24px; }
+.reg-table .c-lod { color: var(--ink); font-weight: 600; }
+.reg-table tbody tr:focus-visible { outline: 2px solid var(--signal); outline-offset: -2px; }
+.reg-table tbody tr.hot { background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.reg-table tbody tr.hot .nm { color: var(--signal); }
+.reg-empty { padding: 32px 0; font: 500 13px var(--mono); color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+.reg-note { margin-top: 14px; }
+
+/* imleçle gelen önizleme */
+.pv-float { position: fixed; left: 0; top: 0; width: 300px; height: 252px; z-index: 30; pointer-events: none; border: 1px solid var(--ink); background: var(--paper); opacity: 0; transform: translate(-999px, -999px); transition: opacity .18s; display: grid; grid-template-rows: auto 1fr auto; }
+.pv-float.on { opacity: 1; }
+.pv-float .hd, .pv-float .ft { display: flex; justify-content: space-between; gap: 10px; padding: 7px 10px; font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.pv-float .hd { border-bottom: 1px solid var(--rule); }
+.pv-float .hd b { color: var(--signal); font-weight: 600; }
+.pv-float .ft { border-top: 1px solid var(--rule); }
+.pv-float .cv { position: relative; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 12px 12px; }
+.pv-float canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ızgara görünümü */
+.pgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); border-left: 1px solid var(--rule); }
+.pgrid[hidden], .pcard[hidden] { display: none !important; }
+.pcard { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; display: grid; grid-template-rows: auto 1fr; transition: background .15s; }
+.pcard:hover { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+.pcard .pv { position: relative; aspect-ratio: 4 / 3; border-bottom: 1px solid var(--rule); background: var(--paper-2); }
+.pcard .pv canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.pcard .pv .mono { position: absolute; left: 12px; top: 10px; color: var(--ink-2); font-size: 10.5px; }
+.pcard .pv .lod { left: auto; right: 12px; color: var(--ink); }
+.pcard .body { padding: 16px 16px 20px; display: grid; gap: 12px; align-content: start; }
+.pcard h3 { font-size: clamp(19px, 1.8vw, 24px); font-stretch: 112%; letter-spacing: -.01em; }
+.pcard h3 a { text-decoration: none; }
+.pcard h3 a::after { content: " →"; color: var(--signal); }
+.pcard h3 a:hover { color: var(--signal); }
+.pcard dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font: 500 12px var(--mono); }
+.pcard dt { color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+.pcard dd { margin: 0; min-width: 0; }
+.pcard .case { justify-self: start; color: var(--on-signal); background: var(--signal); padding: 3px 7px; font-size: 10.5px; }
+
+/* anahtar plan */
+.kp { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.kp-fig { margin: 0; border: 1px solid var(--ink); background: var(--paper); padding: 10px; }
+.kp-svg { display: block; width: 100%; height: auto; }
+.kp-grat line { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 4; }
+.kp-grat .gl, .kp-hq text { font: 500 10px var(--mono); fill: var(--ink-2); letter-spacing: .04em; }
+.kp-lines line { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 5 4; opacity: .5; transition: opacity .2s, stroke .2s; }
+.kp-lines line.hot { stroke: var(--signal); opacity: 1; stroke-dasharray: none; stroke-width: 1.5; }
+.kp-lines line.off { opacity: .08; }
+.kp-hq rect { fill: var(--ink); }
+.kp-pt circle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; transition: r .2s, fill .2s; }
+.kp-pt text { font: 600 11px var(--mono); fill: var(--ink); letter-spacing: .04em; }
+.kp-pt.hot circle { fill: var(--signal); stroke: var(--signal); r: 8; }
+.kp-pt.hot text { fill: var(--signal); }
+.kp-pt.off { opacity: .22; }
+.kp-copy { display: grid; gap: 16px; }
+.kp-copy p { color: var(--ink-2); }
+.kp-legend { display: grid; gap: 8px; font: 500 12px var(--mono); color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+.kp-legend span { display: flex; align-items: center; gap: 10px; }
+.kp-legend i { width: 12px; height: 12px; flex: none; }
+.kp-legend .sq { background: var(--ink); }
+.kp-legend .ci { border: 1.5px solid var(--ink); border-radius: 50%; }
+.kp-legend .ln { height: 0; border-top: 1px dashed var(--ink-2); width: 22px; }
+
+@media (max-width: 1100px) { .reg-table .c-sec, .reg-table thead th[data-key="sector"] { display: none; } }
+@media (max-width: 900px) { .kp { grid-template-columns: 1fr; } .pv-float { display: none; } }
+@media (max-width: 760px) {
+  .reg-tools { grid-template-columns: 1fr; }
+  .reg-right { justify-items: start; grid-template-columns: auto 1fr; align-items: center; }
+  .reg-right .reg-count { grid-column: 1 / -1; }
+  .sort-m { display: block; }
+  .reg-table thead tr, .reg-table thead th { display: block; width: 1px; height: 1px; overflow: hidden; }
+  .reg-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .reg-table, .reg-table tbody { display: block; }
+  .reg-table tbody tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  .reg-table tbody th, .reg-table tbody td { display: block; padding: 0; min-width: 0; text-align: left; }
+  .reg-table tbody .c-no { padding: 0; grid-column: 1 / -1; width: auto; }
+  .reg-table .c-name, .reg-table .c-loc { grid-column: 1 / -1; }
+  .reg-table .c-sec { display: block; }
+  .reg-table td.c-num { text-align: left; padding: 0; white-space: normal; }
+  .reg-table tbody td::before { display: block; content: attr(data-ktr); font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 3px; }
+  :root[lang="en"] .reg-table tbody td::before { content: attr(data-ken); }
+  .reg-table .c-name::before { display: none !important; }
+}
+/* portföy infografikleri (p2-) */
+.p2-ic { width: 40px; height: 40px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; color: var(--ink); display: block; margin-bottom: 10px; }
+.sum .spec > div .p2-ic { width: 44px; height: 44px; }
+.p2-area { display: grid; gap: 6px; }
+.p2-area .mono { font-size: 11.5px; color: var(--ink-2); }
+.p2-bar { display: block; height: 8px; border: 1px solid var(--rule); }
+.p2-bar i { display: block; height: 100%; background: var(--ink); }
+.p2-gl { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--rule); }
+.p2-fig { margin: 0; min-width: 0; padding: clamp(18px, 2.6vw, 34px); border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); display: grid; gap: 18px; align-content: start; }
+.p2-fig figcaption { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+.p2-key { display: inline-flex; gap: 6px; align-items: center; }
+.p2-key i { width: 11px; height: 11px; border-radius: 50%; background: var(--ink); }
+.p2-dwrap { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: clamp(18px, 3vw, 40px); align-items: center; }
+.p2-donut { width: 100%; height: auto; display: block; }
+.p2-big { font: 800 20px var(--display); font-stretch: 118%; fill: var(--ink); letter-spacing: -.02em; }
+.p2-sm { font: 500 12px var(--mono); fill: var(--ink-2); }
+.p2-leg { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font: 500 13px var(--mono); }
+.p2-leg li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; gap: 10px; align-items: center; border-bottom: 1px dashed var(--rule); padding-bottom: 6px; }
+.p2-leg i { width: 12px; height: 12px; background: var(--ink); }
+.p2-leg b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.p2-roles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 18px; }
+.p2-roles li { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: 12px; align-items: center; min-width: 0; }
+.p2-roles .p2-ic { grid-row: span 2; margin: 0; }
+.p2-roles b { font: 800 34px/1 var(--display); font-stretch: 120%; }
+.p2-roles span { font: 500 12px var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2); }
+.p2-svg { width: 100%; max-width: 440px; height: auto; display: block; }
+.p2-ax { stroke: var(--ink); stroke-width: 1.2; }
+.p2-blk { fill: var(--paper-2); stroke: var(--ink); stroke-width: 1.2; }
+.p2-top { fill: var(--ink); fill-opacity: .18; stroke: var(--ink); stroke-width: 1.2; stroke-linejoin: round; }
+.p2-lb { font: 500 13px var(--mono); fill: var(--ink-2); }
+.p2-n { font: 800 18px var(--display); fill: var(--ink); }
+.p2-dot circle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.4; }
+.p2-dot text { font: 600 11px var(--mono); fill: var(--ink); }
+.p2-dot.cs circle { fill: var(--ink); }
+.p2-dot.cs text { fill: var(--paper); }
+@media (max-width: 760px) {
+  .p2-gl { grid-template-columns: minmax(0, 1fr); }
+  .p2-dwrap { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .p2-donut { max-width: 230px; }
+  .p2-leg { width: 100%; }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="tr">İçeriğe geç</span><span lang="en">Skip to content</span></a>
+<div class="draft-note"><span lang="tr">Taslak · Firma adı, iletişim bilgileri, projeler ve rakamlar örnektir.</span><span lang="en">Draft · Company name, contact details, projects and figures are placeholders.</span></div>
+<div class="axis-left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+<header class="topbar sheet">
+  <div class="frame">
+    <a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a>
+    <div class="top-right">
+      <span class="mono dim sheet-label" aria-hidden="true">A-200 · <span lang="tr">Projeler</span><span lang="en">Projects</span></span>
+      <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" aria-pressed="true">TR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i><span lang="tr">Paftalar</span><span lang="en">Sheets</span></button>
+    </div>
+  </div>
+</header>
+<nav class="register" id="register" hidden aria-label="Paftalar">
+  <div class="register-head"><span class="mono"><span lang="tr">Pafta listesi · 5 pafta · 9 alt pafta</span><span lang="en">Sheet register · 5 sheets · 9 sub-sheets</span></span><button class="register-close" type="button" data-close-register><span lang="tr">Kapat</span><span lang="en">Close</span> ✕</button></div>
+  <ol>
+    <li><a href="./" data-sheet="A-000" data-label="Kapak"><span class="no">A-000</span><span class="t"><span lang="tr">Kapak</span><span lang="en">Cover</span></span><span class="d"><span lang="tr">Ana sayfa</span><span lang="en">Home</span></span></a></li><li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler"><span class="no">A-100</span><span class="t"><span lang="tr">Hizmetler</span><span lang="en">Services</span></span><span class="d"><span lang="tr">Strateji · Model · Koordinasyon</span><span lang="en">Strategy · Model · Coordination</span></span></a><ul class="subs"><li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi"><span class="sno">A-101</span><span class="st"><span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></span><span class="sd"><span lang="tr">EIR, BEP, ISO 19650 yol haritası</span><span lang="en">EIR, BEP, ISO 19650 roadmap</span></span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme"><span class="sno">A-102</span><span class="st"><span lang="tr">Modelleme</span><span lang="en">Modelling</span></span><span class="sd"><span lang="tr">Mimari, yapı, MEP, Scan-to-BIM</span><span lang="en">Architecture, structure, MEP, scan-to-BIM</span></span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon"><span class="sno">A-103</span><span class="st"><span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></span><span class="sd"><span lang="tr">Federe model, çakışma, BCF</span><span lang="en">Federated model, clashes, BCF</span></span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı"><span class="sno">A-104</span><span class="st"><span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></span><span class="sd"><span lang="tr">ACC kurulumu, isimlendirme, onaylar</span><span lang="en">ACC setup, naming, approvals</span></span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon"><span class="sno">A-105</span><span class="st"><span lang="tr">Otomasyon</span><span lang="en">Automation</span></span><span class="sd"><span lang="tr">Dynamo, Python, Revit API eklentileri</span><span lang="en">Dynamo, Python, Revit API add-ins</span></span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek"><span class="sno">A-106</span><span class="st"><span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></span><span class="sd"><span lang="tr">Revit, Navisworks, ISO 19650 eğitimleri</span><span lang="en">Revit, Navisworks, ISO 19650 courses</span></span></a></li></ul></li><li><a href="projeler.html" data-sheet="A-200" data-label="Projeler" aria-current="page"><span class="no">A-200</span><span class="t"><span lang="tr">Projeler</span><span lang="en">Projects</span></span><span class="d"><span lang="tr">Proje dizini</span><span lang="en">Project index</span></span></a><ul class="subs"><li><a href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Hastane kampüsü"><span class="sno">A-210</span><span class="st"><span lang="tr">Hastane kampüsü</span><span lang="en">Hospital campus</span></span><span class="sd"><span lang="tr">Sağlık · Türkiye · BIM yöneticisi</span><span lang="en">Healthcare · Türkiye · BIM manager</span></span></a></li><li><a href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span class="sno">A-220</span><span class="st"><span lang="tr">Konut kulesi</span><span lang="en">Residential tower</span></span><span class="sd"><span lang="tr">Konut · Almanya · Modelleme ekibi</span><span lang="en">Residential · Germany · Modelling team</span></span></a></li><li><a href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span class="sno">A-230</span><span class="st"><span lang="tr">Lojistik merkezi</span><span lang="en">Logistics hub</span></span><span class="sd"><span lang="tr">Endüstriyel · BAE · Scan-to-BIM</span><span lang="en">Industrial · UAE · Scan-to-BIM</span></span></a></li></ul></li><li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda"><span class="no">A-300</span><span class="t"><span lang="tr">Hakkımızda</span><span lang="en">About</span></span><span class="d"><span lang="tr">Ekip · Yaklaşım</span><span lang="en">Team · Approach</span></span></a></li><li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span class="no">A-900</span><span class="t"><span lang="tr">İletişim</span><span lang="en">Contact</span></span><span class="d"><span lang="tr">Teklif · Ofisler</span><span lang="en">Proposal · Offices</span></span></a></li>
+  </ol>
+  <div class="register-foot"><span>info@firmaadi.com</span><span>+90 (212) 000 00 00</span><span>İstanbul · London</span></div>
+</nav>
+<aside class="titleblock" aria-hidden="true">
+  <div><span><span lang="tr">Proje</span><span lang="en">Project</span></span><b>Firma Adı BIM</b></div>
+  <div><span><span lang="tr">Pafta</span><span lang="en">Sheet</span></span><b>A-200</b></div>
+  <div><span><span lang="tr">Ölçek</span><span lang="en">Scale</span></span><b>1:100</b></div>
+  <div class="xy"><span><span lang="tr">Koordinat</span><span lang="en">Coordinate</span></span><b id="tb-xy">X 0.0 · Y 0.0</b></div>
+  <div><span>Rev</span><b>P07</b></div>
+  <div><span><span lang="tr">Durum</span><span lang="en">Status</span></span><b>S2 · <span lang="tr">Bilgi</span><span lang="en">Info</span></b></div>
+</aside>
+<main id="main" class="sheet"><div class="frame">
+  <header class="sheet-head">
+    <div class="meta mono dim">
+      <span><span lang="tr">Pafta</span><span lang="en">Sheet</span> <b>A-200</b></span>
+      <span><span lang="tr">Ölçek</span><span lang="en">Scale</span> <b>NTS</b></span>
+      <span>Rev <b>P07</b></span>
+      <span><span lang="tr">Kayıt</span><span lang="en">Entries</span> <b>8</b></span>
+      <span class="signal"><b><span lang="tr">Örnek veri</span><span lang="en">Sample data</span></b></span>
+    </div>
+    <h1><span lang="tr">Proje <span class="o">dizini</span></span><span lang="en">Project <span class="o">index</span></span></h1>
+    <p class="lede"><span lang="tr">Sekiz ülke, yedi sektör, tek çizim dili. Bir projeyi seçin, modeli açılsın.</span><span lang="en">Eight countries, seven sectors, one drawing language. Pick a project to open its model.</span></p>
+  </header>
+
+  <section class="sum" aria-label="Özet / Summary">
+    <div class="spec">
+      <div><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 34V14l14-8 14 8v20M3 34h34M16 34v-8h8v8M12 16h3M25 16h3M12 21h3M25 21h3"/></svg><div class="k"><span lang="tr">Proje</span><span lang="en">Projects</span></div><div class="v" data-count="8">8</div></div>
+      <div><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14"/><ellipse cx="20" cy="20" rx="6" ry="14"/><path d="M6 20h28M8.5 12h23M8.5 28h23"/></svg><div class="k"><span lang="tr">Ülke</span><span lang="en">Countries</span></div><div class="v" data-count="8">8</div></div>
+      <div><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><rect x="10" y="10" width="22" height="22"/><path d="M10 5h22M10 3v4M32 3v4M5 10v22M3 10h4M3 32h4"/></svg><div class="k"><span lang="tr">Toplam alan</span><span lang="en">Total area</span></div><div class="v"><span data-count="491900">491.900</span><small>m²</small></div></div>
+      <div><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4l10 5v10l-10 5-10-5V9z M10 9l10 5 10-5M20 14v10"/><path d="M10 21l-6 3v8l8 4 8-4M30 21l6 3v8l-8 4-8-4"/></svg><div class="k"><span lang="tr">Model öğesi</span><span lang="en">Model elements</span></div><div class="v"><span data-count="1.69" data-suffix=" M">1,69 M</span></div></div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="reg-title" style="padding-top:clamp(40px,6vw,72px)">
+    <div class="block-head">
+      <span class="no">01 · <span lang="tr">Pafta listesi</span><span lang="en">Drawing register</span></span>
+      <h2 id="reg-title"><span lang="tr">Tüm projeler</span><span lang="en">All projects</span></h2>
+      <p><span lang="tr">Süzün, sıralayın, açın.</span><span lang="en">Filter, sort, open.</span></p>
+    </div>
+
+    <div class="reg-tools" id="reg-tools" hidden>
+      <div>
+        <div class="fgroup" role="group" aria-labelledby="f-sec">
+          <span class="lbl" id="f-sec"><span lang="tr">Sektör</span><span lang="en">Sector</span></span>
+          <div class="chips"><button class="chip" type="button" data-f="sector" data-v="all" aria-pressed="true"><span lang="tr">Tümü</span><span lang="en">All</span></button><button class="chip" type="button" data-f="sector" data-v="health" aria-pressed="false"><span lang="tr">Sağlık</span><span lang="en">Healthcare</span></button><button class="chip" type="button" data-f="sector" data-v="resi" aria-pressed="false"><span lang="tr">Konut</span><span lang="en">Residential</span></button><button class="chip" type="button" data-f="sector" data-v="ind" aria-pressed="false"><span lang="tr">Endüstriyel</span><span lang="en">Industrial</span></button><button class="chip" type="button" data-f="sector" data-v="infra" aria-pressed="false"><span lang="tr">Altyapı</span><span lang="en">Infrastructure</span></button><button class="chip" type="button" data-f="sector" data-v="edu" aria-pressed="false"><span lang="tr">Eğitim</span><span lang="en">Education</span></button><button class="chip" type="button" data-f="sector" data-v="office" aria-pressed="false"><span lang="tr">Ofis</span><span lang="en">Office</span></button><button class="chip" type="button" data-f="sector" data-v="hosp" aria-pressed="false"><span lang="tr">Konaklama</span><span lang="en">Hospitality</span></button></div>
+        </div>
+        <div class="fgroup" role="group" aria-labelledby="f-lod">
+          <span class="lbl" id="f-lod"><span lang="tr">Detay seviyesi (LOD)</span><span lang="en">Level of detail (LOD)</span></span>
+          <div class="chips"><button class="chip" type="button" data-f="lod" data-v="all" aria-pressed="true"><span lang="tr">Tümü</span><span lang="en">All</span></button><button class="chip" type="button" data-f="lod" data-v="300" aria-pressed="false">300</button><button class="chip" type="button" data-f="lod" data-v="350" aria-pressed="false">350</button><button class="chip" type="button" data-f="lod" data-v="400" aria-pressed="false">400</button><button class="chip" type="button" data-f="lod" data-v="500" aria-pressed="false">500</button></div>
+        </div>
+      </div>
+      <div class="reg-right">
+        <div class="seg" role="group" aria-label="Görünüm / View">
+          <button type="button" data-view="table" aria-pressed="false"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M0 2h14M0 7h14M0 12h14" stroke="currentColor" stroke-width="1.6"/></svg><span lang="tr">Tablo</span><span lang="en">Table</span></button>
+          <button type="button" data-view="grid" aria-pressed="true"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1h5v5H1zM8 1h5v5H8zM1 8h5v5H1zM8 8h5v5H8z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span lang="tr">Izgara</span><span lang="en">Grid</span></button>
+        </div>
+        <label class="sort-m"><span class="sr-only"><span lang="tr">Sırala</span><span lang="en">Sort by</span></span>
+          <select id="sort-m">
+            <option value="no:1">No. ↑</option>
+            <option value="year:-1" data-tr="Yıl ↓ (yeni)" data-en="Year ↓ (newest)">Yıl ↓</option>
+            <option value="area:-1" data-tr="Alan ↓" data-en="Area ↓">Alan ↓</option>
+            <option value="el:-1" data-tr="Model öğesi ↓" data-en="Elements ↓">Model öğesi ↓</option>
+            <option value="lod:-1" data-tr="LOD ↓" data-en="LOD ↓">LOD ↓</option>
+            <option value="name:1" data-tr="Proje A→Z" data-en="Project A→Z">Proje A→Z</option>
+          </select>
+        </label>
+        <p class="reg-count" id="reg-count" aria-live="polite"><b>8</b> / 8 <span lang="tr">proje gösteriliyor</span><span lang="en">projects shown</span></p>
+      </div>
+    </div>
+
+    <div id="view-table">
+      <table class="reg-table" id="reg-table">
+        <caption class="sr-only"><span lang="tr">Örnek proje listesi</span><span lang="en">Sample project register</span></caption>
+        <thead><tr><th scope="col" class="c-no" data-key="no"><button type="button"><span lang="tr">No.</span><span lang="en">No.</span><i aria-hidden="true"></i></button></th><th scope="col" data-key="name"><button type="button"><span lang="tr">Proje</span><span lang="en">Project</span><i aria-hidden="true"></i></button></th><th scope="col" data-key="place"><button type="button"><span lang="tr">Konum</span><span lang="en">Location</span><i aria-hidden="true"></i></button></th><th scope="col" data-key="sector"><button type="button"><span lang="tr">Sektör</span><span lang="en">Sector</span><i aria-hidden="true"></i></button></th><th scope="col" class="c-num" data-key="lod"><button type="button"><span lang="tr">LOD</span><span lang="en">LOD</span><i aria-hidden="true"></i></button></th><th scope="col" class="c-num" data-key="area"><button type="button"><span lang="tr">Alan m²</span><span lang="en">Area m²</span><i aria-hidden="true"></i></button></th><th scope="col" class="c-num" data-key="el"><button type="button"><span lang="tr">Model öğesi</span><span lang="en">Elements</span><i aria-hidden="true"></i></button></th><th scope="col" class="c-num" data-key="year"><button type="button"><span lang="tr">Yıl</span><span lang="en">Year</span><i aria-hidden="true"></i></button></th></tr></thead>
+        <tbody id="reg-body">
+        <tr data-id="p01"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-01</th><td class="c-name" data-ktr="Proje" data-ken="Project"><a class="nm" href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Proje"><span lang="tr">Örnek Hastane Kampüsü</span><span lang="en">Sample Hospital Campus</span></a><span class="case mono"><span lang="tr">Vaka çalışması</span><span lang="en">Case study</span> → A-210</span><span class="sub"><span lang="tr">BIM yöneticisi</span><span lang="en">BIM manager</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Ankara, Türkiye</span><span lang="en">Ankara, Türkiye</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Sağlık</span><span lang="en">Healthcare</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">350</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">128.400</span><span lang="en">128,400</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">412.000</span><span lang="en">412,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2025</td></tr>
+        <tr data-id="p02"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-02</th><td class="c-name" data-ktr="Proje" data-ken="Project"><a class="nm" href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span lang="tr">Örnek Konut Kulesi</span><span lang="en">Sample Residential Tower</span></a><span class="case mono"><span lang="tr">Vaka çalışması</span><span lang="en">Case study</span> → A-220</span><span class="sub"><span lang="tr">Modelleme ekibi</span><span lang="en">Modelling team</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Frankfurt, Almanya</span><span lang="en">Frankfurt, Germany</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Konut</span><span lang="en">Residential</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">300</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">46.200</span><span lang="en">46,200</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">185.000</span><span lang="en">185,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2025</td></tr>
+        <tr data-id="p03"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-03</th><td class="c-name" data-ktr="Proje" data-ken="Project"><a class="nm" href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span lang="tr">Örnek Lojistik Merkezi</span><span lang="en">Sample Logistics Hub</span></a><span class="case mono"><span lang="tr">Vaka çalışması</span><span lang="en">Case study</span> → A-230</span><span class="sub"><span lang="tr">Danışman</span><span lang="en">Consultant</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Dubai, BAE</span><span lang="en">Dubai, UAE</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Endüstriyel</span><span lang="en">Industrial</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">400</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">92.000</span><span lang="en">92,000</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">96.000</span><span lang="en">96,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2024</td></tr>
+        <tr data-id="p04" tabindex="0"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-04</th><td class="c-name" data-ktr="Proje" data-ken="Project"><span class="nm"><span lang="tr">Örnek Metro İstasyonu</span><span lang="en">Sample Metro Station</span></span><span class="sub"><span lang="tr">Koordinatör</span><span lang="en">Coordinator</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Varşova, Polonya</span><span lang="en">Warsaw, Poland</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Altyapı</span><span lang="en">Infrastructure</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">400</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">31.500</span><span lang="en">31,500</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">240.000</span><span lang="en">240,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2024</td></tr>
+        <tr data-id="p05" tabindex="0"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-05</th><td class="c-name" data-ktr="Proje" data-ken="Project"><span class="nm"><span lang="tr">Örnek Üniversite Binası</span><span lang="en">Sample University Building</span></span><span class="sub"><span lang="tr">Danışman</span><span lang="en">Consultant</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Manchester, Birleşik Krallık</span><span lang="en">Manchester, United Kingdom</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Eğitim</span><span lang="en">Education</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">300</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">38.700</span><span lang="en">38,700</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">152.000</span><span lang="en">152,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2023</td></tr>
+        <tr data-id="p06" tabindex="0"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-06</th><td class="c-name" data-ktr="Proje" data-ken="Project"><span class="nm"><span lang="tr">Örnek Ofis Kulesi</span><span lang="en">Sample Office Tower</span></span><span class="sub"><span lang="tr">BIM yöneticisi</span><span lang="en">BIM manager</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Riyad, Suudi Arabistan</span><span lang="en">Riyadh, Saudi Arabia</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Ofis</span><span lang="en">Office</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">350</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">74.000</span><span lang="en">74,000</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">268.000</span><span lang="en">268,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2025</td></tr>
+        <tr data-id="p07" tabindex="0"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-07</th><td class="c-name" data-ktr="Proje" data-ken="Project"><span class="nm"><span lang="tr">Örnek Veri Merkezi</span><span lang="en">Sample Data Centre</span></span><span class="sub"><span lang="tr">Koordinatör</span><span lang="en">Coordinator</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Amsterdam, Hollanda</span><span lang="en">Amsterdam, Netherlands</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Endüstriyel</span><span lang="en">Industrial</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">500</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">22.800</span><span lang="en">22,800</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">131.000</span><span lang="en">131,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2023</td></tr>
+        <tr data-id="p08" tabindex="0"><th scope="row" class="c-no" data-ktr="No." data-ken="No.">P-08</th><td class="c-name" data-ktr="Proje" data-ken="Project"><span class="nm"><span lang="tr">Örnek Otel ve Kongre Merkezi</span><span lang="en">Sample Hotel and Congress Centre</span></span><span class="sub"><span lang="tr">Modelleme ekibi</span><span lang="en">Modelling team</span></span></td><td class="c-loc" data-ktr="Konum" data-ken="Location"><span lang="tr">Doha, Katar</span><span lang="en">Doha, Qatar</span></td><td class="c-sec" data-ktr="Sektör" data-ken="Sector"><span lang="tr">Konaklama</span><span lang="en">Hospitality</span></td><td class="c-num c-lod" data-ktr="LOD" data-ken="LOD">300</td><td class="c-num" data-ktr="Alan m²" data-ken="Area m²"><span lang="tr">58.300</span><span lang="en">58,300</span></td><td class="c-num" data-ktr="Model öğesi" data-ken="Model elements"><span lang="tr">204.000</span><span lang="en">204,000</span></td><td class="c-num" data-ktr="Yıl" data-ken="Year">2022</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="pgrid" id="pgrid" hidden>
+      <li class="pcard" data-id="p01"><div class="pv"><canvas data-model='{"bays": [5, 3], "floors": 5, "seed": 11}' aria-hidden="true"></canvas><span class="mono">P-01 · ISO</span><span class="mono lod">LOD 350</span></div><div class="body"><h3><a href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Proje"><span lang="tr">Örnek Hastane Kampüsü</span><span lang="en">Sample Hospital Campus</span></a></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Ankara, Türkiye</span><span lang="en">Ankara, Türkiye</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">BIM yöneticisi</span><span lang="en">BIM manager</span></dd></dl><div class="p2-area" aria-label="128.400 m²"><span class="p2-bar" aria-hidden="true"><i style="width:100.0%"></i></span><span class="mono"><span lang="tr">128.400</span><span lang="en">128,400</span> m² · 2025</span></div><span class="case mono"><span lang="tr">Vaka çalışması</span><span lang="en">Case study</span> → A-210</span></div></li>
+      <li class="pcard" data-id="p02"><div class="pv"><canvas data-model='{"bays": [2, 2], "floors": 12, "seed": 23}' aria-hidden="true"></canvas><span class="mono">P-02 · ISO</span><span class="mono lod">LOD 300</span></div><div class="body"><h3><a href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi"><span lang="tr">Örnek Konut Kulesi</span><span lang="en">Sample Residential Tower</span></a></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Frankfurt, Almanya</span><span lang="en">Frankfurt, Germany</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">Modelleme ekibi</span><span lang="en">Modelling team</span></dd></dl><div class="p2-area" aria-label="46.200 m²"><span class="p2-bar" aria-hidden="true"><i style="width:36.0%"></i></span><span class="mono"><span lang="tr">46.200</span><span lang="en">46,200</span> m² · 2025</span></div><span class="case mono"><span lang="tr">Vaka çalışması</span><span lang="en">Case study</span> → A-220</span></div></li>
+      <li class="pcard" data-id="p03"><div class="pv"><canvas data-model='{"bays": [7, 4], "floors": 2, "seed": 5}' aria-hidden="true"></canvas><span class="mono">P-03 · ISO</span><span class="mono lod">LOD 400</span></div><div class="body"><h3><a href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi"><span lang="tr">Örnek Lojistik Merkezi</span><span lang="en">Sample Logistics Hub</span></a></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Dubai, BAE</span><span lang="en">Dubai, UAE</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">Danışman</span><span lang="en">Consultant</span></dd></dl><div class="p2-area" aria-label="92.000 m²"><span class="p2-bar" aria-hidden="true"><i style="width:71.7%"></i></span><span class="mono"><span lang="tr">92.000</span><span lang="en">92,000</span> m² · 2024</span></div><span class="case mono"><span lang="tr">Vaka çalışması</span><span lang="en">Case study</span> → A-230</span></div></li>
+      <li class="pcard" data-id="p04"><div class="pv"><canvas data-model='{"bays": [6, 2], "floors": 3, "seed": 31}' aria-hidden="true"></canvas><span class="mono">P-04 · ISO</span><span class="mono lod">LOD 400</span></div><div class="body"><h3><span lang="tr">Örnek Metro İstasyonu</span><span lang="en">Sample Metro Station</span></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Varşova, Polonya</span><span lang="en">Warsaw, Poland</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">Koordinatör</span><span lang="en">Coordinator</span></dd></dl><div class="p2-area" aria-label="31.500 m²"><span class="p2-bar" aria-hidden="true"><i style="width:24.5%"></i></span><span class="mono"><span lang="tr">31.500</span><span lang="en">31,500</span> m² · 2024</span></div></div></li>
+      <li class="pcard" data-id="p05"><div class="pv"><canvas data-model='{"bays": [4, 3], "floors": 4, "seed": 17}' aria-hidden="true"></canvas><span class="mono">P-05 · ISO</span><span class="mono lod">LOD 300</span></div><div class="body"><h3><span lang="tr">Örnek Üniversite Binası</span><span lang="en">Sample University Building</span></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Manchester, Birleşik Krallık</span><span lang="en">Manchester, United Kingdom</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">Danışman</span><span lang="en">Consultant</span></dd></dl><div class="p2-area" aria-label="38.700 m²"><span class="p2-bar" aria-hidden="true"><i style="width:30.1%"></i></span><span class="mono"><span lang="tr">38.700</span><span lang="en">38,700</span> m² · 2023</span></div></div></li>
+      <li class="pcard" data-id="p06"><div class="pv"><canvas data-model='{"bays": [3, 3], "floors": 10, "seed": 41}' aria-hidden="true"></canvas><span class="mono">P-06 · ISO</span><span class="mono lod">LOD 350</span></div><div class="body"><h3><span lang="tr">Örnek Ofis Kulesi</span><span lang="en">Sample Office Tower</span></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Riyad, Suudi Arabistan</span><span lang="en">Riyadh, Saudi Arabia</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">BIM yöneticisi</span><span lang="en">BIM manager</span></dd></dl><div class="p2-area" aria-label="74.000 m²"><span class="p2-bar" aria-hidden="true"><i style="width:57.6%"></i></span><span class="mono"><span lang="tr">74.000</span><span lang="en">74,000</span> m² · 2025</span></div></div></li>
+      <li class="pcard" data-id="p07"><div class="pv"><canvas data-model='{"bays": [5, 2], "floors": 2, "seed": 9}' aria-hidden="true"></canvas><span class="mono">P-07 · ISO</span><span class="mono lod">LOD 500</span></div><div class="body"><h3><span lang="tr">Örnek Veri Merkezi</span><span lang="en">Sample Data Centre</span></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Amsterdam, Hollanda</span><span lang="en">Amsterdam, Netherlands</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">Koordinatör</span><span lang="en">Coordinator</span></dd></dl><div class="p2-area" aria-label="22.800 m²"><span class="p2-bar" aria-hidden="true"><i style="width:17.8%"></i></span><span class="mono"><span lang="tr">22.800</span><span lang="en">22,800</span> m² · 2023</span></div></div></li>
+      <li class="pcard" data-id="p08"><div class="pv"><canvas data-model='{"bays": [4, 2], "floors": 7, "seed": 27}' aria-hidden="true"></canvas><span class="mono">P-08 · ISO</span><span class="mono lod">LOD 300</span></div><div class="body"><h3><span lang="tr">Örnek Otel ve Kongre Merkezi</span><span lang="en">Sample Hotel and Congress Centre</span></h3><dl><dt><span lang="tr">Konum</span><span lang="en">Location</span></dt><dd><span lang="tr">Doha, Katar</span><span lang="en">Doha, Qatar</span></dd><dt><span lang="tr">Rol</span><span lang="en">Role</span></dt><dd><span lang="tr">Modelleme ekibi</span><span lang="en">Modelling team</span></dd></dl><div class="p2-area" aria-label="58.300 m²"><span class="p2-bar" aria-hidden="true"><i style="width:45.4%"></i></span><span class="mono"><span lang="tr">58.300</span><span lang="en">58,300</span> m² · 2022</span></div></div></li>
+    </ul>
+    <p class="reg-empty" id="reg-empty" hidden><span lang="tr">Bu süzgeçlerle eşleşen proje yok.</span><span lang="en">No project matches these filters.</span></p>
+    <p class="reg-note mono dim"><span lang="tr">Örnek projeler · P-01–P-03 vaka çalışması</span><span lang="en">Sample projects · P-01–P-03 case studies</span></p>
+
+    <div class="pv-float" id="pv-float" aria-hidden="true">
+      <div class="hd"><b id="pv-no">P-01</b><span id="pv-lod">LOD 350</span></div>
+      <div class="cv"><canvas id="pv-canvas"></canvas></div>
+      <div class="ft"><span id="pv-xy"></span><span>ISO · 1:500</span></div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="kp-title">
+    <div class="block-head">
+      <span class="no">02 · <span lang="tr">Anahtar plan</span><span lang="en">Key plan</span></span>
+      <h2 id="kp-title"><span lang="tr">İstanbul'dan sekiz koordinat.</span><span lang="en">Eight coordinates from Istanbul.</span></h2>
+    </div>
+    <div class="kp">
+      <figure class="kp-fig">
+        <svg viewBox="0 0 680 370" aria-hidden="true" class="kp-svg"><g class="kp-grat"><line x1="40.0" y1="20" x2="40.0" y2="340"/><text class="gl" x="40.0" y="358" text-anchor="middle">10°W</text><line x1="128.6" y1="20" x2="128.6" y2="340"/><text class="gl" x="128.6" y="358" text-anchor="middle">0°E</text><line x1="217.1" y1="20" x2="217.1" y2="340"/><text class="gl" x="217.1" y="358" text-anchor="middle">10°E</text><line x1="305.7" y1="20" x2="305.7" y2="340"/><text class="gl" x="305.7" y="358" text-anchor="middle">20°E</text><line x1="394.3" y1="20" x2="394.3" y2="340"/><text class="gl" x="394.3" y="358" text-anchor="middle">30°E</text><line x1="482.9" y1="20" x2="482.9" y2="340"/><text class="gl" x="482.9" y="358" text-anchor="middle">40°E</text><line x1="571.4" y1="20" x2="571.4" y2="340"/><text class="gl" x="571.4" y="358" text-anchor="middle">50°E</text><line x1="660.0" y1="20" x2="660.0" y2="340"/><text class="gl" x="660.0" y="358" text-anchor="middle">60°E</text><line x1="40" y1="340.0" x2="660" y2="340.0"/><text class="gl" x="34" y="344.0" text-anchor="end">20°N</text><line x1="40" y1="255.8" x2="660" y2="255.8"/><text class="gl" x="34" y="259.8" text-anchor="end">30°N</text><line x1="40" y1="171.6" x2="660" y2="171.6"/><text class="gl" x="34" y="175.6" text-anchor="end">40°N</text><line x1="40" y1="87.4" x2="660" y2="87.4"/><text class="gl" x="34" y="91.4" text-anchor="end">50°N</text></g><g class="kp-lines"><line data-id="p01" x1="385.3" y1="163.1" x2="419.6" y2="172.2"/><line data-id="p02" x1="385.3" y1="163.1" x2="205.5" y2="86.4"/><line data-id="p03" x1="385.3" y1="163.1" x2="616.2" y2="297.8"/><line data-id="p04" x1="385.3" y1="163.1" x2="314.7" y2="68.6"/><line data-id="p05" x1="385.3" y1="163.1" x2="108.7" y2="58.1"/><line data-id="p06" x1="385.3" y1="163.1" x2="542.0" y2="300.3"/><line data-id="p07" x1="385.3" y1="163.1" x2="172.0" y2="67.4"/><line data-id="p08" x1="385.3" y1="163.1" x2="585.0" y2="295.5"/></g><g class="kp-hq"><rect x="379.3" y="157.1" width="12" height="12"/><text x="375.3" y="185.1" text-anchor="end">HQ · 41.01°N 28.98°E</text></g><g class="kp-pt" data-id="p01"><circle cx="419.6" cy="172.2" r="5"/><text x="429.6" y="164.2">P-01</text></g><g class="kp-pt" data-id="p02"><circle cx="205.5" cy="86.4" r="5"/><text x="215.5" y="100.4">P-02</text></g><g class="kp-pt" data-id="p03"><circle cx="616.2" cy="297.8" r="5"/><text x="602.2" y="319.8">P-03</text></g><g class="kp-pt" data-id="p04"><circle cx="314.7" cy="68.6" r="5"/><text x="324.7" y="58.6">P-04</text></g><g class="kp-pt" data-id="p05"><circle cx="108.7" cy="58.1" r="5"/><text x="118.7" y="48.1">P-05</text></g><g class="kp-pt" data-id="p06"><circle cx="542.0" cy="300.3" r="5"/><text x="480.0" y="322.3">P-06</text></g><g class="kp-pt" data-id="p07"><circle cx="172.0" cy="67.4" r="5"/><text x="181.0" y="58.4">P-07</text></g><g class="kp-pt" data-id="p08"><circle cx="585.0" cy="295.5" r="5"/><text x="565.0" y="281.5">P-08</text></g></svg>
+        <figcaption class="sr-only"><span lang="tr">Projelerin enlem ve boylamlarına göre yerleştirildiği, İstanbul merkezinden çizgilerle bağlanan nokta planı. Koordinatlar tabloda da yer alır.</span><span lang="en">A point plan placing each project by latitude and longitude, linked by lines to the Istanbul office. Coordinates are also listed in the table.</span></figcaption>
+      </figure>
+      <div class="kp-copy">
+        <p><span lang="tr">Bir projeyi seçin, noktası turuncuya döner.</span><span lang="en">Select a project and its point turns orange.</span></p>
+        <div class="kp-legend">
+          <span><i class="sq"></i><span lang="tr">Merkez ofis · İstanbul</span><span lang="en">Head office · Istanbul</span></span>
+          <span><i class="ci"></i><span lang="tr">Proje noktası (örnek)</span><span lang="en">Project point (sample)</span></span>
+          <span><i class="ln"></i><span lang="tr">Koordinasyon hattı</span><span lang="en">Coordination line</span></span>
+        </div>
+        <div class="btns"><a class="btn" href="proje-ornek-hastane.html" data-sheet="A-210" data-label="Proje"><span lang="tr">Vaka çalışması: P-01</span><span lang="en">Case study: P-01</span></a><a class="btn line" href="proje-ornek-konut.html" data-sheet="A-220" data-label="Konut kulesi">P-02</a><a class="btn line" href="proje-ornek-lojistik.html" data-sheet="A-230" data-label="Lojistik merkezi">P-03</a></div>
+      </div>
+    </div>
+  </section>
+  <section class="block" aria-labelledby="gl-title">
+    <div class="block-head">
+      <span class="no">03 · <span lang="tr">Portföy</span><span lang="en">Portfolio</span></span>
+      <h2 id="gl-title"><span lang="tr">Bir bakışta.</span><span lang="en">At a glance.</span></h2>
+    </div>
+    <div class="p2-gl">
+      <figure class="p2-fig p2-fig-d">
+        <figcaption class="mono"><span lang="tr">Sektöre göre alan</span><span lang="en">Area by sector</span></figcaption>
+        <div class="p2-dwrap"><svg class="p2-donut" viewBox="0 0 200 200" role="img" aria-labelledby="p2-d-t"><title id="p2-d-t">Sektöre göre alan dağılımı / Area by sector</title><g fill="none" stroke-width="26" transform="rotate(-90 100 100)"><circle cx="100" cy="100" r="70" stroke="var(--signal)" stroke-dasharray="112.31 439.82" stroke-dashoffset="0.00"/><circle cx="100" cy="100" r="70" stroke="var(--ink)" stroke-opacity="0.85" stroke-dasharray="100.15 439.82" stroke-dashoffset="-114.81"/><circle cx="100" cy="100" r="70" stroke="var(--ink)" stroke-opacity="0.68" stroke-dasharray="63.67 439.82" stroke-dashoffset="-217.45"/><circle cx="100" cy="100" r="70" stroke="var(--ink)" stroke-opacity="0.52" stroke-dasharray="49.63 439.82" stroke-dashoffset="-283.62"/><circle cx="100" cy="100" r="70" stroke="var(--ink)" stroke-opacity="0.38" stroke-dasharray="38.81 439.82" stroke-dashoffset="-335.75"/><circle cx="100" cy="100" r="70" stroke="var(--ink)" stroke-opacity="0.26" stroke-dasharray="32.10 439.82" stroke-dashoffset="-377.05"/><circle cx="100" cy="100" r="70" stroke="var(--ink)" stroke-opacity="0.16" stroke-dasharray="25.67 439.82" stroke-dashoffset="-411.66"/></g><text x="100" y="100" text-anchor="middle" class="p2-big">491.900</text><text x="100" y="120" text-anchor="middle" class="p2-sm">m²</text></svg><ul class="p2-leg"><li><i style="background:var(--signal)"></i><span><span lang="tr">Sağlık</span><span lang="en">Healthcare</span></span><b>26%</b></li><li><i style="opacity:0.85"></i><span><span lang="tr">Endüstriyel</span><span lang="en">Industrial</span></span><b>23%</b></li><li><i style="opacity:0.68"></i><span><span lang="tr">Ofis</span><span lang="en">Office</span></span><b>15%</b></li><li><i style="opacity:0.52"></i><span><span lang="tr">Konaklama</span><span lang="en">Hospitality</span></span><b>12%</b></li><li><i style="opacity:0.38"></i><span><span lang="tr">Konut</span><span lang="en">Residential</span></span><b>9%</b></li><li><i style="opacity:0.26"></i><span><span lang="tr">Eğitim</span><span lang="en">Education</span></span><b>8%</b></li><li><i style="opacity:0.16"></i><span><span lang="tr">Altyapı</span><span lang="en">Infrastructure</span></span><b>6%</b></li></ul></div>
+      </figure>
+      <figure class="p2-fig">
+        <figcaption class="mono"><span lang="tr">Rolümüz · proje sayısı</span><span lang="en">Our role · projects</span></figcaption>
+        <ul class="p2-roles"><li><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><rect x="9" y="7" width="22" height="28"/><path d="M15 5h10v5H15zM14 21l4 4 8-9"/></svg><b>2</b><span><span lang="tr">BIM yöneticisi</span><span lang="en">BIM manager</span></span></li><li><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="9" width="18" height="18"/><rect x="17" y="15" width="18" height="18"/><path d="M17 15h6v12h-6z" fill="currentColor" fill-opacity=".25"/></svg><b>2</b><span><span lang="tr">Koordinatör</span><span lang="en">Coordinator</span></span></li><li><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5l13 7v15l-13 7-13-7V12z M7 12l13 7 13-7M20 19v15"/></svg><b>2</b><span><span lang="tr">Modelleme ekibi</span><span lang="en">Modelling team</span></span></li><li><svg class="p2-ic" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 8h28v18H18l-7 6v-6H6z"/><path d="M12 15h16M12 20h10"/></svg><b>2</b><span><span lang="tr">Danışman</span><span lang="en">Consultant</span></span></li></ul>
+      </figure>
+      <figure class="p2-fig">
+        <figcaption class="mono"><span lang="tr">Detay seviyesi (LOD)</span><span lang="en">Level of detail (LOD)</span></figcaption>
+        <svg class="p2-svg" viewBox="0 0 270 182" role="img" aria-labelledby="p2-l-t"><title id="p2-l-t">LOD 300: 3, LOD 350: 2, LOD 400: 2, LOD 500: 1 proje / projects</title><line x1="14" y1="150" x2="262" y2="150" class="p2-ax"/><path class="p2-blk" d="M24 124h36v24h-36z"/><path class="p2-top" d="M24 124l6 -6h36l-6 6z M60 124l6 -6v24l-6 6z"/><path class="p2-blk" d="M24 94h36v24h-36z"/><path class="p2-top" d="M24 94l6 -6h36l-6 6z M60 94l6 -6v24l-6 6z"/><path class="p2-blk" d="M24 64h36v24h-36z"/><path class="p2-top" d="M24 64l6 -6h36l-6 6z M60 64l6 -6v24l-6 6z"/><text x="42" y="172" text-anchor="middle" class="p2-lb">300</text><text x="45" y="50" text-anchor="middle" class="p2-n">3</text><path class="p2-blk" d="M84 124h36v24h-36z"/><path class="p2-top" d="M84 124l6 -6h36l-6 6z M120 124l6 -6v24l-6 6z"/><path class="p2-blk" d="M84 94h36v24h-36z"/><path class="p2-top" d="M84 94l6 -6h36l-6 6z M120 94l6 -6v24l-6 6z"/><text x="102" y="172" text-anchor="middle" class="p2-lb">350</text><text x="105" y="80" text-anchor="middle" class="p2-n">2</text><path class="p2-blk" d="M144 124h36v24h-36z"/><path class="p2-top" d="M144 124l6 -6h36l-6 6z M180 124l6 -6v24l-6 6z"/><path class="p2-blk" d="M144 94h36v24h-36z"/><path class="p2-top" d="M144 94l6 -6h36l-6 6z M180 94l6 -6v24l-6 6z"/><text x="162" y="172" text-anchor="middle" class="p2-lb">400</text><text x="165" y="80" text-anchor="middle" class="p2-n">2</text><path class="p2-blk" d="M204 124h36v24h-36z"/><path class="p2-top" d="M204 124l6 -6h36l-6 6z M240 124l6 -6v24l-6 6z"/><text x="222" y="172" text-anchor="middle" class="p2-lb">500</text><text x="225" y="110" text-anchor="middle" class="p2-n">1</text></svg>
+      </figure>
+      <figure class="p2-fig">
+        <figcaption class="mono"><span lang="tr">Yıllara göre</span><span lang="en">By year</span> <span class="p2-key"><i></i><span lang="tr">vaka çalışması</span><span lang="en">case study</span></span></figcaption>
+        <svg class="p2-svg" viewBox="0 0 320 156" role="img" aria-labelledby="p2-t-t"><title id="p2-t-t">Yıllara göre projeler: 2022 bir, 2023 iki, 2024 iki, 2025 üç / Projects per year</title><line x1="14" y1="124" x2="306" y2="124" class="p2-ax"/><path d="M300 119l7 5-7 5" class="p2-ax" fill="none"/><line x1="44" y1="124" x2="44" y2="130" class="p2-ax"/><text x="44" y="148" text-anchor="middle" class="p2-lb">2022</text><g class="p2-dot"><circle cx="44" cy="106" r="13"/><text x="44" y="110" text-anchor="middle">08</text></g><line x1="120" y1="124" x2="120" y2="130" class="p2-ax"/><text x="120" y="148" text-anchor="middle" class="p2-lb">2023</text><g class="p2-dot"><circle cx="120" cy="106" r="13"/><text x="120" y="110" text-anchor="middle">05</text></g><g class="p2-dot"><circle cx="120" cy="76" r="13"/><text x="120" y="80" text-anchor="middle">07</text></g><line x1="196" y1="124" x2="196" y2="130" class="p2-ax"/><text x="196" y="148" text-anchor="middle" class="p2-lb">2024</text><g class="p2-dot cs"><circle cx="196" cy="106" r="13"/><text x="196" y="110" text-anchor="middle">03</text></g><g class="p2-dot"><circle cx="196" cy="76" r="13"/><text x="196" y="80" text-anchor="middle">04</text></g><line x1="272" y1="124" x2="272" y2="130" class="p2-ax"/><text x="272" y="148" text-anchor="middle" class="p2-lb">2025</text><g class="p2-dot cs"><circle cx="272" cy="106" r="13"/><text x="272" y="110" text-anchor="middle">01</text></g><g class="p2-dot cs"><circle cx="272" cy="76" r="13"/><text x="272" y="80" text-anchor="middle">02</text></g><g class="p2-dot"><circle cx="272" cy="46" r="13"/><text x="272" y="50" text-anchor="middle">06</text></g></svg>
+      </figure>
+    </div>
+  </section>
+</div></main>
+<footer class="footer sheet">
+  <div class="frame">
+    <div class="footer-cta">
+      <h2><span lang="tr">Modeli birlikte<br><em>kuralım.</em></span><span lang="en">Let's build<br>the <em>model.</em></span></h2>
+      <a class="btn" href="iletisim.html" data-sheet="A-900" data-label="İletişim"><span lang="tr">Teklif isteyin</span><span lang="en">Request a proposal</span></a>
+    </div>
+    <div class="footer-cols">
+      <div><a class="brand" href="./" data-sheet="A-000" data-label="Kapak" aria-label="Firma Adı BIM, ana sayfa"><svg viewBox="0 0 140 120" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g stroke="currentColor"><path d="M10 26V10h16M94 10h16v16M10 94v16h16M110 94v16H94" stroke-width="6"/><path d="M42 47 32 60l10 13M78 47l10 13-10 13" stroke-width="7"/><path d="M60 48 70.4 54v12L60 72 49.6 66V54ZM49.6 54 60 60l10.4-6M60 60v12" stroke-width="4"/><path d="M112 52h6M112 68h6" stroke-width="4"/><circle cx="122" cy="52" r="4" stroke-width="3.5"/><circle cx="122" cy="68" r="4" stroke-width="3.5"/></g><path d="M60 48 70.4 54 60 60 49.6 54Z" fill="var(--signal)"/></svg><span><b>FIRMA ADI</b><small>BIM Consulting</small></span></a><p><span lang="tr">Uluslararası BIM danışmanlık ve proje geliştirme. İstanbul merkezli, dünya genelinde projeler.</span><span lang="en">International BIM consulting and project development. Based in Istanbul, working worldwide.</span></p></div>
+      <div><h4><span lang="tr">Paftalar</span><span lang="en">Sheets</span></h4><ul>
+        <li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">A-100 · <span lang="tr">Hizmetler</span><span lang="en">Services</span></a></li>
+        <li><a href="projeler.html" data-sheet="A-200" data-label="Projeler">A-200 · <span lang="tr">Projeler</span><span lang="en">Projects</span></a></li>
+        <li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda">A-300 · <span lang="tr">Hakkımızda</span><span lang="en">About</span></a></li>
+        <li><a href="iletisim.html" data-sheet="A-900" data-label="İletişim">A-900 · <span lang="tr">İletişim</span><span lang="en">Contact</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">Hizmetler</span><span lang="en">Services</span></h4><ul>
+        <li><a href="hizmet-strateji.html" data-sheet="A-101" data-label="BIM stratejisi">A-101 · <span lang="tr">BIM stratejisi</span><span lang="en">BIM strategy</span></a></li><li><a href="hizmet-modelleme.html" data-sheet="A-102" data-label="Modelleme">A-102 · <span lang="tr">Modelleme</span><span lang="en">Modelling</span></a></li><li><a href="hizmet-koordinasyon.html" data-sheet="A-103" data-label="Koordinasyon">A-103 · <span lang="tr">Koordinasyon</span><span lang="en">Coordination</span></a></li><li><a href="hizmet-cde.html" data-sheet="A-104" data-label="Ortak veri ortamı">A-104 · <span lang="tr">Ortak veri ortamı</span><span lang="en">Common data environment</span></a></li><li><a href="hizmet-otomasyon.html" data-sheet="A-105" data-label="Otomasyon">A-105 · <span lang="tr">Otomasyon</span><span lang="en">Automation</span></a></li><li><a href="hizmet-egitim.html" data-sheet="A-106" data-label="Eğitim ve destek">A-106 · <span lang="tr">Eğitim ve destek</span><span lang="en">Training & support</span></a></li>
+      </ul></div>
+      <div><h4><span lang="tr">İletişim</span><span lang="en">Contact</span></h4><ul><li>info@firmaadi.com</li><li>+90 (212) 000 00 00</li><li>İstanbul, Türkiye</li></ul></div>
+      <div><h4><span lang="tr">Takip</span><span lang="en">Follow</span></h4><ul><li>LinkedIn</li><li>YouTube</li><li>Instagram</li></ul></div>
+    </div>
+    <div class="footer-legal"><span>© 2026 Firma Adı BIM</span><span>ISO 19650 · IFC · BCF · COBie</span><span><span lang="tr">KVKK · Gizlilik</span><span lang="en">Privacy</span></span></div>
+  </div>
+</footer>
+<script src="assets/model.js"></script>
+<script src="assets/site.js"></script>
+<script>
+
+(function () {
+  var P = [{"id": "p01", "no": 1, "name": ["Örnek Hastane Kampüsü", "Sample Hospital Campus"], "city": ["Ankara", "Ankara"], "country": ["Türkiye", "Türkiye"], "lat": 39.93, "lon": 32.86, "sector": "health", "role": "mgr", "lod": 350, "area": 128400, "el": 412000, "year": 2025, "bays": [5, 3], "floors": 5, "seed": 11, "scope": ["BEP, MEP koordinasyonu, COBie", "BEP, MEP coordination, COBie"], "lab": [10, -8], "href": "proje-ornek-hastane.html"}, {"id": "p02", "no": 2, "name": ["Örnek Konut Kulesi", "Sample Residential Tower"], "city": ["Frankfurt", "Frankfurt"], "country": ["Almanya", "Germany"], "lat": 50.11, "lon": 8.68, "sector": "resi", "role": "model", "lod": 300, "area": 46200, "el": 185000, "year": 2025, "bays": [2, 2], "floors": 12, "seed": 23, "scope": ["Mimari ve yapısal modelleme", "Architectural and structural modelling"], "lab": [10, 14], "href": "proje-ornek-konut.html"}, {"id": "p03", "no": 3, "name": ["Örnek Lojistik Merkezi", "Sample Logistics Hub"], "city": ["Dubai", "Dubai"], "country": ["BAE", "UAE"], "lat": 25.01, "lon": 55.06, "sector": "ind", "role": "cons", "lod": 400, "area": 92000, "el": 96000, "year": 2024, "bays": [7, 4], "floors": 2, "seed": 5, "scope": ["Scan-to-BIM, koordinasyon", "Scan-to-BIM, coordination"], "lab": [-14, 22], "href": "proje-ornek-lojistik.html"}, {"id": "p04", "no": 4, "name": ["Örnek Metro İstasyonu", "Sample Metro Station"], "city": ["Varşova", "Warsaw"], "country": ["Polonya", "Poland"], "lat": 52.23, "lon": 21.01, "sector": "infra", "role": "coord", "lod": 400, "area": 31500, "el": 240000, "year": 2024, "bays": [6, 2], "floors": 3, "seed": 31, "scope": ["Federe model, çakışma yönetimi", "Federated model, clash management"], "lab": [10, -10]}, {"id": "p05", "no": 5, "name": ["Örnek Üniversite Binası", "Sample University Building"], "city": ["Manchester", "Manchester"], "country": ["Birleşik Krallık", "United Kingdom"], "lat": 53.48, "lon": -2.24, "sector": "edu", "role": "cons", "lod": 300, "area": 38700, "el": 152000, "year": 2023, "bays": [4, 3], "floors": 4, "seed": 17, "scope": ["ISO 19650 uyumu, CDE kurulumu", "ISO 19650 compliance, CDE setup"], "lab": [10, -10]}, {"id": "p06", "no": 6, "name": ["Örnek Ofis Kulesi", "Sample Office Tower"], "city": ["Riyad", "Riyadh"], "country": ["Suudi Arabistan", "Saudi Arabia"], "lat": 24.71, "lon": 46.68, "sector": "office", "role": "mgr", "lod": 350, "area": 74000, "el": 268000, "year": 2025, "bays": [3, 3], "floors": 10, "seed": 41, "scope": ["BIM yönetimi, 4D planlama", "BIM management, 4D planning"], "lab": [-62, 22]}, {"id": "p07", "no": 7, "name": ["Örnek Veri Merkezi", "Sample Data Centre"], "city": ["Amsterdam", "Amsterdam"], "country": ["Hollanda", "Netherlands"], "lat": 52.37, "lon": 4.9, "sector": "ind", "role": "coord", "lod": 500, "area": 22800, "el": 131000, "year": 2023, "bays": [5, 2], "floors": 2, "seed": 9, "scope": ["Yapıldığı gibi model, tesis verisi", "As-built model, facility data"], "lab": [9, -9]}, {"id": "p08", "no": 8, "name": ["Örnek Otel ve Kongre Merkezi", "Sample Hotel and Congress Centre"], "city": ["Doha", "Doha"], "country": ["Katar", "Qatar"], "lat": 25.29, "lon": 51.53, "sector": "hosp", "role": "model", "lod": 300, "area": 58300, "el": 204000, "year": 2022, "bays": [4, 2], "floors": 7, "seed": 27, "scope": ["Mimari model, aile kütüphanesi", "Architectural model, family library"], "lab": [-20, -14]}];
+  var SECT = {"health": ["Sağlık", "Healthcare"], "resi": ["Konut", "Residential"], "ind": ["Endüstriyel", "Industrial"], "infra": ["Altyapı", "Infrastructure"], "edu": ["Eğitim", "Education"], "office": ["Ofis", "Office"], "hosp": ["Konaklama", "Hospitality"]};
+  var root = document.documentElement;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function L() { return root.lang === 'en' ? 1 : 0; }
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var byId = {}; P.forEach(function (p) { byId[p.id] = p; });
+  var tbody = document.getElementById('reg-body'), grid = document.getElementById('pgrid');
+  var rowOf = {}, cardOf = {};
+  Array.prototype.forEach.call(tbody.rows, function (r) { rowOf[r.dataset.id] = r; });
+  Array.prototype.forEach.call(grid.children, function (c) { cardOf[c.dataset.id] = c; });
+  var tools = document.getElementById('reg-tools'); tools.hidden = false;
+  var st = { sector: 'all', lod: 'all', key: 'no', dir: 1, view: store('a200-view') === 'table' ? 'table' : 'grid' };
+
+  /* --- süz + sırala --- */
+  var getters = {
+    no: function (p) { return p.no; }, lod: function (p) { return p.lod; }, area: function (p) { return p.area; },
+    el: function (p) { return p.el; }, year: function (p) { return p.year; },
+    name: function (p) { return p.name[L()]; }, place: function (p) { return p.country[L()] + ' ' + p.city[L()]; },
+    sector: function (p) { return SECT[p.sector][L()]; }
+  };
+  function cmp(a, b) {
+    var g = getters[st.key], x = g(a), y = g(b), r;
+    r = typeof x === 'string' ? x.localeCompare(y, L() ? 'en' : 'tr') : x - y;
+    return (r || a.no - b.no) * st.dir;
+  }
+  var countEl = document.getElementById('reg-count'), empty = document.getElementById('reg-empty');
+  function apply() {
+    var list = P.filter(function (p) { return (st.sector === 'all' || p.sector === st.sector) && (st.lod === 'all' || String(p.lod) === st.lod); }).sort(cmp);
+    var on = {}; list.forEach(function (p) { on[p.id] = 1; tbody.appendChild(rowOf[p.id]); grid.appendChild(cardOf[p.id]); });
+    P.forEach(function (p) {
+      rowOf[p.id].hidden = !on[p.id]; cardOf[p.id].hidden = !on[p.id];
+      document.querySelectorAll('[data-id="' + p.id + '"].kp-pt, .kp-lines [data-id="' + p.id + '"]').forEach(function (e) { e.classList.toggle('off', !on[p.id]); });
+    });
+    countEl.innerHTML = '<b>' + list.length + '</b> / ' + P.length + ' <span lang="tr">proje gösteriliyor</span><span lang="en">projects shown</span>';
+    empty.hidden = list.length > 0;
+    document.querySelectorAll('.reg-table thead th[data-key]').forEach(function (th) {
+      if (th.dataset.key === st.key) th.setAttribute('aria-sort', st.dir > 0 ? 'ascending' : 'descending'); else th.removeAttribute('aria-sort');
+    });
+    var sel = document.getElementById('sort-m'), v = st.key + ':' + st.dir;
+    if (Array.prototype.some.call(sel.options, function (o) { return o.value === v; })) sel.value = v;
+  }
+  document.querySelectorAll('[data-f]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      st[b.dataset.f] = b.dataset.v;
+      document.querySelectorAll('[data-f="' + b.dataset.f + '"]').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      apply();
+    });
+  });
+  document.querySelectorAll('.reg-table thead th[data-key] button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var k = btn.parentNode.dataset.key;
+      if (st.key === k) st.dir = -st.dir; else { st.key = k; st.dir = /area|el|year|lod/.test(k) ? -1 : 1; }
+      apply();
+    });
+  });
+  var selM = document.getElementById('sort-m');
+  function selLabels() { Array.prototype.forEach.call(selM.options, function (o) { if (o.dataset.tr) o.textContent = L() ? o.dataset.en : o.dataset.tr; }); }
+  selM.addEventListener('change', function () { var v = selM.value.split(':'); st.key = v[0]; st.dir = +v[1]; apply(); });
+  document.addEventListener('langchange', function () { selLabels(); apply(); });
+  selLabels();
+
+  /* --- görünüm: tablo / ızgara --- */
+  var tableView = document.getElementById('view-table'), mounted = false;
+  function setView(v) {
+    st.view = v; store('a200-view', v);
+    tableView.hidden = v !== 'table'; grid.hidden = v !== 'grid';
+    document.querySelectorAll('[data-view]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.view === v)); });
+    if (v === 'grid' && !mounted && window.BIMModel) {
+      mounted = true;
+      grid.querySelectorAll('canvas[data-model]').forEach(function (c) {
+        var p = JSON.parse(c.dataset.model); p.stage = 1; p.labels = false; p.clash = false; BIMModel.mount(c, p);
+      });
+    }
+    if (v !== 'table') hide();
+  }
+  document.querySelectorAll('[data-view]').forEach(function (b) { b.addEventListener('click', function () { setView(b.dataset.view); }); });
+
+  /* --- önizleme (imleçle gelir, klavyede sabit) --- */
+  var fl = document.getElementById('pv-float'), cv = document.getElementById('pv-canvas'), model = null, cur = null, anim = 0;
+  var wide = matchMedia('(min-width: 901px)');
+  function hot(id) {
+    document.querySelectorAll('.reg-table tbody tr.hot, .kp-pt.hot, .kp-lines .hot').forEach(function (e) { e.classList.remove('hot'); });
+    if (!id) return;
+    rowOf[id].classList.add('hot');
+    document.querySelectorAll('.kp-pt[data-id="' + id + '"], .kp-lines [data-id="' + id + '"]').forEach(function (e) { e.classList.add('hot'); });
+  }
+  function load(id) {
+    if (cur === id) return; cur = id;
+    var p = byId[id];
+    document.getElementById('pv-no').textContent = 'P-' + String(p.no).padStart(2, '0') + ' · ' + SECT[p.sector][L()];
+    document.getElementById('pv-lod').textContent = 'LOD ' + p.lod;
+    document.getElementById('pv-xy').textContent = p.lat.toFixed(2) + '° ' + p.lon.toFixed(2) + '°';
+    if (!window.BIMModel) return;
+    if (!model) model = BIMModel.mount(cv, { bays: p.bays, floors: p.floors, seed: p.seed, stage: 1, labels: false, clash: false });
+    else model.set({ bays: p.bays, floors: p.floors, seed: p.seed, stage: 1 });
+    cancelAnimationFrame(anim);
+    if (reduce) return;
+    var t0 = performance.now();
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / 650), e = 1 - Math.pow(1 - k, 3);
+      model.set({ stage: .3 + .7 * e });
+      if (k < 1) anim = requestAnimationFrame(step);
+    })(t0);
+  }
+  function place(x, y) {
+    var w = fl.offsetWidth, h = fl.offsetHeight;
+    x = Math.max(8, Math.min(innerWidth - w - 8, x)); y = Math.max(8, Math.min(innerHeight - h - 8, y));
+    fl.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+  }
+  function show(tr) { if (!wide.matches || st.view !== 'table') return false; hot(tr.dataset.id); load(tr.dataset.id); fl.classList.add('on'); return true; }
+  function hide() { fl.classList.remove('on'); hot(null); }
+  tbody.addEventListener('pointermove', function (e) {
+    if (e.pointerType !== 'mouse') return;
+    var tr = e.target.closest('tr'); if (!tr || !show(tr)) return;
+    var x = e.clientX + 28; if (x + fl.offsetWidth > innerWidth - 8) x = e.clientX - fl.offsetWidth - 28;
+    place(x, e.clientY - fl.offsetHeight / 2);
+  });
+  tbody.addEventListener('pointerleave', function () { if (!tbody.contains(document.activeElement)) hide(); });
+  tbody.addEventListener('focusin', function (e) {
+    var tr = e.target.closest('tr'); if (!tr) return;
+    if (!show(tr)) { hot(tr.dataset.id); return; }
+    var r = tr.getBoundingClientRect(), h = fl.offsetHeight;
+    var y = r.bottom + 8 + h < innerHeight ? r.bottom + 8 : r.top - h - 8;
+    place(r.right - fl.offsetWidth - 12, y);
+  });
+  tbody.addEventListener('focusout', function (e) { if (!tbody.contains(e.relatedTarget)) hide(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+  tbody.addEventListener('keydown', function (e) {
+    var tr = e.target.closest && e.target.closest('tr'); if (!tr) return;
+    var sib = e.key === 'ArrowDown' ? 'nextElementSibling' : e.key === 'ArrowUp' ? 'previousElementSibling' : null;
+    if (!sib) return;
+    var n = tr[sib]; while (n && n.hidden) n = n[sib];
+    if (n) { e.preventDefault(); (n.tabIndex >= 0 ? n : n.querySelector('a')).focus(); }
+  });
+  window.addEventListener('scroll', function () { if (!tbody.contains(document.activeElement)) hide(); }, { passive: true });
+
+  setView(st.view);
+  grid.addEventListener('pointerover', function (e) { var c = e.target.closest('.pcard'); if (c && !c.hidden) hot(c.dataset.id); });
+  grid.addEventListener('pointerleave', function () { hot(null); });
+  grid.addEventListener('focusin', function (e) { var c = e.target.closest('.pcard'); if (c) hot(c.dataset.id); });
+  grid.addEventListener('focusout', function (e) { if (!grid.contains(e.relatedTarget)) hot(null); });
+  apply();
+})();
+
+</script>
+</body>
+</html>
