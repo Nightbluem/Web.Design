@@ -6,6 +6,7 @@ src/<ad>.html dosyaları şu biçimdedir:
   <script>...sayfaya özel JS (isteğe bağlı)...</script>
 Çıktı: out/deploy (gerçek site) ve out/artifact (her şey satır içi, önizleme).
 """
+import hashlib, base64
 import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 os.chdir(HERE)
@@ -146,11 +147,25 @@ def page(name, mode):
     page_style = f'<style>\n{style}\n</style>' if style.strip() else ''
     page_script = f'<script>\n{script}\n</script>' if script.strip() else ''
     if mode == 'deploy':
+        # Güvenlik: içerik güvenlik politikası (CSP). Satır içi script yalnızca hash'i eşleşirse çalışır.
+        h = base64.b64encode(hashlib.sha256(f'\n{script}\n'.encode()).digest()).decode() if script.strip() else ''
+        script_src = "'self'" + (f" 'sha256-{h}'" if h else '')
+        csp = ("default-src 'self'; "
+               f"script-src {script_src}; "
+               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+               "font-src 'self' https://fonts.gstatic.com; "
+               "img-src 'self' data: blob:; connect-src 'self'; "
+               "object-src 'none'; base-uri 'self'; form-action 'self'; "
+               "upgrade-insecure-requests")
+        sec = (f'<meta http-equiv="Content-Security-Policy" content="{csp}">\n'
+               '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
+               '<script src="assets/guard.js"></script>')
         return f'''<!doctype html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{sec}
 <title>{title}</title>
 <meta name="description" content="{meta['desc']}">
 <meta property="og:type" content="website">
@@ -185,7 +200,7 @@ if __name__ == '__main__':
     names = [n[:-5] for n in sorted(os.listdir('src')) if n.endswith('.html')]
     for d in ('out/deploy/assets', 'out/artifact'):
         os.makedirs(d, exist_ok=True)
-    for f in ('style.css', 'model.js', 'site.js', 'logo.svg', 'logo.png'):
+    for f in ('style.css', 'model.js', 'site.js', 'guard.js', 'logo.svg', 'logo.png'):
         if os.path.exists(f'assets/{f}'):
             open(f'out/deploy/assets/{f}', 'wb').write(open(f'assets/{f}', 'rb').read())
     for n in names:

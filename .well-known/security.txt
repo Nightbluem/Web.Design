@@ -1,0 +1,6 @@
+# Güvenlik açığı bildirimi / Security vulnerability reporting
+# Yayından önce e-posta adresini gerçek adresle değiştirin.
+Contact: mailto:security@firmaadi.com
+Expires: 2027-10-07T00:00:00.000Z
+Preferred-Languages: tr, en
+Canonical: https://nightbluem.github.io/Web.Design/.well-known/security.txt

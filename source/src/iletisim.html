@@ -308,7 +308,7 @@
             <span class="n" aria-hidden="true">01</span>
             <div class="body">
               <label class="lbl" for="f-name"><span lang="tr">Ad soyad</span><span lang="en">Full name</span><i aria-hidden="true">*</i></label>
-              <input type="text" id="f-name" name="name" autocomplete="name" required aria-required="true" aria-describedby="e-name">
+              <input type="text" id="f-name" name="name" maxlength="120" autocomplete="name" required aria-required="true" aria-describedby="e-name">
               <p class="err" id="e-name" hidden><span lang="tr">Adınızı yazın.</span><span lang="en">Please enter your name.</span></p>
             </div>
           </div>
@@ -316,7 +316,7 @@
             <span class="n" aria-hidden="true">02</span>
             <div class="body">
               <label class="lbl" for="f-company"><span lang="tr">Firma</span><span lang="en">Company</span></label>
-              <input type="text" id="f-company" name="company" autocomplete="organization">
+              <input type="text" id="f-company" name="company" maxlength="120" autocomplete="organization">
             </div>
           </div>
         </div>
@@ -325,7 +325,7 @@
           <span class="n" aria-hidden="true">03</span>
           <div class="body">
             <label class="lbl" for="f-mail"><span lang="tr">E-posta</span><span lang="en">Email</span><i aria-hidden="true">*</i></label>
-            <input type="email" id="f-mail" name="email" autocomplete="email" inputmode="email" required aria-required="true" aria-describedby="e-mail" data-ph-tr="ad@firma.com" data-ph-en="name@company.com">
+            <input type="email" id="f-mail" name="email" maxlength="254" autocomplete="email" inputmode="email" required aria-required="true" aria-describedby="e-mail" data-ph-tr="ad@firma.com" data-ph-en="name@company.com">
             <p class="err" id="e-mail" hidden><span lang="tr">Geçerli bir e-posta adresi yazın, örneğin ad@firma.com.</span><span lang="en">Enter a valid email address, for example name@company.com.</span></p>
           </div>
         </div>
@@ -352,7 +352,7 @@
           <span class="n" aria-hidden="true">05</span>
           <div class="body">
             <label class="lbl" for="f-loc"><span lang="tr">Proje konumu</span><span lang="en">Project location</span></label>
-            <input type="text" id="f-loc" name="location" autocomplete="off" data-ph-tr="Şehir, ülke" data-ph-en="City, country">
+            <input type="text" id="f-loc" name="location" maxlength="120" autocomplete="off" data-ph-tr="Şehir, ülke" data-ph-en="City, country">
           </div>
         </div>
 
