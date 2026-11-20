@@ -170,9 +170,9 @@ def page(name, mode):
 <meta property="og:type" content="website">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{meta['desc']}">
-<meta property="og:url" content="https://bim-sade-tasarim.docile-mule-7951.chatgpt.site/{path}">
-<meta property="og:image" content="https://bim-sade-tasarim.docile-mule-7951.chatgpt.site/assets/logo.png">
-<link rel="canonical" href="https://bim-sade-tasarim.docile-mule-7951.chatgpt.site/{path}">
+<meta property="og:url" content="https://nightbluem.github.io/Web.Design/{path}">
+<meta property="og:image" content="https://nightbluem.github.io/Web.Design/assets/logo.png">
+<link rel="canonical" href="https://nightbluem.github.io/Web.Design/{path}">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 {FONTS}
 <link rel="stylesheet" href="assets/style.css">

@@ -19,6 +19,8 @@ Statik bir site olduğu için derleme gerekmez. Klasörü olduğu gibi Netlify, 
 
 Özel nişangâh imleci, koordinat çizgileri ve sayfa geçiş perdesi kaldırıldı. Arka plan ızgarası, kenar cetvelleri ve sabit antet sadeleştirildi; başlıklar küçültüldü ve menü basitleştirildi. Türkçe/İngilizce seçenekleri ve model etkileşimleri korundu.
 
-Sites yayını: https://bim-sade-tasarim.docile-mule-7951.chatgpt.site
+GitHub Pages yayını: https://nightbluem.github.io/Web.Design/
 
 Kaynakları derlemek için `python source/build.py` çalıştırın ve `source/out/deploy/` içeriğini depo köküne kopyalayın.
+
+GitHub Pages yayın kaynağı: `Web_BIM` dalı, depo kökü (`/`). Bu dala gönderilen değişiklikler GitHub Pages tarafından yayımlanır.
