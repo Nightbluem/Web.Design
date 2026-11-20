@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.firmaadi.com/sitemap.xml
+Sitemap: https://nightbluem.github.io/Web.Design/sitemap.xml
