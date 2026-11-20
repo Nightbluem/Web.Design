@@ -23,7 +23,7 @@ def T(tr, en):
     return f'<span lang="tr">{tr}</span><span lang="en">{en}</span>'
 
 NAV = [  # (dosya, pafta, tr, en, açıklama tr, açıklama en)
-    ('./', 'A-000', 'Kapak', 'Cover', 'Ana sayfa', 'Home'),
+    ('./', 'A-000', 'Ana sayfa', 'Home', 'Ana sayfa', 'Home'),
     ('hizmetler.html', 'A-100', 'Hizmetler', 'Services', 'Strateji · Model · Koordinasyon', 'Strategy · Model · Coordination'),
     ('projeler.html', 'A-200', 'Projeler', 'Projects', 'Proje dizini', 'Project index'),
     ('hakkimizda.html', 'A-300', 'Hakkımızda', 'About', 'Ekip · Yaklaşım', 'Team · Approach'),
@@ -84,12 +84,12 @@ def chrome_top(meta):
     <div class="top-right">
       <span class="mono dim sheet-label" aria-hidden="true">{meta['sheet']} · {T(meta['tr'], meta['en'])}</span>
       <div class="lang" role="group" aria-label="Dil / Language"><button type="button" data-lang="tr" aria-pressed="true">TR</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
-      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i>{T('Paftalar', 'Sheets')}</button>
+      <button class="menu-btn" id="menu-open" type="button" aria-expanded="false" aria-controls="register"><i aria-hidden="true"></i>{T('Menü', 'Menu')}</button>
     </div>
   </div>
 </header>
 <nav class="register" id="register" hidden aria-label="{'Paftalar'}">
-  <div class="register-head"><span class="mono">{T('Pafta listesi · 5 pafta · 9 alt pafta', 'Sheet register · 5 sheets · 9 sub-sheets')}</span><button class="register-close" type="button" data-close-register>{T('Kapat', 'Close')} ✕</button></div>
+  <div class="register-head"><span class="mono">{T('Keşfedin', 'Explore')}</span><button class="register-close" type="button" data-close-register>{T('Kapat', 'Close')} ✕</button></div>
   <ol>
     {''.join(items)}
   </ol>
@@ -113,7 +113,7 @@ def chrome_bottom():
     </div>
     <div class="footer-cols">
       <div>{brand()}<p>{T('Uluslararası BIM danışmanlık ve proje geliştirme. İstanbul merkezli, dünya genelinde projeler.', 'International BIM consulting and project development. Based in Istanbul, working worldwide.')}</p></div>
-      <div><h4>{T('Paftalar', 'Sheets')}</h4><ul>
+      <div><h4>{T('Menü', 'Menu')}</h4><ul>
         <li><a href="hizmetler.html" data-sheet="A-100" data-label="Hizmetler">A-100 · {T('Hizmetler', 'Services')}</a></li>
         <li><a href="projeler.html" data-sheet="A-200" data-label="Projeler">A-200 · {T('Projeler', 'Projects')}</a></li>
         <li><a href="hakkimizda.html" data-sheet="A-300" data-label="Hakkımızda">A-300 · {T('Hakkımızda', 'About')}</a></li>
@@ -158,8 +158,7 @@ def page(name, mode):
                "object-src 'none'; base-uri 'self'; form-action 'self'; "
                "upgrade-insecure-requests")
         sec = (f'<meta http-equiv="Content-Security-Policy" content="{csp}">\n'
-               '<meta name="referrer" content="strict-origin-when-cross-origin">\n'
-               '<script src="assets/guard.js"></script>')
+               '<meta name="referrer" content="strict-origin-when-cross-origin">\n')
         return f'''<!doctype html>
 <html lang="tr">
 <head>
@@ -171,9 +170,9 @@ def page(name, mode):
 <meta property="og:type" content="website">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{meta['desc']}">
-<meta property="og:url" content="https://www.firmaadi.com/{path}">
-<meta property="og:image" content="https://www.firmaadi.com/assets/logo.png">
-<link rel="canonical" href="https://www.firmaadi.com/{path}">
+<meta property="og:url" content="https://bim-sade-tasarim.docile-mule-7951.chatgpt.site/{path}">
+<meta property="og:image" content="https://bim-sade-tasarim.docile-mule-7951.chatgpt.site/assets/logo.png">
+<link rel="canonical" href="https://bim-sade-tasarim.docile-mule-7951.chatgpt.site/{path}">
 <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 {FONTS}
 <link rel="stylesheet" href="assets/style.css">

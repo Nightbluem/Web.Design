@@ -29,11 +29,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background-color: var(--paper); color: var(--ink);
   font: 400 17px/1.6 var(--body);
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-attachment: fixed;
+
 }
 h1, h2, h3, h4 { margin: 0; font-family: var(--display); font-weight: 700; line-height: 1.02; text-wrap: balance; }
 p { margin: 0; }
@@ -110,27 +106,6 @@ img, svg, canvas { max-width: 100%; }
 .titleblock span { color: var(--ink-2); }
 .titleblock .xy { min-width: 128px; font-variant-numeric: tabular-nums; }
 @media (min-width: 1000px) { .titleblock { display: grid; } }
-
-/* ---------- Nişangah imleç ---------- */
-.crosshair { position: fixed; inset: 0; pointer-events: none; z-index: 40; display: none; }
-.crosshair .h, .crosshair .v { position: absolute; background: var(--signal); opacity: .35; }
-.crosshair .h { left: 0; right: 0; height: 1px; }
-.crosshair .v { top: 0; bottom: 0; width: 1px; }
-.crosshair .box { position: absolute; width: 14px; height: 14px; border: 1px solid var(--signal); transform: translate(-50%, -50%); transition: width .15s, height .15s; }
-.crosshair .tag { position: absolute; font: 500 10px var(--mono); color: var(--signal); transform: translate(12px, 10px); white-space: nowrap; }
-.crosshair.snap .box { width: 26px; height: 26px; }
-@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  html.has-xh .crosshair { display: block; }
-}
-
-/* ---------- Sayfa geçişi (perde) ---------- */
-.wipe { position: fixed; inset: 0; z-index: 60; background: var(--ink); pointer-events: none; transform: scaleY(0); transform-origin: bottom; }
-.wipe.in { animation: wipeIn .45s cubic-bezier(.7,0,.3,1) forwards; }
-.wipe.out { transform: scaleY(1); transform-origin: top; animation: wipeOut .5s cubic-bezier(.7,0,.3,1) .05s forwards; }
-.wipe .mono { position: absolute; left: var(--gutter); bottom: 24px; color: var(--paper); }
-@keyframes wipeIn { to { transform: scaleY(1); } }
-@keyframes wipeOut { to { transform: scaleY(0); } }
-@media (prefers-reduced-motion: reduce) { .wipe { display: none; } }
 
 /* ---------- Pafta başlığı (iç sayfalar) ---------- */
 .sheet-head { padding-block: clamp(48px, 9vw, 120px) clamp(32px, 5vw, 64px); border-bottom: 1px solid var(--ink); display: grid; grid-template-columns: 1fr; gap: 28px; }
@@ -247,3 +222,31 @@ html.js .rise:not(.on) { transform: translateY(18px); }
 @media (max-width: 900px) { .register .subs { grid-template-columns: 1fr 1fr; padding-left: 0; } }
 @media (max-width: 560px) { .register .subs { grid-template-columns: 1fr; } }
 @media (max-width: 1100px) { .footer-cols { grid-template-columns: 1fr 1fr 1fr; } }
+
+/* Sade görünüm: içerik ve modeller ön planda. */
+.sheet { padding-inline: var(--gutter); }
+.axis-left, .axis-top, .titleblock, .sheet-label { display: none !important; }
+:root { --rule: #ded8cc; }
+.mono, .chip { font-size: .875rem; letter-spacing: .025em; }
+.brand small, .lang button, .menu-btn, .register-close { font-size: .875rem; }
+.topbar .frame { padding-block: 18px; }
+.topbar { background: var(--paper); backdrop-filter: none; }
+.menu-btn { font-family: var(--body); text-transform: none; letter-spacing: 0; }
+.register li a { grid-template-columns: 1fr auto; }
+.register li a .no, .register .subs .sno { display: none; }
+.register .subs { padding-left: 0; }
+.register .subs li a { grid-template-columns: 1fr; }
+.register li a .t { font-size: clamp(28px, 4vw, 48px); font-weight: 650; font-stretch: normal; }
+.sheet-head h1 { font-size: clamp(44px, 7vw, 100px); line-height: 1.05; font-stretch: normal; }
+.sheet-head h1 .o { -webkit-text-stroke: 0; color: var(--ink); }
+.sheet-head .meta { display: none; }
+.block-head { grid-template-columns: 1fr; gap: 16px; }
+.block-head > p { grid-column: 1; }
+.block-head > .no { display: none; }
+.block-head h2 { font-size: clamp(32px, 4vw, 54px); line-height: 1.12; font-stretch: normal; }
+.btn { font-family: var(--body); font-size: 1rem; text-transform: none; letter-spacing: 0; }
+.footer-cta h2 { font-size: clamp(40px, 6vw, 80px); line-height: 1.05; font-stretch: normal; }
+.footer-cols h4, .footer-legal { font-size: .875rem; letter-spacing: 0; }
+.draft-note { font-family: var(--body); font-size: .875rem; letter-spacing: 0; border-bottom-style: solid; padding: 8px 16px; }
+html.js .rise, html.js .rise:not(.on) { transform: none; transition: none; }
+@media (max-width: 640px) { .register li a { grid-template-columns: 1fr; } }

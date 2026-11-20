@@ -151,6 +151,25 @@
   .cv-flow li + li::before { top: -22px; bottom: auto; height: 22px; left: 31px; right: auto; border-top: 0; border-left: 2px solid var(--ink); }
   .cv-flow li + li::after { display: none; }
 }
+
+.hero { gap: clamp(32px, 6vw, 80px); padding-block: clamp(48px, 7vw, 88px); border-bottom-color: var(--rule); }
+.hero-copy { gap: 24px; }
+.hero h1 { font-size: clamp(46px, 6.2vw, 88px); font-weight: 650; line-height: 1.05; font-stretch: normal; letter-spacing: -.035em; }
+.hero h1 .o { -webkit-text-stroke: 0; color: var(--ink); }
+.hero-meta { display: none; }
+.stage { border-color: var(--rule); background: transparent; }
+.stage .tl { display: none; }
+.stage .corner { font-size: .875rem; letter-spacing: 0; }
+.stage .tr b { font-size: 24px; font-weight: 600; }
+.hud { border-color: var(--rule); padding: 16px; }
+.hud label { font-family: var(--body); font-size: .875rem; text-transform: none; letter-spacing: 0; }
+.stage-steps { display: none; }
+.cv-svc .ar, .cv-proj .ar { display: none; }
+.cv-svc .n { font-size: .875rem; letter-spacing: 0; }
+.cv-svc .t { font-size: 22px; font-weight: 650; font-stretch: normal; }
+.cv-svc { border-left: 0; border-top-color: var(--rule); }
+.cv-svc a { grid-template-columns: 48px 1fr; }
+.cv-svc .ic { width: 48px; height: 48px; }
 </style>
 
 <main id="main">
